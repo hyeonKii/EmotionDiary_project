@@ -1,0 +1,10 @@
+# top
+node_modules
+
+# front directory
+
+
+# back directory
+back/.env
+back/node_modules
+back/build

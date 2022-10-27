@@ -1,0 +1,11 @@
+{
+    "scripts": {
+        "eslint": "node_modules/.bin/eslint"
+    },
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^5.41.0",
+        "@typescript-eslint/parser": "^5.41.0",
+        "eslint": "^8.26.0",
+        "typescript": "^4.8.4"
+    }
+}
