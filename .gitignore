@@ -2,7 +2,7 @@
 node_modules
 
 # front directory
-
+front/.env
 
 # back directory
 back/.env
