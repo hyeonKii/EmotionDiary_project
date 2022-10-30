@@ -1,7 +1,11 @@
-import { useState } from "react";
+import HelloButton from "@/component/HelloButton";
 
 function App() {
-    return <div className="App">{import.meta.env.VITE_PORT}</div>;
+    return (
+        <div className="App">
+            <HelloButton />
+        </div>
+    );
 }
 
 export default App;
