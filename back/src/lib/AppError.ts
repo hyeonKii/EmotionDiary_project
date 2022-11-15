@@ -1,4 +1,4 @@
-type ErrorName = "UnknownError";
+type ErrorName = "UnknownError" | "UserExistError" | "InvalidEmailFormatError";
 
 interface ErrorInfo {
     statusCode: number;
@@ -9,6 +9,14 @@ const ERROR_MAP: Record<ErrorName, ErrorInfo> = {
     UnknownError: {
         statusCode: 404,
         message: "An unknown error has occurred",
+    },
+    UserExistError: {
+        statusCode: 400,
+        message: "User already exists",
+    },
+    InvalidEmailFormatError: {
+        statusCode: 400,
+        message: "Invalid email format",
     },
 };
 
