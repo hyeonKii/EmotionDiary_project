@@ -33,7 +33,7 @@ const initialState: IState = {
 };
 
 export default function RegisterForm() {
-    const { form, validatedForm, onChangeHandler } = useForm({
+    const { form, validatedForm, onChangeHandler, onSubmitHandler } = useForm({
         initialState,
         validationFn: RegisterValidation,
     });
@@ -46,8 +46,9 @@ export default function RegisterForm() {
     };
 
     return (
-        <>
+        <form onSubmit={onSubmitHandler}>
             <FormInput {...props} />
-        </>
+            <button>회원가입</button>
+        </form>
     );
 }

@@ -3,7 +3,7 @@ import { useState } from "react";
 
 interface Props {
     initialState: object;
-    validationFn(id: string, value: string): boolean;
+    validationFn?(id: string, value: string): boolean;
 }
 
 export default function useForm({ initialState, validationFn }: Props) {
@@ -18,11 +18,15 @@ export default function useForm({ initialState, validationFn }: Props) {
             [id]: value,
         }));
 
-        setValidatedForm((prevState: object) => ({
-            ...prevState,
-            [id]: validationFn(id, value),
-        }));
+        if (validationFn) {
+            setValidatedForm((prevState: object) => ({
+                ...prevState,
+                [id]: validationFn(id, value),
+            }));
+        }
     };
 
-    return { form, validatedForm, onChangeHandler };
+    const onSubmitHandler = () => {};
+
+    return { form, validatedForm, onChangeHandler, onSubmitHandler };
 }
