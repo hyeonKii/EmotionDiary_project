@@ -1,6 +1,6 @@
 import { Router, Request as Req, Response as Res } from "express";
 import wrapRouter from "lib/wrapRouter";
-
+import userService from "../services/userService.js";
 const userRouter = Router();
 
 userRouter.get(
@@ -13,7 +13,9 @@ userRouter.get(
 // login userRouter
 userRouter.post(
     "user",
-    wrapRouter((req: Req, res: Res) => {
+    wrapRouter(async (req: Req, res: Res) => {
+        const { id, password } = req.body;
+        const result = await userService.loginUser({ id, password });
         return Promise.resolve({ statusCode: 200, content: "login" });
     })
 );
