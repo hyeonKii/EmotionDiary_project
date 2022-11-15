@@ -1,9 +1,9 @@
-import HelloButton from "@/component/HelloButton";
+import RegisterForm from "./component/User/RegisterForm";
 
 function App() {
     return (
         <div className="App">
-            <HelloButton />
+            <RegisterForm />
         </div>
     );
 }
