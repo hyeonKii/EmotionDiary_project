@@ -14,8 +14,6 @@ userRouter.get(
 userRouter.post(
     "user",
     wrapRouter(async (req: Req, res: Res) => {
-        const { id, password } = req.body;
-        const result = await userService.loginUser({ id, password });
         return Promise.resolve({ statusCode: 200, content: "login" });
     })
 );
@@ -23,8 +21,11 @@ userRouter.post(
 // register userRouter
 userRouter.post(
     "user/new",
-    wrapRouter((req: Req, res: Res) => {
-        return Promise.resolve({ statusCode: 200, content: "register" });
+    wrapRouter(async (req: Req, res: Res) => {
+        const { id, password } = req.body;
+        const result = await userService.loginUser({ id, password });
+
+        return Promise.resolve({ statusCode: 201, content: result });
     })
 );
 

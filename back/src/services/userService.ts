@@ -1,20 +1,17 @@
-import { PrismaClient, User } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import AppError from "lib/AppError";
 
 const isInvalidEmail = (email: string) => {
     const reg = /^[\w-\.]+@([\w-]+\.)+com$/;
-
     if (!reg.test(email)) {
         return true;
     }
-
     return false;
 };
 
 interface UserData {
     nickname: string;
-
     email: string;
     userID: string;
     password: string;
@@ -26,31 +23,13 @@ class userService {
         if (isInvalidEmail(userData.email)) {
             throw new AppError("InvalidEmailFormatError");
         }
-        const userID = userData.userID;
-        const email = userData.email;
-        const nickname = userData.nickname;
-        const isEmailOverlap = await this.prisma.user.findUnique({ where: { email } });
-        const isIdOverlap = await this.prisma.user.findUnique({ where: { userID } });
-        const isNicknameOverlap = await this.prisma.user.findUnique({ where: { nickname } });
-        if (isEmailOverlap) {
-            throw new AppError("UserExistError");
-        }
-        if (isIdOverlap) {
-            throw new AppError("UserExistError");
-        }
-        if (isNicknameOverlap) {
-            throw new AppError("UserExistError");
-        }
-        const password = userData.password;
-        const hash = await bcrypt.hash(password, 10); // 자릿수?
-        userData.password = hash;
-
+        const paswordHash = await bcrypt.hash(userData.password, 10);
         const joinedUser = await this.prisma.user.create({
             data: {
                 nickname: userData.nickname,
                 userID: userData.userID,
                 email: userData.email,
-                password: hash,
+                password: paswordHash,
             },
         });
 
