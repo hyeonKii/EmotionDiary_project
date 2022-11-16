@@ -28,9 +28,9 @@ userRouter.post(
 );
 //비밀번호 변경
 userRouter.post(
-    "/user/changepw",
+    "/user/changepassword",
     wrapRouter(async (req: Req, res: Res) => {
-        const result = await userService.changePw(
+        const result = await userService.changePassword(
             req.body.userID,
             req.body.email,
             req.body.password,
@@ -41,9 +41,20 @@ userRouter.post(
 );
 //비밀번호 찾기
 userRouter.post(
-    "/user/findpw",
+    "/user/findpassword",
     wrapRouter(async (req: Req, res: Res) => {
-        const result = await userService.findPW(req.body.userID, req.body.email);
+        const result = await userService.findPassword(req.body.userID, req.body.email);
+        return Promise.resolve({ statusCode: 200, content: result });
+    })
+);
+
+//비밀번호 인증
+userRouter.post(
+    "/user/authpassword",
+    wrapRouter(async (req: Req, res: Res) => {
+        console.log(req.body);
+        const result = await userService.authPassword(req.body.userID, req.body.password);
+        // const result = await userService.authPassword(req.UserID, req.body.password);
         return Promise.resolve({ statusCode: 200, content: result });
     })
 );

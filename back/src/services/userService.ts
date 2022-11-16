@@ -47,13 +47,12 @@ class userService {
                 userID: userID,
             },
         });
-        console.log(userDbData, userID);
         if (userDbData === null) {
             throw new AppError("UserNotFindError");
         }
         const result = await bcrypt.compare(password, userDbData.password);
         if (!result) {
-            throw new AppError("UserNotFindError");
+            throw new AppError("WrongPasswordError");
         }
 
         // Todo: add to authorization
@@ -82,7 +81,7 @@ class userService {
         return userDbData;
     }
 
-    async changePw(userID: string, email: string, password: string, newpassword: string) {
+    async changePassword(userID: string, email: string, password: string, newpassword: string) {
         const userDbData = await this.prisma.user.findUnique({
             where: {
                 userID: userID,
@@ -114,7 +113,7 @@ class userService {
         return userDbData;
     }
 
-    async findPW(userID: string, email: string) {
+    async findPassword(userID: string, email: string) {
         if (isInvalidEmail(email)) {
             throw new AppError("InvalidEmailFormatError");
         }
@@ -136,6 +135,24 @@ class userService {
         });
         await this.prisma.$disconnect();
         return { result: true, password: pw };
+    }
+
+    async authPassword(userID: string, password: string) {
+        console.log(userID, password);
+        const userDbData = await this.prisma.user.findUnique({
+            where: {
+                userID: userID,
+            },
+        });
+        if (userDbData === null) {
+            throw new AppError("UserNotFindError");
+        }
+        const result = await bcrypt.compare(password, userDbData.password);
+        if (!result) {
+            throw new AppError("WrongPasswordError");
+        }
+        await this.prisma.$disconnect();
+        return { result: true };
     }
 }
 
