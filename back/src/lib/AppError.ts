@@ -1,4 +1,4 @@
-type ErrorName = "UnknownError";
+type ErrorName = "UnknownError" | "InvalidTokenError" | "TokenExpiredError";
 
 interface ErrorInfo {
     statusCode: number;
@@ -9,6 +9,14 @@ const ERROR_MAP: Record<ErrorName, ErrorInfo> = {
     UnknownError: {
         statusCode: 404,
         message: "An unknown error has occurred",
+    },
+    InvalidTokenError: {
+        statusCode: 401,
+        message: "Token is invalid",
+    },
+    TokenExpiredError: {
+        statusCode: 401,
+        message: "Token is expired",
     },
 };
 
