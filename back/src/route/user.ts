@@ -14,7 +14,8 @@ userRouter.get(
 userRouter.post(
     "/user",
     wrapRouter(async (req: Req, res: Res) => {
-        return Promise.resolve({ statusCode: 200, content: "login" });
+        const result = await userService.login(req.body.userID, req.body.password);
+        return Promise.resolve({ statusCode: 200, content: result });
     })
 );
 //아이디 찾기
@@ -42,7 +43,7 @@ userRouter.post(
 userRouter.post(
     "/user/findpw",
     wrapRouter(async (req: Req, res: Res) => {
-        const result = await userService.authId(req.body.userID, req.body.email);
+        const result = await userService.findPW(req.body.userID, req.body.email);
         return Promise.resolve({ statusCode: 200, content: result });
     })
 );

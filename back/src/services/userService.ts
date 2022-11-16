@@ -40,23 +40,30 @@ class userService {
         return joinedUser;
     }
 
-    async login(userData: UserData) {
+    async login(userID: string, password: string) {
         //Db에서 찾은 유저 정보 - userDbData
         const userDbData = await this.prisma.user.findUnique({
             where: {
-                userID: userData.userID,
+                userID: userID,
             },
         });
+        console.log(userDbData, userID);
         if (userDbData === null) {
             throw new AppError("UserNotFindError");
         }
-        const result = await bcrypt.compare(userData.password, userDbData.password);
+        const result = await bcrypt.compare(password, userDbData.password);
         if (!result) {
             throw new AppError("UserNotFindError");
         }
 
+        // Todo: add to authorization
+
         await this.prisma.$disconnect();
-        return { userID: userData.userID, nickname: userData.nickname, email: userData.email };
+        return {
+            userID: userDbData.userID,
+            nickname: userDbData.nickname,
+            email: userDbData.email,
+        };
     }
 
     async findId(email: string) {
@@ -107,7 +114,7 @@ class userService {
         return userDbData;
     }
 
-    async authId(userID: string, email: string) {
+    async findPW(userID: string, email: string) {
         if (isInvalidEmail(email)) {
             throw new AppError("InvalidEmailFormatError");
         }
