@@ -1,11 +1,11 @@
 import React from "react";
 
-interface FormProps {
+type FormProps = {
     inputData: object[];
     form: object;
     validatedForm: object;
     onChangeHandler(event: React.ChangeEvent<HTMLInputElement>): void;
-}
+};
 
 export default function FormInput({ inputData, form, validatedForm, onChangeHandler }: FormProps) {
     return inputData.map((data = { name: "", description: "", type: "" }, index: number) => {

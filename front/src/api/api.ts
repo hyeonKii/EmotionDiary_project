@@ -5,7 +5,7 @@ const URL = "http://" + window.location.hostname + ":" + PORT + "/";
 
 type requestMethods = ["get" | "post" | "put" | "delete", ""?];
 
-export default async function api(endpoint: requestMethods, data = {}) {
+export default async function API(endpoint: requestMethods, data = {}) {
     if (data) {
         return await axios[endpoint[0]](URL + endpoint[1], data);
     }

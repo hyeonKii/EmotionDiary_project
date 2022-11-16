@@ -1,9 +1,7 @@
 import React from "react";
 import { useState } from "react";
-
 import { useMutation } from "react-query";
-
-import api from "../api/api";
+import API from "../api/api";
 
 interface Props {
     initialState: object;
@@ -15,12 +13,12 @@ export default function useForm({ initialState, endpoint, validationFn }: Props)
     const [form, setForm] = useState(initialState);
     const [validatedForm, setValidatedForm] = useState(initialState);
 
-    const requestForm = useMutation((form: object) => api(endpoint, form), {
+    const requestForm = useMutation((form: object) => API(endpoint, form), {
         onSuccess: () => {
-            console.log("success");
+            console.log(`${endpoint[0]} 요청 성공`);
         },
         onError: () => {
-            console.log("error");
+            console.log(`${endpoint[0]} 요청 실패`);
         },
     });
 

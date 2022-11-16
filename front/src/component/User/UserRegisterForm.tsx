@@ -3,7 +3,7 @@ import useForm from "../../hooks/useForm";
 import RegisterValidation from "./RegisterValidation";
 import FormInput from "./FormInput";
 
-import { USER_REGISTER } from "../../api/types";
+import { USER_REGISTER } from "../../api/Types";
 
 interface IState {
     name: string;
