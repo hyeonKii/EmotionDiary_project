@@ -1,22 +1,19 @@
 import useForm from "@/hooks/useForm";
 import FormInput from "@/components/common/FormInput";
-import { DIARY_REGISTER } from "@/constants/types";
+import { DIARY_REGISTER } from "@/constants/requestTypes";
+import { InputDataType } from "@/types/inputData_type";
 
-interface IState {
-    text: string;
-}
-
-const initialState: IState = {
-    text: "",
-};
-
-const inputData: object[] = [
+const inputData: InputDataType = [
     {
         type: "textarea",
         name: "text",
         description: "일기 쓰기",
     },
 ];
+
+const initialState = {
+    text: "",
+};
 
 export default function DiaryRegisterForm() {
     const { form, validatedForm, onChangeHandler, onSubmitHandler } = useForm({

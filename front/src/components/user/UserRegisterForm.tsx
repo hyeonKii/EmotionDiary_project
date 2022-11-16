@@ -1,21 +1,10 @@
 import useForm from "@/hooks/useForm";
 import UserRegisterValidation from "@/validations/UserRegisterValidation";
 import FormInput from "@/components/common/FormInput";
-import { USER_REGISTER } from "@/constants/types";
+import { USER_REGISTER } from "@/constants/requestTypes";
+import { InputDataType } from "@/types/inputData_type";
 
-interface IState {
-    name: string;
-    email: string;
-    password: string;
-}
-
-const initialState: IState = {
-    name: "",
-    email: "",
-    password: "",
-};
-
-const inputData: object[] = [
+const inputData: InputDataType = [
     {
         type: "text",
         name: "name",
@@ -32,6 +21,12 @@ const inputData: object[] = [
         description: "비밀번호",
     },
 ];
+
+const initialState = {
+    name: "",
+    email: "",
+    password: "",
+};
 
 export default function RegisterForm() {
     const { form, validatedForm, onChangeHandler, onSubmitHandler } = useForm({

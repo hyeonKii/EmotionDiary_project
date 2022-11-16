@@ -1,13 +1,9 @@
 import useForm from "@/hooks/useForm";
 import FormInput from "@/components/common/FormInput";
-import { USER_LOGIN } from "@/constants/types";
+import { USER_LOGIN } from "@/constants/requestTypes";
+import { InputDataType } from "@/types/inputData_type";
 
-interface IState {
-    email: string;
-    password: string;
-}
-
-const inputData: object[] = [
+const inputData: InputDataType = [
     {
         type: "email",
         name: "email",
@@ -20,7 +16,7 @@ const inputData: object[] = [
     },
 ];
 
-const initialState: IState = {
+const initialState = {
     email: "",
     password: "",
 };
