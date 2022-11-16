@@ -23,7 +23,6 @@ class userService {
 
     async register(userData: UserData) {
         if (isInvalidEmail(userData.email)) {
-            console.log(isInvalidEmail(userData.email), userData);
             throw new AppError("InvalidEmailFormatError");
         }
         const paswordHash = await bcrypt.hash(userData.password, 10);
@@ -36,7 +35,7 @@ class userService {
             },
         });
 
-        await this.prisma.$disconnect(); //??
+        await this.prisma.$disconnect();
         return joinedUser;
     }
 
@@ -87,7 +86,6 @@ class userService {
                 userID: userID,
             },
         });
-        console.log(userID, userDbData);
         if (userDbData === null) {
             throw new AppError("UserNotFindError");
         }
@@ -138,7 +136,6 @@ class userService {
     }
 
     async authPassword(userID: string, password: string) {
-        console.log(userID, password);
         const userDbData = await this.prisma.user.findUnique({
             where: {
                 userID: userID,
