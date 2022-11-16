@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useMutation } from "react-query";
-import API from "../api/api";
+import useRequest from "@/hooks/useRequest";
 
 interface Props {
     initialState: object;
@@ -12,15 +11,7 @@ interface Props {
 export default function useForm({ initialState, endpoint, validationFn }: Props) {
     const [form, setForm] = useState(initialState);
     const [validatedForm, setValidatedForm] = useState(initialState);
-
-    const requestForm = useMutation((form: object) => API(endpoint, form), {
-        onSuccess: () => {
-            console.log(`${endpoint[0]} 요청 성공`);
-        },
-        onError: () => {
-            console.log(`${endpoint[0]} 요청 실패`);
-        },
-    });
+    const { requestHandler } = useRequest(endpoint, form);
 
     const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = event.target;
@@ -40,8 +31,7 @@ export default function useForm({ initialState, endpoint, validationFn }: Props)
 
     const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        requestForm.mutate(form);
+        requestHandler();
     };
 
     return { form, validatedForm, onChangeHandler, onSubmitHandler };

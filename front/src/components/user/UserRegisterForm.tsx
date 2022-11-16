@@ -1,9 +1,7 @@
-import useForm from "../../hooks/useForm";
-
-import UserRegisterValidation from "../../validations/UserRegisterValidation";
-import FormInput from "./FormInput";
-
-import { USER_REGISTER } from "../../constants/Types";
+import useForm from "@/hooks/useForm";
+import UserRegisterValidation from "@/validations/UserRegisterValidation";
+import FormInput from "@/components/common/FormInput";
+import { USER_REGISTER } from "@/constants/types";
 
 interface IState {
     name: string;

@@ -1,8 +1,6 @@
-import useForm from "../../hooks/useForm";
-
-import FormInput from "../user/FormInput";
-
-import { DIARY_REGISTER } from "../../constants/Types";
+import useForm from "@/hooks/useForm";
+import FormInput from "@/components/common/FormInput";
+import { DIARY_REGISTER } from "@/constants/types";
 
 interface IState {
     text: string;
@@ -36,8 +34,6 @@ export default function DiaryRegisterForm() {
     return (
         <form onSubmit={onSubmitHandler}>
             <FormInput {...props} />
-            <div>{`최대 글자 수 ${form.text.length} / 10`}</div>
-            {form.text.length > 10 && <div>최대 글자 수를 초과했습니다.</div>}
             <button>저장</button>
         </form>
     );

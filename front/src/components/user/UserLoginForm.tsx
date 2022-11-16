@@ -1,10 +1,6 @@
-import { Link } from "react-router-dom";
-
-import useForm from "../../hooks/useForm";
-import FormInput from "./FormInput";
-import { ROUTES } from "@/routes/route";
-
-import { USER_LOGIN } from "../../constants/Types";
+import useForm from "@/hooks/useForm";
+import FormInput from "@/components/common/FormInput";
+import { USER_LOGIN } from "@/constants/types";
 
 interface IState {
     email: string;
@@ -29,12 +25,11 @@ const initialState: IState = {
     password: "",
 };
 
-export default function LoginForm() {
-    const { form, validatedForm, onChangeHandler } = useForm({
+export default function UserLoginForm() {
+    const { form, validatedForm, onChangeHandler, onSubmitHandler } = useForm({
         initialState,
         endpoint: USER_LOGIN,
     });
-    // requesthandler를 통해 이메일, 패스워드 유효성 검사
 
     const props = {
         inputData,
@@ -44,13 +39,9 @@ export default function LoginForm() {
     };
 
     return (
-        <>
+        <form onSubmit={onSubmitHandler}>
             <FormInput {...props} />
-            <button disabled={!form}>로그인</button>
-            <div>아직 회원이 아니신가요?</div>
-            <div>
-                <Link to={ROUTES.REGISTER.path}>회원가입</Link>
-            </div>
-        </>
+            <button>로그인</button>
+        </form>
     );
 }
