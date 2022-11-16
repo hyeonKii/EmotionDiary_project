@@ -1,5 +1,5 @@
 import useFetch from "@/hooks/useFetch";
-import { DIARY_CHECK } from "@/constants/requestTypes";
+import { DIARY_CHECK } from "@/constants/requests";
 import Diary from "./Diary";
 
 export default function Diaries() {

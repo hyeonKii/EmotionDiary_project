@@ -1,13 +1,14 @@
 import React from "react";
+import { InputDataType } from "@/types/inputData_type";
 
-type FormProps = {
-    inputData: { name: string; type: string; description: string }[];
+type Props = {
+    inputData: InputDataType;
     form: any;
     validatedForm: any;
     onChangeHandler(event: React.ChangeEvent<HTMLInputElement>): void;
 };
 
-export default function FormInput({ inputData, form, validatedForm, onChangeHandler }: FormProps) {
+export default function FormInput({ inputData, form, validatedForm, onChangeHandler }: Props) {
     return (
         <>
             {inputData.map((data, index) => {

@@ -7,10 +7,10 @@ type MethodsType = "head" | "options" | "put" | "post" | "patch" | "delete" | "g
 
 export default async function API(endpoint: string[], data = {}) {
     const method = endpoint[0] as MethodsType;
-    const location = endpoint[1];
+    const address = endpoint[1];
 
     if (data) {
-        return await axios[method](URL + location, data);
+        return await axios[method](URL + address, data);
     }
-    return await axios[method](URL + location);
+    return await axios[method](URL + address);
 }

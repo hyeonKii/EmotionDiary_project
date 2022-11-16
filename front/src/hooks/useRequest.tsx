@@ -1,5 +1,5 @@
-import API from "@/api/API";
 import { useMutation } from "react-query";
+import API from "@/api/API";
 
 export default function useRequest(endpoint: string[], data: object) {
     const request = useMutation((requestData: object) => API(endpoint, requestData), {

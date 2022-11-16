@@ -1,6 +1,6 @@
 import useForm from "@/hooks/useForm";
 import FormInput from "@/components/common/FormInput";
-import { DIARY_REGISTER } from "@/constants/requestTypes";
+import { DIARY_REGISTER } from "@/constants/requests";
 import { InputDataType } from "@/types/inputData_type";
 
 const inputData: InputDataType = [
