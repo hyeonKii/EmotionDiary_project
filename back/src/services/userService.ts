@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import AppError from "lib/AppError";
+import generator from "generate-password";
 
 const isInvalidEmail = (email: string) => {
     const reg = /^[\w-\.]+@([\w-]+\.)+com$/;
@@ -19,8 +20,10 @@ interface UserData {
 
 class userService {
     prisma = new PrismaClient();
-    async addUser(userData: UserData) {
+
+    async register(userData: UserData) {
         if (isInvalidEmail(userData.email)) {
+            console.log(isInvalidEmail(userData.email), userData);
             throw new AppError("InvalidEmailFormatError");
         }
         const paswordHash = await bcrypt.hash(userData.password, 10);
@@ -37,36 +40,96 @@ class userService {
         return joinedUser;
     }
 
-    // async loginUser({ userID: String, password }) {
-    //     const userData = await prisma.User.findUnique({
-    //         where: {
-    //             userID,
-    //         },
-    //     });
-    //     if (userData === null) {
-    //         const message = "아이디 또는 비밀번호를 확인해주세요.";
-    //         return { result: false, message };
-    //     }
-    //     const result = await bcrypt.compare(password, userData.password);
-    //     if (!result) {
-    //         const message = "아이디 또는 비밀번호를 확인해주세요.";
-    //         return { result: false, message };
-    //     }
-    //     const accessToken = generateToken({ userID: userData.userID }, "accessToken");
-    //     let refreshToken = generateToken({}, "refreshToken");
+    async login(userData: UserData) {
+        //Db에서 찾은 유저 정보 - userDbData
+        const userDbData = await this.prisma.user.findUnique({
+            where: {
+                userID: userData.userID,
+            },
+        });
+        if (userDbData === null) {
+            throw new AppError("UserNotFindError");
+        }
+        const result = await bcrypt.compare(userData.password, userDbData.password);
+        if (!result) {
+            throw new AppError("UserNotFindError");
+        }
 
-    //     await prisma.User.update({ where: { userID }, data: { token: refreshToken } });
-    //     if (userData.role === "ADMIN") {
-    //         return { userID, accessToken, refreshToken, admin: true };
-    //     }
-    //     await prisma.$disconnect();
-    //     return { userID, accessToken, refreshToken, admin: false };
-    // }
+        await this.prisma.$disconnect();
+        return { userID: userData.userID, nickname: userData.nickname, email: userData.email };
+    }
 
-    // static async logoutUser(token) {
-    //     const value = Token.removeToken(token);
-    //     return value;
-    // }
+    async findId(email: string) {
+        if (isInvalidEmail(email)) {
+            throw new AppError("InvalidEmailFormatError");
+        }
+        const userDbData = await this.prisma.user.findUnique({
+            where: {
+                email: email,
+            },
+            select: {
+                userID: true,
+            },
+        });
+        await this.prisma.$disconnect();
+        return userDbData;
+    }
+
+    async changePw(userID: string, email: string, password: string, newpassword: string) {
+        const userDbData = await this.prisma.user.findUnique({
+            where: {
+                userID: userID,
+            },
+        });
+        console.log(userID, userDbData);
+        if (userDbData === null) {
+            throw new AppError("UserNotFindError");
+        }
+
+        if (isInvalidEmail(email)) {
+            throw new AppError("InvalidEmailFormatError");
+        }
+
+        const result = await bcrypt.compare(password, userDbData.password);
+        if (!result) {
+            throw new AppError("WrongPasswordError");
+        }
+        const paswordHash = await bcrypt.hash(newpassword, 10);
+        await this.prisma.user.update({
+            where: {
+                userID,
+            },
+            data: {
+                password: paswordHash,
+            },
+        });
+        await this.prisma.$disconnect();
+        return userDbData;
+    }
+
+    async authId(userID: string, email: string) {
+        if (isInvalidEmail(email)) {
+            throw new AppError("InvalidEmailFormatError");
+        }
+        const userData = await this.prisma.user.findMany({
+            where: { AND: [{ userID }, { email }] },
+            select: { password: true },
+        });
+
+        if (userData.length === 0) {
+            throw new AppError("UserNotFindError");
+        }
+        const pw = generator.generate({ length: 8, numbers: true });
+
+        const hashPw = await bcrypt.hash(pw, 10);
+
+        await this.prisma.user.update({
+            where: { userID },
+            data: { password: hashPw },
+        });
+        await this.prisma.$disconnect();
+        return { result: true, password: pw };
+    }
 }
 
-export default userService as any;
+export default new userService();

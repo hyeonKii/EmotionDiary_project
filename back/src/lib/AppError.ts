@@ -1,4 +1,10 @@
-type ErrorName = "UnknownError" | "UserExistError" | "InvalidEmailFormatError";
+type ErrorName =
+    | "UnknownError"
+    | "UserExistError"
+    | "InvalidEmailFormatError"
+    | "UserNotFindError"
+    | "ArgumentError"
+    | "WrongPasswordError";
 
 interface ErrorInfo {
     statusCode: number;
@@ -17,6 +23,18 @@ const ERROR_MAP: Record<ErrorName, ErrorInfo> = {
     InvalidEmailFormatError: {
         statusCode: 400,
         message: "Invalid email format",
+    },
+    UserNotFindError: {
+        statusCode: 400,
+        message: "User can not find",
+    },
+    ArgumentError: {
+        statusCode: 400,
+        message: "Wrong argument",
+    },
+    WrongPasswordError: {
+        statusCode: 400,
+        message: "Login Failed",
     },
 };
 
