@@ -1,7 +1,7 @@
 import { QueryClientProvider, QueryClient } from "react-query";
 
 import DiaryRegisterForm from "./component/Diary/DiaryRegisterForm";
-import RegisterForm from "./component/User/UserRegisterForm";
+import UserRegisterForm from "./component/user/UserRegisterForm";
 
 const queryClient = new QueryClient();
 
@@ -9,7 +9,7 @@ function App() {
     return (
         <QueryClientProvider client={queryClient}>
             <div className="App">
-                <RegisterForm />
+                <UserRegisterForm />
                 <DiaryRegisterForm />
             </div>
         </QueryClientProvider>

@@ -1,8 +1,8 @@
 import useForm from "../../hooks/useForm";
 
-import FormInput from "../User/FormInput";
+import FormInput from "../user/FormInput";
 
-import { DIARY_REGISTER } from "../../api/Types";
+import { DIARY_REGISTER } from "../../constants/Types";
 
 interface IState {
     text: string;

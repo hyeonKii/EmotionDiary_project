@@ -1,9 +1,9 @@
 import useForm from "../../hooks/useForm";
 
-import RegisterValidation from "./RegisterValidation";
+import UserRegisterValidation from "../../validations/UserRegisterValidation";
 import FormInput from "./FormInput";
 
-import { USER_REGISTER } from "../../api/Types";
+import { USER_REGISTER } from "../../constants/Types";
 
 interface IState {
     name: string;
@@ -39,7 +39,7 @@ export default function RegisterForm() {
     const { form, validatedForm, onChangeHandler, onSubmitHandler } = useForm({
         initialState,
         endpoint: USER_REGISTER,
-        validationFn: RegisterValidation,
+        validationFn: UserRegisterValidation,
     });
 
     const props = {

@@ -4,7 +4,7 @@ import useForm from "../../hooks/useForm";
 import FormInput from "./FormInput";
 import { ROUTES } from "@/routes/route";
 
-import { USER_LOGIN } from "../../api/Types";
+import { USER_LOGIN } from "../../constants/Types";
 
 interface IState {
     email: string;
