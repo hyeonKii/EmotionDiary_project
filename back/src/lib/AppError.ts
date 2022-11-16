@@ -1,4 +1,12 @@
-type ErrorName = "UnknownError" | "InvalidTokenError" | "TokenExpiredError";
+type ErrorName =
+    | "UnknownError"
+    | "InvalidTokenError"
+    | "TokenExpiredError"
+    | "UserExistError"
+    | "InvalidEmailFormatError"
+    | "UserNotFindError"
+    | "ArgumentError"
+    | "WrongPasswordError";
 
 interface ErrorInfo {
     statusCode: number;
@@ -17,6 +25,26 @@ const ERROR_MAP: Record<ErrorName, ErrorInfo> = {
     TokenExpiredError: {
         statusCode: 401,
         message: "Token is expired",
+    },
+    UserExistError: {
+        statusCode: 400,
+        message: "User already exists",
+    },
+    InvalidEmailFormatError: {
+        statusCode: 400,
+        message: "Invalid email format",
+    },
+    UserNotFindError: {
+        statusCode: 400,
+        message: "User can not find",
+    },
+    ArgumentError: {
+        statusCode: 400,
+        message: "Wrong argument",
+    },
+    WrongPasswordError: {
+        statusCode: 400,
+        message: "Login Failed",
     },
 };
 
