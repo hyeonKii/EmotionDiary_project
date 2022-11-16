@@ -1,12 +1,21 @@
-import RegisterValidation from "./RegisterValidation";
 import useForm from "../../hooks/useForm";
+
+import RegisterValidation from "./RegisterValidation";
 import FormInput from "./FormInput";
+
+import { USER_REGISTER } from "../../api/types";
 
 interface IState {
     name: string;
     email: string;
     password: string;
 }
+
+const initialState: IState = {
+    name: "",
+    email: "",
+    password: "",
+};
 
 const inputData: object[] = [
     {
@@ -26,15 +35,10 @@ const inputData: object[] = [
     },
 ];
 
-const initialState: IState = {
-    name: "",
-    email: "",
-    password: "",
-};
-
 export default function RegisterForm() {
     const { form, validatedForm, onChangeHandler, onSubmitHandler } = useForm({
         initialState,
+        endpoint: USER_REGISTER,
         validationFn: RegisterValidation,
     });
 

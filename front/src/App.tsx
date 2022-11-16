@@ -1,10 +1,15 @@
+import { QueryClientProvider, QueryClient } from "react-query";
 import RegisterForm from "./component/User/RegisterForm";
+
+const queryClient = new QueryClient();
 
 function App() {
     return (
-        <div className="App">
-            <RegisterForm />
-        </div>
+        <QueryClientProvider client={queryClient}>
+            <div className="App">
+                <RegisterForm />
+            </div>
+        </QueryClientProvider>
     );
 }
 
