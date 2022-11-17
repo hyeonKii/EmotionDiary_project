@@ -22,7 +22,7 @@ userRouter.post(
 userRouter.post(
     "/user/findid",
     wrapRouter(async (req: Req, res: Res) => {
-        const result = await userService.findId(req.body.email);
+        const result = await userService.findID(req.body.email);
         return Promise.resolve({ statusCode: 200, content: result });
     })
 );
@@ -52,7 +52,6 @@ userRouter.post(
 userRouter.post(
     "/user/authpassword",
     wrapRouter(async (req: Req, res: Res) => {
-        console.log(req.body);
         const result = await userService.authPassword(req.body.userID, req.body.password);
         // const result = await userService.authPassword(req.UserID, req.body.password);
         return Promise.resolve({ statusCode: 200, content: result });

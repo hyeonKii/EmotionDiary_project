@@ -18,7 +18,7 @@ interface UserData {
     password: string;
 }
 
-class userService {
+class UserService {
     prisma = new PrismaClient();
 
     async register(userData: UserData) {
@@ -40,16 +40,16 @@ class userService {
     }
 
     async login(userID: string, password: string) {
-        //Db에서 찾은 유저 정보 - userDbData
-        const userDbData = await this.prisma.user.findUnique({
+        //Db에서 찾은 유저 정보 - userData
+        const userData = await this.prisma.user.findUnique({
             where: {
                 userID: userID,
             },
         });
-        if (userDbData === null) {
+        if (userData === null) {
             throw new AppError("UserNotFindError");
         }
-        const result = await bcrypt.compare(password, userDbData.password);
+        const result = await bcrypt.compare(password, userData.password);
         if (!result) {
             throw new AppError("WrongPasswordError");
         }
@@ -58,17 +58,17 @@ class userService {
 
         await this.prisma.$disconnect();
         return {
-            userID: userDbData.userID,
-            nickname: userDbData.nickname,
-            email: userDbData.email,
+            userID: userData.userID,
+            nickname: userData.nickname,
+            email: userData.email,
         };
     }
 
-    async findId(email: string) {
+    async findID(email: string) {
         if (isInvalidEmail(email)) {
             throw new AppError("InvalidEmailFormatError");
         }
-        const userDbData = await this.prisma.user.findUnique({
+        const userData = await this.prisma.user.findUnique({
             where: {
                 email: email,
             },
@@ -77,24 +77,25 @@ class userService {
             },
         });
         await this.prisma.$disconnect();
-        return userDbData;
+        return userData;
     }
 
     async changePassword(userID: string, email: string, password: string, newpassword: string) {
-        const userDbData = await this.prisma.user.findUnique({
-            where: {
-                userID: userID,
-            },
-        });
-        if (userDbData === null) {
-            throw new AppError("UserNotFindError");
-        }
-
         if (isInvalidEmail(email)) {
             throw new AppError("InvalidEmailFormatError");
         }
 
-        const result = await bcrypt.compare(password, userDbData.password);
+        const userData = await this.prisma.user.findUnique({
+            where: {
+                userID: userID,
+            },
+        });
+
+        if (userData === null) {
+            throw new AppError("UserNotFindError");
+        }
+
+        const result = await bcrypt.compare(password, userData.password);
         if (!result) {
             throw new AppError("WrongPasswordError");
         }
@@ -108,21 +109,23 @@ class userService {
             },
         });
         await this.prisma.$disconnect();
-        return userDbData;
+        return userData;
     }
 
     async findPassword(userID: string, email: string) {
         if (isInvalidEmail(email)) {
             throw new AppError("InvalidEmailFormatError");
         }
-        const userData = await this.prisma.user.findMany({
-            where: { AND: [{ userID }, { email }] },
+
+        const userData = await this.prisma.user.findUnique({
+            where: { userID },
             select: { password: true },
         });
 
-        if (userData.length === 0) {
+        if (userData === null) {
             throw new AppError("UserNotFindError");
         }
+
         const pw = generator.generate({ length: 8, numbers: true });
 
         const hashPw = await bcrypt.hash(pw, 10);
@@ -131,26 +134,32 @@ class userService {
             where: { userID },
             data: { password: hashPw },
         });
+
         await this.prisma.$disconnect();
+
         return { result: true, password: pw };
     }
 
     async authPassword(userID: string, password: string) {
-        const userDbData = await this.prisma.user.findUnique({
+        const userData = await this.prisma.user.findUnique({
             where: {
                 userID: userID,
             },
         });
-        if (userDbData === null) {
+
+        if (userData === null) {
             throw new AppError("UserNotFindError");
         }
-        const result = await bcrypt.compare(password, userDbData.password);
+
+        const result = await bcrypt.compare(password, userData.password);
+
         if (!result) {
             throw new AppError("WrongPasswordError");
         }
+
         await this.prisma.$disconnect();
         return { result: true };
     }
 }
 
-export default new userService();
+export default new UserService();

@@ -1,6 +1,7 @@
 import express from "express";
 import { config } from "dotenv";
 import userRouter from "./route/user";
+import diaryRouter from "./route/diary";
 import error from "middleware/error";
 import cors from "cors";
 
@@ -12,6 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.use("/api", userRouter);
+app.use("/api", diaryRouter);
 
 app.use(error);
 
