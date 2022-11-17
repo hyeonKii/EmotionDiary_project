@@ -2,6 +2,7 @@ import useForm from "@/hooks/useForm";
 import FormInput from "@/components/common/FormInput";
 import { USER_LOGIN } from "@/constants/requests";
 import { InputDataType } from "@/types/inputData_type";
+import styled from "styled-components";
 
 const inputData: InputDataType = [
     {
@@ -35,9 +36,24 @@ export default function UserLoginForm() {
     };
 
     return (
-        <form onSubmit={onSubmitHandler}>
+        <Form onSubmit={onSubmitHandler}>
             <FormInput {...props} />
             <button>로그인</button>
-        </form>
+        </Form>
     );
 }
+
+const Form = styled.form`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    background-color: white;
+    height: 50%;
+    width: 20%;
+`;
