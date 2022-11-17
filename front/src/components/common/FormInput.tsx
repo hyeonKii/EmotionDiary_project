@@ -13,7 +13,7 @@ export default function FormInput({ inputData, form, validatedForm, onChangeHand
         <>
             {inputData.map((data, index) => {
                 return (
-                    <div key={"inputData" + index}>
+                    <div key={data.name + index}>
                         <label htmlFor={data.name}>{data.description}</label>
                         <input
                             id={data.name}
