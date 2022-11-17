@@ -12,7 +12,6 @@ class DiaryService {
                         nickname,
                     },
                 },
-                author,
                 title,
                 description,
             },

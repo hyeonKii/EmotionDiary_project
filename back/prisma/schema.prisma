@@ -41,13 +41,3 @@ model Token {
 
   userID String @unique
 }
-
-model User {
-  id        String   @unique(map: "id_UNIQUE")
-  userID    String   @unique
-  password  String
-  email     String   @id @unique
-  nickname  String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
