@@ -17,7 +17,7 @@ const inputData: InputDataType = [
 ];
 
 const initialState = {
-    email: "",
+    userID: "",
     password: "",
 };
 
