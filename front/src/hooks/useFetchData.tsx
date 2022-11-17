@@ -1,8 +1,8 @@
 import { useQuery } from "react-query";
-import API from "@/api/API";
+import api from "@/api/api";
 
-export default function useFetch(key: string, endpoint: string[]) {
-    const { isLoading, isError, data } = useQuery(key, () => API(endpoint), {
+export default function useFetchData(key: string, endpoint: string[]) {
+    const { isLoading, isError, data } = useQuery(key, () => api(endpoint), {
         onSuccess: (data) => {
             console.log(data);
         },

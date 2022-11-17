@@ -1,7 +1,11 @@
-import { useState } from "react";
 import useRequest from "@/hooks/useRequest";
-import { DIARY_EDIT, DIARY_DELETE } from "@/constants/requests";
+import { DIARY_EDIT } from "@/constants/requests";
 
-export default function DiaryEditForm(data: object) {
-    const [editMode, setEditMode] = useState(false);
+interface Props {
+    data: { type: string; title: string; content: string };
+    setEditMode(value: boolean): boolean;
+}
+
+export default function DiaryEditForm({ data, setEditMode }: Props) {
+    return <></>;
 }

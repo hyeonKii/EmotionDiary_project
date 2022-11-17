@@ -1,19 +1,24 @@
 import useForm from "@/hooks/useForm";
-import UserRegisterValidation from "@/validations/UserRegisterValidation";
+import userRegisterValidation from "@/validations/userRegisterValidation";
 import FormInput from "@/components/common/FormInput";
 import { USER_REGISTER } from "@/constants/requests";
 import { InputDataType } from "@/types/inputData_type";
 
 const inputData: InputDataType = [
     {
-        type: "text",
-        name: "name",
-        description: "이름",
-    },
-    {
         type: "email",
         name: "email",
         description: "이메일",
+    },
+    {
+        type: "text",
+        name: "userID",
+        description: "아이디",
+    },
+    {
+        type: "text",
+        name: "nickname",
+        description: "별명",
     },
     {
         type: "password",
@@ -23,8 +28,9 @@ const inputData: InputDataType = [
 ];
 
 const initialState = {
-    name: "",
     email: "",
+    userID: "",
+    nickname: "",
     password: "",
 };
 
@@ -32,7 +38,7 @@ export default function RegisterForm() {
     const { form, validatedForm, onChangeHandler, onSubmitHandler } = useForm({
         initialState,
         endpoint: USER_REGISTER,
-        validationFn: UserRegisterValidation,
+        validationFn: userRegisterValidation,
     });
 
     const props = {

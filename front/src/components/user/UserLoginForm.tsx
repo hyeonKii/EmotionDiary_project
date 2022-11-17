@@ -5,9 +5,9 @@ import { InputDataType } from "@/types/inputData_type";
 
 const inputData: InputDataType = [
     {
-        type: "email",
-        name: "email",
-        description: "이메일",
+        type: "text",
+        name: "userID",
+        description: "아이디",
     },
     {
         type: "password",
