@@ -6,7 +6,8 @@ type ErrorName =
     | "InvalidEmailFormatError"
     | "UserNotFindError"
     | "ArgumentError"
-    | "WrongPasswordError";
+    | "WrongPasswordError"
+    | "LoginFailError";
 
 interface ErrorInfo {
     statusCode: number;
@@ -45,6 +46,10 @@ const ERROR_MAP: Record<ErrorName, ErrorInfo> = {
     WrongPasswordError: {
         statusCode: 400,
         message: "Login Failed",
+    },
+    LoginFailError: {
+        statusCode: 400,
+        message: "Login failed",
     },
 };
 
