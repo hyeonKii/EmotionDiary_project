@@ -26,10 +26,10 @@ model Diary{
   author      String
   title       String
   description String
+  private     Boolean       @default(false)
   view        Int           @default(0)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
-  owner       Int           @unique
-  user        User          @relation(fields: [owner], references: [id])
+  user        User          @relation(fields: [author], references: [nickname])
 }
 

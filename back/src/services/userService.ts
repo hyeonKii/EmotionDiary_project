@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import AppError from "lib/AppError";
 import generator from "generate-password";
-
+import mailSender from "config/mail";
 const isInvalidEmail = (email: string) => {
     const reg = /^[\w-\.]+@([\w-]+\.)+com$/;
     if (!reg.test(email)) {
@@ -125,6 +125,7 @@ class UserService {
         if (userData === null) {
             throw new AppError("UserNotFindError");
         }
+        mailSender(email);
 
         const pw = generator.generate({ length: 8, numbers: true });
 

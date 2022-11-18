@@ -4,27 +4,27 @@ import AppError from "lib/AppError";
 class DiaryService {
     prisma = new PrismaClient();
 
-    async writeDiary(nickname: string, author: string, title: string, description: string) {
+    async writeDiary(nickname: string, title: string, description: string) {
         const result = await this.prisma.diary.create({
             data: {
+                title,
+                description,
                 user: {
                     connect: {
                         nickname,
                     },
                 },
-                author,
-                title,
-                description,
             },
         });
+
         await this.prisma.$disconnect();
         return result;
     }
 
-    async addViewCount(id: number) {
+    async addViewCount(diaryID: number) {
         const result = await this.prisma.diary.update({
             where: {
-                id: Number(id),
+                id: Number(diaryID),
             },
             data: {
                 view: {
@@ -61,7 +61,7 @@ class DiaryService {
         return postData;
     }
 
-    async getDiarys() {
+    async getDiaryList() {
         const postDatas = await this.prisma.diary.findMany({
             select: {
                 id: true,
