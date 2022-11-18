@@ -48,6 +48,12 @@ const auth = async (req: Req, res: Res, next: NextFunction) => {
     if (accessPayload === null && refreshPayload !== null) {
         const userID = await TokenService.getUserIDByToken(refreshToken);
 
+        if (userID === null) {
+            next(new AppError("InvalidTokenError"));
+
+            return;
+        }
+
         req.userID = userID;
 
         next();
@@ -70,8 +76,10 @@ const auth = async (req: Req, res: Res, next: NextFunction) => {
     if (accessPayload !== null && refreshPayload !== null) {
         const userID = await TokenService.getUserIDByToken(refreshToken);
 
-        if (accessPayload.data !== userID) {
-            throw new AppError("InvalidTokenError");
+        if (userID === null || accessPayload.data !== userID) {
+            next(new AppError("InvalidTokenError"));
+
+            return;
         }
 
         req.userID = userID;

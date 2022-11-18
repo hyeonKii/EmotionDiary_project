@@ -56,7 +56,7 @@ class Token {
         this.prisma.$disconnect();
 
         if (result === null) {
-            throw new Error("InvalidTokenError");
+            return null;
         }
 
         return result.userID;
