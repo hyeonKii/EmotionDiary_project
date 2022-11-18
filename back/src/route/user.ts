@@ -70,12 +70,7 @@ userRouter.post(
 userRouter.post(
     "/user/findpassword",
     wrapRouter(async (req: Req, res: Res) => {
-        const result = await userService.findPassword(
-            req.body.userID,
-            req.body.email,
-            req.body.password,
-            req.body.newpassword
-        );
+        const result = await userService.findPassword(req.body.email);
         return Promise.resolve({ statusCode: 200, content: result });
     })
 );
@@ -115,4 +110,13 @@ userRouter.delete(
     })
 );
 
+userRouter.put(
+    "/user/logout",
+    wrapRouter(async (req: Req, res: Res) => {
+        const { refreshtoken } = req.headers;
+        console.log(refreshtoken);
+        const result = await userService.logoutUser(refreshtoken as string);
+        return Promise.resolve({ statusCode: 200, content: result });
+    })
+);
 export default userRouter;

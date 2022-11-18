@@ -49,6 +49,7 @@ class UserService {
             },
         });
 
+        console.log(isLogin);
         if (isLogin) {
             throw new AppError("LoginFailError");
         }
@@ -176,25 +177,24 @@ class UserService {
         return { return: true };
     }
 
-    async findPassword(userID: string, email: string, password: string, newpassword: string) {
+    async findPassword(email: string) {
         if (isInvalidEmail(email)) {
             throw new AppError("InvalidEmailFormatError");
         }
 
         const userData = await this.prisma.user.findUnique({
-            where: { userID },
+            where: { email },
         });
 
         if (userData === null) {
             throw new AppError("UserNotFindError");
         }
-        // 비밀번호를 임시로 발급하는데 새 비밀번호를 왜 받지
         const pw = generator.generate({ length: 8, numbers: true });
-
+        console.log(pw);
         const hashPw = await bcrypt.hash(pw, 10);
 
         await this.prisma.user.update({
-            where: { userID },
+            where: { email },
             data: { password: hashPw },
         });
         mailSender(email, pw, "이메일로 임시 비밀번호를 전송 했습니다");
@@ -231,6 +231,11 @@ class UserService {
         });
         await this.prisma.$disconnect();
         return "success";
+    }
+
+    async logoutUser(token: string) {
+        const value = tokenService.removeToken(token);
+        return value;
     }
 }
 
