@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import api from "@/api/api";
 
 export default function useFetchData(key: string, endpoint: string[]) {
-    const { isLoading, isError, data } = useQuery(key, () => api(endpoint), {
+    const { isLoading, isError, data, error } = useQuery(key, () => api(endpoint), {
         onSuccess: (data) => {
             console.log(data);
         },
@@ -11,5 +11,5 @@ export default function useFetchData(key: string, endpoint: string[]) {
         },
     });
 
-    return { isLoading, isError, data };
+    return { isLoading, isError, data, error };
 }

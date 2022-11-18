@@ -5,14 +5,20 @@ import { InputDataType } from "@/types/inputData_type";
 
 const inputData: InputDataType = [
     {
+        type: "text",
+        name: "title",
+        description: "제목",
+    },
+    {
         type: "textarea",
-        name: "text",
+        name: "description",
         description: "일기 쓰기",
     },
 ];
 
 const initialState = {
-    text: "",
+    title: "",
+    description: "",
 };
 
 export default function DiaryRegisterForm() {

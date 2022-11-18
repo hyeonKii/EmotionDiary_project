@@ -3,7 +3,7 @@ const USER_LOGIN = ["post", "user"];
 const USER_LOGOUT = ["delete", "user"];
 
 const DIARY_CHECK = ["get", "diary"];
-const DIARY_REGISTER = ["post", "diary"];
+const DIARY_REGISTER = ["post", "diary/adddiary"];
 const DIARY_EDIT = ["put", "diary"];
 const DIARY_DELETE = ["delete", "diary"];
 

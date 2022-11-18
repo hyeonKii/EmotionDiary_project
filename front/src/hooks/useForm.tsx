@@ -29,10 +29,11 @@ export default function useForm({ initialState, endpoint, validationFn }: Props)
         }
     };
 
-    const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+    const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         requestHandler();
+        setForm(initialState);
     };
 
-    return { form, validatedForm, onChangeHandler, onSubmitHandler };
+    return { form, validatedForm, onChangeHandler, onSubmitHandler, requestHandler };
 }

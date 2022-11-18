@@ -1,8 +1,10 @@
+import styled from "styled-components";
 import useForm from "@/hooks/useForm";
 import FormInput from "@/components/common/FormInput";
 import { USER_LOGIN } from "@/constants/requests";
 import { InputDataType } from "@/types/inputData_type";
-import styled from "styled-components";
+import { useSetRecoilState } from "recoil";
+import { currentUser } from "../temp/atoms";
 
 const inputData: InputDataType = [
     {
@@ -23,10 +25,19 @@ const initialState = {
 };
 
 export default function UserLoginForm() {
-    const { form, validatedForm, onChangeHandler, onSubmitHandler } = useForm({
+    const setUser = useSetRecoilState(currentUser);
+
+    const { form, validatedForm, onChangeHandler, requestHandler } = useForm({
         initialState,
         endpoint: USER_LOGIN,
     });
+
+    const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        const { userID, email, nickname } = await requestHandler();
+        setUser({ userID, email, nickname });
+    };
 
     const props = {
         inputData,

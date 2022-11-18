@@ -1,8 +1,12 @@
 import { useMutation } from "react-query";
 import api from "@/api/api";
 
-export default function useRequest(endpoint: string[], data: object) {
-    const request = useMutation((requestData: object) => api(endpoint, requestData), {
+export default function useRequest(endpoint: string[], requiredData: object) {
+    const fetchFn = async (requestData: object) => {
+        return await api(endpoint, requestData);
+    };
+
+    const { mutateAsync } = useMutation(fetchFn, {
         onSuccess: () => {
             console.log(`${endpoint[0]} 요청 성공`);
         },
@@ -11,8 +15,9 @@ export default function useRequest(endpoint: string[], data: object) {
         },
     });
 
-    const requestHandler = () => {
-        request.mutate(data);
+    const requestHandler = async () => {
+        const { data } = await mutateAsync(requiredData);
+        return data;
     };
 
     return { requestHandler };

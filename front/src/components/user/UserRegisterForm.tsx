@@ -34,7 +34,7 @@ const initialState = {
     password: "",
 };
 
-export default function RegisterForm() {
+export default function UserRegisterForm() {
     const { form, validatedForm, onChangeHandler, onSubmitHandler } = useForm({
         initialState,
         endpoint: USER_REGISTER,
