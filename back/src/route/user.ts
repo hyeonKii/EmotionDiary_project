@@ -41,6 +41,17 @@ userRouter.post(
         return { statusCode: 200, content: result };
     })
 );
+
+userRouter.post(
+    "/user/emailcheck",
+    wrapRouter(async (req: Req, res: Res) => {
+        console.log(req.body);
+        const result = await userService.emailVerification(req.body.emailVerification);
+
+        return { statusCode: 200, content: result };
+    })
+);
+
 //비밀번호 변경
 userRouter.post(
     "/user/changepassword",
@@ -59,7 +70,21 @@ userRouter.post(
 userRouter.post(
     "/user/findpassword",
     wrapRouter(async (req: Req, res: Res) => {
-        const result = await userService.findPassword(req.body.userID, req.body.email);
+        const result = await userService.findPassword(
+            req.body.userID,
+            req.body.email,
+            req.body.password,
+            req.body.newpassword
+        );
+        return Promise.resolve({ statusCode: 200, content: result });
+    })
+);
+
+//닉네임 변경
+userRouter.post(
+    "/user/changenickname",
+    wrapRouter(async (req: Req, res: Res) => {
+        const result = await userService.changeNickname(req.body.userID, req.body.nickname);
         return Promise.resolve({ statusCode: 200, content: result });
     })
 );
@@ -68,12 +93,19 @@ userRouter.post(
 userRouter.post(
     "/user/authpassword",
     wrapRouter(async (req: Req, res: Res) => {
-        const result = await userService.findPassword(req.body.userID, req.body.email);
+        const result = await userService.authPassword(req.body.userID, req.body.email);
         return Promise.resolve({ statusCode: 200, content: result });
     })
 );
 
-// 회원가입
+//회원 탈퇴
+userRouter.post(
+    "/user/withdrawal",
+    wrapRouter(async (req: Req, res: Res) => {
+        const result = await userService.withdrawal(req.body.userID);
+        return Promise.resolve({ statusCode: 200, content: result });
+    })
+);
 
 // logout
 userRouter.delete(

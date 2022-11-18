@@ -3,6 +3,9 @@ import bcrypt from "bcrypt";
 import AppError from "lib/AppError";
 import generator from "generate-password";
 import mailSender from "config/mail";
+import { generateToken } from "lib/token";
+import tokenService from "./tokenService";
+import * as nodeMailer from "nodemailer";
 const isInvalidEmail = (email: string) => {
     const reg = /^[\w-\.]+@([\w-]+\.)+com$/;
     if (!reg.test(email)) {
@@ -40,27 +43,45 @@ class UserService {
     }
 
     async login(userID: string, password: string) {
-        //Db에서 찾은 유저 정보 - userData
+        const isLogin = await this.prisma.token.findUnique({
+            where: {
+                userID,
+            },
+        });
+
+        if (isLogin) {
+            throw new AppError("LoginFailError");
+        }
+
         const userData = await this.prisma.user.findUnique({
             where: {
                 userID: userID,
             },
         });
+
         if (userData === null) {
             throw new AppError("UserNotFindError");
         }
+
         const result = await bcrypt.compare(password, userData.password);
+
         if (!result) {
             throw new AppError("WrongPasswordError");
         }
 
-        // Todo: add to authorization
+        const accessToken = generateToken("access", userID);
+        const refreshToken = generateToken("refresh", "");
 
-        await this.prisma.$disconnect();
+        tokenService.addToken(userID, refreshToken);
+
+        this.prisma.$disconnect();
+
         return {
             userID: userData.userID,
             nickname: userData.nickname,
             email: userData.email,
+            accessToken,
+            refreshToken,
         };
     }
 
@@ -68,14 +89,44 @@ class UserService {
         if (isInvalidEmail(email)) {
             throw new AppError("InvalidEmailFormatError");
         }
-        const userData = await this.prisma.user.findUnique({
+        const emailpw = generator.generate({ length: 8, numbers: true });
+        await this.prisma.user.update({
             where: {
-                email: email,
+                email,
+            },
+            data: {
+                emailVerification: emailpw,
+            },
+        });
+        const userData = await this.prisma.user.findMany({
+            where: {
+                emailVerification: emailpw,
             },
             select: {
                 userID: true,
             },
         });
+
+        if (userData.length != 1) {
+            return this.findID;
+        }
+
+        mailSender(email, emailpw, "이메일로 인증번호를 전송 했습니다");
+        await this.prisma.$disconnect();
+        return { return: true };
+    }
+
+    async emailVerification(emailVerification: string) {
+        console.log(emailVerification);
+        const userData = await this.prisma.user.findMany({
+            where: {
+                emailVerification: emailVerification,
+            },
+            select: {
+                userID: true,
+            },
+        });
+
         await this.prisma.$disconnect();
         return userData;
     }
@@ -112,21 +163,32 @@ class UserService {
         return userData;
     }
 
-    async findPassword(userID: string, email: string) {
+    async changeNickname(userID: string, nickname: string) {
+        await this.prisma.user.update({
+            where: {
+                userID,
+            },
+            data: {
+                nickname: nickname,
+            },
+        });
+        await this.prisma.$disconnect();
+        return { return: true };
+    }
+
+    async findPassword(userID: string, email: string, password: string, newpassword: string) {
         if (isInvalidEmail(email)) {
             throw new AppError("InvalidEmailFormatError");
         }
 
         const userData = await this.prisma.user.findUnique({
             where: { userID },
-            select: { password: true },
         });
 
         if (userData === null) {
             throw new AppError("UserNotFindError");
         }
-        mailSender(email);
-
+        // 비밀번호를 임시로 발급하는데 새 비밀번호를 왜 받지
         const pw = generator.generate({ length: 8, numbers: true });
 
         const hashPw = await bcrypt.hash(pw, 10);
@@ -135,10 +197,10 @@ class UserService {
             where: { userID },
             data: { password: hashPw },
         });
-
+        mailSender(email, pw, "이메일로 임시 비밀번호를 전송 했습니다");
         await this.prisma.$disconnect();
 
-        return { result: true, password: pw };
+        return { result: true };
     }
 
     async authPassword(userID: string, password: string) {
@@ -160,6 +222,15 @@ class UserService {
 
         await this.prisma.$disconnect();
         return { result: true };
+    }
+
+    async withdrawal(userID: string) {
+        await this.prisma.user.update({
+            where: { userID },
+            data: { withdrawal: true },
+        });
+        await this.prisma.$disconnect();
+        return "success";
     }
 }
 

@@ -4,14 +4,14 @@ import AppError from "lib/AppError";
 class DiaryService {
     prisma = new PrismaClient();
 
-    async writeDiary(nickname: string, title: string, description: string) {
+    async writeDiary(userID: string, title: string, description: string) {
         const result = await this.prisma.diary.create({
             data: {
                 title,
                 description,
                 user: {
                     connect: {
-                        nickname,
+                        userID,
                     },
                 },
             },
