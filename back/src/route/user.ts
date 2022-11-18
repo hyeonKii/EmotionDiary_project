@@ -5,9 +5,12 @@ import auth from "middleware/auth";
 
 const userRouter = Router();
 
-userRouter.get(
+userRouter.post(
     "/ping",
+    auth,
     wrapRouter((req: Req, res: Res) => {
+        const userID = req.userID;
+
         return Promise.resolve({ statusCode: 200, content: "pong" });
     })
 );

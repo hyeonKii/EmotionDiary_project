@@ -4,8 +4,8 @@ import { generateToken, verifyToken } from "lib/token";
 import TokenService from "../services/tokenService";
 
 const auth = async (req: Req, res: Res, next: NextFunction) => {
-    let accessToken = req.headers.accessToken;
-    const refreshToken = req.headers.refreshToken;
+    let accessToken = req.headers.authorization;
+    const refreshToken = req.headers.refreshtoken;
 
     // if there are no token in header, it occurs error
     if (accessToken === null || typeof accessToken !== "string") {
@@ -27,7 +27,11 @@ const auth = async (req: Req, res: Res, next: NextFunction) => {
     const refreshPayload = verifyToken(refreshToken);
 
     // check payloads
-    if (accessPayload === "InvalidTokenError") {
+    if (
+        accessPayload === "InvalidTokenError" ||
+        typeof accessPayload === "string" ||
+        accessPayload === undefined
+    ) {
         next(new AppError("InvalidTokenError"));
 
         return;
@@ -66,7 +70,7 @@ const auth = async (req: Req, res: Res, next: NextFunction) => {
     if (accessPayload !== null && refreshPayload !== null) {
         const userID = await TokenService.getUserIDByToken(refreshToken);
 
-        if (accessPayload !== userID) {
+        if (accessPayload.data !== userID) {
             throw new AppError("InvalidTokenError");
         }
 
