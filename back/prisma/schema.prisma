@@ -11,18 +11,20 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  userID    String   @unique
-  password  String   
-  email     String   @unique
-  nickname  String   @unique
-  diary     Diary[]
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  nickname String @unique
+  userID   String @unique
+  password String
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  diary Diary[]
 }
 
-model Diary{
-  id          Int           @id @unique @default(autoincrement())
+model Diary {
+  id          Int      @id @unique @default(autoincrement())
   author      String
   title       String
   description String
@@ -33,3 +35,9 @@ model Diary{
   user        User          @relation(fields: [author], references: [nickname])
 }
 
+model Token {
+  id    Int    @id @unique @default(autoincrement())
+  token String @unique
+
+  userID String @unique
+}

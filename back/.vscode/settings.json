@@ -1,0 +1,14 @@
+{
+    "editor.formatOnSave": true,
+    "eslint.validate": ["javascript"],
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[prisma]": {
+        "editor.defaultFormatter": "Prisma.prisma"
+    },
+    "editor.codeActionsOnSave": {
+        // For ESLint
+        "source.fixAll.eslint": true,
+        // For Stylelint
+        "source.fixAll.stylelint": true
+    }
+}
