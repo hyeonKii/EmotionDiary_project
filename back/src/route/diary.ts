@@ -13,8 +13,8 @@ diaryRouter.get(
 diaryRouter.post(
     "/diary/writediary",
     wrapRouter(async (req: Req, res: Res) => {
-        const { nickname, title, description } = req.body;
-        const result = await diaryService.writeDiary(nickname, title, description);
+        const { userID, title, description } = req.body;
+        const result = await diaryService.writeDiary(userID, title, description);
         return Promise.resolve({ statusCode: 200, content: result });
     })
 );
