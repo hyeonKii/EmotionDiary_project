@@ -2,9 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import AppError from "lib/AppError";
 import generator from "generate-password";
-import { generateToken } from "lib/token";
-import tokenService from "./tokenService";
-
+import mailSender from "config/mail";
 const isInvalidEmail = (email: string) => {
     const reg = /^[\w-\.]+@([\w-]+\.)+com$/;
     if (!reg.test(email)) {
@@ -42,45 +40,27 @@ class UserService {
     }
 
     async login(userID: string, password: string) {
-        const isLogin = await this.prisma.token.findUnique({
-            where: {
-                userID,
-            },
-        });
-
-        if (isLogin) {
-            throw new AppError("LoginFailError");
-        }
-
+        //Db에서 찾은 유저 정보 - userData
         const userData = await this.prisma.user.findUnique({
             where: {
                 userID: userID,
             },
         });
-
         if (userData === null) {
             throw new AppError("UserNotFindError");
         }
-
         const result = await bcrypt.compare(password, userData.password);
-
         if (!result) {
             throw new AppError("WrongPasswordError");
         }
 
-        const accessToken = generateToken("access", userID);
-        const refreshToken = generateToken("refresh", "");
+        // Todo: add to authorization
 
-        tokenService.addToken(userID, refreshToken);
-
-        this.prisma.$disconnect();
-
+        await this.prisma.$disconnect();
         return {
             userID: userData.userID,
             nickname: userData.nickname,
             email: userData.email,
-            accessToken,
-            refreshToken,
         };
     }
 
@@ -145,6 +125,7 @@ class UserService {
         if (userData === null) {
             throw new AppError("UserNotFindError");
         }
+        mailSender(email);
 
         const pw = generator.generate({ length: 8, numbers: true });
 

@@ -11,10 +11,10 @@ diaryRouter.get(
 );
 //일기 create API
 diaryRouter.post(
-    "/diary/adddiary",
+    "/diary/writediary",
     wrapRouter(async (req: Req, res: Res) => {
-        const { nickname, author, title, description } = req.body;
-        const result = await diaryService.writeDiary(nickname, author, title, description);
+        const { nickname, title, description } = req.body;
+        const result = await diaryService.writeDiary(nickname, title, description);
         return Promise.resolve({ statusCode: 200, content: result });
     })
 );
@@ -31,7 +31,7 @@ diaryRouter.post(
 diaryRouter.get(
     "/diary/all",
     wrapRouter(async (req: Req, res: Res) => {
-        const result = await diaryService.getDiarys();
+        const result = await diaryService.getDiaryList();
         return Promise.resolve({ statusCode: 200, content: result });
     })
 );

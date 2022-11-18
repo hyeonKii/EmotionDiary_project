@@ -28,11 +28,11 @@ model Diary {
   author      String
   title       String
   description String
-  view        Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  user User @relation(fields: [author], references: [nickname])
+  private     Boolean       @default(false)
+  view        Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  user        User          @relation(fields: [author], references: [nickname])
 }
 
 model Token {
