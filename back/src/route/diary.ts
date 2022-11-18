@@ -11,7 +11,7 @@ diaryRouter.get(
 );
 //일기 create API
 diaryRouter.post(
-    "/diary/writediary",
+    "/diary/write",
     wrapRouter(async (req: Req, res: Res) => {
         const { userID, title, description } = req.body;
         const result = await diaryService.writeDiary(userID, title, description);
