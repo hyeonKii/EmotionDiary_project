@@ -2,10 +2,11 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import AppError from "lib/AppError";
 import generator from "generate-password";
-import mailSender from "config/mail";
+import mailSender from "lib/mail";
 import { generateToken } from "lib/token";
 import tokenService from "./tokenService";
 import * as nodeMailer from "nodemailer";
+import { logger } from "../config/logger";
 
 const isInvalidEmail = (email: string) => {
     const reg = /^[\w-\.]+@([\w-]+\.)+com$/;
@@ -51,6 +52,7 @@ class UserService {
         });
 
         if (isLogin) {
+            logger.error("LoginFailError");
             throw new AppError("LoginFailError");
         }
 
@@ -158,7 +160,7 @@ class UserService {
             },
         });
         await this.prisma.$disconnect();
-        return userData;
+        return { return: true };
     }
 
     async changeNickname(userID: string, nickname: string) {
@@ -187,7 +189,6 @@ class UserService {
             throw new AppError("UserNotFindError");
         }
         const pw = generator.generate({ length: 8, numbers: true });
-        console.log(pw);
         const hashPw = await bcrypt.hash(pw, 10);
 
         await this.prisma.user.update({
@@ -230,8 +231,8 @@ class UserService {
         return "success";
     }
 
-    async logoutUser(token: string) {
-        const value = tokenService.removeToken(token);
+    async logoutUser(userID: string) {
+        const value = tokenService.removeToken(userID);
         return value;
     }
 }

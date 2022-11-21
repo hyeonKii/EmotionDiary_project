@@ -7,7 +7,8 @@ type ErrorName =
     | "UserNotFindError"
     | "ArgumentError"
     | "WrongPasswordError"
-    | "LoginFailError";
+    | "LoginFailError"
+    | "NotStringError";
 
 interface ErrorInfo {
     statusCode: number;
@@ -50,6 +51,10 @@ const ERROR_MAP: Record<ErrorName, ErrorInfo> = {
     LoginFailError: {
         statusCode: 400,
         message: "Login failed",
+    },
+    NotStringError: {
+        statusCode: 400,
+        message: "Type is not string",
     },
 };
 
