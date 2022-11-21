@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
-import UserLoginForm from "../user/UserLoginForm";
+import UserLoginForm from "../user/UserLogin";
 import ModalBackground from "./ModalBackground";
 
 export default function Header() {
@@ -14,26 +14,13 @@ export default function Header() {
                     <ModalBackground setShowForm={setShowForm} />
                 </>
             )}
-            <HeaderStyle>
+            <nav>
                 <ul>
                     <li>
                         <button onClick={() => setShowForm(true)}>로그인</button>
                     </li>
                 </ul>
-            </HeaderStyle>
+            </nav>
         </>
     );
 }
-
-const HeaderStyle = styled.nav`
-    width: 100%;
-    height: 10vh;
-
-    ul {
-        list-style: none;
-    }
-
-    ul button {
-        cursor: pointer;
-    }
-`;

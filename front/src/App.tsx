@@ -1,15 +1,20 @@
+import { useEffect } from "react";
+import DiaryRegister from "./components/diary/DiaryRegister";
 import Header from "./components/UI/Header";
 import User from "./components/user/User";
-import UserLoginForm from "./components/user/UserLoginForm";
-import UserRegisterForm from "./components/user/UserRegisterForm";
+import UserLogin from "./components/user/UserLogin";
+import UserRegister from "./components/user/UserRegister";
 
 function App() {
+    useEffect(() => {});
+
     return (
         <div className="App">
             <Header />
             <User />
-            <UserLoginForm />
-            <UserRegisterForm />
+            <UserLogin />
+            <UserRegister />
+            <DiaryRegister />
         </div>
     );
 }

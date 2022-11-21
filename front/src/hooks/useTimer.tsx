@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from "react";
 
-export default function useTimer(time: number = 1000) {
+export default function useTimer(time = 1000) {
     const [timedOut, setTimedOut] = useState(false);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
 

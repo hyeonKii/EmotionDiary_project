@@ -8,7 +8,7 @@ interface FetchingResult {
     isError: boolean;
 }
 
-export default function Diaries() {
+export default function DiaryList() {
     const { data, isLoading, isError }: FetchingResult = useFetch("diaries", DIARY_CHECK);
 
     return (
