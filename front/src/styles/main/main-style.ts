@@ -1,10 +1,15 @@
 import styled from "styled-components";
+import { color } from "../common/colorPalette";
+import background from "../../assets/images/background.jpg";
 
 export const MainBlock = styled.div`
     width: 100vw;
     height: 100vh;
 
-    /* background-image: url("../assets/images/background.jpg"); */
+    background: blue;
+
+    background-image: url(${background});
+    background-size: cover;
 `;
 
 export const TitleBlock = styled.div`
@@ -27,7 +32,7 @@ export const InputBlock = styled.input`
     width: 70%;
     max-width: 800;
     height: 60px;
-    line-height: 50px;
+    line-height: 60px;
 
     position: absolute;
     top: 60%;
@@ -40,5 +45,5 @@ export const InputBlock = styled.input`
     border-radius: 32px;
     outline: none;
 
-    box-shadow: 0 4px 4px 0 gray;
+    box-shadow: 0 4px 4px 0 ${color.gray};
 `;

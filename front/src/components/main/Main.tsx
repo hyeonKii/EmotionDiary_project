@@ -1,4 +1,4 @@
-import { MainBlock, TitleBlock, InputBlock } from "@/styles/main-style";
+import { MainBlock, TitleBlock, InputBlock } from "@/styles/main/main-style";
 
 export default function Main() {
     return (
