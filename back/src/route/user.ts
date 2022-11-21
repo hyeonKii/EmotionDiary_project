@@ -2,6 +2,7 @@ import { Router, Request as Req, Response as Res } from "express";
 import wrapRouter from "lib/wrapRouter";
 import userService from "../services/userService";
 import auth from "middleware/auth";
+import AppError from "lib/AppError";
 
 const userRouter = Router();
 
@@ -17,16 +18,15 @@ userRouter.post(
 
 // login userRouter
 userRouter.post(
-    "/user",
+    "/users",
     wrapRouter(async (req: Req, res: Res) => {
         const result = await userService.login(req.body.userID, req.body.password);
-
         return { statusCode: 200, content: result };
     })
 );
-
+//회원가입
 userRouter.post(
-    "/user/new",
+    "/users/new",
     wrapRouter(async (req: Req, res: Res) => {
         const { userID, password, email, nickname } = req.body;
         const result = await userService.register({ userID, password, email, nickname });
@@ -37,7 +37,8 @@ userRouter.post(
 
 //아이디 찾기
 userRouter.post(
-    "/user/findid",
+    "/users/findid",
+    auth,
     wrapRouter(async (req: Req, res: Res) => {
         const result = await userService.findID(req.body.email);
 
@@ -46,7 +47,8 @@ userRouter.post(
 );
 
 userRouter.post(
-    "/user/emailcheck",
+    "/users/emailcheck",
+    auth,
     wrapRouter(async (req: Req, res: Res) => {
         console.log(req.body);
         const result = await userService.emailVerification(req.body.emailVerification);
@@ -57,7 +59,8 @@ userRouter.post(
 
 //비밀번호 변경
 userRouter.post(
-    "/user/changepassword",
+    "/users/changepassword",
+    auth,
     wrapRouter(async (req: Req, res: Res) => {
         const result = await userService.changePassword(
             req.body.userID,
@@ -71,7 +74,8 @@ userRouter.post(
 );
 //비밀번호 찾기
 userRouter.post(
-    "/user/findpassword",
+    "/users/findpassword",
+    auth,
     wrapRouter(async (req: Req, res: Res) => {
         const result = await userService.findPassword(req.body.email);
         return Promise.resolve({ statusCode: 200, content: result });
@@ -80,7 +84,8 @@ userRouter.post(
 
 //닉네임 변경
 userRouter.post(
-    "/user/changenickname",
+    "/users/changenickname",
+    auth,
     wrapRouter(async (req: Req, res: Res) => {
         const result = await userService.changeNickname(req.body.userID, req.body.nickname);
         return Promise.resolve({ statusCode: 200, content: result });
@@ -89,7 +94,8 @@ userRouter.post(
 
 //비밀번호 인증
 userRouter.post(
-    "/user/authpassword",
+    "/users/authpassword",
+    auth,
     wrapRouter(async (req: Req, res: Res) => {
         const result = await userService.authPassword(req.body.userID, req.body.email);
         return Promise.resolve({ statusCode: 200, content: result });
@@ -98,7 +104,8 @@ userRouter.post(
 
 //회원 탈퇴
 userRouter.post(
-    "/user/withdrawal",
+    "/users/withdrawal",
+    auth,
     wrapRouter(async (req: Req, res: Res) => {
         const result = await userService.withdrawal(req.body.userID);
         return Promise.resolve({ statusCode: 200, content: result });
@@ -107,19 +114,16 @@ userRouter.post(
 
 // logout
 userRouter.delete(
-    "/user",
-    wrapRouter((req: Req, res: Res) => {
-        return Promise.resolve({ statusCode: 200, content: "logout" });
-    })
-);
-
-userRouter.put(
-    "/user/logout",
+    "/users",
+    auth,
     wrapRouter(async (req: Req, res: Res) => {
-        const { refreshtoken } = req.headers;
-        console.log(refreshtoken);
-        const result = await userService.logoutUser(refreshtoken as string);
+        const userID = req.userID;
+        if (typeof userID !== "string") {
+            throw new AppError("NotStringError");
+        }
+        const result = await userService.logoutUser(userID);
         return Promise.resolve({ statusCode: 200, content: result });
     })
 );
+
 export default userRouter;
