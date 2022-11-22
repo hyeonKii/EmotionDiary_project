@@ -7,7 +7,7 @@ type TokenName = "access" | "refresh";
 
 const expirationTime: Record<TokenName, string> = {
     access: "30m",
-    refresh: "14d",
+    refresh: "3h",
 } as const;
 
 const secretKey = process.env.SECRET ?? "SECRET";

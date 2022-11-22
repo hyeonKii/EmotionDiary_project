@@ -5,7 +5,7 @@ import AppError from "./AppError";
 type RouterFunction = (
     request: Request,
     response: Response
-) => Promise<{ statusCode: number; content: Object | null }>;
+) => Promise<{ statusCode: number; content: Object | string | null }>;
 
 const wrapRouter =
     (fn: RouterFunction) => async (req: Request, res: Response, next: NextFunction) => {

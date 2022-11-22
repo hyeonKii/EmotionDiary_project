@@ -1,7 +1,6 @@
 import type { Request as Req, Response as Res, NextFunction } from "express";
 import AppError from "lib/AppError";
-import { generateToken, verifyToken } from "lib/token";
-import TokenService from "../services/tokenService";
+import { verifyToken } from "lib/token";
 
 const auth = async (req: Req, res: Res, next: NextFunction) => {
     let accessToken = req.headers.authorization;
@@ -37,57 +36,16 @@ const auth = async (req: Req, res: Res, next: NextFunction) => {
         return;
     }
 
-    // when accessToken is expired and refreToken is expired
-    if (accessPayload === null && refreshPayload === null) {
+    // when accessToken or refreshToken expires
+    if (accessPayload === null || refreshPayload === null) {
         next(new AppError("InvalidTokenError"));
 
         return;
     }
 
-    // when accessToken is expired but refreToken is alive
-    if (accessPayload === null && refreshPayload !== null) {
-        const userID = await TokenService.getUserIDByToken(refreshToken);
+    req.userID = accessPayload.data;
 
-        if (userID === null) {
-            next(new AppError("InvalidTokenError"));
-
-            return;
-        }
-
-        req.userID = userID;
-
-        next();
-
-        return;
-    }
-
-    // when accessToken is alive but refreshToken is expired
-    if (accessPayload !== null && refreshPayload === null) {
-        const result = generateToken("refresh", "");
-
-        req.refreshToken = result;
-
-        next();
-
-        return;
-    }
-
-    // when accessToken is alive and refreshToken is alive
-    if (accessPayload !== null && refreshPayload !== null) {
-        const userID = await TokenService.getUserIDByToken(refreshToken);
-
-        if (userID === null || accessPayload.data !== userID) {
-            next(new AppError("InvalidTokenError"));
-
-            return;
-        }
-
-        req.userID = userID;
-
-        next();
-
-        return;
-    }
+    next();
 };
 
 export default auth;

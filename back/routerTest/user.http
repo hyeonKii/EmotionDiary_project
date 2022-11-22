@@ -1,0 +1,38 @@
+### Variables
+
+@url = http://localhost:3002/api
+
+### Router Test
+
+POST http://localhost:3002/api/ping
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdDQiLCJpYXQiOjE2NjkxMDE1NzUsImV4cCI6MTY2OTEwMzM3NX0.FNd93h08bIy1lG9omXIJxzjscC-2IBRMQFZjICBMfYg
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MTAxNTc1LCJleHAiOjE2NjkxMTIzNzV9.hNya6X8FvvXcxvx9rMow_lHYhfa4byIGJKTrwx8NfYo
+Content-Type: application/json
+
+### login
+
+POST {{url}}/users
+Content-Type: application/json
+
+{
+    "userID": "test4",
+    "password": "test4"
+}
+
+### register
+
+POST http://localhost:3002/api/users/new
+Content-Type: application/json
+
+{
+    "userID": "test7",
+    "password": "test7",
+    "nickname": "test7",
+    "email": "test7@test.com"
+}
+
+
+###
+
+DELETE {{url}}/users/
+Content-Type: application/json

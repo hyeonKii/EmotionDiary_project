@@ -1,0 +1,9 @@
+### Variables
+
+@url = http://localhost:3002/api
+
+### Refresh
+
+PUT {{url}}/token/refresh
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdDQiLCJpYXQiOjE2NjkxMDI5NzksImV4cCI6MTY2OTEwNDc3OX0.BYRQ5iMRVbvTHUaE5O89xtGEXHnDZLdiY7eL8Sqrjtc 
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MTAyOTc5LCJleHAiOjE2NjkxMTM3Nzl9.8Htm92Y_k0Hn42Np25-97wg7xmvcNAo8XgUNKOL8MNs
