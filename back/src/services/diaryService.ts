@@ -61,8 +61,10 @@ class DiaryService {
         return postData;
     }
 
-    async getDiaryList() {
+    async getDiaryList(take: number, page: number) {
         const postDatas = await this.prisma.diary.findMany({
+            take: take,
+            skip: (page - 1) * take,
             select: {
                 id: true,
                 author: true,
