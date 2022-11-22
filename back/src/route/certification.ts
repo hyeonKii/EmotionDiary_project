@@ -1,14 +1,18 @@
-import { Router, Request as Req, Response as Res } from "express";
-import wrapRouter from "lib/wrapRouter";
+import { Router } from "express";
 import auth from "middleware/auth";
-import AppError from "lib/AppError";
+import wrapRouter from "lib/wrapRouter";
+import certificationService from "services/certificationService";
+
 const certificationRouter = Router();
 
 certificationRouter.post(
-    "/",
-    wrapRouter(async (req: Req, res: Res) => {
-        return Promise.resolve({ statusCode: 200, content: true });
+    "/certify",
+    auth,
+    wrapRouter(async (req, res) => {
+        const { code } = req.body;
+
+        const result = certificationService.certifyCode(code);
+
+        return { statusCode: 200, content: result };
     })
 );
-
-export default certificationRouter;

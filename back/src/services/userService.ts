@@ -96,7 +96,7 @@ class UserService {
         const accessToken = generateToken("access", userID);
         const refreshToken = generateToken("refresh", "");
 
-        tokenService.addToken(userID, refreshToken);
+        // tokenService.addToken(userID, refreshToken);
 
         this.prisma.$disconnect();
 
@@ -258,8 +258,8 @@ class UserService {
     }
 
     async logoutUser(userID: string) {
-        const value = tokenService.removeToken(userID);
-        return value;
+        // const value = tokenService.removeToken(userID);
+        return true;
     }
 }
 
