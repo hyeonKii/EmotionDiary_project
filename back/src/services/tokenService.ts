@@ -1,22 +1,27 @@
 import { PrismaClient } from "@prisma/client";
+import AppError from "lib/AppError";
+import { generateToken } from "lib/token";
 
 class Token {
     private prisma = new PrismaClient();
 
-    async addToken(userID: string, token: string) {
+    async addRefreshToken(userID: string) {
+        const refreshToken = generateToken("refresh", "");
+
+        // Todo: if result is error, return value is true or false by try-catch
         const result = await this.prisma.token.create({
             data: {
-                token,
-                userID,
+                userID: userID,
+                token: refreshToken,
             },
         });
 
         this.prisma.$disconnect();
 
-        return true;
+        return result;
     }
 
-    async removeToken(userID: string) {
+    async removeRefreshToken(userID: string) {
         const result = await this.prisma.token.delete({
             where: {
                 userID,
@@ -25,11 +30,14 @@ class Token {
 
         this.prisma.$disconnect();
 
+        if (result === null) {
+            return false;
+        }
+
         return true;
     }
-
-    async getTokenByUserID(userID: string) {
-        const token = await this.prisma.token.findUnique({
+    async getRefreshToken(userID: string) {
+        const result = await this.prisma.token.findUnique({
             where: {
                 userID,
             },
@@ -40,13 +48,17 @@ class Token {
 
         this.prisma.$disconnect();
 
-        return token;
+        if (result === null) {
+            return null;
+        }
+
+        return result.token;
     }
 
-    async getUserIDByToken(token: string) {
+    async getAccessToken(refreshToken: string) {
         const result = await this.prisma.token.findUnique({
             where: {
-                token,
+                token: refreshToken,
             },
             select: {
                 userID: true,
@@ -56,10 +68,36 @@ class Token {
         this.prisma.$disconnect();
 
         if (result === null) {
-            return null;
+            throw new AppError("InvalidTokenError");
         }
 
-        return result.userID;
+        const accessToken = generateToken("access", result.userID);
+
+        return accessToken;
+    }
+
+    async updateRefreshToken(userID: string) {
+        const isExist = await this.getRefreshToken(userID);
+
+        if (isExist === null) {
+            throw new AppError("InvalidTokenError");
+        }
+
+        const refreshToken = generateToken("refresh", "");
+
+        // Todo: if result is error, return value is true or false by try-catch
+        this.prisma.token.update({
+            where: {
+                userID,
+            },
+            data: {
+                token: refreshToken,
+            },
+        });
+
+        this.prisma.$disconnect();
+
+        return refreshToken;
     }
 }
 
