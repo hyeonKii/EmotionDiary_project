@@ -3,4 +3,6 @@ node_modules
 .env
 senderinfo.json
 rest.http
+
+src/lib/apidoc/doc
 logs/*
