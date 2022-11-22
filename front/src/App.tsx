@@ -1,20 +1,25 @@
 import { useEffect } from "react";
-import DiaryRegister from "./components/diary/DiaryRegister";
+import { QueryClient } from "react-query";
 import Header from "./components/UI/Header";
+import Loading from "./components/UI/Loading";
 import User from "./components/user/User";
-import UserLogin from "./components/user/UserLogin";
 import UserRegister from "./components/user/UserRegister";
 
 function App() {
-    useEffect(() => {});
+    const queryClient = new QueryClient();
 
-    return (
+    if (queryClient.getQueryData["accessToken"]) {
+    }
+
+    useEffect(() => {}, []);
+
+    return isLoading ? (
+        <Loading />
+    ) : (
         <div className="App">
             <Header />
             <User />
-            <UserLogin />
             <UserRegister />
-            <DiaryRegister />
         </div>
     );
 }

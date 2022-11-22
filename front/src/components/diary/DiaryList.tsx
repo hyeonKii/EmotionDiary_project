@@ -1,25 +1,25 @@
-import useFetch from "@/hooks/useFetchData";
-import { DIARY_CHECK } from "@/constants/requests";
-import Diary from "./Diary";
+import Loading from "../UI/Loading";
+import DiaryInfo from "./DiaryInfo";
+import { useFetchDiary } from "@/api/diary";
+import { QueryClient } from "react-query";
 
-interface FetchingResult {
-    data: any;
-    isLoading: boolean;
-    isError: boolean;
-}
+function DiaryList() {
+    const queryClient = new QueryClient();
+    const user = queryClient.getQueryData(["user"]);
 
-export default function DiaryList() {
-    const { data, isLoading, isError }: FetchingResult = useFetch("diaries", DIARY_CHECK);
+    const { data: diaries, isLoading, error, isError } = useFetchDiary();
 
-    return (
-        !isLoading &&
-        !isError && (
-            <>
-                {data.map((diary) => {
-                    return <Diary data={diary} />;
-                })}
-                ;
-            </>
-        )
+    if (isError) {
+        return <div>{error.message}</div>;
+    }
+
+    return isLoading ? (
+        <Loading />
+    ) : (
+        diaries.map((diary) => {
+            <DiaryInfo key={diary.id} diary={diary} />;
+        })
     );
 }
+
+export default DiaryList;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default function ModalBackground({ setShowForm }) {
+function ModalBackground({ setShowForm }) {
     return <ModalBackgroundStyle onClick={() => setShowForm(false)}></ModalBackgroundStyle>;
 }
 
@@ -13,3 +13,5 @@ const ModalBackgroundStyle = styled.div`
     z-index: 10;
     background-color: rgba(0, 0, 0, 0.8);
 `;
+
+export default ModalBackground;

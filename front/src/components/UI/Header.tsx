@@ -1,17 +1,16 @@
-import styled from "styled-components";
 import { useState } from "react";
-import UserLoginForm from "../user/UserLogin";
+import UserLogin from "../user/UserLogin";
 import ModalBackground from "./ModalBackground";
 
-export default function Header() {
+function Header() {
     const [showForm, setShowForm] = useState<boolean>(false);
 
     return (
         <>
             {showForm && (
                 <>
-                    <UserLoginForm />
-                    <ModalBackground setShowForm={setShowForm} />
+                    <UserLogin />
+                    {/* <ModalBackground setShowForm={setShowForm} /> */}
                 </>
             )}
             <nav>
@@ -24,3 +23,5 @@ export default function Header() {
         </>
     );
 }
+
+export default Header;

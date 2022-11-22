@@ -1,23 +1,37 @@
+import { useRequestWriteDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
-import FormInput from "@/components/common/FormInput";
-import { DIARY_REGISTER as endpoint } from "@/constants/requests";
-import {
-    DIARY_REGISTER as inputData,
-    DIARY_REGISTER_INITIAL as initialState,
-} from "@/constants/diaryInput";
+import React from "react";
+import { QueryClient } from "react-query";
 
-export default function DiaryRegister() {
-    const { form, validatedForm, changeHandler, submitHandler } = useForm(initialState, endpoint);
+function DiaryRegister() {
+    const queryClient = new QueryClient();
+    const { userID } = queryClient.getQueryData(["user"]);
+
+    const { form, changeHandler } = useForm({ userID, title: "", description: "" });
+
+    const { mutate: createDiary } = useRequestWriteDiary(form, {
+        onSuccess: (data) => {
+            console.log(data);
+        },
+        onError: (error) => {
+            console.log(error.message);
+        },
+    });
+
+    const registerDiary = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        createDiary();
+    };
 
     return (
-        <form onSubmit={submitHandler}>
-            <FormInput
-                inputData={inputData}
-                form={form}
-                validatedForm={validatedForm}
-                changeHandler={changeHandler}
-            />
-            <button>저장</button>
+        <form onSubmit={registerDiary}>
+            <label htmlFor="title">제목</label>
+            <input type="text" id="title" onChange={changeHandler} />
+            <label htmlFor="description">내용</label>
+            <input type="textarea" id="description" onChange={changeHandler} />
+            <button>등록</button>
         </form>
     );
 }
+
+export default DiaryRegister;

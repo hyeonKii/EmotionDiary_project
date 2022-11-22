@@ -1,3 +1,1 @@
-type InputDataType = { type: string; name: string; description: string }[];
-
-export type { InputDataType };
+export type InputDataType = { type: string; name: string; description: string }[];

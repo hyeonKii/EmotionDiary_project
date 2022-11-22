@@ -2,7 +2,7 @@ const emailValidation = /^/;
 const nameValidation = /^/;
 const passwordValidation = /^/;
 
-export default function validationFn(id: string, value: string): boolean {
+function validationFn(id: string, value: string): boolean {
     if (id === "email") {
         return emailValidation.test(value);
     }
@@ -17,3 +17,5 @@ export default function validationFn(id: string, value: string): boolean {
 
     return false;
 }
+
+export default validationFn;

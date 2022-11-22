@@ -1,16 +1,23 @@
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
-import { currentUser } from "../temp/atoms";
-import UserInfo from "./UserInfo";
+import { QueryClient } from "react-query";
 import UserEdit from "./UserEdit";
+import UserInfo from "./UserInfo";
 
-export default function User() {
-    const user = useRecoilValue(currentUser);
-    const [editMode, setEditMode] = useState(false);
+function User() {
+    const [editMode, setEditMode] = useState<boolean>(false);
 
-    return !editMode ? (
-        <UserInfo user={user} setEditMode={setEditMode} />
-    ) : (
+    const queryClient = new QueryClient();
+    const user = queryClient.getQueryData(["user"]);
+
+    if (!user) {
+        return null;
+    }
+
+    return editMode ? (
         <UserEdit user={user} setEditMode={setEditMode} />
+    ) : (
+        <UserInfo user={user} setEditMode={setEditMode} />
     );
 }
+
+export default User;

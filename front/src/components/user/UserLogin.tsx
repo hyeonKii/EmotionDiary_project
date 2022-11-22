@@ -1,31 +1,41 @@
-import { useSetRecoilState } from "recoil";
+import { useRequestLogin } from "@/api/user";
 import useForm from "@/hooks/useForm";
-import FormInput from "@/components/common/FormInput";
-import { USER_LOGIN as endpoint } from "@/constants/requests";
-import { USER_LOGIN as inputData, USER_LOGIN_INITIAL as initialState } from "@/constants/userInput";
-import { currentUser } from "../temp/atoms";
+import axios from "axios";
+import React from "react";
+import { QueryClient } from "react-query";
 
-export default function UserLogin() {
-    const setUser = useSetRecoilState(currentUser);
+function UserLogin() {
+    const queryClient = new QueryClient();
 
-    const { form, validatedForm, changeHandler, requestHandler } = useForm(initialState, endpoint);
+    const { form, changeHandler } = useForm({ userID: "", password: "" });
 
-    const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+    const { mutate: login } = useRequestLogin(form, {
+        onSuccess: (data) => {
+            const { userID, nickname, email, accessToken, refreshToken } = data;
+
+            queryClient.setQueryData(["user"], { userID, nickname, email });
+            axios.defaults.headers.common["Authorization"] = accessToken;
+            queryClient.setQueryData(["refreshToken"], refreshToken);
+        },
+        onError: (error) => {
+            console.log(error.message);
+        },
+    });
+
+    const loginUser = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        const { userID, email, nickname } = await requestHandler();
-        setUser({ userID, email, nickname });
+        login();
     };
 
     return (
-        <form onSubmit={submitHandler}>
-            <FormInput
-                inputData={inputData}
-                form={form}
-                validatedForm={validatedForm}
-                changeHandler={changeHandler}
-            />
+        <form onSubmit={loginUser}>
+            <label htmlFor="userID">아이디</label>
+            <input type="text" id="userID" onChange={changeHandler} />
+            <label htmlFor="password">비밀번호</label>
+            <input type="password" id="password" onChange={changeHandler} />
             <button>로그인</button>
         </form>
     );
 }
+
+export default UserLogin;
