@@ -2,6 +2,7 @@ import express from "express";
 import { config } from "dotenv";
 import userRouter from "./route/user";
 import diaryRouter from "./route/diary";
+import certificationRouter from "./route/certification";
 import error from "middleware/error";
 import cors from "cors";
 
@@ -15,7 +16,8 @@ app.use(cors());
 app.use("/docs", express.static(__dirname + "/lib/apidoc/doc"));
 
 app.use("/api", userRouter);
-app.use("/api", diaryRouter);
+app.use("/api/diaries", diaryRouter);
+app.use("/api/certification", certificationRouter);
 
 app.use(error);
 

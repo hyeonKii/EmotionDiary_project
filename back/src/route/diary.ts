@@ -2,22 +2,24 @@ import { Router, Request as Req, Response as Res } from "express";
 import wrapRouter from "lib/wrapRouter";
 import diaryService from "../services/diaryService";
 import auth from "middleware/auth";
-
+import AppError from "lib/AppError";
 const diaryRouter = Router();
 
 //일기 create API
 diaryRouter.post(
-    "/diaries/write",
+    "/write",
+    auth,
     wrapRouter(async (req: Req, res: Res) => {
         const { userID, title, description } = req.body;
         const result = await diaryService.writeDiary(userID, title, description);
-        return Promise.resolve({ statusCode: 200, content: result });
+        return Promise.resolve({ statusCode: 200, content: true });
     })
 );
 
 //조회수 증가 API
 diaryRouter.patch(
-    "/diaries/addviewcount",
+    "/addviewcount",
+    auth,
     wrapRouter(async (req: Req, res: Res) => {
         const result = await diaryService.addViewCount(req.body.id);
         return Promise.resolve({ statusCode: 200, content: result });
@@ -25,15 +27,21 @@ diaryRouter.patch(
 );
 //모든 일기 조회
 diaryRouter.get(
-    "/diaries/all",
+    "/all",
+    auth,
     wrapRouter(async (req: Req, res: Res) => {
-        const result = await diaryService.getDiaryList(req.body.skip, req.body.page);
-        return Promise.resolve({ statusCode: 200, content: result });
+        const { count, page } = req.query;
+        if (typeof count !== "string" || typeof page !== "string") {
+            throw new AppError("ArgumentError");
+        }
+        const result = await diaryService.getDiaryList(count, page);
+        return { statusCode: 200, content: result };
     })
 );
 
 diaryRouter.get(
-    "/diaries/:id",
+    "/:id",
+    auth,
     wrapRouter(async (req: Req, res: Res) => {
         const { id } = req.params;
         const result = await diaryService.getDiary(id);
@@ -42,7 +50,8 @@ diaryRouter.get(
 );
 
 diaryRouter.put(
-    "/diaries/:id",
+    "/:id",
+    auth,
     wrapRouter(async (req: Req, res: Res) => {
         const { id } = req.params;
         const { title, description } = req.body;
@@ -53,7 +62,8 @@ diaryRouter.put(
 
 // delete
 diaryRouter.delete(
-    "/diaries/:id",
+    "/:id",
+    auth,
     wrapRouter(async (req: Req, res: Res) => {
         const { id } = req.params;
         const result = await diaryService.deleteDiary(id);

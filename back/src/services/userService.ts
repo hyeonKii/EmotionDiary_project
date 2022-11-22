@@ -21,6 +21,7 @@ interface UserData {
     email: string;
     userID: string;
     password: string;
+    emailVerification: string;
 }
 
 class UserService {
@@ -40,6 +41,26 @@ class UserService {
             },
         });
 
+        await this.prisma.$disconnect();
+        return joinedUser;
+    }
+
+    async register2(userData: UserData) {
+        if (isInvalidEmail(userData.email)) {
+            throw new AppError("InvalidEmailFormatError");
+        }
+        // const emailpw = generator.generate({ length: 8, numbers: true });
+        const paswordHash = await bcrypt.hash(userData.password, 10);
+        const joinedUser = await this.prisma.user.create({
+            data: {
+                nickname: userData.nickname,
+                userID: userData.userID,
+                email: userData.email,
+                password: paswordHash,
+                emailVerification: userData.emailVerification,
+            },
+        });
+        // mailSender(userData.email, emailpw, "이메일로 인증번호를 전송 했습니다");
         await this.prisma.$disconnect();
         return joinedUser;
     }
@@ -117,16 +138,21 @@ class UserService {
         return { return: true };
     }
 
-    async emailVerification(emailVerification: string) {
+    async emailVerification(email: string) {
         const userData = await this.prisma.user.findMany({
             where: {
-                emailVerification: emailVerification,
+                email: email,
             },
             select: {
                 userID: true,
             },
         });
 
+        if (userData.length != 1) {
+            throw new AppError("UserExistError");
+        }
+        const emailpw = generator.generate({ length: 8, numbers: true });
+        mailSender(email, emailpw, "이메일로 인증번호를 전송 했습니다");
         await this.prisma.$disconnect();
         return userData;
     }

@@ -4,7 +4,7 @@
  * @apiDescription   새로운 유저를 등록합니다.
  *
  * @apiVersion        1.0.0
- * @apiName           이건 대체뭘까?
+ * @apiName           이건 대체뭘까1?
  * @apiGroup          products
  *
  * @apiParam {String} name 이름

@@ -28,8 +28,15 @@ userRouter.post(
 userRouter.post(
     "/users/new",
     wrapRouter(async (req: Req, res: Res) => {
-        const { userID, password, email, nickname } = req.body;
-        const result = await userService.register({ userID, password, email, nickname });
+        const { userID, password, email, nickname, emailVerification } = req.body;
+        console.log("body: ", userID, password, email, nickname);
+        const result = await userService.register({
+            userID,
+            password,
+            email,
+            nickname,
+            emailVerification,
+        });
 
         return { statusCode: 201, content: result };
     })
@@ -38,7 +45,6 @@ userRouter.post(
 //아이디 찾기
 userRouter.post(
     "/users/findid",
-    auth,
     wrapRouter(async (req: Req, res: Res) => {
         const result = await userService.findID(req.body.email);
 
@@ -48,10 +54,9 @@ userRouter.post(
 
 userRouter.post(
     "/users/emailcheck",
-    auth,
     wrapRouter(async (req: Req, res: Res) => {
         console.log(req.body);
-        const result = await userService.emailVerification(req.body.emailVerification);
+        const result = await userService.emailVerification(req.body.email);
 
         return { statusCode: 200, content: result };
     })
@@ -60,7 +65,7 @@ userRouter.post(
 //비밀번호 변경
 userRouter.post(
     "/users/changepassword",
-    auth,
+    // auth,
     wrapRouter(async (req: Req, res: Res) => {
         const result = await userService.changePassword(
             req.body.userID,
@@ -75,7 +80,6 @@ userRouter.post(
 //비밀번호 찾기
 userRouter.post(
     "/users/findpassword",
-    auth,
     wrapRouter(async (req: Req, res: Res) => {
         const result = await userService.findPassword(req.body.email);
         return Promise.resolve({ statusCode: 200, content: result });
@@ -119,7 +123,7 @@ userRouter.delete(
     wrapRouter(async (req: Req, res: Res) => {
         const userID = req.userID;
         if (typeof userID !== "string") {
-            throw new AppError("NotStringError");
+            throw new AppError("ArgumentError");
         }
         const result = await userService.logoutUser(userID);
         return Promise.resolve({ statusCode: 200, content: result });
