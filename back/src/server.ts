@@ -14,7 +14,7 @@ app.use(cors());
 
 app.use("/docs", express.static(__dirname + "/lib/apidoc/doc"));
 
-app.use("/api", userRouter);
+app.use("/api/users", userRouter);
 app.use("/api", diaryRouter);
 
 app.use(error);
