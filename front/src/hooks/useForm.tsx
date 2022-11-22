@@ -1,9 +1,9 @@
 import React from "react";
 import { useState } from "react";
 
-type ValidationFn = {
-    (id: string, value: string): boolean;
-};
+interface ValidationFn {
+    (id: string, value: string): void;
+}
 
 function useForm(initialState: object, validationFn?: ValidationFn) {
     const [form, setForm] = useState(initialState);
