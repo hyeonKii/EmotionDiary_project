@@ -7,18 +7,18 @@ function DiaryEdit({ diary, setEditMode, key }) {
         description: [diary.description],
     });
 
-    const { mutate: editDiary } = useRequestEditDiary(form, {
+    const { mutate: editRequest } = useRequestEditDiary(form, {
         onSuccess: () => {},
         onError: () => {},
     });
 
     const editDiary = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        editDiary();
+        editRequest();
     };
 
     return (
-        <form key={key}>
+        <form onSubmit={editDiary} key={key}>
             <label htmlFor="title">이메일</label>
             <input type="text" id="title" onChange={changeHandler} />
             <label htmlFor="description">아이디</label>

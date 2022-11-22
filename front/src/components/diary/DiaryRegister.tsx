@@ -9,7 +9,7 @@ function DiaryRegister() {
 
     const { form, changeHandler } = useForm({ userID, title: "", description: "" });
 
-    const { mutate: createDiary } = useRequestWriteDiary(form, {
+    const { mutate: createRequest } = useRequestWriteDiary(form, {
         onSuccess: (data) => {
             console.log(data);
         },
@@ -20,7 +20,7 @@ function DiaryRegister() {
 
     const registerDiary = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        createDiary();
+        createRequest();
     };
 
     return (
