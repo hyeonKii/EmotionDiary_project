@@ -27,7 +27,7 @@ diaryRouter.patch(
 diaryRouter.get(
     "/diaries/all",
     wrapRouter(async (req: Req, res: Res) => {
-        const result = await diaryService.getDiaryList();
+        const result = await diaryService.getDiaryList(req.body.skip, req.body.page);
         return Promise.resolve({ statusCode: 200, content: result });
     })
 );
