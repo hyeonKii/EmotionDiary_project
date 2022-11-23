@@ -23,6 +23,8 @@ class CertificationService {
                 },
             });
 
+            this.prisma.$disconnect();
+
             mailSender(email, code, "아래의 링크를 눌러서 회원가입을 마쳐주세요.");
 
             return true;
@@ -41,6 +43,8 @@ class CertificationService {
                 },
             });
 
+            this.prisma.$disconnect();
+
             return true;
         } catch (e: any) {
             if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -55,6 +59,8 @@ class CertificationService {
                 code: code,
             },
         });
+
+        this.prisma.$disconnect();
 
         if (result === null) {
             return false;

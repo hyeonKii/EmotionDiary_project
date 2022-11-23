@@ -16,3 +16,5 @@ certificationRouter.post(
         return { statusCode: 200, content: result };
     })
 );
+
+export default certificationRouter;
