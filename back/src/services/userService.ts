@@ -24,8 +24,9 @@ interface UserData {
     emailVerification: string;
 }
 
+// register, login, logout, findID, emailVerification, changePassword, changeNickname, findPassword, authPassword, withdrawal
 class UserService {
-    prisma = new PrismaClient();
+    private prisma = new PrismaClient();
 
     async register(userData: UserData) {
         if (isInvalidEmail(userData.email)) {
@@ -41,26 +42,6 @@ class UserService {
             },
         });
 
-        await this.prisma.$disconnect();
-        return joinedUser;
-    }
-
-    async register2(userData: UserData) {
-        if (isInvalidEmail(userData.email)) {
-            throw new AppError("InvalidEmailFormatError");
-        }
-        // const emailpw = generator.generate({ length: 8, numbers: true });
-        const paswordHash = await bcrypt.hash(userData.password, 10);
-        const joinedUser = await this.prisma.user.create({
-            data: {
-                nickname: userData.nickname,
-                userID: userData.userID,
-                email: userData.email,
-                password: paswordHash,
-                emailVerification: userData.emailVerification,
-            },
-        });
-        // mailSender(userData.email, emailpw, "이메일로 인증번호를 전송 했습니다");
         await this.prisma.$disconnect();
         return joinedUser;
     }
@@ -96,7 +77,7 @@ class UserService {
         const accessToken = generateToken("access", userID);
         const refreshToken = generateToken("refresh", "");
 
-        tokenService.addToken(userID, refreshToken);
+        tokenService.addRefreshToken(userID);
 
         this.prisma.$disconnect();
 
@@ -138,21 +119,16 @@ class UserService {
         return { return: true };
     }
 
-    async emailVerification(email: string) {
+    async emailVerification(emailVerification: string) {
         const userData = await this.prisma.user.findMany({
             where: {
-                email: email,
+                emailVerification: emailVerification,
             },
             select: {
                 userID: true,
             },
         });
 
-        if (userData.length != 1) {
-            throw new AppError("UserExistError");
-        }
-        const emailpw = generator.generate({ length: 8, numbers: true });
-        mailSender(email, emailpw, "이메일로 인증번호를 전송 했습니다");
         await this.prisma.$disconnect();
         return userData;
     }
@@ -258,8 +234,9 @@ class UserService {
     }
 
     async logoutUser(userID: string) {
-        const value = tokenService.removeToken(userID);
-        return value;
+        // const value = tokenService.removeToken(userID);
+        // return value;
+        return true;
     }
 }
 

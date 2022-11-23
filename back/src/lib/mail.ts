@@ -1,5 +1,5 @@
 import * as nodeMailer from "nodemailer";
-const senderInfo = require("../config/senderinfo.json");
+const senderInfo = require("../lib/senderinfo.json");
 const sendMail = async (receiverEmail: string, emailpw: string, content: string) => {
     const transporter = nodeMailer.createTransport({
         service: "gmail",
