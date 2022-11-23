@@ -1,64 +1,52 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { color } from "../common/colorPalette";
 
 export const TabBlock = styled.ul`
-    width: 70%;
-    max-width: 800;
-
     display: flex;
 
-    margin: 0 auto;
+    width: 70%;
+    max-width: 800;
+    margin: 1rem auto;
     padding: 1rem;
 
     li {
-        margin-right: 1rem;
         list-style: none;
 
-        color: ${color.gray};
+        margin-right: 1rem;
 
+        color: ${color.gray};
         cursor: pointer;
 
         &.active {
+            border-bottom: 3px solid ${color.lightBlue};
+
             color: black;
             font-weight: 700;
-
-            border-bottom: 3px solid ${color.lightBlue};
         }
     }
 `;
 
-export const PostItemBlock = styled.div`
-    width: 100vw;
-`;
-
-export const CardBlock = styled.div`
-    width: 70%;
-    max-width: 800;
-
+export const CardBlock = styled.section`
     position: relative;
 
-    margin: 1rem auto;
+    width: 70%;
+    max-width: 800;
+    margin: 1.5rem auto;
     padding: 1.5rem 2rem;
 
     border: none;
     border-radius: 8px;
-
     box-shadow: 0 4px 4px 0 ${color.gray};
 `;
 
-export const CloseBlock = styled.div<{ isOpen: boolean; tag: string }>`
+export const CloseBlock = styled.article<{ isOpen: boolean; tag: string }>`
     display: flex;
 
     .tag {
-        max-width: 120px;
-        height: 40px;
-
         flex: 0.8;
 
-        color: white;
-        text-align: center;
-        line-height: 40px;
-
+        max-width: 120px;
+        height: 40px;
         margin-right: 1.5rem;
 
         background: ${({ tag }) =>
@@ -73,40 +61,52 @@ export const CloseBlock = styled.div<{ isOpen: boolean; tag: string }>`
                 : tag === "두려움"
                 ? color.darkBlue
                 : color.pink};
+
+        color: white;
+        line-height: 40px;
+        text-align: center;
     }
 
     .body {
-        height: 40px;
-
         flex: 2;
-        line-height: 40px;
-
         overflow: hidden;
+
+        height: 40px;
+        margin-top: 8px;
+        margin-right: 1.5rem;
+
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        ${({ isOpen }) =>
+            isOpen &&
+            css`
+                height: 100%;
+                white-space: normal;
+            `}
     }
 
     .time {
-        padding-right: 1.2rem;
-
         font-size: 0.8rem;
         line-height: 40px;
 
         .arrow {
             margin-left: 10px;
+
             color: gray;
         }
     }
 `;
 
-export const OpenBlock = styled.div`
+export const OpenBlock = styled.article`
     display: flex;
     position: relative;
 
-    margin-top: 1rem;
+    margin-top: 2rem;
 
     input {
         width: 100%;
         height: 35px;
-
         padding-left: 1.5rem;
 
         border: 1px solid gray;
@@ -115,17 +115,17 @@ export const OpenBlock = styled.div`
     }
 
     button {
-        width: 70px;
-        height: 100%;
-
         position: absolute;
         right: 0;
 
-        color: white;
+        width: 70px;
+        height: 100%;
 
         border: 1px solid ${color.lightBlue};
         border-radius: 0 8px 8px 0;
         background: ${color.lightBlue};
+
+        color: white;
 
         cursor: pointer;
     }

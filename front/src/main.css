@@ -1,9 +1,0 @@
-@font-face {
-    font-family: "diary";
-    src: url("./assets/fonts/EF_Diary.ttf") format("truetype");
-}
-
-* {
-    margin: 0;
-    padding: 0;
-}

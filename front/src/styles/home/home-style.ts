@@ -1,18 +1,16 @@
 import styled from "styled-components";
-import { color } from "../common/colorPalette";
-import background from "../../assets/images/background.jpg";
+import { color } from "@/styles/common/colorPalette";
+import background from "@/assets/images/background.jpg";
 
-export const MainBlock = styled.div`
+export const HomeBlock = styled.section`
     width: 100vw;
     height: 100vh;
-
-    background: blue;
 
     background-image: url(${background});
     background-size: cover;
 `;
 
-export const TitleBlock = styled.div`
+export const TitleBlock = styled.article`
     position: absolute;
     top: 35%;
     left: 50%;
@@ -29,21 +27,20 @@ export const TitleBlock = styled.div`
 `;
 
 export const InputBlock = styled.input`
-    width: 70%;
-    max-width: 800;
-    height: 60px;
-    line-height: 60px;
-
     position: absolute;
     top: 60%;
     left: 50%;
     transform: translate(-50%, -60%);
 
+    width: 70%;
+    max-width: 800;
+    height: 60px;
     padding-left: 2rem;
 
     border: none;
     border-radius: 32px;
     outline: none;
-
     box-shadow: 0 4px 4px 0 ${color.gray};
+
+    line-height: 60px;
 `;
