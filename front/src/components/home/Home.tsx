@@ -1,8 +1,8 @@
-import { MainBlock, TitleBlock, InputBlock } from "@/styles/main/main-style";
+import { HomeBlock, TitleBlock, InputBlock } from "@/styles/home/home-style";
 
 export default function Main() {
     return (
-        <MainBlock>
+        <HomeBlock>
             <TitleBlock>
                 <h1>마음일기</h1>
                 <p>하루 한 줄 마음 기록하기</p>
@@ -13,6 +13,6 @@ export default function Main() {
                 autoFocus
                 onClick={() => alert("모달 띄움")}
             />
-        </MainBlock>
+        </HomeBlock>
     );
 }
