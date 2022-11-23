@@ -11,11 +11,34 @@ datasource db {
 }
 
 model User {
-  id        String   @unique(map: "id_UNIQUE") 
-  userID    String   @unique
-  password  String   
-  email     String   @id @unique
-  nickname  String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                Int                @id @default(autoincrement())
+  email             String             @unique
+  nickname          String             
+  userID            String             @unique
+  password          String
+  withdrawal        Boolean            @default(false)
+  emailVerification String             @default("0")
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  diary Diary[]
+}
+
+model Diary {
+  id          Int           @id @unique @default(autoincrement())
+  author      String
+  title       String
+  description String
+  private     Boolean       @default(false)
+  view        Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  user        User          @relation(fields: [author], references: [userID])
+}
+
+model Token {
+  id    Int    @id @unique @default(autoincrement())
+  token String @unique
+
+  userID String @unique
 }
