@@ -4,11 +4,18 @@ import AppError from "../lib/AppError";
 class UserService {
     private prisma = new PrismaClient();
 
-    async create(nickname: string) {
+    async create(nickname: string, email: string, userID: string, password: string) {
         try {
             await this.prisma.user.create({
                 data: {
                     nickname,
+                    Account: {
+                        create: {
+                            email,
+                            userID,
+                            password,
+                        },
+                    },
                 },
             });
 

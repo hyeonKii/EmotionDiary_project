@@ -8,7 +8,8 @@ type ErrorName =
     | "NotFindError"
     | "ArgumentError"
     | "WrongPasswordError"
-    | "LoginFailError"
+    | "LoginError"
+    | "LogOutError"
     | "InvalidAccessError"
     | "InternalServerError"
     | "BodyDataError";
@@ -51,9 +52,13 @@ const ERROR_MAP: Record<ErrorName, ErrorInfo> = {
         statusCode: 400,
         message: "Login Failed",
     },
-    LoginFailError: {
+    LoginError: {
         statusCode: 400,
         message: "Login failed",
+    },
+    LogOutError: {
+        statusCode: 400,
+        message: "Logout failed",
     },
     InvalidAccessError: {
         statusCode: 400,

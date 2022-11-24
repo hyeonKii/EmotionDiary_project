@@ -21,27 +21,16 @@ class AccountService {
     async register(userData: UserData) {
         const { nickname, email, userID, password } = userData;
 
-        if (isInvalidEmail(email)) {
+        if (isInvalidEmail(email) === true) {
             throw new AppError("InvalidEmailFormatError");
         }
-        await userService.create(nickname);
 
         const paswordHash = await bcrypt.hash(password, 10);
 
-        await this.prisma.account.create({
-            data: {
-                email,
-                userID,
-                password: paswordHash,
-                User: {
-                    connect: {
-                        nickname,
-                    },
-                },
-            },
-        });
+        await userService.create(nickname, email, userID, paswordHash);
 
         await this.prisma.$disconnect();
+
         return { ok: true };
     }
 
@@ -53,8 +42,8 @@ class AccountService {
         });
 
         if (isLogin) {
-            logger.error("LoginFailError");
-            throw new AppError("LoginFailError");
+            logger.error("LoginError");
+            throw new AppError("LoginError");
         }
 
         const user = await this.prisma.account.findUnique({
@@ -64,7 +53,7 @@ class AccountService {
         });
 
         if (user === null) {
-            throw new AppError("UnknownError");
+            throw new AppError("LoginError");
         }
 
         const result = await bcrypt.compare(password, user.password);
@@ -74,7 +63,7 @@ class AccountService {
         }
 
         const accessToken = generateToken("access", userID);
-        const refreshToken = tokenService.addRefreshToken(userID);
+        const refreshToken = await tokenService.addRefreshToken(userID);
 
         this.prisma.$disconnect();
 
@@ -85,9 +74,13 @@ class AccountService {
     }
 
     async logout(userID: string) {
-        const result = await tokenService.removeRefreshToken(userID);
+        try {
+            const result = await tokenService.removeRefreshToken(userID);
 
-        return result;
+            return result;
+        } catch (e: any) {
+            throw new AppError("LogOutError");
+        }
     }
 
     async getUserByUserID(userID: string) {
@@ -139,6 +132,7 @@ class AccountService {
 
     async changePassword(userID: string, password: string) {
         try {
+            console.log(password);
             const paswordHash = await bcrypt.hash(password, 10);
 
             await this.prisma.account.update({
@@ -152,7 +146,7 @@ class AccountService {
 
             await this.prisma.$disconnect();
 
-            return true;
+            return { ok: true };
         } catch (e: any) {
             throw new AppError("UnknownError");
         }
@@ -169,7 +163,7 @@ class AccountService {
 
             await this.prisma.$disconnect();
 
-            return { ok: false };
+            return { ok: true };
         } catch (e: any) {
             throw new AppError("UnknownError");
         }

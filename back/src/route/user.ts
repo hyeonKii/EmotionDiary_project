@@ -10,7 +10,7 @@ const userRouter = Router();
 
 //닉네임 변경
 userRouter.patch(
-    "/changenickname",
+    "/nickname",
     auth,
     wrapRouter(async (req: Req, res: Res) => {
         const { nickname } = req.body;

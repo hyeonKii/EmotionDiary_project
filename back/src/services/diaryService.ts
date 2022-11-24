@@ -6,17 +6,17 @@ class DiaryService {
 
     async writeDiary(userID: string, title: string, description: string) {
         try {
-            await this.prisma.diary.create({
-                data: {
-                    title,
-                    description,
-                    user: {
-                        connect: {
-                            userID,
-                        },
-                    },
-                },
-            });
+            // await this.prisma.diary.create({
+            //     data: {
+            //         title,
+            //         description,
+            //         user: {
+            //             connect: {
+            //                 userID,
+            //             },
+            //         },
+            //     },
+            // });
         } catch (error) {
             throw new AppError("NotFindError");
         }
@@ -82,24 +82,26 @@ class DiaryService {
     }
 
     async getDiaryList(count: number, page: number) {
-        const postDatas = await this.prisma.diary.findMany({
-            take: Number(count),
-            skip: (Number(page) - 1) * Number(count),
-            select: {
-                id: true,
-                author: true,
-                title: true,
-                description: true,
-                view: true,
-                createdAt: true,
-                updatedAt: true,
-            },
-        });
-        if (postDatas === null) {
-            throw new AppError("NotFindError");
-        }
+        // const postDatas = await this.prisma.diary.findMany({
+        //     take: Number(count),
+        //     skip: (Number(page) - 1) * Number(count),
+        //     select: {
+        //         id: true,
+        //         author: true,
+        //         title: true,
+        //         description: true,
+        //         view: true,
+        //         createdAt: true,
+        //         updatedAt: true,
+        //     },
+        // });
+        // if (postDatas === null) {
+        //     throw new AppError("NotFindError");
+        // }
         await this.prisma.$disconnect();
-        return postDatas;
+        // return postDatas;
+
+        return true;
     }
 }
 

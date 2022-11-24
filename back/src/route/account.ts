@@ -23,28 +23,28 @@ accountRouter.post(
     wrapRouter(async (req: Req, res: Res) => {
         const { userID, password, email, nickname } = req.body;
 
-        if (userID && password && email && nickname) {
+        if ((userID && password && email && nickname) === undefined) {
             throw new AppError("BodyDataError");
         }
-
+        console.log(nickname);
         const result = await accountService.register({
+            nickname,
+            email,
             userID,
             password,
-            email,
-            nickname,
         });
 
         return { statusCode: 201, content: result };
     })
 );
 
-// 유저 데이터 가져오기
+// 로그인
 accountRouter.post(
     "/login",
     wrapRouter(async (req: Req, res: Res) => {
         const { userID, password } = req.body;
 
-        if (userID && password) {
+        if ((userID && password) === undefined) {
             throw new AppError("BodyDataError");
         }
 
@@ -99,7 +99,7 @@ accountRouter.put(
     wrapRouter(async (req: Req, res: Res) => {
         const { password } = req.body;
 
-        if (password) {
+        if (password === undefined) {
             throw new AppError("BodyDataError");
         }
 
@@ -109,14 +109,14 @@ accountRouter.put(
     })
 );
 
-// 계정 인증 확인
+// 계정 인증
 accountRouter.patch(
     "/certify",
     auth,
     wrapRouter(async (req: Req, res: Res) => {
         const { isCertified } = req.body;
 
-        if (isCertified) {
+        if (isCertified === undefined) {
             throw new AppError("BodyDataError");
         }
 

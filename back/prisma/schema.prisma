@@ -17,7 +17,7 @@ model Certification {
 
 model User {
   id       Int     @id @default(autoincrement())
-  nickname String  @unique
+  nickname String
   blocking Boolean @default(false)
 
   createdAt DateTime @default(now())
