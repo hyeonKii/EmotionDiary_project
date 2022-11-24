@@ -1,77 +1,68 @@
 import styled from "styled-components";
 import useForm from "@/hooks/useForm";
-import userRegisterValidation from "@/validations/user";
-import FormInput from "@/components/common/FormInput";
-import { USER_REGISTER } from "@/api/constants/userEndpoints";
-import { InputDataType } from "@/types/inputData_type";
 import { Link } from "react-router-dom";
 import { ROUTES } from "@/routes/route";
+import React from "react";
+import Icon from "../UI/Icon";
 
-const inputData: InputDataType = [
-    {
-        type: "email",
-        name: "email",
-        description: "이메일",
-    },
-    {
-        type: "certification",
-        name: "certification",
-        description: "인증번호 입력",
-    },
-];
+export default function UserIDtoFind() {
+    const { form, validatedForm, changeHandler } = useForm({ email: "", certification: "" });
 
-const initialState = {
-    email: "",
-    certification: "",
-};
-
-
-export default function UserIDtoFInd() {
-  const { form, validatedForm, onChangeHandler, onSubmitHandler } = useForm({
-      initialState,
-      endpoint: USER_REGISTER,
-      validationFn: userRegisterValidation,
-  });
-
-  const props = {
-      inputData,
-      form,
-      validatedForm,
-      onChangeHandler,
-  };
+    const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+    };
 
     return (
-        <Form onSubmit={onSubmitHandler}>
-            <FormTitle>아이디 찾기</FormTitle>
-            <FormInput {...props} />
-            
-            <FormButton>로그인 하기</FormButton>
-
-            <AccountMessage>
+        <form onSubmit={submitHandler}>
+            <div>아이디 찾기</div>
+            <Icon icon="email" />
+            <label htmlFor="email">가입하신 이메일을 입력해 주세요.</label>
+            <div>
+                <input id="email" type="email" onChange={changeHandler} placeholder="이메일" />
+                <button type="button">인증</button>
+            </div>
+            <div>가입되지 않은 이메일입니다.</div>
+            <Icon icon="certification" />
+            <label htmlFor="certifcation">이메일로 전송된 인증번호 여덟 자리를 입력해주세요.</label>
+            <div>
+                <input
+                    id="certifcation"
+                    type="text"
+                    onChange={changeHandler}
+                    placeholder="인증번호 입력"
+                />
+                <span>시간</span>
+                <button type="button">확인</button>
+            </div>
+            <div>올바르지 않은 인증번호입니다.</div>
+            <div>아이디는 ~입니다.</div>
+            <button>로그인 하기</button>
+            <div>
                 계정이 없으신가요? {""}
-                <Link to={ROUTES.REGISTER.path}
-                style={{
-                    textDecoration: "none",
-                    color: "#47B5FF"
+                <Link
+                    to={ROUTES.REGISTER.path}
+                    style={{
+                        textDecoration: "none",
+                        color: "#47B5FF",
                     }}
-                >회원가입
+                >
+                    회원가입
                 </Link>
-            </AccountMessage>
-
-            <FindMessage>
-            <Link to={ROUTES.FINDPW.path}
-            style={{
-                textDecoration: "none",
-                color: "#47B5FF"
-                }}
-            >
-                비밀번호 찾기
+            </div>
+            <div>
+                <Link
+                    to={ROUTES.FINDPW.path}
+                    style={{
+                        textDecoration: "none",
+                        color: "#47B5FF",
+                    }}
+                >
+                    비밀번호 찾기
                 </Link>
-            </FindMessage>
-        </Form>
+            </div>
+        </form>
     );
 }
-
 
 const Form = styled.form`
     display: flex;
@@ -95,7 +86,7 @@ const FormTitle = styled.div`
     margin-bottom: 60px;
     font-size: 2rem;
     font-weight: bold;
-`
+`;
 
 const FormButton = styled.button`
     width: 12rem;
@@ -105,20 +96,19 @@ const FormButton = styled.button`
     border: none;
     border-radius: 4px;
     font-size: 12px;
-    background-color: #47B5FF;
+    background-color: #47b5ff;
     color: white;
-`
+`;
 
 const AccountMessage = styled.div`
     margin-top: 15px;
     font-size: 12px;
     font-weight: bold;
-    
-`
+`;
 
 const FindMessage = styled.div`
     margin-top: 5px;
     font-size: 12px;
     font-weight: bold;
-    color: #26ADE8;
-`
+    color: #26ade8;
+`;
