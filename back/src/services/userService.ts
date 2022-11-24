@@ -37,7 +37,7 @@ class UserService {
 
             await this.prisma.$disconnect();
 
-            return true;
+            return { ok: true };
         } catch (e: any) {
             throw new AppError("UnknownError");
         }
@@ -60,7 +60,7 @@ class UserService {
 
             await this.prisma.$disconnect();
 
-            return true;
+            return { ok: true };
         } catch (e: any) {
             throw new AppError("UnknownError");
         }

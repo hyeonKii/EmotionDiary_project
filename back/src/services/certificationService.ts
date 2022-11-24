@@ -11,8 +11,10 @@ import mailSender from "../lib/mail";
 class CertificationService {
     private prisma = new PrismaClient();
 
-    async createCode(codeType: "email" | "password", email: string) {
+    async generateCode(codeType: "email" | "password", email: string) {
         try {
+            const isCertifiedEmail = this;
+
             let length = 8;
 
             if (codeType === "password") length = 12;
@@ -29,9 +31,9 @@ class CertificationService {
 
             this.prisma.$disconnect();
 
-            mailSender(email, code, "");
+            mailSender(email, code, "", "isSubject?");
 
-            return true;
+            return { ok: true };
         } catch (e: any) {
             if (e instanceof Prisma.PrismaClientKnownRequestError) {
                 throw new AppError("ArgumentError");
@@ -43,7 +45,7 @@ class CertificationService {
         try {
             await this.prisma.certification.delete({
                 where: {
-                    code: code,
+                    code,
                 },
             });
 
@@ -70,14 +72,16 @@ class CertificationService {
         this.prisma.$disconnect();
 
         if (result === null) {
-            return false;
+            return { ok: false };
         }
 
         if (result.email !== email) {
-            return false;
+            return { ok: false };
         }
 
-        return true;
+        await this.deleteCode(code);
+
+        return { ok: true };
     }
 }
 

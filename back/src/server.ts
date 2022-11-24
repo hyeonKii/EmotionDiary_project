@@ -1,6 +1,6 @@
 import express from "express";
 import { config } from "dotenv";
-import userRouter from "./route/user";
+import userRouter from "./route/account";
 import diaryRouter from "./route/diary";
 import certificationRouter from "./route/certification";
 import tokenRouter from "route/token";

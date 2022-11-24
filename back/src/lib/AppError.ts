@@ -10,7 +10,8 @@ type ErrorName =
     | "WrongPasswordError"
     | "LoginFailError"
     | "InvalidAccessError"
-    | "InternalServerError";
+    | "InternalServerError"
+    | "BodyDataError";
 
 interface ErrorInfo {
     statusCode: number;
@@ -61,6 +62,10 @@ const ERROR_MAP: Record<ErrorName, ErrorInfo> = {
     InternalServerError: {
         statusCode: 500,
         message: "Internal Server Error",
+    },
+    BodyDataError: {
+        statusCode: 404,
+        message: "BodyData is wrong",
     },
 };
 

@@ -2,17 +2,43 @@ import { Router } from "express";
 import auth from "middleware/auth";
 import wrapRouter from "lib/wrapRouter";
 import certificationService from "services/certificationService";
+import AppError from "lib/AppError";
 
 const certificationRouter = Router();
 
-// todo: send router
+// 이메일로 이메일 인증 코드 또는 임시 비밀번호 발송
+certificationRouter.post(
+    "/send",
+    auth,
+    wrapRouter(async (req, res) => {
+        const { email, target } = req.body;
+
+        if (email === undefined) {
+            throw new AppError("BodyDataError");
+        }
+
+        if (!(target === "email" || target === "password")) {
+            throw new AppError("BodyDataError");
+        }
+
+        const result = certificationService.generateCode(target, email);
+
+        return { statusCode: 200, content: result };
+    })
+);
+
+// 코드 인증
 certificationRouter.post(
     "/certify",
     auth,
     wrapRouter(async (req, res) => {
-        const { code } = req.body;
+        const { email, code } = req.body;
 
-        const result = certificationService.certifyCode(code);
+        if (email && code) {
+            throw new AppError("BodyDataError");
+        }
+
+        const result = certificationService.certifyEmailByCode(email, code);
 
         return { statusCode: 200, content: result };
     })

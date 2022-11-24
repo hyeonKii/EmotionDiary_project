@@ -31,10 +31,10 @@ class Token {
         this.prisma.$disconnect();
 
         if (result === null) {
-            return false;
+            return { ok: false };
         }
 
-        return true;
+        return { ok: true };
     }
     async getRefreshToken(userID: string) {
         const result = await this.prisma.token.findUnique({

@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import AppError from "../lib/AppError";
-import generator from "generate-password";
 import { generateToken } from "../lib/token";
 import userService from "./userService";
 import tokenService from "./tokenService";
@@ -43,7 +42,7 @@ class AccountService {
         });
 
         await this.prisma.$disconnect();
-        return true;
+        return { ok: true };
     }
 
     async login(userID: string, password: string) {
@@ -65,13 +64,13 @@ class AccountService {
         });
 
         if (user === null) {
-            throw new AppError("UserNotFindError");
+            throw new AppError("UnknownError");
         }
 
         const result = await bcrypt.compare(password, user.password);
 
         if (!result) {
-            throw new AppError("UserNotFindError");
+            throw new AppError("UnknownError");
         }
 
         const accessToken = generateToken("access", userID);
@@ -85,35 +84,38 @@ class AccountService {
         };
     }
 
+    async logout(userID: string) {
+        const result = await tokenService.removeRefreshToken(userID);
+
+        return result;
+    }
+
     async getUserByUserID(userID: string) {
-        try {
-            const user = this.prisma.account.findUnique({
-                where: {
-                    userID,
-                },
-                select: {
-                    User: {
-                        select: {
-                            nickname: true,
-                        },
+        const user = this.prisma.account.findUnique({
+            where: {
+                userID,
+            },
+            select: {
+                certified_account: true,
+                User: {
+                    select: {
+                        nickname: true,
                     },
                 },
-            });
+            },
+        });
 
-            if (user === null) {
-                return null;
-            }
-
-            return user;
-        } catch (e: any) {
-            new AppError("UnknownError");
+        if (user === null) {
+            return null;
         }
+
+        return user;
     }
 
     async getUserIDByCertification(email: string, code: string) {
         const result = await certificationService.certifyEmailByCode(email, code);
 
-        if (result !== true) {
+        if (result.ok !== true) {
             return null;
         }
 
@@ -130,6 +132,8 @@ class AccountService {
             return null;
         }
 
+        await this.prisma.$disconnect();
+
         return user.userID;
     }
 
@@ -145,9 +149,27 @@ class AccountService {
                     password: paswordHash,
                 },
             });
+
             await this.prisma.$disconnect();
 
             return true;
+        } catch (e: any) {
+            throw new AppError("UnknownError");
+        }
+    }
+
+    async certify(userID: string, isCertified: boolean) {
+        try {
+            await this.prisma.account.update({
+                where: {
+                    userID,
+                },
+                data: { certified_account: isCertified },
+            });
+
+            await this.prisma.$disconnect();
+
+            return { ok: false };
         } catch (e: any) {
             throw new AppError("UnknownError");
         }
