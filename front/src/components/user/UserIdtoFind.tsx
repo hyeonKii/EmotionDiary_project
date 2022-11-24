@@ -15,14 +15,14 @@ export default function UserIDtoFind() {
     return (
         <form onSubmit={submitHandler}>
             <div>아이디 찾기</div>
-            <Icon icon="email" />
+            {/* <Icon icon="email" /> */}
             <label htmlFor="email">가입하신 이메일을 입력해 주세요.</label>
             <div>
                 <input id="email" type="email" onChange={changeHandler} placeholder="이메일" />
                 <button type="button">인증</button>
             </div>
             <div>가입되지 않은 이메일입니다.</div>
-            <Icon icon="certification" />
+            {/* <Icon icon="certification" /> */}
             <label htmlFor="certifcation">이메일로 전송된 인증번호 여덟 자리를 입력해주세요.</label>
             <div>
                 <input
