@@ -1,7 +1,7 @@
 import styled, {keyframes} from "styled-components";
 import useForm from "@/hooks/useForm";
 import FormInput from "@/components/common/FormInput";
-import { USER_LOGIN } from "@/constants/requests";
+import { USER_LOGIN } from "@/api/constants/userEndpoints";
 import { InputDataType } from "@/types/inputData_type";
 import {atom, useSetRecoilState} from "recoil";
 import { Link } from "react-router-dom";

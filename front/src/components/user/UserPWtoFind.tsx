@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import useForm from "@/hooks/useForm";
-import userRegisterValidation from "@/validations/UserRegisterValidation";
+import userRegisterValidation from "@/validations/user";
 import FormInput from "@/components/common/FormInput";
-import { USER_REGISTER } from "@/constants/requests";
+import { USER_REGISTER } from "@/api/constants/userEndpoints";
 import { InputDataType } from "@/types/inputData_type";
 import { Link } from "react-router-dom";
 import { ROUTES } from "@/routes/route";

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ROUTES_LIST, ROUTES } from "@/routes/route";
+import { ROUTES_LIST } from "@/routes/route";
 import ModalBackground from "./ModalBackground";
 
 export default function Header() {
