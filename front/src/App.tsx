@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { QueryClient } from "react-query";
+import { BrowserRouter as Router } from "react-router-dom";
 import Header from "./components/UI/Header";
 import Loading from "./components/UI/Loading";
 import User from "./components/user/User";
@@ -16,11 +17,11 @@ function App() {
     return isLoading ? (
         <Loading />
     ) : (
-        <div className="App">
+        <Router>
             <Header />
             <User />
             <UserRegister />
-        </div>
+        </Router>
     );
 }
 
