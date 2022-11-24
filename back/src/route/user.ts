@@ -53,7 +53,7 @@ userRouter.post(
 );
 
 userRouter.post(
-    "/users/emailcheck",
+    "/emailcheck",
     wrapRouter(async (req: Req, res: Res) => {
         console.log(req.body);
         const result = await userService.emailVerification(req.body.email);

@@ -65,13 +65,13 @@ class UserService {
         });
 
         if (userData === null) {
-            throw new AppError("UserNotFindError");
+            throw new AppError("NotFindError");
         }
 
         const result = await bcrypt.compare(password, userData.password);
 
         if (!result) {
-            throw new AppError("UserNotFindError");
+            throw new AppError("NotFindError");
         }
 
         const accessToken = generateToken("access", userID);
@@ -113,8 +113,9 @@ class UserService {
         if (userData.length != 1) {
             return this.findID;
         }
-
-        mailSender(email, emailpw, "이메일로 인증번호를 전송 했습니다");
+        const content = "이메일로 인증번호를 전송 했습니다";
+        const subject = "이메일 인증번호 발신";
+        mailSender(email, emailpw, content, subject);
         await this.prisma.$disconnect();
         return { return: true };
     }
@@ -128,7 +129,7 @@ class UserService {
                 userID: true,
             },
         });
-
+        console.log(userData);
         await this.prisma.$disconnect();
         return userData;
     }
@@ -145,7 +146,7 @@ class UserService {
         });
 
         if (userData === null) {
-            throw new AppError("UserNotFindError");
+            throw new AppError("NotFindError");
         }
 
         const result = await bcrypt.compare(password, userData.password);
@@ -188,7 +189,7 @@ class UserService {
         });
 
         if (userData === null) {
-            throw new AppError("UserNotFindError");
+            throw new AppError("NotFindError");
         }
         const pw = generator.generate({ length: 8, numbers: true });
         const hashPw = await bcrypt.hash(pw, 10);
@@ -197,7 +198,9 @@ class UserService {
             where: { email },
             data: { password: hashPw },
         });
-        mailSender(email, pw, "이메일로 임시 비밀번호를 전송 했습니다");
+        const content = "이메일로 인증번호를 전송 했습니다";
+        const subject = "이메일 인증번호 발신";
+        mailSender(email, pw, content, subject);
         await this.prisma.$disconnect();
 
         return { result: true };
@@ -211,7 +214,7 @@ class UserService {
         });
 
         if (userData === null) {
-            throw new AppError("UserNotFindError");
+            throw new AppError("NotFindError");
         }
 
         const result = await bcrypt.compare(password, userData.password);

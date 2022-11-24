@@ -39,11 +39,10 @@ diaryRouter.get(
     auth,
     wrapRouter(async (req: Req, res: Res) => {
         const { count, page } = req.query;
-        if (typeof count !== "string" || typeof page !== "string") {
-            console.log(typeof count, typeof page);
+        if (count === undefined || page === undefined) {
             throw new AppError("ArgumentError");
         }
-        const result = await diaryService.getDiaryList(count, page);
+        const result = await diaryService.getDiaryList(Number(count), Number(page));
         return { statusCode: 200, content: result };
     })
 );
