@@ -11,30 +11,38 @@ diaryRouter.post(
     auth,
     wrapRouter(async (req: Req, res: Res) => {
         const { userID, title, description } = req.body;
+        if (
+            typeof userID !== "string" ||
+            typeof title !== "string" ||
+            typeof description !== "string"
+        ) {
+            throw new AppError("ArgumentError");
+        }
         const result = await diaryService.writeDiary(userID, title, description);
-        return Promise.resolve({ statusCode: 200, content: true });
+        return { statusCode: 200, content: true };
     })
 );
 
 //조회수 증가 API
 diaryRouter.patch(
-    "/addviewcount",
+    "/viewcount",
     auth,
     wrapRouter(async (req: Req, res: Res) => {
         const result = await diaryService.addViewCount(req.body.id);
-        return Promise.resolve({ statusCode: 200, content: result });
+        return { statusCode: 200, content: result };
     })
 );
+
 //모든 일기 조회
 diaryRouter.get(
     "/all",
     auth,
     wrapRouter(async (req: Req, res: Res) => {
         const { count, page } = req.query;
-        if (typeof count !== "string" || typeof page !== "string") {
+        if (count === undefined || page === undefined) {
             throw new AppError("ArgumentError");
         }
-        const result = await diaryService.getDiaryList(count, page);
+        const result = await diaryService.getDiaryList(Number(count), Number(page));
         return { statusCode: 200, content: result };
     })
 );

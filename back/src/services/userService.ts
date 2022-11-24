@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import AppError from "../lib/AppError";
 
 class UserService {
-    prisma = new PrismaClient();
+    private prisma = new PrismaClient();
 
     async create(nickname: string) {
         try {
