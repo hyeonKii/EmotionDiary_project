@@ -52,6 +52,7 @@ class UserService {
                 userID,
             },
         });
+        console.log(userID, password, isLogin);
 
         if (isLogin) {
             logger.error("LoginFailError");

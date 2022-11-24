@@ -1,6 +1,6 @@
 const USER_REGISTER = ["post", "user/new"];
-const USER_LOGIN = ["post", "user"];
-const USER_LOGOUT = ["delete", "user"];
+const USER_LOGIN = ["post", "users"];
+const USER_LOGOUT = ["delete", "users"];
 
 const DIARY_CHECK = ["get", "diary"];
 const DIARY_REGISTER = ["post", "diary/adddiary"];
