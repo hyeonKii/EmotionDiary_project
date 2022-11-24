@@ -1,6 +1,8 @@
 import React from "react";
-import LoginForm from "@/component/User/LoginForm";
-import RegisterForm from "@/component/User/RegisterForm";
+import UserLoginForm from "@/components/user/UserLoginForm";
+import UserRegisterForm from "@/components/user/UserRegisterForm";
+import UserIDtoFind from "@/components/user/UserIDtoFind";
+import UserPWtoFind from "@/components/user/UserPWtoFind";
 
 interface route {
     path: string;
@@ -16,14 +18,24 @@ export const ROUTES: routeWrap = {
   
   LOGIN: {
     path: "/",
-    Component: LoginForm,
+    Component: UserLoginForm,
 
   },  
   
   REGISTER: {
     path: '/register',
-    Component: RegisterForm,
+    Component: UserRegisterForm,
   },
+
+  FINDID: {
+    path: '/findid',
+    Component: UserIDtoFind,
+  },
+
+  FINDPW: {
+    path: '/findpw',
+    Component: UserPWtoFind,
+  }
   
 }
 
