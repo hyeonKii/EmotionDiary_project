@@ -1,6 +1,6 @@
 import useForm from "@/hooks/useForm";
 
-function UserEdit({ user, setEditMode }) {
+export default function UserEdit({ user, setEditMode }) {
     // const { form, validatedForm, changeHandler } = useForm(initialState);
 
     return (
@@ -14,5 +14,3 @@ function UserEdit({ user, setEditMode }) {
         <div>수정 모드</div>
     );
 }
-
-export default UserEdit;

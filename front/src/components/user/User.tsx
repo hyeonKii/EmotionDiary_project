@@ -3,7 +3,7 @@ import { QueryClient } from "react-query";
 import UserEdit from "./UserEdit";
 import UserInfo from "./UserInfo";
 
-function User() {
+export default function User() {
     const [editMode, setEditMode] = useState<boolean>(false);
 
     const queryClient = new QueryClient();
@@ -19,5 +19,3 @@ function User() {
         <UserInfo user={user} setEditMode={setEditMode} />
     );
 }
-
-export default User;

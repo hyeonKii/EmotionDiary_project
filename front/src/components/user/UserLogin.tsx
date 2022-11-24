@@ -7,7 +7,7 @@ import { QueryClient } from "react-query";
 import { Link } from "react-router-dom";
 import Icon from "../UI/Icon";
 
-function UserLogin() {
+export default function UserLogin() {
     const queryClient = new QueryClient();
 
     const { form, changeHandler } = useForm({ userID: "", password: "" });
@@ -74,5 +74,3 @@ function UserLogin() {
         </form>
     );
 }
-
-export default UserLogin;

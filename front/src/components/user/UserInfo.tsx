@@ -1,4 +1,4 @@
-function UserInfo({ user, setEditMode }) {
+export default function UserInfo({ user, setEditMode }) {
     return (
         <div>
             <div>{user.userID}</div>
@@ -11,5 +11,3 @@ function UserInfo({ user, setEditMode }) {
         </div>
     );
 }
-
-export default UserInfo;
