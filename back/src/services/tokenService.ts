@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import AppError from "lib/AppError";
-import { generateToken } from "lib/token";
+import AppError from "../lib/AppError";
+import { generateToken } from "../lib/token";
 
 class Token {
     private prisma = new PrismaClient();
@@ -9,7 +9,7 @@ class Token {
         const refreshToken = generateToken("refresh", "");
 
         // Todo: if result is error, return value is true or false by try-catch
-        const result = await this.prisma.token.create({
+        await this.prisma.token.create({
             data: {
                 userID: userID,
                 token: refreshToken,
@@ -18,7 +18,7 @@ class Token {
 
         this.prisma.$disconnect();
 
-        return result;
+        return refreshToken;
     }
 
     async removeRefreshToken(userID: string) {

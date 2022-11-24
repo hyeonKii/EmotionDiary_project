@@ -14,8 +14,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.use("/docs", express.static(__dirname + "/lib/apidoc/doc"));
-
 app.use("/api/users", userRouter);
 app.use("/api/diaries", diaryRouter);
 app.use("/api/certification", certificationRouter);

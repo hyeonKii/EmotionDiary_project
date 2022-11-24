@@ -5,6 +5,7 @@ import certificationService from "services/certificationService";
 
 const certificationRouter = Router();
 
+// todo: send router
 certificationRouter.post(
     "/certify",
     auth,

@@ -11,8 +11,12 @@ import mailSender from "../lib/mail";
 class CertificationService {
     private prisma = new PrismaClient();
 
-    async createCode(email: string) {
+    async createCode(codeType: "email" | "password", email: string) {
         try {
+            let length = 8;
+
+            if (codeType === "password") length = 12;
+
             const code = generator.generate({ length: 8, numbers: true });
 
             await this.prisma.certification.create({
@@ -25,7 +29,7 @@ class CertificationService {
 
             this.prisma.$disconnect();
 
-            mailSender(email, code, "아래의 링크를 눌러서 회원가입을 마쳐주세요.");
+            mailSender(email, code, "");
 
             return true;
         } catch (e: any) {
@@ -53,16 +57,23 @@ class CertificationService {
         }
     }
 
-    async certifyCode(code: string) {
+    async certifyEmailByCode(email: string, code: string) {
         const result = await this.prisma.certification.findUnique({
             where: {
-                code: code,
+                code,
+            },
+            select: {
+                email: true,
             },
         });
 
         this.prisma.$disconnect();
 
         if (result === null) {
+            return false;
+        }
+
+        if (result.email !== email) {
             return false;
         }
 
