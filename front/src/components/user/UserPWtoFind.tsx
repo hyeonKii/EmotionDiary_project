@@ -14,7 +14,6 @@ import {
     ConfirmAccount,
     InputError,
 } from "@/styles/common/Modal/Form-style";
-import Icon from "../UI/icon";
 
 export default function UserPWtoFind() {
     const { form, validatedForm, changeHandler } = useForm({ email: "" });
@@ -29,7 +28,7 @@ export default function UserPWtoFind() {
 
             <ModalLabel htmlFor="email">가입하신 이메일을 입력해주세요.</ModalLabel>
             <Container>
-                <Icon icon="email" />
+                {/* <Icon icon="email" /> */}
                 <Input type="email" id="email" onChange={changeHandler} placeholder="이메일" />
                 <AuthButton type="button">인증</AuthButton>
                 <InputError>가입되지 않은 이메일입니다.</InputError>

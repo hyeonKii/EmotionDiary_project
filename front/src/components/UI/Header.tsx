@@ -32,7 +32,7 @@ export default function Header() {
                 ) : (
                     <ul>
                         <li>
-                            <button>아이콘</button>
+                            <button>다크 모드 아이콘</button>
                         </li>
                         <li>
                             <button>소개</button>
@@ -42,7 +42,7 @@ export default function Header() {
                         </li>
                         <li>
                             <button onClick={() => setShowDropDown((prevState) => !prevState)}>
-                                유저
+                                {user[0]}
                             </button>
                         </li>
                     </ul>
@@ -68,6 +68,7 @@ const NavStyle = styled.nav`
 
     div {
         margin-left: 3rem;
+        font-family: diary;
     }
 
     ul {

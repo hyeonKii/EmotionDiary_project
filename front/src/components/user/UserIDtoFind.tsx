@@ -16,7 +16,6 @@ import {
     ConfirmAccount,
     InputError,
 } from "@/styles/common/Modal/Form-style";
-import Icon from "../UI/icon";
 
 export default function UserIDtoFind() {
     const { form, validatedForm, changeHandler } = useForm({ email: "", certification: "" });
@@ -31,7 +30,7 @@ export default function UserIDtoFind() {
 
             <ModalLabel htmlFor="email">가입하신 이메일을 입력해 주세요.</ModalLabel>
             <Container>
-                <Icon icon="email" />
+                {/* <Icon icon="email" /> */}
                 <Input id="email" type="email" onChange={changeHandler} placeholder="이메일" />
                 <AuthButton type="button">인증</AuthButton>
                 <InputError>가입되지 않은 이메일입니다.</InputError>
@@ -40,7 +39,7 @@ export default function UserIDtoFind() {
                 이메일로 전송된 인증번호 여덟 자리를 입력해주세요.
             </ModalLabel>
             <Container>
-                <Icon icon="certification" />
+                {/* <Icon icon="certification" /> */}
                 <Input
                     id="certifcation"
                     type="text"

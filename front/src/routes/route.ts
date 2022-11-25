@@ -1,7 +1,7 @@
 import React from "react";
 import UserLogin from "@/components/user/UserLogin";
 import UserRegister from "@/components/user/UserRegister";
-import UserIdtoFind from "@/components/user/UserIdtoFind";
+import UserIDtoFind from "@/components/user/UserIDtoFind";
 import UserPWtoFind from "@/components/user/UserPWtoFind";
 
 interface route {
@@ -26,7 +26,7 @@ export const ROUTES: routeWrap = {
 
     FINDID: {
         path: "/findid",
-        Component: UserIdtoFind,
+        Component: UserIDtoFind,
     },
 
     FINDPW: {

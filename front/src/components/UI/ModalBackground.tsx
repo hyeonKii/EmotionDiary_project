@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-export default function ModalBackground({ setShowForm }) {
-    return <ModalBackgroundStyle onClick={() => setShowForm(false)}></ModalBackgroundStyle>;
+export default function ModalBackground({ setShowLoginForm }) {
+    return <ModalBackgroundStyle onClick={() => setShowLoginForm(false)}></ModalBackgroundStyle>;
 }
 
 const ModalBackgroundStyle = styled.div`

@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { useFetchUser } from "./api/account";
 import Header from "./components/UI/Header";
+import Footer from "./components/UI/Footer";
 import { currentUser } from "./temp/userAtom";
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
     return (
         <Router>
             <Header />
+            <Footer />
         </Router>
     );
 }
