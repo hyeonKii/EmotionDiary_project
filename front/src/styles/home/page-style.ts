@@ -1,5 +1,5 @@
 import styled from "styled-components";
 
-export const PageBlock = styled.section`
+export const Wrapper = styled.section`
     overflow-x: hidden;
 `;

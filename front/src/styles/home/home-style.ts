@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import { color } from "@/styles/common/colorPalette";
 import background from "@/assets/images/background.jpg";
+import backgroundDark from "@/assets/images/background_dark.jpg";
 
-export const HomeBlock = styled.section`
+export const HomeSection = styled.section`
     width: 100vw;
     height: 100vh;
 
@@ -10,7 +11,7 @@ export const HomeBlock = styled.section`
     background-size: cover;
 `;
 
-export const TitleBlock = styled.article`
+export const TitleBlock = styled.div`
     position: absolute;
     top: 35%;
     left: 50%;
@@ -26,7 +27,7 @@ export const TitleBlock = styled.article`
     }
 `;
 
-export const InputBlock = styled.input`
+export const Input = styled.input`
     position: absolute;
     top: 60%;
     left: 50%;

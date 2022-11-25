@@ -1,18 +1,18 @@
 import styled, { css } from "styled-components";
 import { color } from "../common/colorPalette";
 
-export const TabBlock = styled.ul`
+export const TabList = styled.ul`
     display: flex;
 
     width: 70%;
     max-width: 800;
-    margin: 1rem auto;
-    padding: 1rem;
+    margin: 2rem auto;
 
     li {
         list-style: none;
 
         margin-right: 1rem;
+        padding: 0.3rem;
 
         color: ${color.gray};
         cursor: pointer;
@@ -26,12 +26,12 @@ export const TabBlock = styled.ul`
     }
 `;
 
-export const CardBlock = styled.section`
+export const CardSection = styled.section`
     position: relative;
 
     width: 70%;
     max-width: 800;
-    margin: 1.5rem auto;
+    margin: 2rem auto;
     padding: 1.5rem 2rem;
 
     border: none;
@@ -39,7 +39,7 @@ export const CardBlock = styled.section`
     box-shadow: 0 4px 4px 0 ${color.gray};
 `;
 
-export const CloseBlock = styled.article<{ isOpen: boolean; tag: string }>`
+export const Post = styled.article<{ isOpen: boolean; tag: string }>`
     display: flex;
 
     .tag {
@@ -98,7 +98,7 @@ export const CloseBlock = styled.article<{ isOpen: boolean; tag: string }>`
     }
 `;
 
-export const OpenBlock = styled.article`
+export const PostDetail = styled.article`
     display: flex;
     position: relative;
 
