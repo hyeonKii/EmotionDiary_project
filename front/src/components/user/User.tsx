@@ -1,14 +1,20 @@
+import { currentUser } from "@/temp/userAtom";
+import { useState } from "react";
 import { useRecoilValue } from "recoil";
-import { currentUser } from "../temp/atoms";
+import UserEdit from "./UserEdit";
+import UserInfo from "./UserInfo";
 
 export default function User() {
+    const [editMode, setEditMode] = useState(false);
     const user = useRecoilValue(currentUser);
 
-    return (
-        <>
-            <div>{user.userID}</div>
-            <div>{user.email}</div>
-            <div>{user.nickname}</div>
-        </>
+    if (!user) {
+        return null;
+    }
+
+    return editMode ? (
+        <UserEdit setEditMode={setEditMode} />
+    ) : (
+        <UserInfo user={user} setEditMode={setEditMode} />
     );
 }

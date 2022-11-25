@@ -1,26 +1,46 @@
+import { useEffect } from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+import { useFetchUser } from "./api/account";
 import Header from "./components/UI/Header";
 import User from "./components/user/User";
-import UserLoginForm from "./components/user/UserLoginForm";
-import UserRegisterForm from "./components/user/UserRegisterForm";
-import { ROUTES_LIST } from "@/routes/route";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 function App() {
+    const { refetch: getUser } = useFetchUser(["user"], {
+        enabled: false,
+        retry: 3,
+
+        onSuccess: (res) => {
+            const {
+                User: { nickname },
+            } = res.data;
+
+            console.log(nickname);
+        },
+
+        onError: (error) => {
+            console.log(error.message);
+        },
+    });
+
+    const fetchUser = () => {
+        const accessToken = sessionStorage.getItem("accessToken");
+        const refreshToken = sessionStorage.getItem("refreshToken");
+
+        if (!accessToken || !refreshToken) {
+            return;
+        }
+
+        getUser();
+    };
+
+    useEffect(() => {
+        fetchUser();
+    }, []);
+
     return (
-        // <div className="App">
-        //     <Header />
-        //     <User />
-        //     <UserLoginForm />
-        //     <UserRegisterForm />
-        // </div>
-        <div className="App">
-            <Router>
-                <Routes>
-                    {ROUTES_LIST.map(({ path, Component }, idx) => (
-                        <Route key={idx} path={path} element={<Component />} />
-                    ))}
-                </Routes>
-            </Router>
-        </div>
+        <Router>
+            <Header />
+        </Router>
     );
 }
 
