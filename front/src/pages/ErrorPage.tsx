@@ -5,18 +5,13 @@ import { ROUTES } from "@/routes/route";
 const ErrorPage = () => {
     const navigate = useNavigate();
 
-    /* 3초 뒤 리다이렉트 코드 */
     useEffect(() => {
         setTimeout(() => {
-            navigate(ROUTES.Home.path, { replace: true });
+            navigate(ROUTES.LOGIN.path, { replace: true });
         }, 1000);
     });
 
-    return (
-        <div>
-            3초 후 <br /> 홈으로 새로고침 됩니다...
-        </div>
-    );
+    return <div>잘못된 접근</div>;
 };
 
 export default ErrorPage;
