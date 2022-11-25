@@ -1,35 +1,28 @@
 import axios from "axios";
 import { URL } from "./url";
-import * as endpoint from "./constants/userEndpoints";
+import * as endpoint from "./constants/certificationEndpoints";
 import { useMutation } from "react-query";
 
-
-interface CertificateEmail {
-  email: string
+interface SendCode {
+    email: string;
 }
 
-interface EmailCheck {
-  email: string,
-  target: string,
-  code: string,
-
+interface CheckCode {
+    email: string;
+    target: string;
+    code: string;
 }
 
-
-async function certifyEmail(userData: CertificateEmail) {
-  return await axios.post(URL + endpoint.USER_EMAIL_SEND, userData);
+async function sendCode(userData: SendCode) {
+    return await axios.post(URL + endpoint.CERTIFICATION_EMAIL_SEND_CODE, userData);
 }
 
-
-async function emailCheck(userData: EmailCheck) {
-  return await axios.post(URL + endpoint.USER_EMAIL_CHECK, userData);
+async function checkCode(userData: CheckCode) {
+    return await axios.post(URL + endpoint.CERTIFICATION_EMAIL_CHECK_CODE, userData);
 }
 
+export const useRequestSendCode = (userData: SendCode, options?: any) =>
+    useMutation(() => sendCode(userData), options);
 
-
-export const useRequestCertifyEmail = (userData: CertificateEmail, options?:any) =>
-      useMutation(() => certifyEmail(userData), options);
-  
-
-export const useRequestEmailCheck = (userData: EmailCheck, options?: any) =>
-    useMutation(() => emailCheck(userData), options);
+export const useRequestCheckCode = (userData: CheckCode, options?: any) =>
+    useMutation(() => checkCode(userData), options);
