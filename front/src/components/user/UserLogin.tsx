@@ -1,38 +1,17 @@
-import { useFetchUser, useRequestLogin } from "@/api/account";
+import { useRequestLogin } from "@/api/account";
 import useForm from "@/hooks/useForm";
+import useSetUser from "@/hooks/useSetUser";
 import { ROUTES } from "@/routes/route";
-import { currentUser } from "@/temp/userAtom";
 import React from "react";
 import { Link } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
 
 export default function UserLogin() {
-    const setUser = useSetRecoilState(currentUser);
-
     const { form, changeHandler } = useForm({
         userID: "",
         password: "",
     });
 
-    const { refetch: getUser } = useFetchUser(["user"], {
-        enabled: false,
-        retry: 3,
-
-        onSuccess: (res) => {
-            const {
-                User: { nickname },
-                certified_account,
-            } = res.data;
-
-            console.log("로그인 성공");
-
-            setUser({ nickname });
-        },
-
-        onError: (error) => {
-            console.log("로그인 실패 :" + error.message);
-        },
-    });
+    const { setUser } = useSetUser();
 
     const { mutate: loginRequest } = useRequestLogin(form, {
         onSuccess: (res) => {
@@ -41,7 +20,7 @@ export default function UserLogin() {
             sessionStorage.setItem("accessToken", accessToken);
             sessionStorage.setItem("refreshToken", refreshToken);
 
-            getUser();
+            setUser();
         },
 
         onError: (error) => {

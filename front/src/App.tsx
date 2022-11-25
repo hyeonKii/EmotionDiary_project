@@ -1,30 +1,11 @@
 import { useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import { useFetchUser } from "./api/account";
 import Header from "./components/UI/Header";
 import Footer from "./components/UI/Footer";
-import { currentUser } from "./temp/userAtom";
+import useSetUser from "./hooks/useSetUser";
 
 function App() {
-    const setUser = useSetRecoilState(currentUser);
-
-    const { refetch: getUser } = useFetchUser(["user"], {
-        enabled: false,
-        retry: 3,
-
-        onSuccess: (res) => {
-            const {
-                User: { nickname },
-            } = res.data;
-
-            setUser({ nickname });
-        },
-
-        onError: (error) => {
-            console.log(error.message);
-        },
-    });
+    const { setUser: setUser } = useSetUser();
 
     const fetchUser = () => {
         const accessToken = sessionStorage.getItem("accessToken");
@@ -34,7 +15,7 @@ function App() {
             return;
         }
 
-        getUser();
+        setUser();
     };
 
     useEffect(() => {
