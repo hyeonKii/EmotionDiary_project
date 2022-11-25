@@ -105,6 +105,27 @@ class AccountService {
         return user;
     }
 
+    async getUserByUserID_login(userID: string) {
+        const user = this.prisma.account.findUnique({
+            where: {
+                userID,
+            },
+            select: {
+                User: {
+                    select: {
+                        id: true,
+                    },
+                },
+            },
+        });
+
+        if (user === null) {
+            return null;
+        }
+
+        return user;
+    }
+
     async getUserIDByCertification(email: string, code: string) {
         const result = await certificationService.certifyEmailByCode(email, code);
 

@@ -10,7 +10,7 @@ diaryRouter.post(
     "/write",
     auth,
     wrapRouter(async (req: Req, res: Res) => {
-        const { userID, title, description } = req.body;
+        const { userID, title, description, nickname } = req.body;
         if (
             typeof userID !== "string" ||
             typeof title !== "string" ||
@@ -48,12 +48,26 @@ diaryRouter.get(
 );
 
 diaryRouter.get(
+    "/all/emotion",
+    // auth,
+    wrapRouter(async (req: Req, res: Res) => {
+        const { count, page } = req.query;
+        const { emotion } = req.body;
+        if (count === undefined || page === undefined) {
+            throw new AppError("ArgumentError");
+        }
+        const result = await diaryService.getEmotionDiaryList(Number(count), Number(page), emotion);
+        return { statusCode: 200, content: result };
+    })
+);
+
+diaryRouter.get(
     "/:id",
     auth,
     wrapRouter(async (req: Req, res: Res) => {
         const { id } = req.params;
         const result = await diaryService.getDiary(id);
-        return Promise.resolve({ statusCode: 200, content: result });
+        return { statusCode: 200, content: result };
     })
 );
 

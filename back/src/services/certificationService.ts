@@ -8,13 +8,26 @@ import mailSender from "../lib/mail";
 
 // Todo: change error type
 
+const isCertifiedEmail = (email: string) => {
+    const reg = /^[\w-\.]+@([\w-]+\.)+com$/;
+
+    if (!reg.test(email)) {
+        return true;
+    }
+
+    return false;
+};
+
 class CertificationService {
     private prisma = new PrismaClient();
 
     async generateCode(codeType: "email" | "password", email: string) {
         try {
-            const isCertifiedEmail = this;
-
+            // if (isCertifiedEmail(email)) {
+            //     console.log("emailerror");
+            //     throw new AppError("InvalidEmailFormatError");
+            // }
+            console.log(email, codeType);
             let length = 8;
 
             if (codeType === "password") length = 12;
@@ -29,16 +42,15 @@ class CertificationService {
                 },
             });
 
-            this.prisma.$disconnect();
-
             mailSender(email, code, "", "isSubject?");
-
-            return { ok: true };
         } catch (e: any) {
             if (e instanceof Prisma.PrismaClientKnownRequestError) {
+                console.log(e.message);
                 throw new AppError("ArgumentError");
             }
         }
+        await this.prisma.$disconnect();
+        return { result: true };
     }
 
     async deleteCode(code: string) {
@@ -48,15 +60,13 @@ class CertificationService {
                     code,
                 },
             });
-
-            this.prisma.$disconnect();
-
-            return true;
         } catch (e: any) {
             if (e instanceof Prisma.PrismaClientKnownRequestError) {
                 throw new AppError("ArgumentError");
             }
         }
+        await this.prisma.$disconnect();
+        return true;
     }
 
     async certifyEmailByCode(email: string, code: string) {
@@ -80,8 +90,7 @@ class CertificationService {
         }
 
         await this.deleteCode(code);
-
-        return { ok: true };
+        return { result: true };
     }
 }
 
