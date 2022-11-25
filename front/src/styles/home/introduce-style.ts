@@ -24,7 +24,7 @@ export const RightSection = styled.section`
     justify-content: center;
 `;
 export const LeftSection = styled.section`
-    width: 50vw;
+    width: 60vw;
     display: flex;
     height: 100vh;
     align-items: center;
@@ -42,7 +42,6 @@ export const LeftSection = styled.section`
 export const HomeSection2 = styled.section`
     width: 100vw;
     height: 100vh;
-    background: #f5f5f5;
     background-size: cover;
 `;
 export const Input = styled.input`
@@ -103,6 +102,6 @@ export const Bookimg = styled.img.attrs({
     src: bookpng,
     alt: "introduce_book",
 })`
-    width: 50vw;
+    width: 40vw;
     height: 50vh;
 `;
