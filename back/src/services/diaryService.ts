@@ -70,6 +70,18 @@ class DiaryService {
         return postUpdate;
     }
 
+    async changeEmotion(id: string, emotion: string) {
+        const postUpdate = await this.prisma.diary.update({
+            where: { id: Number(id) },
+            data: { emotion },
+        });
+        if (postUpdate === null) {
+            throw new AppError("NotFindError");
+        }
+        await this.prisma.$disconnect();
+        return postUpdate;
+    }
+
     async getDiary(id: string) {
         const postData = await this.prisma.diary.findUnique({
             where: { id: Number(id) },
@@ -87,7 +99,6 @@ class DiaryService {
             skip: (Number(page) - 1) * Number(count),
             select: {
                 id: true,
-                author: true,
                 title: true,
                 description: true,
                 view: true,

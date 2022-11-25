@@ -26,14 +26,15 @@ model User {
 
 model Diary {
   id          Int           @id @unique @default(autoincrement())
-  author      String
+  emotion     String        @default("normal")
   title       String
   description String
   private     Boolean       @default(false)
   view        Int           @default(0)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
-  user        User          @relation(fields: [author], references: [userID])
+  user_model_id Int         @unique
+  user        User          @relation(fields: [user_model_id], references: [id])
 }
 
 model Token {

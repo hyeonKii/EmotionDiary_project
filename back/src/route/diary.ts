@@ -68,6 +68,17 @@ diaryRouter.put(
     })
 );
 
+diaryRouter.put(
+    "/emotion/:id",
+    auth,
+    wrapRouter(async (req: Req, res: Res) => {
+        const { id } = req.params;
+        const { emotion } = req.body;
+        const result = await diaryService.changeEmotion(id, emotion);
+        return Promise.resolve({ statusCode: 200, content: result });
+    })
+);
+
 // delete
 diaryRouter.delete(
     "/:id",
