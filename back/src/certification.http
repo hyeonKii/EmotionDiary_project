@@ -48,7 +48,7 @@ RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5M
 Content-Type: application/json
 
 {
-  "email": "jlee7003@naver.com",
+  "email": "gopivep258@nubotel.com",
   "target":"email"
 }
 
@@ -59,6 +59,6 @@ RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5M
 Content-Type: application/json
 
 {
-  "email": "jlee7003@naver.com",
-  "code":"LIlvQHvm"
+  "email": "gopivep258@nubotel.com",
+  "code":"vfT5t4T3"
 }

@@ -9,7 +9,7 @@ const certificationRouter = Router();
 // 이메일로 이메일 인증 코드 또는 임시 비밀번호 발송
 certificationRouter.post(
     "/send",
-    auth,
+    // auth,
     wrapRouter(async (req, res) => {
         const { email, target } = req.body;
 
@@ -29,7 +29,7 @@ certificationRouter.post(
 // 코드 인증
 certificationRouter.post(
     "/certify",
-    auth,
+    // auth,
     wrapRouter(async (req, res) => {
         const { email, code } = req.body;
         console.log(email, code, email || code);
