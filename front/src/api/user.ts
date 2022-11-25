@@ -19,10 +19,6 @@ interface FindID {
     email: string;
 }
 
-interface EmailCheck {
-    emailVerification: boolean;
-}
-
 interface ChangePwd {
     userID: string;
     email: string;
@@ -64,10 +60,6 @@ async function findID(userData: FindID) {
     return await axios.post(URL + endpoint.USER_FIND_ID, userData);
 }
 
-async function emailCheck(userData: EmailCheck) {
-    return await axios.post(URL + endpoint.USER_EMAIL_CHECK, userData);
-}
-
 async function changePwd(userData: ChangePwd) {
     return await axios.post(URL + endpoint.USER_CHANGE_PASSWORD, userData);
 }
@@ -96,9 +88,6 @@ export const useRequestRegisterUser = (userData: Register, options?: any) =>
 
 export const useRequestFindID = (userData: FindID, options?: any) =>
     useMutation(() => findID(userData), options);
-
-export const useRequestEmailCheck = (userData: EmailCheck, options?: any) =>
-    useMutation(() => emailCheck(userData), options);
 
 export const useRequestChangePwd = (userData: ChangePwd, options?: any) =>
     useMutation(() => changePwd(userData), options);

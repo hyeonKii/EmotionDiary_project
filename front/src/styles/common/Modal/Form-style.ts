@@ -18,6 +18,7 @@ export const Form = styled.form`
     height: 50%;
     width: 20%;
     min-width: 250px;
+    min-height: 460px;
 `;
 
 export const FormTitle = styled.div`
