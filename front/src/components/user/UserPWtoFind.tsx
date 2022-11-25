@@ -2,7 +2,8 @@ import useForm from "@/hooks/useForm";
 import { Link } from "react-router-dom";
 import { ROUTES } from "@/routes/route";
 import React from "react";
-import Icon from "../UI/Icon";
+import {Form, FormTitle, FormButton, FindMessage, Container, Input, ModalLabel, AuthButton, ConfirmAccount, InputError } from "@/styles/common/Modal/Form-style";
+import Icon from "../UI/icon";
 
 export default function UserPWtoFind() {
     const { form, validatedForm, changeHandler } = useForm({ email: "" });
@@ -12,18 +13,20 @@ export default function UserPWtoFind() {
     };
 
     return (
-        <form onSubmit={submitHandler}>
-            <div>비밀번호 찾기</div>
-            {/* <Icon icon="email" /> */}
-            <label htmlFor="email">가입하신 이메일을 입력해주세요.</label>
-            <div>
-                <input type="email" id="email" onChange={changeHandler} placeholder="이메일" />
-                <button type="button">인증</button>
-            </div>
-            <div>가입되지 않은 이메일입니다.</div>
-            <div>이메일로 임시 비밀번호가 발급되었습니다.</div>
-            <button>로그인 하기</button>
-            <div>
+        <Form onSubmit={submitHandler}>
+            <FormTitle>비밀번호 찾기</FormTitle>
+            
+            <ModalLabel htmlFor="email">가입하신 이메일을 입력해주세요.</ModalLabel>
+            <Container>
+                <Icon icon="email" />
+                <Input type="email" id="email" onChange={changeHandler} placeholder="이메일" />
+                <AuthButton type="button">인증</AuthButton>
+                <InputError>가입되지 않은 이메일입니다.</InputError>
+            </Container>
+            
+            <ModalLabel>이메일로 임시 비밀번호가 발급되었습니다.</ModalLabel>
+            <FormButton>로그인 하기</FormButton>
+            <ConfirmAccount>
                 계정이 없으신가요? {""}
                 <Link
                     to={ROUTES.REGISTER.path}
@@ -34,8 +37,8 @@ export default function UserPWtoFind() {
                 >
                     회원가입
                 </Link>
-            </div>
-            <div>
+            </ConfirmAccount>
+            <FindMessage>
                 <Link
                     to={ROUTES.FINDID.path}
                     style={{
@@ -45,7 +48,7 @@ export default function UserPWtoFind() {
                 >
                     아이디 찾기
                 </Link>
-            </div>
-        </form>
+            </FindMessage>
+        </Form>
     );
 }

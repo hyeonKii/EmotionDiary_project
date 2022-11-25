@@ -5,7 +5,11 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { QueryClient } from "react-query";
 import { Link } from "react-router-dom";
-import Icon from "../UI/Icon";
+import {Form, FormTitle, FormButton, Container, AccountMessage, FindMessage, Input } from "@/styles/common/Modal/Form-style";
+
+
+import Icon from "../UI/icon";
+
 
 export default function UserLogin() {
     const queryClient = new QueryClient();
@@ -31,14 +35,18 @@ export default function UserLogin() {
     };
 
     return (
-        <form onSubmit={loginUser}>
-            <div>로그인</div>
-            {/* <Icon icon="userID" /> */}
-            <input type="text" id="userID" onChange={changeHandler} placeholder="아이디" />
-            {/* <Icon icon="password" /> */}
-            <input type="password" id="password" onChange={changeHandler} placeholder="비밀번호" />
-            <button>로그인</button>
-            <div>
+        <Form onSubmit={loginUser}>
+            <FormTitle>로그인</FormTitle>
+            <Container>
+                <Icon icon="userID" />
+                <Input type="text" id="userID" onChange={changeHandler} placeholder="아이디" />
+            </Container>
+            <Container>
+                <Icon icon="password" />
+                <Input type="password" id="password" onChange={changeHandler} placeholder="비밀번호" />
+            </Container>
+            <FormButton>로그인</FormButton>
+            <AccountMessage>
                 계정이 없으신가요? {""}
                 <Link
                     to={ROUTES.REGISTER.path}
@@ -49,8 +57,8 @@ export default function UserLogin() {
                 >
                     회원가입
                 </Link>
-            </div>
-            <div>
+            </AccountMessage>
+            <FindMessage>
                 <Link
                     to={ROUTES.FINDID.path}
                     style={{
@@ -70,7 +78,7 @@ export default function UserLogin() {
                 >
                     비밀번호 찾기
                 </Link>
-            </div>
-        </form>
+            </FindMessage>
+        </Form>
     );
 }
