@@ -4,7 +4,7 @@ import axios from "axios";
 
 import PostItem from "./PostItem";
 import usePost from "@/hooks/usePost";
-import { TabList } from "@/styles/home/postList-style";
+import { TabList } from "@/styles/common/tab-style";
 
 const tabList = ["전체", "자신감", "만족감", "신남", "편안함", "불안", "슬픔", "상처", "분노"];
 
@@ -17,7 +17,7 @@ interface Items {
 }
 
 export default function PostList() {
-    const [tab, setTag] = useState(0);
+    const [tab, setTab] = useState(0);
 
     const { fetchNextPage, hasNextPage, isFetchingNextPage, data, status } = useInfiniteQuery(
         "posts",
@@ -57,7 +57,7 @@ export default function PostList() {
                     <li
                         key={index}
                         className={tab === index ? "active" : undefined}
-                        onClick={() => setTag(index)}
+                        onClick={() => setTab(index)}
                     >
                         {item}
                     </li>
