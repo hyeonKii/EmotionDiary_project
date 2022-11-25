@@ -8,4 +8,5 @@ export const color = {
     pink: "#FFD9F4",
     gray: "#838383",
     beige: "#FCF8E8",
+    white: "#FFFFFF",
 };

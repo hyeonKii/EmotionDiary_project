@@ -1,8 +1,9 @@
 import React from "react";
-import LoginForm from "@/components/user/UserLoginForm";
-import RegisterForm from "@/components/user/UserRegisterForm";
-import introduce from "@/pages/IntroducePage";
-import ErrorPage from "@/pages/ErrorPage";
+import UserLogin from "@/components/user/UserLogin";
+import UserRegister from "@/components/user/UserRegister";
+import UserIdtoFind from "@/components/user/UserIdtoFind";
+import UserPWtoFind from "@/components/user/UserPWtoFind";
+
 interface route {
     path: string;
     Component: React.FC;
@@ -15,21 +16,22 @@ interface routeWrap {
 export const ROUTES: routeWrap = {
     LOGIN: {
         path: "/",
-        Component: LoginForm,
+        Component: UserLogin,
     },
 
     REGISTER: {
         path: "/register",
-        Component: RegisterForm,
+        Component: UserRegister,
     },
 
-    INTRODUCE: {
-        path: "/introduce",
-        Component: introduce,
+    FINDID: {
+        path: "/findid",
+        Component: UserIdtoFind,
     },
-    ErrorPage: {
-        path: "*",
-        Component: ErrorPage,
+
+    FINDPW: {
+        path: "/findpw",
+        Component: UserPWtoFind,
     },
 };
 
