@@ -1,84 +1,83 @@
-import { useRequestLogin } from "@/api/user";
+import { useFetchUser, useRequestLogin } from "@/api/account";
 import useForm from "@/hooks/useForm";
 import { ROUTES } from "@/routes/route";
-import axios from "axios";
-import React, { useEffect } from "react";
-import { QueryClient } from "react-query";
+import { currentUser } from "@/temp/userAtom";
+import React from "react";
 import { Link } from "react-router-dom";
-import {Form, FormTitle, FormButton, Container, AccountMessage, FindMessage, Input } from "@/styles/common/Modal/Form-style";
-
-
-import Icon from "../UI/icon";
-
+import { useSetRecoilState } from "recoil";
 
 export default function UserLogin() {
-    const queryClient = new QueryClient();
+    const setUser = useSetRecoilState(currentUser);
 
-    const { form, changeHandler } = useForm({ userID: "", password: "" });
+    const { form, changeHandler } = useForm({
+        userID: "",
+        password: "",
+    });
 
-    const { mutate: login } = useRequestLogin(form, {
-        onSuccess: (data) => {
-            const { userID, nickname, email, accessToken, refreshToken } = data;
+    const { refetch: getUser } = useFetchUser(["user"], {
+        enabled: false,
+        retry: 3,
 
-            queryClient.setQueryData(["user"], { userID, nickname, email });
-            axios.defaults.headers.common["Authorization"] = accessToken;
-            sessionStorage.setItem("refreshToken", refreshToken);
+        onSuccess: (res) => {
+            const {
+                User: { nickname },
+                certified_account,
+            } = res.data;
+
+            console.log("로그인 성공");
+
+            setUser({ nickname });
         },
+
+        onError: (error) => {
+            console.log("로그인 실패 :" + error.message);
+        },
+    });
+
+    const { mutate: loginRequest } = useRequestLogin(form, {
+        onSuccess: (res) => {
+            const { accessToken, refreshToken } = res.data;
+
+            sessionStorage.setItem("accessToken", accessToken);
+            sessionStorage.setItem("refreshToken", refreshToken);
+
+            getUser();
+        },
+
         onError: (error) => {
             console.log(error.message);
         },
     });
 
-    const loginUser = (event: React.FormEvent<HTMLFormElement>) => {
+    const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        login();
+        loginRequest();
     };
 
     return (
-        <Form onSubmit={loginUser}>
-            <FormTitle>로그인</FormTitle>
-            <Container>
-                <Icon icon="userID" />
-                <Input type="text" id="userID" onChange={changeHandler} placeholder="아이디" />
-            </Container>
-            <Container>
-                <Icon icon="password" />
-                <Input type="password" id="password" onChange={changeHandler} placeholder="비밀번호" />
-            </Container>
-            <FormButton>로그인</FormButton>
-            <AccountMessage>
-                계정이 없으신가요? {""}
-                <Link
-                    to={ROUTES.REGISTER.path}
-                    style={{
-                        textDecoration: "none",
-                        color: "#47B5FF",
-                    }}
-                >
-                    회원가입
-                </Link>
-            </AccountMessage>
-            <FindMessage>
-                <Link
-                    to={ROUTES.FINDID.path}
-                    style={{
-                        textDecoration: "none",
-                        color: "#47B5FF",
-                    }}
-                >
-                    아이디
-                </Link>
-                {""} / {""}
-                <Link
-                    to={ROUTES.FINDPW.path}
-                    style={{
-                        textDecoration: "none",
-                        color: "#47B5FF",
-                    }}
-                >
-                    비밀번호 찾기
-                </Link>
-            </FindMessage>
-        </Form>
+        <form onSubmit={submitHandler}>
+            <div>
+                <input id="userID" type="text" onChange={changeHandler} placeholder="아이디" />
+            </div>
+            <div>
+                <input
+                    id="password"
+                    type="password"
+                    onChange={changeHandler}
+                    placeholder="비밀번호"
+                />
+            </div>
+            <button>로그인</button>
+            <div>계정이 없으신가요?</div>
+            <Link
+                to={ROUTES.REGISTER.path}
+                style={{
+                    textDecoration: "none",
+                    color: "#47B5FF",
+                }}
+            >
+                회원가입
+            </Link>
+        </form>
     );
 }

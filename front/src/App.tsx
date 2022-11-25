@@ -1,26 +1,45 @@
 import { useEffect } from "react";
-import { QueryClient } from "react-query";
 import { BrowserRouter as Router } from "react-router-dom";
+import { useFetchUser } from "./api/account";
 import Header from "./components/UI/Header";
-import Loading from "./components/UI/Loading";
 import User from "./components/user/User";
-import UserRegister from "./components/user/UserRegister";
 
 function App() {
-    const queryClient = new QueryClient();
+    const { refetch: getUser } = useFetchUser(["user"], {
+        enabled: false,
+        retry: 3,
 
-    if (queryClient.getQueryData["accessToken"]) {
-    }
+        onSuccess: (res) => {
+            const {
+                User: { nickname },
+            } = res.data;
 
-    useEffect(() => {}, []);
+            console.log(nickname);
+        },
 
-    return isLoading ? (
-        <Loading />
-    ) : (
+        onError: (error) => {
+            console.log(error.message);
+        },
+    });
+
+    const fetchUser = () => {
+        const accessToken = sessionStorage.getItem("accessToken");
+        const refreshToken = sessionStorage.getItem("refreshToken");
+
+        if (!accessToken || !refreshToken) {
+            return;
+        }
+
+        getUser();
+    };
+
+    useEffect(() => {
+        fetchUser();
+    }, []);
+
+    return (
         <Router>
             <Header />
-            <User />
-            <UserRegister />
         </Router>
     );
 }

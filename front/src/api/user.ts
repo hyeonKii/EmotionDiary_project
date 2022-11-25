@@ -1,105 +1,36 @@
+import * as endpoint from "@/api/constants/userEndpoints";
 import axios from "axios";
-import { URL } from "./url";
-import * as endpoint from "./constants/userEndpoints";
 import { useMutation } from "react-query";
-
-interface Login {
-    userID: string;
-    password: string;
-}
-
-interface Register {
-    userID: string;
-    email: string;
-    nickname: string;
-    password: string;
-}
-
-interface FindID {
-    email: string;
-}
-
-interface ChangePwd {
-    userID: string;
-    email: string;
-    password: string;
-    newpassword: string;
-}
-
-interface FindPwd {
-    email: string;
-}
-
-interface ChangePwd {
-    userID: string;
-    nickname: string;
-}
-
-interface AuthPwd {
-    userID: string;
-    email: string;
-}
+import { URL } from "./url";
 
 interface Delete {
     userID: string;
 }
 
-interface Logout {
-    userID: string;
-}
-
-async function loginUser(userData: Login) {
-    return await axios.post(URL + endpoint.USER_LOGIN, userData);
-}
-
-async function registerUser(userData: Register) {
-    return await axios.post(URL + endpoint.USER_REGISTER, userData);
-}
-
-async function findID(userData: FindID) {
-    return await axios.post(URL + endpoint.USER_FIND_ID, userData);
-}
-
-async function changePwd(userData: ChangePwd) {
-    return await axios.post(URL + endpoint.USER_CHANGE_PASSWORD, userData);
-}
-
-async function findPwd(userData: FindPwd) {
-    return await axios.post(URL + endpoint.USER_FIND_PASSWORD, userData);
-}
-
-async function authPwd(userData: AuthPwd) {
-    return await axios.post(URL + endpoint.USER_AUTH_PASSWORD, userData);
+interface EditNickname {
+    nickname: string;
 }
 
 async function deleteUser(userData: Delete) {
-    return await axios.post(URL + endpoint.USER_DELETE, userData);
+    return await axios.post(URL + endpoint.USER_DELETE, userData, {
+        headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+            Refreshtoken: sessionStorage.getItem("refreshToken"),
+        },
+    });
 }
 
-async function logoutUser(userData: Logout) {
-    return await axios.post(URL + endpoint.USER_LOGOUT, userData);
+async function editNickname(userData: EditNickname) {
+    return await axios.patch(URL + endpoint.USER_EDIT_NICKNAME, userData, {
+        headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+            Refreshtoken: sessionStorage.getItem("refreshToken"),
+        },
+    });
 }
-
-export const useRequestLogin = (userData: Login, options?: any) =>
-    useMutation(() => loginUser(userData), options);
-
-export const useRequestRegisterUser = (userData: Register, options?: any) =>
-    useMutation(() => registerUser(userData), options);
-
-export const useRequestFindID = (userData: FindID, options?: any) =>
-    useMutation(() => findID(userData), options);
-
-export const useRequestChangePwd = (userData: ChangePwd, options?: any) =>
-    useMutation(() => changePwd(userData), options);
-
-export const useRequestFindPwd = (userData: FindPwd, options?: any) =>
-    useMutation(() => findPwd(userData), options);
-
-export const useRequestAuthPwd = (userData: AuthPwd, options?: any) =>
-    useMutation(() => authPwd(userData), options);
 
 export const useRequestDeleteUser = (userData: Delete, options?: any) =>
     useMutation(() => deleteUser(userData), options);
 
-export const useRequestLogout = (userData: Logout, options?: any) =>
-    useMutation(() => logoutUser(userData), options);
+export const useRequestEditNickname = (userData: EditNickname, options?: any) =>
+    useMutation(() => editNickname(userData), options);
