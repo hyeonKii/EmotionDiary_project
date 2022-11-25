@@ -1,13 +1,15 @@
-import { useCallback, useRef, useState } from "react";
+import { useState } from "react";
 import { useInfiniteQuery } from "react-query";
 import axios from "axios";
 
 import PostItem from "./PostItem";
-import { TabBlock } from "@/styles/home/postList-style";
+import usePost from "@/hooks/usePost";
+import { TabList } from "@/styles/home/postList-style";
 
-const tagList = ["전체", "행복", "분노", "슬픔", "혐오", "경멸", "두려움", "놀라움"];
+const tabList = ["전체", "자신감", "만족감", "신남", "편안함", "불안", "슬픔", "상처", "분노"];
 
 interface Items {
+    userId?: number;
     id: number;
     tag: string;
     body: string;
@@ -15,15 +17,7 @@ interface Items {
 }
 
 export default function PostList() {
-    const [tag, setTag] = useState(0);
-    const intObserver = useRef<IntersectionObserver | null>(null);
-
-    const getPostPage = async (page = 1) => {
-        const { data } = await axios.get(
-            `https://jsonplaceholder.typicode.com/posts?_page=${page}`
-        );
-        return data;
-    };
+    const [tab, setTag] = useState(0);
 
     const { fetchNextPage, hasNextPage, isFetchingNextPage, data, status } = useInfiniteQuery(
         "posts",
@@ -35,23 +29,16 @@ export default function PostList() {
         }
     );
 
-    const lastPostRef = useCallback(
-        (post: Element) => {
-            if (isFetchingNextPage) return;
-            if (intObserver.current) intObserver.current.disconnect();
-            intObserver.current = new IntersectionObserver((posts) => {
-                if (posts[0].isIntersecting && hasNextPage) {
-                    fetchNextPage();
-                }
-            });
-            if (post) intObserver.current.observe(post);
-        },
-        [isFetchingNextPage, fetchNextPage, hasNextPage]
-    );
+    const { lastPostRef } = usePost({ isFetchingNextPage, hasNextPage, fetchNextPage });
 
-    if (status === "error") return <p>Error</p>;
+    const getPostPage = async (page = 1) => {
+        const { data } = await axios.get(
+            `https://jsonplaceholder.typicode.com/posts?_page=${page}`
+        );
+        return data;
+    };
 
-    const content = data?.pages.map((page) => {
+    const content = data?.pages.map((page: any) => {
         return page.map((post: Items, index: number) => {
             if (page.length === index + 1) {
                 return <PostItem ref={lastPostRef} key={post.id} post={post} />;
@@ -60,22 +47,25 @@ export default function PostList() {
         });
     });
 
+    if (status === "error") return <p>Error</p>;
+    if (status === "loading") return <p>Loading</p>;
+
     return (
         <>
-            <TabBlock>
-                {tagList?.map((item, index: number) => (
+            <TabList>
+                {tabList?.map((item, index: number) => (
                     <li
                         key={index}
-                        className={tag === index ? "active" : ""}
+                        className={tab === index ? "active" : undefined}
                         onClick={() => setTag(index)}
                     >
                         {item}
                     </li>
                 ))}
-            </TabBlock>
+            </TabList>
             <section>
                 {content}
-                {isFetchingNextPage && <p>Loading...</p>}
+                {/* {isFetchingNextPage ? <p>Loading...</p> : undefined} */}
             </section>
         </>
     );
