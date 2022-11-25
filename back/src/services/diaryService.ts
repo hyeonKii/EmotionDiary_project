@@ -110,7 +110,9 @@ class DiaryService {
             throw new AppError("NotFindError");
         }
         await this.prisma.$disconnect();
-        return postDatas;
+        // return postDatas;
+
+        return true;
     }
 }
 

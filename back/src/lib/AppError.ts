@@ -8,9 +8,11 @@ type ErrorName =
     | "NotFindError"
     | "ArgumentError"
     | "WrongPasswordError"
-    | "LoginFailError"
+    | "LoginError"
+    | "LogOutError"
     | "InvalidAccessError"
-    | "InternalServerError";
+    | "InternalServerError"
+    | "BodyDataError";
 
 interface ErrorInfo {
     statusCode: number;
@@ -50,9 +52,13 @@ const ERROR_MAP: Record<ErrorName, ErrorInfo> = {
         statusCode: 400,
         message: "Login Failed",
     },
-    LoginFailError: {
+    LoginError: {
         statusCode: 400,
         message: "Login failed",
+    },
+    LogOutError: {
+        statusCode: 400,
+        message: "Logout failed",
     },
     InvalidAccessError: {
         statusCode: 400,
@@ -61,6 +67,10 @@ const ERROR_MAP: Record<ErrorName, ErrorInfo> = {
     InternalServerError: {
         statusCode: 500,
         message: "Internal Server Error",
+    },
+    BodyDataError: {
+        statusCode: 404,
+        message: "BodyData is wrong",
     },
 };
 
