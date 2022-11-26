@@ -42,7 +42,7 @@ export default function Header() {
                         </li>
                         <li>
                             <button onClick={() => setShowDropDown((prevState) => !prevState)}>
-                                {user[0]}
+                                {user.nickname[0]}
                             </button>
                         </li>
                     </ul>

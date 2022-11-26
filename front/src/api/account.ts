@@ -20,15 +20,7 @@ interface FindID {
 }
 
 interface ChangePwd {
-    userID: string;
-    email: string;
     password: string;
-    newpassword: string;
-}
-
-interface ChangePwd {
-    userID: string;
-    nickname: string;
 }
 
 async function loginUser(userData: Login) {
@@ -70,19 +62,18 @@ async function logoutUser() {
     });
 }
 
-export const useFetchUser = (key: string | string[], options?: any) =>
-    useQuery(key, getUser, options);
+export const useFetchUser = (key: string | string[], options?) => useQuery(key, getUser, options);
 
-export const useRequestLogin = (userData: Login, options?: any) =>
+export const useRequestLogin = (userData: Login, options?) =>
     useMutation(() => loginUser(userData), options);
 
-export const useRequestRegisterUser = (userData: Register, options?: any) =>
+export const useRequestRegisterUser = (userData: Register, options?) =>
     useMutation(() => registerUser(userData), options);
 
-export const useRequestFindID = (userData: FindID, options?: any) =>
+export const useRequestFindID = (userData: FindID, options?) =>
     useMutation(() => findID(userData), options);
 
-export const useRequestChangePwd = (userData: ChangePwd, options?: any) =>
+export const useRequestChangePwd = (userData: ChangePwd, options?) =>
     useMutation(() => changePwd(userData), options);
 
-export const useRequestLogout = (options?: any) => useMutation(() => logoutUser(), options);
+export const useRequestLogout = (options?) => useMutation(() => logoutUser(), options);

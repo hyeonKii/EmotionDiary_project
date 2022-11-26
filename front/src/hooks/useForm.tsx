@@ -5,7 +5,7 @@ interface ValidationFn {
     (id: string, value: string): void;
 }
 
-function useForm(initialState: object, validationFn?: ValidationFn) {
+function useForm<T>(initialState: T, validationFn?: ValidationFn) {
     const [form, setForm] = useState(initialState);
     const [validatedForm, setValidatedForm] = useState(initialState);
 

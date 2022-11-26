@@ -5,6 +5,17 @@ import { ROUTES } from "@/routes/route";
 import React from "react";
 import { Link } from "react-router-dom";
 
+interface Response {
+    data: {
+        accessToken: string;
+        refreshToken: string;
+    };
+}
+
+interface Error {
+    message: string;
+}
+
 export default function UserLogin() {
     const { form, changeHandler } = useForm({
         userID: "",
@@ -14,7 +25,7 @@ export default function UserLogin() {
     const { setUser } = useSetUser();
 
     const { mutate: loginRequest } = useRequestLogin(form, {
-        onSuccess: (res) => {
+        onSuccess: (res: Response) => {
             const { accessToken, refreshToken } = res.data;
 
             sessionStorage.setItem("accessToken", accessToken);
@@ -23,7 +34,7 @@ export default function UserLogin() {
             setUser();
         },
 
-        onError: (error) => {
+        onError: (error: Error) => {
             console.log(error.message);
         },
     });

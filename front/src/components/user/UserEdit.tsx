@@ -5,11 +5,19 @@ import useLogout from "@/hooks/useLogout";
 import { currentUser } from "@/temp/userAtom";
 import { useRecoilValue } from "recoil";
 
-export default function UserEdit({ setEditMode }) {
+interface Props {
+    setEditMode(value: boolean): void;
+}
+
+interface Error {
+    message: string;
+}
+
+export default function UserEdit({ setEditMode }: Props) {
     const user = useRecoilValue(currentUser);
 
     const { form, changeHandler } = useForm({
-        nickname: user.nickname,
+        nickname: user?.nickname,
         password: "",
         confirmPassword: "",
     });
@@ -25,7 +33,7 @@ export default function UserEdit({ setEditMode }) {
                 console.log("닉네임 변경 성공");
             },
 
-            onError: (error) => {
+            onError: (error: Error) => {
                 console.log("닉네임 변경 실패: " + error.message);
             },
         }
@@ -38,27 +46,27 @@ export default function UserEdit({ setEditMode }) {
                 console.log("비밀번호 변경 성공");
             },
 
-            onError: (error) => {
+            onError: (error: Error) => {
                 console.log("비밀번호 변경 실패: " + error.message);
             },
         }
     );
 
-    const { isError: deleteUserError, mutate: requestDeleteUser } = useRequestDeleteUser(
-        { userID: user.userID },
-        {
-            onSuccess: () => {
-                console.log("탈퇴 성공");
-            },
+    // const { isError: deleteUserError, mutate: requestDeleteUser } = useRequestDeleteUser(
+    //     { userID: user.userID },
+    //     {
+    //         onSuccess: () => {
+    //             console.log("탈퇴 성공");
+    //         },
 
-            onError: (error) => {
-                console.log("탈퇴 실패: " + error.message);
-            },
-        }
-    );
+    //         onError: (error: Error) => {
+    //             console.log("탈퇴 실패: " + error.message);
+    //         },
+    //     }
+    // );
 
     const submitHandler = () => {
-        if (user.nickname !== form.nickname) {
+        if (user?.nickname !== form.nickname) {
             requestEditNickname();
         }
 
@@ -70,11 +78,11 @@ export default function UserEdit({ setEditMode }) {
         setEditMode(false);
     };
 
-    const deleteHandler = () => {
-        requestDeleteUser();
-        setEditMode(false);
-        logout();
-    };
+    // const deleteHandler = () => {
+    //     requestDeleteUser();
+    //     setEditMode(false);
+    //     logout();
+    // };
 
     return (
         <>
@@ -93,9 +101,9 @@ export default function UserEdit({ setEditMode }) {
             <button type="button" onClick={() => setEditMode(false)}>
                 취소
             </button>
-            <button type="button" onClick={deleteHandler}>
+            {/* <button type="button" onClick={deleteHandler}>
                 회원 탈퇴
-            </button>
+            </button> */}
         </>
     );
 }

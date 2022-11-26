@@ -2,6 +2,10 @@ import { useRequestRegisterUser } from "@/api/account";
 import useForm from "@/hooks/useForm";
 import React from "react";
 
+interface Error {
+    message: string;
+}
+
 export default function UserRegisterTab() {
     const { form, changeHandler } = useForm({
         email: "",
@@ -15,7 +19,7 @@ export default function UserRegisterTab() {
             console.log("회원가입 성공");
         },
 
-        onError: (error) => {
+        onError: (error: Error) => {
             console.log("회원가입 실패 :" + error.message);
         },
     });

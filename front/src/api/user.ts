@@ -8,7 +8,7 @@ interface Delete {
 }
 
 interface EditNickname {
-    nickname: string;
+    nickname: string | null | undefined;
 }
 
 async function deleteUser(userData: Delete) {
@@ -29,8 +29,8 @@ async function editNickname(userData: EditNickname) {
     });
 }
 
-export const useRequestDeleteUser = (userData: Delete, options?: any) =>
+export const useRequestDeleteUser = (userData: Delete, options?) =>
     useMutation(() => deleteUser(userData), options);
 
-export const useRequestEditNickname = (userData: EditNickname, options?: any) =>
+export const useRequestEditNickname = (userData: EditNickname, options?) =>
     useMutation(() => editNickname(userData), options);

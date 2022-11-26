@@ -21,8 +21,8 @@ async function checkCode(userData: CheckCode) {
     return await axios.post(URL + endpoint.CERTIFICATION_EMAIL_CHECK_CODE, userData);
 }
 
-export const useRequestSendCode = (userData: SendCode, options?: any) =>
+export const useRequestSendCode = (userData: SendCode, options?) =>
     useMutation(() => sendCode(userData), options);
 
-export const useRequestCheckCode = (userData: CheckCode, options?: any) =>
+export const useRequestCheckCode = (userData: CheckCode, options?) =>
     useMutation(() => checkCode(userData), options);

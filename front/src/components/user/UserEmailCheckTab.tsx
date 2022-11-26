@@ -2,7 +2,17 @@ import { useRequestCheckCode, useRequestSendCode } from "@/api/certificate";
 import useForm from "@/hooks/useForm";
 import { useState } from "react";
 
-export default function UserEmailCheckTab({ setTab }) {
+interface Response {
+    data: {
+        result: boolean;
+    };
+}
+
+interface Props {
+    setTab(value: boolean): void;
+}
+
+export default function UserEmailCheckTab({ setTab }: Props) {
     const [checkedEmail, setCheckedEmail] = useState(false);
     const { form, changeHandler } = useForm({ email: "", target: "email", code: "" });
 
@@ -16,7 +26,7 @@ export default function UserEmailCheckTab({ setTab }) {
     });
 
     const { isError: codeError, mutate: checkCode } = useRequestCheckCode(form, {
-        onSuccess: (res) => {
+        onSuccess: (res: Response) => {
             const { result } = res.data;
 
             if (result) {
