@@ -19,8 +19,8 @@ interface Error {
 
 export default function UserRegister({ setTabNumber, tabList }: Props) {
     const [tab, setTab] = useState(false);
-    const [email, setEmail] = useState("");
-    const [error, setError] = useState(false);
+    const [requiredEmail, setRequiredEmail] = useState("");
+    const [error, setError] = useState("");
 
     const { form, changeHandler } = useForm({
         email: "",
@@ -30,8 +30,8 @@ export default function UserRegister({ setTabNumber, tabList }: Props) {
         confirmPwd: "",
     });
 
-    const { mutate: registerRequest } = useRequestRegisterUser(
-        { ...form, email },
+    const { isSuccess, mutate: registerRequest } = useRequestRegisterUser(
+        { ...form, email: requiredEmail },
         {
             onSuccess: () => {
                 console.log("회원가입 성공");
@@ -41,14 +41,17 @@ export default function UserRegister({ setTabNumber, tabList }: Props) {
                 console.log("회원가입 실패 :" + error.message);
 
                 if (error.response.data === "User already exists") {
-                    setError(true);
+                    setError("이미 아이디가 존재합니다.");
+                    return;
                 }
+                setError("회원가입 요청이 실패했습니다.");
             },
         }
     );
 
     const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        console.log(requiredEmail);
         registerRequest();
     };
 
@@ -58,18 +61,27 @@ export default function UserRegister({ setTabNumber, tabList }: Props) {
                 <h2>회원가입</h2>
                 <div>{tab}</div>
                 {!tab ? (
-                    <UserEmailCheckTab setTab={setTab} setEmail={setEmail} />
+                    <UserEmailCheckTab setTab={setTab} setRequiredEmail={setRequiredEmail} />
                 ) : (
-                    <UserRegisterTab form={form} changeHandler={changeHandler} error={error} />
+                    <UserRegisterTab
+                        form={form}
+                        changeHandler={changeHandler}
+                        error={error}
+                        isSuccess={isSuccess}
+                        setTabNumber={setTabNumber}
+                        tabList={tabList}
+                    />
                 )}
-                <BottomSectionStyle>
-                    <span>이미 계정이 있으신가요? </span>
-                    <Register>
-                        <button type="button" onClick={() => setTabNumber(tabList.LOGIN)}>
-                            로그인
-                        </button>
-                    </Register>
-                </BottomSectionStyle>
+                {!isSuccess && (
+                    <BottomSectionStyle>
+                        <span>이미 계정이 있으신가요? </span>
+                        <Register>
+                            <button type="button" onClick={() => setTabNumber(tabList.LOGIN)}>
+                                로그인
+                            </button>
+                        </Register>
+                    </BottomSectionStyle>
+                )}
             </fieldset>
         </FormStyle>
     );

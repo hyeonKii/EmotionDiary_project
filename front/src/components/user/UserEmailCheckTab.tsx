@@ -12,10 +12,10 @@ interface Response {
 
 interface Props {
     setTab(value: boolean): void;
-    setEmail(value: string): void;
+    setRequiredEmail(value: string): void;
 }
 
-export default function UserEmailCheckTab({ setTab, setEmail }: Props) {
+export default function UserEmailCheckTab({ setTab, setRequiredEmail }: Props) {
     const [checkedEmail, setCheckedEmail] = useState(false);
     const [error, setError] = useState(false);
 
@@ -41,7 +41,7 @@ export default function UserEmailCheckTab({ setTab, setEmail }: Props) {
             if (result) {
                 setError(false);
                 setCheckedEmail(true);
-                setEmail;
+                setRequiredEmail(form.email);
                 return;
             }
             setError(true);

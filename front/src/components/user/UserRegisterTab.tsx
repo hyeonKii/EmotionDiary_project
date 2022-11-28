@@ -8,51 +8,82 @@ interface Props {
         confirmPwd: string;
     };
     changeHandler(event: React.ChangeEvent<HTMLInputElement>): void;
-    error: boolean;
+    error: string;
+    isSuccess: boolean;
+    setTabNumber(value: number): void;
+    tabList: { LOGIN: number };
 }
 
-export default function UserRegisterTab({ form, changeHandler, error }: Props) {
+export default function UserRegisterTab({
+    form,
+    changeHandler,
+    error,
+    isSuccess,
+    setTabNumber,
+    tabList,
+}: Props) {
     const checkPassword = form.password !== form.confirmPwd ? true : false;
 
     return (
         <>
-            <InputSection>
-                <label htmlFor="userID">
-                    <Icon icon="userID" />
-                </label>
-                <input id="userID" type="text" onChange={changeHandler} placeholder="아이디" />
-                {error && <Error>이미 존재하는 아이디입니다.</Error>}
-            </InputSection>
-            <InputSection>
-                <label htmlFor="nickname">
-                    <Icon icon="userID" />
-                </label>
-                <input id="nickname" type="text" onChange={changeHandler} placeholder="닉네임" />
-            </InputSection>
-            <InputSection>
-                <label htmlFor="certification">
-                    <Icon icon="certification" />
-                </label>
-                <input
-                    id="password"
-                    type="password"
-                    onChange={changeHandler}
-                    placeholder="비밀번호"
-                />
-            </InputSection>
-            <InputSection>
-                <label htmlFor="certification">
-                    <Icon icon="certification" />
-                </label>
-                <input
-                    id="confirmPwd"
-                    type="password"
-                    onChange={changeHandler}
-                    placeholder="비밀번호 확인"
-                />
-                {checkPassword && <Error>비밀번호가 일치하지 않습니다.</Error>}
-            </InputSection>
-            <LoginButtonStyle>회원가입</LoginButtonStyle>
+            {!isSuccess ? (
+                <>
+                    <InputSection>
+                        <label htmlFor="userID">
+                            <Icon icon="userID" />
+                        </label>
+                        <input
+                            id="userID"
+                            type="text"
+                            onChange={changeHandler}
+                            placeholder="아이디"
+                        />
+                        {error && <Error>{error}</Error>}
+                    </InputSection>
+                    <InputSection>
+                        <label htmlFor="nickname">
+                            <Icon icon="userID" />
+                        </label>
+                        <input
+                            id="nickname"
+                            type="text"
+                            onChange={changeHandler}
+                            placeholder="닉네임"
+                        />
+                    </InputSection>
+                    <InputSection>
+                        <label htmlFor="certification">
+                            <Icon icon="certification" />
+                        </label>
+                        <input
+                            id="password"
+                            type="password"
+                            onChange={changeHandler}
+                            placeholder="비밀번호"
+                        />
+                    </InputSection>
+                    <InputSection>
+                        <label htmlFor="certification">
+                            <Icon icon="certification" />
+                        </label>
+                        <input
+                            id="confirmPwd"
+                            type="password"
+                            onChange={changeHandler}
+                            placeholder="비밀번호 확인"
+                        />
+                        {checkPassword && <Error>비밀번호가 일치하지 않습니다.</Error>}
+                    </InputSection>
+                    <LoginButtonStyle>회원가입</LoginButtonStyle>
+                </>
+            ) : (
+                <>
+                    <div>회원가입에 성공하셨습니다!</div>
+                    <LoginButtonStyle type="button" onClick={() => setTabNumber(tabList.LOGIN)}>
+                        로그인 하기
+                    </LoginButtonStyle>
+                </>
+            )}
         </>
     );
 }
