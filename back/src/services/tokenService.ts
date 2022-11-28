@@ -99,6 +99,22 @@ class Token {
 
         return refreshToken;
     }
+
+    async checkRefreshToken(refreshToken: string) {
+        const result = await this.prisma.token.findUnique({
+            where: {
+                token: refreshToken,
+            },
+        });
+
+        this.prisma.$disconnect();
+
+        if (result === null) {
+            return false;
+        }
+
+        return true;
+    }
 }
 
 export default new Token();
