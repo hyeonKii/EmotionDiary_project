@@ -10,10 +10,10 @@ export default function Icon({ icon }: IconProps) {
             xmlns="http://www.w3.org/2000/svg"
             style={{
                 position: "absolute",
-                width: "40",
-                height: "40,",
-                top: "7px",
-                left: "7px",
+                width: "2.5rem",
+                height: "2.5rem",
+                top: "9px",
+                left: "9px",
                 color: "gray",
             }}
             viewBox={IconSet[icon].viewBox}
