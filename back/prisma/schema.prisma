@@ -38,8 +38,8 @@ model Account {
 }
 
 model Diary {
-  id Int @id @unique @default(autoincrement())
-
+  id          Int           @id @unique @default(autoincrement())
+  emotion     String        @default("normal")
   title       String
   description String
   private     Boolean  @default(false)

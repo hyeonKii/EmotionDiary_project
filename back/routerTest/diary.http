@@ -2,7 +2,7 @@
 
 #############################3#토큰 발급용 로그인,로그아웃##########################
 ###login
-POST {{url}}/users
+POST {{url}}/account/login
 Content-Type: application/json
 
 {
@@ -25,6 +25,19 @@ Content-Type: application/json
 }
 
 
+###회원가입
+post {{url}}/users/new
+Content-Type: application/json
+
+{
+  "userID": "euiho",
+  "password": "0000",
+  "email":"ehlee7003@gmail.com",
+  "nickname":"euiho",
+  "emailVerification":"0"
+}
+
+
 ##################################################################################
 
 
@@ -37,12 +50,12 @@ Content-Type: application/json
 
 ### 일기 작성 api
 post {{url}}/diaries/write
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2NjkxODEyNzAsImV4cCI6MTY2OTE4MzA3MH0.e-RuFJXakKuren9LMGoETfDZ5f3UeHkklNxqHkprAnk
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MTgxMjcwLCJleHAiOjE2NjkxOTIwNzB9.UvSrCeRo9Q9L7T5CHRCfvwT9k96fMsa3YWOxqgnHLm0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2NjkzNDE5MDksImV4cCI6MTY2OTM0MzcwOX0.R47c-1dGe_eU49gwhR5K8Iiul6XZ6iQ-TcQUnE61UKw
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MzQxOTA5LCJleHAiOjE2NjkzNTI3MDl9._24NRpkNkajw5BsWC9hN9kGkU5M-rKF57KQeVdwWamM
 Content-Type: application/json
 
 {
-  "userID": "euih111o",
+  "userID": "euiho",
   "title": "test1",
   "description":"test"
 }
@@ -74,6 +87,16 @@ Content-Type: application/json
   "description":"test"
 }
 
+###감정 바꾸기
+put {{url}}/diaries/emotion/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2NjkzNDE5MDksImV4cCI6MTY2OTM0MzcwOX0.R47c-1dGe_eU49gwhR5K8Iiul6XZ6iQ-TcQUnE61UKw
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MzQxOTA5LCJleHAiOjE2NjkzNTI3MDl9._24NRpkNkajw5BsWC9hN9kGkU5M-rKF57KQeVdwWamM
+Content-Type: application/json
+
+{
+  "emotion": "angry"
+}
+
 
 
 ### 일기 삭제
@@ -81,3 +104,5 @@ delete {{url}}/diaries/11
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2NjkxMDIzNTAsImV4cCI6MTY2OTEwNDE1MH0.ZQdV02n26JE3HV1K6SD5WAsye_EqCxEqwVAAou8n2rA
 RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MTAyMzUwLCJleHAiOjE2NzAzMTE5NTB9._Tjm0OlQf7KLYH9r8CyKGOzSSwQXQWZdAulWTYVg-ps
 Content-Type: application/json
+
+

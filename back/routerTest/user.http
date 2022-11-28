@@ -1,17 +1,27 @@
 ### Variables
 
-@URL = http://localhost:3002/api/users
+@url = http://localhost:3002/api/users
 
 ### 닉네임 변경
 ### onSuccess: {"ok": true}
 ### onError:
 ### -
 
-PATCH  {{URL}}/nickname
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdDQiLCJpYXQiOjE2NjkzMTY2OTEsImV4cCI6MTY2OTMxODQ5MX0.oucWQCRrpySNGp9E2VotkKaP5frpiyH-mlqT7ECBsWs
-Refreshtoken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MzE2NjkxLCJleHAiOjE2NjkzMjc0OTF9.Thf3mN1omtvgxyYY0HoOZp4bm5mqjTvwEuohr1FaZB8
+PATCH {{url}}/nickname
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2NjkzNzc0NDQsImV4cCI6MTY2OTM3OTI0NH0.IAqW2hRj3I3NAG8TStIcm23oYKX-dszIbrUxXcLOr5w
+Refreshtoken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5Mzc3NDQ0LCJleHAiOjE2NjkzODgyNDR9.Gbw6SaNPAGG_-092ambg6qdaCWhdOhLJ6lTPwoSfOxc
 Content-Type: application/json
 
 {
-    "nickname": "바뀐 닉네임"
+    "nickname": "nick123"
 }
+
+
+###
+post {{url}}/withdrawal
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2NjkzNzc0NDQsImV4cCI6MTY2OTM3OTI0NH0.IAqW2hRj3I3NAG8TStIcm23oYKX-dszIbrUxXcLOr5w
+Refreshtoken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5Mzc3NDQ0LCJleHAiOjE2NjkzODgyNDR9.Gbw6SaNPAGG_-092ambg6qdaCWhdOhLJ6lTPwoSfOxc
+Content-Type: application/json
+
+
+

@@ -1,0 +1,64 @@
+@url = http://localhost:3002/api
+
+##############################토큰 발급용 로그인,로그아웃##########################
+###login
+POST {{url}}/account/login
+Content-Type: application/json
+
+{
+    "userID": "test",
+    "password": "0000"
+}
+###logout
+delete {{url}}/account
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2NjkxMDIzNTAsImV4cCI6MTY2OTEwNDE1MH0.ZQdV02n26JE3HV1K6SD5WAsye_EqCxEqwVAAou8n2rA
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MTAyMzUwLCJleHAiOjE2NzAzMTE5NTB9._Tjm0OlQf7KLYH9r8CyKGOzSSwQXQWZdAulWTYVg-ps
+Content-Type: application/json
+
+
+###이메일 인증번호 발신 API
+post {{url}}/account/findid
+Content-Type: application/json
+
+{
+  "email":"ehlee7003@gmail.com"
+}
+
+
+###회원가입
+post {{url}}/account/new
+Content-Type: application/json
+
+{
+  "nickname":"test",
+  "email":"jlee7003@naver.com",
+  "userID": "test",
+  "password": "0000"
+}
+
+
+##################################################################################
+
+
+
+### 메일 발송
+post {{url}}/certification/send
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2NjkxODEyNzAsImV4cCI6MTY2OTE4MzA3MH0.e-RuFJXakKuren9LMGoETfDZ5f3UeHkklNxqHkprAnk
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MTgxMjcwLCJleHAiOjE2NjkxOTIwNzB9.UvSrCeRo9Q9L7T5CHRCfvwT9k96fMsa3YWOxqgnHLm0
+Content-Type: application/json
+
+{
+  "email": "gopivep258@nubotel.com",
+  "target":"email"
+}
+
+### 코드 인증
+post {{url}}/certification/certify
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdCIsImlhdCI6MTY2OTM0NDk2NiwiZXhwIjoxNjY5MzQ2NzY2fQ.uwSbY0MUl6K-RcONH95G5rjNugE8R7rhKWiz-PLMD2c
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MzQ0OTY2LCJleHAiOjE2NjkzNTU3NjZ9.cqkrVP8vaIjU1s9KvzPdmglglUGYcW50vkBs6-R1_so
+Content-Type: application/json
+
+{
+  "email": "gopivep258@nubotel.com",
+  "code":"vfT5t4T3"
+}

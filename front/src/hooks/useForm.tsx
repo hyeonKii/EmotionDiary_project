@@ -1,39 +1,31 @@
 import React from "react";
 import { useState } from "react";
-import useRequest from "@/hooks/useRequest";
 
-interface Props {
-    initialState: object;
-    endpoint: string[];
-    validationFn?(id: string, value: string): boolean;
+interface ValidationFn {
+    (id: string, value: string): void;
 }
 
-export default function useForm({ initialState, endpoint, validationFn }: Props) {
+function useForm<T>(initialState: T, validationFn?: ValidationFn) {
     const [form, setForm] = useState(initialState);
     const [validatedForm, setValidatedForm] = useState(initialState);
-    const { requestHandler } = useRequest(endpoint, form);
 
-    const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = event.target;
 
-        setForm((prevState: object) => ({
+        setForm((prevState) => ({
             ...prevState,
             [id]: value,
         }));
 
         if (validationFn) {
-            setValidatedForm((prevState: object) => ({
+            setValidatedForm((prevState) => ({
                 ...prevState,
                 [id]: validationFn(id, value),
             }));
         }
     };
 
-    const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        requestHandler();
-        setForm(initialState);
-    };
-
-    return { form, validatedForm, onChangeHandler, onSubmitHandler, requestHandler };
+    return { form, validatedForm, changeHandler };
 }
+
+export default useForm;

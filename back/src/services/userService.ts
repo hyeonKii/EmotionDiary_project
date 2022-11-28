@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import AppError from "../lib/AppError";
-
 class UserService {
     private prisma = new PrismaClient();
 

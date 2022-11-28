@@ -13,6 +13,7 @@ userRouter.patch(
     "/nickname",
     auth,
     wrapRouter(async (req: Req, res: Res) => {
+        console.log("test");
         const { nickname } = req.body;
 
         if (nickname === undefined) {

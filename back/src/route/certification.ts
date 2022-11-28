@@ -9,7 +9,7 @@ const certificationRouter = Router();
 // 이메일로 이메일 인증 코드 또는 임시 비밀번호 발송
 certificationRouter.post(
     "/send",
-    auth,
+    // auth,
     wrapRouter(async (req, res) => {
         const { email, target } = req.body;
 
@@ -21,8 +21,7 @@ certificationRouter.post(
             throw new AppError("BodyDataError");
         }
 
-        const result = certificationService.generateCode(target, email);
-
+        const result = await certificationService.generateCode(target, email);
         return { statusCode: 200, content: result };
     })
 );
@@ -30,15 +29,15 @@ certificationRouter.post(
 // 코드 인증
 certificationRouter.post(
     "/certify",
-    auth,
+    // auth,
     wrapRouter(async (req, res) => {
         const { email, code } = req.body;
-
-        if (email && code) {
+        console.log(email, code, email || code);
+        if (email === undefined || code === undefined) {
             throw new AppError("BodyDataError");
         }
 
-        const result = certificationService.certifyEmailByCode(email, code);
+        const result = await certificationService.certifyEmailByCode(email, code);
 
         return { statusCode: 200, content: result };
     })
