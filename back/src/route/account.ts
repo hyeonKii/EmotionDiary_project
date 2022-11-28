@@ -77,14 +77,14 @@ accountRouter.delete(
 );
 
 //아이디 찾기
-accountRouter.get(
+accountRouter.post(
     "/user-id",
     wrapRouter(async (req: Req, res: Res) => {
         const { email, code } = req.body;
 
-        if (email && code) {
-            throw new AppError("BodyDataError");
-        }
+        // if (email && code) {
+        //     throw new AppError("BodyDataError");
+        // }
 
         const result = await accountService.getUserIDByCertification(email, code);
 
