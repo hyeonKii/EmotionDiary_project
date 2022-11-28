@@ -12,7 +12,7 @@ export default function Icon({ icon }: IconProps) {
                 position: "absolute",
                 width: "2.5rem",
                 height: "2.5rem",
-                top: "9px",
+                top: "10px",
                 left: "9px",
                 color: "gray",
             }}

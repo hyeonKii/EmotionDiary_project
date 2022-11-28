@@ -23,8 +23,6 @@ export default function useLogout() {
                 setSession("accessToken", "");
                 setSession("refreshToken", "");
             }
-
-            console.log(res);
         },
 
         onError: (error: Error) => {

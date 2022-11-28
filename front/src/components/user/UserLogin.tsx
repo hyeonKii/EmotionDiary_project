@@ -1,11 +1,8 @@
 import { useRequestLogin } from "@/api/account";
 import useForm from "@/hooks/useForm";
 import useSetUser from "@/hooks/useSetUser";
-import { ROUTES } from "@/routes/route";
 import setSession from "@/util/setSession";
-import React from "react";
-import { Link } from "react-router-dom";
-
+import React, { useState } from "react";
 import styled from "styled-components";
 import Icon from "../UI/Icon";
 
@@ -20,13 +17,20 @@ interface Error {
     message: string;
 }
 
-export default function UserLogin() {
+interface Props {
+    setTabNumber(value: number): void;
+    tabList: { LOGIN: number; REGISTER: number; FIND_ID: number; FIND_PW: number };
+    setShowLoginForm(value: boolean): void;
+}
+
+export default function UserLogin({ setTabNumber, tabList, setShowLoginForm }: Props) {
+    const [error, setError] = useState(false);
+    const { setUser } = useSetUser();
+
     const { form, changeHandler } = useForm({
         userID: "",
         password: "",
     });
-
-    const { setUser } = useSetUser();
 
     const { mutate: loginRequest } = useRequestLogin(form, {
         onSuccess: (res: Response) => {
@@ -36,9 +40,12 @@ export default function UserLogin() {
             setSession("refreshToken", refreshToken);
 
             setUser();
+
+            setShowLoginForm(false);
         },
 
         onError: (error: Error) => {
+            setError(true);
             console.log(error.message);
         },
     });
@@ -69,19 +76,33 @@ export default function UserLogin() {
                         placeholder="비밀번호"
                     />
                 </div>
-                <button>로그인</button>
-                <div>
-                    <span>계정이 없으신가요?</span>
-                    <Link
-                        to={ROUTES.REGISTER.path}
-                        style={{
-                            textDecoration: "none",
-                            color: "#47B5FF",
-                        }}
-                    >
-                        회원가입
-                    </Link>
-                </div>
+                {error && <ErrorStyle>입력하신 정보를 다시 확인해주세요.</ErrorStyle>}
+                <LoginButtonStyle disabled={!form.userID || !form.password ? true : false}>
+                    로그인
+                </LoginButtonStyle>
+                <BottomSectionStyle>
+                    <BottomRegisterStyle>
+                        <span>계정이 없으신가요? </span>
+                        <Register>
+                            <button type="button" onClick={() => setTabNumber(tabList.REGISTER)}>
+                                회원가입
+                            </button>
+                        </Register>
+                    </BottomRegisterStyle>
+                    <BottomFindSomethingStyle>
+                        <span>
+                            <button type="button" onClick={() => setTabNumber(tabList.FIND_ID)}>
+                                아이디
+                            </button>
+                        </span>
+                        <span> / </span>
+                        <span>
+                            <button type="button" onClick={() => setTabNumber(tabList.FIND_PW)}>
+                                비밀번호 찾기
+                            </button>
+                        </span>
+                    </BottomFindSomethingStyle>
+                </BottomSectionStyle>
             </fieldset>
         </FormStyle>
     );
@@ -97,8 +118,8 @@ const FormStyle = styled.form`
     z-index: 20;
     border-radius: 20px;
     background-color: white;
-    height: 50%;
-    width: 20%;
+    height: 55%;
+    width: 25%;
     min-width: 250px;
     min-height: 460px;
 
@@ -138,18 +159,46 @@ const FormStyle = styled.form`
             margin-bottom: 2rem;
             padding-left: 2rem;
         }
+    }
+`;
 
-        button {
-            width: 100%;
-            height: 2.5rem;
+const LoginButtonStyle = styled.button`
+    width: 100%;
+    height: 2.5rem;
 
-            margin-top: 2rem;
-            margin-bottom: 1rem;
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
 
-            color: white;
-            border: none;
-            border-radius: 8px;
-            background-color: lightblue;
-        }
+    color: white;
+    border: none;
+    border-radius: 8px;
+    background-color: ${(props) => (props.disabled ? "gray" : "lightblue")};
+`;
+
+const ErrorStyle = styled.div`
+    color: red;
+    font-size: 0.9rem;
+`;
+
+const BottomSectionStyle = styled.div`
+    font-size: 0.8rem;
+`;
+
+const BottomRegisterStyle = styled.div`
+    margin-bottom: 0.5rem;
+`;
+
+const Register = styled.span`
+    button {
+        font-size: 0.9rem;
+        color: lightblue;
+    }
+`;
+
+const BottomFindSomethingStyle = styled.div`
+    color: lightblue;
+
+    button {
+        color: lightblue;
     }
 `;
