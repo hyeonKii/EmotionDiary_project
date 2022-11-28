@@ -1,10 +1,4 @@
-import {
-    HomeSection1,
-    RightSection,
-    Input,
-    LeftSection,
-    Bookimg,
-} from "@/styles/home/introduce-style";
+import { HomeSection1, RightSection, LeftSection, Bookimg } from "@/styles/home/introduce-style";
 
 export default function Main() {
     return (
