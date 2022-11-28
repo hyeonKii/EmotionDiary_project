@@ -44,6 +44,7 @@ const auth = async (req: Req, res: Res, next: NextFunction) => {
     }
 
     req.userID = accessPayload.data;
+    req.refreshToken = refreshToken;
 
     next();
 };
