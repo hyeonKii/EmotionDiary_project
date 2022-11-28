@@ -5,6 +5,7 @@ import { useRecoilValue } from "recoil";
 import { currentUser } from "@/temp/userAtom";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ROUTES_LIST } from "@/routes/route";
+import UserFormController from "../user/UserFormController";
 
 export default function Header() {
     const user = useRecoilValue(currentUser);
@@ -14,13 +15,7 @@ export default function Header() {
 
     return (
         <header>
-            {showLoginForm && (
-                <Routes>
-                    {ROUTES_LIST.map(({ path, Component }, idx) => (
-                        <Route key={idx} path={path} element={<Component />} />
-                    ))}
-                </Routes>
-            )}
+            {showLoginForm && <UserFormController />}
             <NavStyle>
                 <div>마음일기</div>
                 {!user ? (
