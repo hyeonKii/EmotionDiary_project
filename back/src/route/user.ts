@@ -26,7 +26,7 @@ userRouter.patch(
 );
 
 //회원 탈퇴
-userRouter.post(
+userRouter.delete(
     "/withdrawal",
     auth,
     wrapRouter(async (req: Req, res: Res) => {

@@ -1,7 +1,6 @@
 import { Router, Request as Req, Response as Res } from "express";
 import wrapRouter from "lib/wrapRouter";
-import userService from "../services/userService";
-import tokenService from "../services/tokenService";
+import tokenService from "services/tokenService";
 import auth from "middleware/auth";
 import AppError from "lib/AppError";
 import accountService from "services/accountService";
@@ -77,12 +76,12 @@ accountRouter.delete(
 );
 
 //아이디 찾기
-accountRouter.get(
+accountRouter.post(
     "/user-id",
     wrapRouter(async (req: Req, res: Res) => {
         const { email, code } = req.body;
 
-        if (email && code) {
+        if ((email && code) === undefined) {
             throw new AppError("BodyDataError");
         }
 
