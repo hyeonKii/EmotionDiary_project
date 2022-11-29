@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import Header from "./components/UI/Header";
 import Footer from "./components/UI/Footer";
 import useSetUser from "./hooks/useSetUser";
+import DiaryPage from "./pages/DiaryPage";
 
 function App() {
     const { setUser: setUser } = useSetUser();
@@ -25,6 +26,7 @@ function App() {
     return (
         <Router>
             <Header />
+            <DiaryPage />
             <Footer />
         </Router>
     );

@@ -3,6 +3,7 @@ import { useInfiniteQuery } from "react-query";
 import axios from "axios";
 
 import PostItem from "./PostItem";
+import Loading from "../UI/Loading";
 import usePost from "@/hooks/usePost";
 import { TabList } from "@/styles/common/tab-style";
 
@@ -17,7 +18,7 @@ interface Items {
 }
 
 export default function PostList() {
-    const [tab, setTab] = useState(0);
+    const [tab, setTab] = useState("전체");
 
     const { fetchNextPage, hasNextPage, isFetchingNextPage, data, status } = useInfiniteQuery(
         "posts",
@@ -38,7 +39,7 @@ export default function PostList() {
         return data;
     };
 
-    const content = data?.pages.map((page: any) => {
+    const content = data?.pages.map((page) => {
         return page.map((post: Items, index: number) => {
             if (page.length === index + 1) {
                 return <PostItem ref={lastPostRef} key={post.id} post={post} />;
@@ -48,18 +49,18 @@ export default function PostList() {
     });
 
     if (status === "error") return <p>Error</p>;
-    if (status === "loading") return <p>Loading</p>;
+    if (status === "loading") return <Loading />;
 
     return (
         <>
             <TabList>
-                {tabList?.map((item, index: number) => (
+                {tabList?.map((tabName) => (
                     <li
-                        key={index}
-                        className={tab === index ? "active" : undefined}
-                        onClick={() => setTab(index)}
+                        key={tabName}
+                        className={tab === tabName ? "active" : undefined}
+                        onClick={() => setTab(tabName)}
                     >
-                        {item}
+                        {tabName}
                     </li>
                 ))}
             </TabList>
