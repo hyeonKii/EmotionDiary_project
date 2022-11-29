@@ -12,9 +12,11 @@ const tabList = ["전체", "자신감", "만족감", "신남", "편안함", "불
 interface Items {
     userId?: number;
     id: number;
-    tag: string;
-    body: string;
+    emotion: string;
+    title: string;
+    description: string;
     time: string;
+    body: string;
 }
 
 export default function PostList() {
