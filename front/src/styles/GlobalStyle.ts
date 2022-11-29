@@ -13,4 +13,11 @@ export const GlobalStyle = createGlobalStyle`
       margin: 0;
       padding: 0;
     }
+
+    button {
+      border: 0;
+      background: 0;
+
+      cursor: pointer;
+    }
 `;

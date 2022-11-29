@@ -6,7 +6,8 @@ export const TabList = styled.ul`
 
     width: 70%;
     max-width: 800;
-    margin: 2rem auto;
+    margin: 0 auto;
+    padding: 2rem 0;
 
     li {
         list-style: none;
