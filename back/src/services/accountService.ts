@@ -35,17 +35,6 @@ class AccountService {
     }
 
     async login(userID: string, password: string) {
-        const isLogin = await this.prisma.token.findUnique({
-            where: {
-                userID,
-            },
-        });
-
-        if (isLogin) {
-            logger.error("LoginError");
-            throw new AppError("LoginError");
-        }
-
         const user = await this.prisma.account.findUnique({
             where: {
                 userID: userID,
@@ -63,7 +52,15 @@ class AccountService {
         }
 
         const accessToken = generateToken("access", userID);
-        const refreshToken = await tokenService.addRefreshToken(userID);
+        let refreshToken = null;
+
+        const getRefreshToken = await tokenService.getRefreshToken(userID);
+
+        if (getRefreshToken !== null) {
+            refreshToken = await tokenService.updateRefreshToken(userID);
+        } else {
+            refreshToken = await tokenService.addRefreshToken(userID);
+        }
 
         this.prisma.$disconnect();
 

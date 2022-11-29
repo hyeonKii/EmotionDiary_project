@@ -22,7 +22,7 @@ const auth = async (req: Req, res: Res, next: NextFunction) => {
 
     // whether refreshToken is in db or not
     const checkRefreshToken = await tokenService.checkRefreshToken(refreshToken);
-    console.log(checkRefreshToken);
+
     if (checkRefreshToken === false) {
         next(new AppError("InvalidTokenError"));
 
