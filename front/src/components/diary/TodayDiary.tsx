@@ -12,14 +12,19 @@ import {
 const data = {
     nickname: "윤아",
     emotion: "슬픔",
-    body: "오늘 너무 힘들었다. 내일은 안 힘들겠지? 슬프다",
-    state: "나만보기",
+    title: "오늘 너무 힘들었다. 내일은 안 힘들겠지? 슬프다",
+    description: "test",
+    private: false,
     date: "Fri Nov 22 2022 00:00:00 GMT+0900",
 };
 
 export function TodayDiary() {
     const [value, setValue] = useState(new Date());
-    const [newText, setNewText] = useState(data.body);
+    const [newText, setNewText] = useState({
+        title: data.title,
+        description: data.description,
+        private: data.private,
+    });
     const [isEdit, setIsEdit] = useState(false);
     const { emotionState } = useEmotion(data.emotion, data.nickname);
 
@@ -30,14 +35,18 @@ export function TodayDiary() {
     });
 
     const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setNewText(e.target.value);
-        if (newText.length > 500) alert("500자");
+        const { name, value } = e.currentTarget;
+        setNewText((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+        if (newText.description.length > 500) alert("500자");
     };
 
     const onDelete = async () => {
         try {
             // await api.deleteMyDiary(`${id}`);
-            setNewText("");
+            setNewText({ title: "", description: "", private: true });
             setIsEdit(true);
         } catch (e) {
             console.error(e);
@@ -67,7 +76,7 @@ export function TodayDiary() {
                     <article className="title">
                         <span className="date">{dateString}</span>
                         <div className="icons">
-                            {data.state === "나만보기" ? (
+                            {data.private ? (
                                 <span className="material-symbols-outlined">lock</span>
                             ) : (
                                 <span className="material-symbols-outlined">lock_open</span>
@@ -82,7 +91,7 @@ export function TodayDiary() {
                                 delete
                             </button>
                         </div>
-                        {data.state === "나만보기" ? (
+                        {data.private ? (
                             <select>
                                 <option value="나만보기">나만보기</option>
                                 <option value="전체공개">전체공개</option>
@@ -99,23 +108,23 @@ export function TodayDiary() {
                             <textarea
                                 className="body"
                                 rows="10"
-                                value={newText}
+                                value={newText.description}
                                 autoFocus
                                 onChange={onChange}
                             />
                             <div>
-                                <span className="countText">{newText.length}/500</span>
+                                <span className="countText">{newText.description.length}/500</span>
                                 <button
                                     className="submitButton"
                                     onClick={() => setIsEdit(false)}
-                                    disabled={newText.length === 0}
+                                    disabled={newText.description.length === 0}
                                 >
                                     저장
                                 </button>
                             </div>
                         </EditBlock>
                     ) : (
-                        <span className="body">{newText}</span>
+                        <span className="body">{newText.description}</span>
                     )}
                 </DiaryDetail>
             </CalendarDetail>

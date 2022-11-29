@@ -48,6 +48,11 @@ export const TodaySection = styled.section`
             border-radius: 50%;
             background: ${color.lightGray};
 
+            &:hover,
+            &:focus {
+                background: ${color.lightGray};
+            }
+
             abbr {
                 color: white;
             }
