@@ -6,13 +6,13 @@ POST {{url}}/account/login
 Content-Type: application/json
 
 {
-    "userID": "euiho",
+    "userID": "test",
     "password": "0000"
 }
 ###logout
-delete {{url}}/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2NjkxMDIzNTAsImV4cCI6MTY2OTEwNDE1MH0.ZQdV02n26JE3HV1K6SD5WAsye_EqCxEqwVAAou8n2rA
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MTAyMzUwLCJleHAiOjE2NzAzMTE5NTB9._Tjm0OlQf7KLYH9r8CyKGOzSSwQXQWZdAulWTYVg-ps
+delete {{url}}/account
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdCIsImlhdCI6MTY2OTY5ODcwMywiZXhwIjoxNjY5NzAwNTAzfQ.jf1SjQfCkuJl_hQE1UrnURAtIlBhr-98cPKD3bjeV-c
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5Njk4NzAzLCJleHAiOjE2Njk3MDk1MDN9.dEvLKMxTrCc5C_dZTmFXdc7KTZGoukO7tzDozPBk6Jg
 Content-Type: application/json
 
 

@@ -25,7 +25,6 @@ accountRouter.post(
         if ((userID && password && email && nickname) === undefined) {
             throw new AppError("BodyDataError");
         }
-        console.log(nickname);
         const result = await accountService.register({
             nickname,
             email,

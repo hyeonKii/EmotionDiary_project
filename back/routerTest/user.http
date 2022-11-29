@@ -18,10 +18,9 @@ Content-Type: application/json
 
 
 ###
-post {{url}}/withdrawal
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2NjkzNzc0NDQsImV4cCI6MTY2OTM3OTI0NH0.IAqW2hRj3I3NAG8TStIcm23oYKX-dszIbrUxXcLOr5w
-Refreshtoken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5Mzc3NDQ0LCJleHAiOjE2NjkzODgyNDR9.Gbw6SaNPAGG_-092ambg6qdaCWhdOhLJ6lTPwoSfOxc
+delete {{url}}/withdrawal
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdCIsImlhdCI6MTY2OTY5NzgzNSwiZXhwIjoxNjY5Njk5NjM1fQ.SS882ykHgMLdvRGHjVApP70GeJjfnJZXT6aBO-hrG74
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5Njk3ODM1LCJleHAiOjE2Njk3MDg2MzV9.WSbG_Ob0NtAyYgEwH3CRhPEj6O0CNHWDOiot2Vb0YIk
 Content-Type: application/json
-
 
 

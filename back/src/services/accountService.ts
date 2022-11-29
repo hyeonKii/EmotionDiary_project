@@ -50,10 +50,22 @@ class AccountService {
             where: {
                 userID: userID,
             },
+            select: {
+                password: true,
+                User: {
+                    select: {
+                        blocking: true,
+                    },
+                },
+            },
         });
 
         if (user === null) {
             throw new AppError("LoginError");
+        }
+
+        if (user.User.blocking === true) {
+            throw new AppError("WithdrawnError");
         }
 
         const result = await bcrypt.compare(password, user.password);
@@ -153,7 +165,6 @@ class AccountService {
 
     async changePassword(userID: string, password: string) {
         try {
-            console.log(password);
             const paswordHash = await bcrypt.hash(password, 10);
 
             await this.prisma.account.update({

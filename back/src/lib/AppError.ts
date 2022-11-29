@@ -10,6 +10,7 @@ type ErrorName =
     | "WrongPasswordError"
     | "LoginError"
     | "LogOutError"
+    | "WithdrawnError"
     | "InvalidAccessError"
     | "InternalServerError"
     | "BodyDataError";
@@ -59,6 +60,10 @@ const ERROR_MAP: Record<ErrorName, ErrorInfo> = {
     LogOutError: {
         statusCode: 400,
         message: "Logout failed",
+    },
+    WithdrawnError: {
+        statusCode: 400,
+        message: "withdrawn member",
     },
     InvalidAccessError: {
         statusCode: 400,
