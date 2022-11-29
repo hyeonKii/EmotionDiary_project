@@ -55,9 +55,9 @@ RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5M
 Content-Type: application/json
 
 {
-  "userID": "euiho",
   "title": "test1",
-  "description":"test"
+  "description":"test",
+  "privateDiary": "true"
 }
 
 ### 조회수 추가

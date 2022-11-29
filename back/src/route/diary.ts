@@ -10,15 +10,11 @@ diaryRouter.post(
     "/write",
     auth,
     wrapRouter(async (req: Req, res: Res) => {
-        const { userID, title, description, nickname } = req.body;
-        if (
-            typeof userID !== "string" ||
-            typeof title !== "string" ||
-            typeof description !== "string"
-        ) {
+        const { title, description, privateDiary } = req.body;
+        if (title && description && privateDiary === undefined) {
             throw new AppError("ArgumentError");
         }
-        const result = await diaryService.writeDiary(userID, title, description);
+        const result = await diaryService.writeDiary(req.userID!, title, description);
         return { statusCode: 200, content: true };
     })
 );
