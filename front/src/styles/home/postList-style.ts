@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { color } from "../common/colorPalette";
+import { color } from "@/styles/common/colorPalette";
 
 export const CardSection = styled.section`
     position: relative;
@@ -14,26 +14,26 @@ export const CardSection = styled.section`
     box-shadow: 0 4px 4px 0 ${color.gray};
 `;
 
-export const Post = styled.article<{ isOpen: boolean; tag: string }>`
+export const Post = styled.article<{ isOpen: boolean; emotion: string }>`
     display: flex;
 
-    .tag {
+    .emotion {
         flex: 0.8;
 
         max-width: 120px;
         height: 40px;
         margin-right: 1.5rem;
 
-        background: ${({ tag }) =>
-            tag === "행복"
+        background: ${({ emotion }) =>
+            emotion === "행복"
                 ? color.yellow
-                : tag === "슬픔"
+                : emotion === "슬픔"
                 ? color.deepBlue
-                : tag === "분노"
+                : emotion === "분노"
                 ? color.red
-                : tag === "경멸"
+                : emotion === "경멸"
                 ? color.orange
-                : tag === "두려움"
+                : emotion === "두려움"
                 ? color.darkBlue
                 : color.pink};
 
@@ -42,7 +42,7 @@ export const Post = styled.article<{ isOpen: boolean; tag: string }>`
         text-align: center;
     }
 
-    .body {
+    .title {
         flex: 2;
         overflow: hidden;
 
@@ -74,10 +74,31 @@ export const Post = styled.article<{ isOpen: boolean; tag: string }>`
 `;
 
 export const PostDetail = styled.article`
-    display: flex;
     position: relative;
 
-    margin-top: 2rem;
+    .description {
+        margin: 1.5rem 0;
+        word-break: break-all;
+    }
+
+    div {
+        display: flex;
+        justify-content: space-between;
+
+        .material-symbols-outlined {
+            font-size: 2rem;
+        }
+        .material-icons {
+            color: ${color.lightBlue};
+            font-size: 2rem;
+        }
+    }
+`;
+
+export const MessageBlock = styled.div`
+    position: relative;
+
+    width: 95%;
 
     input {
         width: 100%;
@@ -89,19 +110,17 @@ export const PostDetail = styled.article`
         outline: none;
     }
 
-    button {
+    .submitButton {
         position: absolute;
         right: 0;
 
         width: 70px;
-        height: 100%;
+        height: 35px;
 
         border: 1px solid ${color.lightBlue};
         border-radius: 0 8px 8px 0;
         background: ${color.lightBlue};
 
         color: white;
-
-        cursor: pointer;
     }
 `;
