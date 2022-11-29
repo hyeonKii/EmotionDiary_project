@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import Header from "./components/UI/Header";
+import Home from "@/pages/HomePage";
 import Footer from "./components/UI/Footer";
 import useSetUser from "./hooks/useSetUser";
 
@@ -25,6 +26,7 @@ function App() {
     return (
         <Router>
             <Header />
+            <Home />
             <Footer />
         </Router>
     );
