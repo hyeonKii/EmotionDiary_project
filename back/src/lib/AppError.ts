@@ -1,4 +1,3 @@
-import path from "path";
 type ErrorName =
     | "UnknownError"
     | "InvalidTokenError"
@@ -13,7 +12,8 @@ type ErrorName =
     | "WithdrawnError"
     | "InvalidAccessError"
     | "InternalServerError"
-    | "BodyDataError";
+    | "BodyDataError"
+    | "UpdateError";
 
 interface ErrorInfo {
     statusCode: number;
@@ -76,6 +76,10 @@ const ERROR_MAP: Record<ErrorName, ErrorInfo> = {
     BodyDataError: {
         statusCode: 404,
         message: "BodyData is wrong",
+    },
+    UpdateError: {
+        statusCode: 400,
+        message: "Update fails because of wrong data",
     },
 };
 
