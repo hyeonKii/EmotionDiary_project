@@ -8,8 +8,9 @@ import ModalBackground from "./ModalBackground";
 
 export default function Header() {
     const user = useRecoilValue(currentUser);
+    const userCheck = user ? false : true;
 
-    const [showLoginForm, setShowLoginForm] = useState(true);
+    const [showLoginForm, setShowLoginForm] = useState(userCheck);
     const [showDropDown, setShowDropDown] = useState(false);
 
     return (

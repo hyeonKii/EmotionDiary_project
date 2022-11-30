@@ -5,9 +5,10 @@ import Home from "@/pages/HomePage";
 import Diary from "@/pages/DiaryPage";
 import Footer from "./components/UI/Footer";
 import useSetUser from "./hooks/useSetUser";
+import UserLogin from "./components/user/UserLogin";
 
 function App() {
-    const { setUser: setUser } = useSetUser();
+    const { isLoading, setUser: setUser } = useSetUser();
 
     const fetchUser = () => {
         const accessToken = sessionStorage.getItem("accessToken");
@@ -25,12 +26,14 @@ function App() {
     }, []);
 
     return (
-        <Router>
-            <Header />
-            {/* <Home /> */}
-            <Diary />
-            <Footer />
-        </Router>
+        !isLoading && (
+            <Router>
+                <Header />
+                {/* <Home /> */}
+                <Diary />
+                <Footer />
+            </Router>
+        )
     );
 }
 
