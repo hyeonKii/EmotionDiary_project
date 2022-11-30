@@ -41,7 +41,7 @@ export default function UserEmailCheckTab({ setTab, setRequiredEmail }: Props) {
                 setCodeError("이미 해당 이메일로 가입되었습니다.");
                 return;
             }
-            setCodeError("인증코드 전송이 실패했습니다.");
+            setCodeError("인증번호 전송이 실패했습니다.");
         },
     });
 
