@@ -19,8 +19,8 @@ export default function ProfileDropDown({ setShowDropDown }: Props) {
 
     const logoutHandler = () => {
         try {
-            logout();
             setShowDropDown(false);
+            logout();
         } catch (error) {
             if (error instanceof Error) {
                 console.log(error.message);
