@@ -20,54 +20,53 @@ interface IDResponse {
     data: string;
 }
 
+interface Error {
+    response: {
+        data: string;
+    };
+}
+
 export default function UserIDtoFind({ setTabNumber, tabList }: Props) {
-    const [checkedEmail, setCheckedEmail] = useState(false);
     const [id, setId] = useState("");
-    const [error, setError] = useState(false);
+    const [emailError, setEmailError] = useState("");
+    const [codeError, setCodeError] = useState("");
 
-    const { form, changeHandler } = useForm({ email: "", target: "email", code: "" });
+    const { form, changeHandler } = useForm({ email: "", target: "id", code: "" });
 
-    const { mutate: findID } = useRequestFindID(
+    const { isSuccess: codeSuccess, mutate: findID } = useRequestFindID(
         { email: form.email, code: form.code },
         {
             onSuccess: (res: IDResponse) => {
-                console.log("아이디 찾기 성공");
-                setId(res.data);
+                const { data } = res;
+
+                if (data) {
+                    setId(data);
+                    setCodeError("");
+                    return;
+                }
+
+                setCodeError("확인된 아이디가 없습니다. 다시 한번 확인해주세요.");
             },
             onError: () => {
                 console.log("아이디 찾기 실패");
+                setCodeError("확인 요청이 실패했습니다.");
             },
         }
     );
 
-    const {
-        isError: emailError,
-        isSuccess: emailSuccess,
-        mutate: sendCode,
-    } = useRequestSendCode(form, {
+    const { isSuccess: emailSuccess, mutate: sendCode } = useRequestSendCode(form, {
         onSuccess: () => {
             console.log("이메일 코드 전송 완료.");
         },
-        onError: () => {
+        onError: (error: Error) => {
             console.log("이메일 전송 실패");
-        },
-    });
 
-    const { isError: codeError, mutate: checkCode } = useRequestCheckCode(form, {
-        onSuccess: (res: Response) => {
-            const { result } = res.data;
-
-            if (result) {
-                setError(false);
-                setCheckedEmail(true);
-                findID();
+            if (error.response.data === "User does not exists") {
+                setEmailError("아이디가 존재하지 않습니다.");
                 return;
             }
-            setError(true);
-            setCheckedEmail(false);
-        },
-        onError: () => {
-            console.log("코드 인증 실패");
+
+            setEmailError("코드 전송이 실패했습니다. 다시 한번 확인해주세요.");
         },
     });
 
@@ -76,16 +75,10 @@ export default function UserIDtoFind({ setTabNumber, tabList }: Props) {
     };
 
     const checkCodeHandler = () => {
-        checkCode();
-    };
-
-    const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
         findID();
     };
-
     return (
-        <FormStyle onSubmit={submitHandler}>
+        <FormStyle>
             <fieldset>
                 <h2>아이디 찾기</h2>
                 <InputSection>
@@ -103,9 +96,7 @@ export default function UserIDtoFind({ setTabNumber, tabList }: Props) {
                         </Button>
                     </InputField>
                     {emailSuccess && <Success>코드가 전송되었습니다.</Success>}
-                    {emailError && (
-                        <Error>이미 가입된 이메일이거나 코드가 전송된 상태입니다.</Error>
-                    )}
+                    {emailError && <Error>{emailError}</Error>}
                 </InputSection>
                 <InputSection>
                     <DescriptionLabel htmlFor="certifcation">
@@ -123,9 +114,8 @@ export default function UserIDtoFind({ setTabNumber, tabList }: Props) {
                             확인
                         </Button>
                     </InputField>
-                    {checkedEmail && <Success>코드가 확인되었습니다.</Success>}
-                    {codeError && <Error>확인 요청이 실패했습니다.</Error>}
-                    {error && <Error>올바르지 않은 인증번호 입니다.</Error>}
+                    {codeSuccess && <Success>코드가 확인되었습니다.</Success>}
+                    {codeError && <Error>{codeError}</Error>}
                 </InputSection>
                 {id && (
                     <IDStyle>
