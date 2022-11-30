@@ -9,7 +9,7 @@ import ModalBackground from "./ModalBackground";
 export default function Header() {
     const user = useRecoilValue(currentUser);
 
-    const [showLoginForm, setShowLoginForm] = useState(false);
+    const [showLoginForm, setShowLoginForm] = useState(true);
     const [showDropDown, setShowDropDown] = useState(false);
 
     return (
@@ -17,7 +17,7 @@ export default function Header() {
             {showLoginForm && (
                 <>
                     <UserFormController setShowLoginForm={setShowLoginForm} />
-                    <ModalBackground setShowLoginForm={setShowLoginForm} />
+                    <ModalBackground />
                 </>
             )}
             {showDropDown && <ProfileDropDown setShowDropDown={setShowDropDown} />}

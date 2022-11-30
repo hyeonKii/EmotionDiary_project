@@ -1,11 +1,7 @@
 import styled from "styled-components";
 
-interface Props {
-    setShowLoginForm(value: boolean): void;
-}
-
-export default function ModalBackground({ setShowLoginForm }: Props) {
-    return <ModalBackgroundStyle onClick={() => setShowLoginForm(false)}></ModalBackgroundStyle>;
+export default function ModalBackground() {
+    return <ModalBackgroundStyle></ModalBackgroundStyle>;
 }
 
 const ModalBackgroundStyle = styled.div`
