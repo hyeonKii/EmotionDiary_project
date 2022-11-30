@@ -100,11 +100,11 @@ export const DiaryDetail = styled.div<{ isEdit: boolean }>`
     background: white;
     text-align: start;
 
-    .title {
+    .top {
         display: flex;
         justify-content: space-between;
 
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
 
         .icons {
             display: ${({ isEdit }) => (isEdit ? "none" : "block")};
@@ -120,14 +120,24 @@ export const DiaryDetail = styled.div<{ isEdit: boolean }>`
         }
     }
 
-    .body {
+    .description {
         word-break: break-all;
     }
 `;
 
 export const EditBlock = styled.div`
-    textarea {
+    .title {
         width: 100%;
+        padding-bottom: 0.5rem;
+
+        border: 0;
+        outline: 0;
+        border-bottom: 1px solid ${color.lightGray};
+    }
+
+    .description {
+        width: 100%;
+        padding-top: 0.5rem;
         resize: none;
 
         border: 0;
@@ -157,5 +167,16 @@ export const EditBlock = styled.div`
                 background: ${color.lightGray};
             }
         }
+    }
+`;
+
+export const ReadBlock = styled.div`
+    .title {
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid ${color.lightGray};
+    }
+
+    .description {
+        padding-top: 0.5rem;
     }
 `;

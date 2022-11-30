@@ -7,6 +7,7 @@ import {
     CalendarDetail,
     DiaryDetail,
     EditBlock,
+    ReadBlock,
 } from "@/styles/diary/todayDiary-style";
 
 const data = {
@@ -34,12 +35,13 @@ export function TodayDiary() {
         day: "numeric",
     });
 
-    const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const onChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         const { name, value } = e.currentTarget;
         setNewText((prev) => ({
             ...prev,
             [name]: value,
         }));
+
         if (newText.description.length > 500) alert("500자");
     };
 
@@ -73,7 +75,7 @@ export function TodayDiary() {
             <CalendarDetail>
                 {emotionState()}
                 <DiaryDetail isEdit={isEdit}>
-                    <article className="title">
+                    <article className="top">
                         <span className="date">{dateString}</span>
                         <div className="icons">
                             {data.private ? (
@@ -105,9 +107,16 @@ export function TodayDiary() {
                     </article>
                     {isEdit ? (
                         <EditBlock>
+                            <input
+                                className="title"
+                                name="title"
+                                value={newText.title}
+                                onChange={onChange}
+                            />
                             <textarea
-                                className="body"
+                                className="description"
                                 rows="10"
+                                name="description"
                                 value={newText.description}
                                 autoFocus
                                 onChange={onChange}
@@ -115,16 +124,23 @@ export function TodayDiary() {
                             <div>
                                 <span className="countText">{newText.description.length}/500</span>
                                 <button
+                                    type="submit"
                                     className="submitButton"
                                     onClick={() => setIsEdit(false)}
-                                    disabled={newText.description.length === 0}
+                                    disabled={
+                                        newText.description.length === 0 ||
+                                        newText.title.length === 0
+                                    }
                                 >
                                     저장
                                 </button>
                             </div>
                         </EditBlock>
                     ) : (
-                        <span className="body">{newText.description}</span>
+                        <ReadBlock>
+                            <p className="title">{newText.title}</p>
+                            <p className="description">{newText.description}</p>
+                        </ReadBlock>
                     )}
                 </DiaryDetail>
             </CalendarDetail>
