@@ -17,11 +17,12 @@ Content-Type: application/json
 
 
 ###이메일 인증번호 발신 API
-post {{url}}/account/findid
+post {{url}}/certification/send
 Content-Type: application/json
 
 {
-  "email":"ehlee7003@gmail.com"
+  "email":"ehlee7003@gmail.com",
+  "target": "email"
 }
 
 
@@ -48,7 +49,7 @@ RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5M
 Content-Type: application/json
 
 {
-  "email": "gopivep258@nubotel.com",
+  "email": "jlee7003@naver.com",
   "target":"email"
 }
 

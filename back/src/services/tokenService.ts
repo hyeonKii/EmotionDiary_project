@@ -86,7 +86,7 @@ class Token {
         const refreshToken = generateToken("refresh", "");
 
         // Todo: if result is error, return value is true or false by try-catch
-        this.prisma.token.update({
+        await this.prisma.token.update({
             where: {
                 userID,
             },
@@ -98,6 +98,22 @@ class Token {
         this.prisma.$disconnect();
 
         return refreshToken;
+    }
+
+    async checkRefreshToken(refreshToken: string) {
+        const result = await this.prisma.token.findUnique({
+            where: {
+                token: refreshToken,
+            },
+        });
+
+        this.prisma.$disconnect();
+
+        if (result === null) {
+            return false;
+        }
+
+        return true;
     }
 }
 

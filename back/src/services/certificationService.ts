@@ -22,33 +22,36 @@ class CertificationService {
     private prisma = new PrismaClient();
 
     async generateCode(codeType: "email" | "password", email: string) {
-        try {
-            // if (isCertifiedEmail(email)) {
-            //     console.log("emailerror");
-            //     throw new AppError("InvalidEmailFormatError");
-            // }
-            console.log(email, codeType);
-            let length = 8;
+        const result = await this.prisma.account.findUnique({
+            where: {
+                email: email,
+            },
+        });
 
-            if (codeType === "password") length = 12;
+        if (result !== null) {
+            throw new AppError("UserExistError");
+        } else {
+            try {
+                let length = 8;
 
-            const code = generator.generate({ length: 8, numbers: true });
+                if (codeType === "password") length = 12;
+                const code = generator.generate({ length: 8, numbers: true });
 
-            await this.prisma.certification.create({
-                data: {
-                    email: email,
-
-                    code: code,
-                },
-            });
-
-            mailSender(email, code, "", "isSubject?");
-        } catch (e: any) {
-            if (e instanceof Prisma.PrismaClientKnownRequestError) {
-                console.log(e.message);
-                throw new AppError("ArgumentError");
+                await this.prisma.certification.create({
+                    data: {
+                        email: email,
+                        code: code,
+                    },
+                });
+                mailSender(email, code, "", "isSubject?");
+            } catch (e: any) {
+                if (e instanceof Prisma.PrismaClientKnownRequestError) {
+                    console.log(e.message);
+                    throw new AppError("ArgumentError");
+                }
             }
         }
+
         await this.prisma.$disconnect();
         return { result: true };
     }

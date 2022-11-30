@@ -39,10 +39,44 @@ export const LeftSection = styled.section`
         font-weight: bold;
     }
 `;
+export const CenterSection = styled.section`
+    width: 75vw;
+    height: 100vh;
+    text-align: center;
+    h1 {
+        font-size: 3.4vw;
+        margin-left: 25px;
+        margin: 50px 0px;
+    }
+    p:first-child {
+        font-size: 2.5vw;
+        font-weight: bold;
+        b {
+            color: #26ade8;
+            font-size: 3.4vw;
+        }
+        margin: 30px 0px;
+    }
+    p {
+        font-size: 1.8vw;
+        b {
+            color: #26ade8;
+            font-size: 3.4vw;
+        }
+    }
+    div {
+        text-align: left;
+        margin-bottom: 50px;
+    }
+`;
+
 export const HomeSection2 = styled.section`
     width: 100vw;
     height: 100vh;
     background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 export const Input = styled.input`
     position: absolute;

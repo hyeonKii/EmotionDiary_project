@@ -13,7 +13,6 @@ userRouter.patch(
     "/nickname",
     auth,
     wrapRouter(async (req: Req, res: Res) => {
-        console.log("test");
         const { nickname } = req.body;
 
         if (nickname === undefined) {
@@ -26,7 +25,7 @@ userRouter.patch(
 );
 
 //회원 탈퇴
-userRouter.post(
+userRouter.delete(
     "/withdrawal",
     auth,
     wrapRouter(async (req: Req, res: Res) => {

@@ -38,8 +38,8 @@ model Account {
 }
 
 model Diary {
-  id          Int           @id @unique @default(autoincrement())
-  emotion     String        @default("normal")
+  id          Int      @id @unique @default(autoincrement())
+  emotion     String   @default("normal")
   title       String
   description String
   private     Boolean  @default(false)
@@ -52,8 +52,8 @@ model Diary {
 }
 
 model Token {
-  id    Int    @id @unique @default(autoincrement())
-  token String @unique
+  id    Int     @id @unique @default(autoincrement())
+  token String  @unique
 
   userID String @unique
 }

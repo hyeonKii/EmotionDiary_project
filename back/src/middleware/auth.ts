@@ -1,6 +1,7 @@
 import type { Request as Req, Response as Res, NextFunction } from "express";
 import AppError from "lib/AppError";
 import { verifyToken } from "lib/token";
+import tokenService from "services/tokenService";
 
 const auth = async (req: Req, res: Res, next: NextFunction) => {
     let accessToken = req.headers.authorization;
@@ -14,6 +15,15 @@ const auth = async (req: Req, res: Res, next: NextFunction) => {
     }
 
     if (refreshToken === null || typeof refreshToken !== "string") {
+        next(new AppError("InvalidTokenError"));
+
+        return;
+    }
+
+    // whether refreshToken is in db or not
+    const checkRefreshToken = await tokenService.checkRefreshToken(refreshToken);
+
+    if (checkRefreshToken === false) {
         next(new AppError("InvalidTokenError"));
 
         return;
@@ -44,6 +54,7 @@ const auth = async (req: Req, res: Res, next: NextFunction) => {
     }
 
     req.userID = accessPayload.data;
+    req.refreshToken = refreshToken;
 
     next();
 };

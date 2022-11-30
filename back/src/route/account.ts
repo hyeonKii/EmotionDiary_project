@@ -1,7 +1,6 @@
 import { Router, Request as Req, Response as Res } from "express";
 import wrapRouter from "lib/wrapRouter";
-import userService from "../services/userService";
-import tokenService from "../services/tokenService";
+import tokenService from "services/tokenService";
 import auth from "middleware/auth";
 import AppError from "lib/AppError";
 import accountService from "services/accountService";
@@ -26,7 +25,6 @@ accountRouter.post(
         if ((userID && password && email && nickname) === undefined) {
             throw new AppError("BodyDataError");
         }
-        console.log(nickname);
         const result = await accountService.register({
             nickname,
             email,
@@ -82,9 +80,9 @@ accountRouter.post(
     wrapRouter(async (req: Req, res: Res) => {
         const { email, code } = req.body;
 
-        // if (email && code) {
-        //     throw new AppError("BodyDataError");
-        // }
+        if ((email && code) === undefined) {
+            throw new AppError("BodyDataError");
+        }
 
         const result = await accountService.getUserIDByCertification(email, code);
 

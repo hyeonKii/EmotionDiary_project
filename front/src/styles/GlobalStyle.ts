@@ -15,8 +15,9 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     button {
+      border: 0;
+      background: 0;
+
       cursor: pointer;
-      background-color: transparent;
-      border: none;
     }
 `;

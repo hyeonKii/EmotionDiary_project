@@ -35,25 +35,26 @@ class AccountService {
     }
 
     async login(userID: string, password: string) {
-        const isLogin = await this.prisma.token.findUnique({
-            where: {
-                userID,
-            },
-        });
-
-        if (isLogin) {
-            logger.error("LoginError");
-            throw new AppError("LoginError");
-        }
-
         const user = await this.prisma.account.findUnique({
             where: {
                 userID: userID,
+            },
+            select: {
+                password: true,
+                User: {
+                    select: {
+                        blocking: true,
+                    },
+                },
             },
         });
 
         if (user === null) {
             throw new AppError("LoginError");
+        }
+
+        if (user.User.blocking === true) {
+            throw new AppError("WithdrawnError");
         }
 
         const result = await bcrypt.compare(password, user.password);
@@ -63,7 +64,15 @@ class AccountService {
         }
 
         const accessToken = generateToken("access", userID);
-        const refreshToken = await tokenService.addRefreshToken(userID);
+        let refreshToken = null;
+
+        const getRefreshToken = await tokenService.getRefreshToken(userID);
+
+        if (getRefreshToken !== null) {
+            refreshToken = await tokenService.updateRefreshToken(userID);
+        } else {
+            refreshToken = await tokenService.addRefreshToken(userID);
+        }
 
         this.prisma.$disconnect();
 
@@ -153,7 +162,6 @@ class AccountService {
 
     async changePassword(userID: string, password: string) {
         try {
-            console.log(password);
             const paswordHash = await bcrypt.hash(password, 10);
 
             await this.prisma.account.update({
