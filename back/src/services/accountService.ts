@@ -140,7 +140,7 @@ class AccountService {
 
         console.log(result);
 
-        if (!result.ok) {
+        if (result.ok !== true && !result.result) {
             return null;
         }
 
