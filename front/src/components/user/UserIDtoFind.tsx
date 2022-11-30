@@ -33,10 +33,29 @@ export default function UserIDtoFind({ setTabNumber, tabList }: Props) {
 
     const { form, changeHandler } = useForm({ email: "", target: "id", code: "" });
 
+    const { isSuccess: emailSuccess, mutate: sendCode } = useRequestSendCode(form, {
+        onSuccess: () => {
+            console.log("이메일 코드 전송 완료.");
+            setEmailError("");
+        },
+        onError: (error: Error) => {
+            console.log("이메일 전송 실패");
+
+            if (error.response.data === "User does not exists") {
+                setEmailError("아이디가 존재하지 않습니다.");
+                return;
+            }
+
+            setEmailError("코드 전송이 실패했습니다. 다시 한번 확인해주세요.");
+        },
+    });
+
     const { isSuccess: codeSuccess, mutate: findID } = useRequestFindID(
         { email: form.email, code: form.code },
         {
             onSuccess: (res: IDResponse) => {
+                console.log(res);
+
                 const { data } = res;
 
                 if (data) {
@@ -53,22 +72,6 @@ export default function UserIDtoFind({ setTabNumber, tabList }: Props) {
             },
         }
     );
-
-    const { isSuccess: emailSuccess, mutate: sendCode } = useRequestSendCode(form, {
-        onSuccess: () => {
-            console.log("이메일 코드 전송 완료.");
-        },
-        onError: (error: Error) => {
-            console.log("이메일 전송 실패");
-
-            if (error.response.data === "User does not exists") {
-                setEmailError("아이디가 존재하지 않습니다.");
-                return;
-            }
-
-            setEmailError("코드 전송이 실패했습니다. 다시 한번 확인해주세요.");
-        },
-    });
 
     const sendCodeHandler = () => {
         sendCode();

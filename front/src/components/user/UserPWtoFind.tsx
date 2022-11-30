@@ -4,19 +4,9 @@ import { useState } from "react";
 import styled from "styled-components";
 import Icon from "../UI/Icon";
 
-interface Response {
-    data: {
-        result: boolean;
-    };
-}
-
 interface Props {
     setTabNumber(value: number): void;
     tabList: { REGISTER: number; LOGIN: number; FIND_ID: number };
-}
-
-interface IDResponse {
-    data: string;
 }
 
 export default function UserIDtoFind({ setTabNumber, tabList }: Props) {
