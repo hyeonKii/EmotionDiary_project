@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export default function ModalBackground() {
-    return <ModalBackgroundStyle></ModalBackgroundStyle>;
+    return <ModalBackgroundStyle />;
 }
 
 const ModalBackgroundStyle = styled.div`
