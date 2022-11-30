@@ -10,6 +10,13 @@ interface Response {
     };
 }
 
+interface Error {
+    message: string;
+    response: {
+        data: string;
+    };
+}
+
 interface Props {
     setTab(value: boolean): void;
     setRequiredEmail(value: string): void;
@@ -17,38 +24,41 @@ interface Props {
 
 export default function UserEmailCheckTab({ setTab, setRequiredEmail }: Props) {
     const [checkedEmail, setCheckedEmail] = useState(false);
-    const [error, setError] = useState(false);
+    const [codeError, setCodeError] = useState("");
+    const [checkError, setCheckError] = useState(false);
 
     const { form, changeHandler } = useForm({ email: "", target: "email", code: "" });
 
-    const {
-        isError: emailError,
-        isSuccess: emailSuccess,
-        mutate: sendCode,
-    } = useRequestSendCode(form, {
+    const { isSuccess: emailSuccess, mutate: sendCode } = useRequestSendCode(form, {
         onSuccess: () => {
             console.log("이메일 코드 전송 완료.");
         },
-        onError: () => {
-            console.log("이메일 전송 실패");
+        onError: (error: Error) => {
+            console.log("이메일 코드 전송 실패 :" + error.message);
+
+            if (error.response.data === "User already exists") {
+                setCodeError("이미 해당 이메일로 가입되었습니다.");
+                return;
+            }
+            setCodeError("인증코드 전송이 실패했습니다.");
         },
     });
 
-    const { isError: codeError, mutate: checkCode } = useRequestCheckCode(form, {
+    const { mutate: checkCode } = useRequestCheckCode(form, {
         onSuccess: (res: Response) => {
             const { result } = res.data;
 
             if (result) {
-                setError(false);
+                setCheckError(false);
                 setCheckedEmail(true);
                 setRequiredEmail(form.email);
                 return;
             }
-            setError(true);
+            setCheckError(true);
             setCheckedEmail(false);
         },
         onError: () => {
-            console.log("코드 인증 실패");
+            console.log("코드 인증 요청 실패");
         },
     });
 
@@ -74,7 +84,7 @@ export default function UserEmailCheckTab({ setTab, setRequiredEmail }: Props) {
                     </Button>
                 </InputField>
                 {emailSuccess && <Success>코드가 전송되었습니다.</Success>}
-                {emailError && <Error>이미 가입된 이메일이거나 코드가 전송된 상태입니다.</Error>}
+                {codeError && <Error>{codeError}</Error>}
             </InputSection>
             <InputSection>
                 <DescriptionLabel htmlFor="certifcation">
@@ -93,8 +103,7 @@ export default function UserEmailCheckTab({ setTab, setRequiredEmail }: Props) {
                     </Button>
                 </InputField>
                 {checkedEmail && <Success>코드가 확인되었습니다.</Success>}
-                {codeError && <Error>확인 요청이 실패했습니다.</Error>}
-                {error && <Error>올바르지 않은 인증번호 입니다.</Error>}
+                {checkError && <Error>올바르지 않은 인증번호 입니다.</Error>}
             </InputSection>
             <LoginButtonStyle type="button" disabled={!checkedEmail} onClick={() => setTab(true)}>
                 다음
