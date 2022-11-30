@@ -33,16 +33,14 @@ export function Chat() {
             console.log("send");
             e.preventDefault();
             if (!message) return alert("메시지를 입력해 주세요.");
-
-            socket.emit("message", message, (chat: IChat) => {
+            socket.emit("message", message, "나", (chat: IChat) => {
                 setChats((prevChats) => [...prevChats, chat]);
-                setMessage("");
-                console.log(chat, 44343434);
             });
+            setMessage("");
         },
         [message]
     );
-
+    console.log();
     return (
         <>
             <ChatContainer ref={chatContainerEl}>
@@ -50,7 +48,7 @@ export function Chat() {
                     <MessageBox
                         key={index}
                         className={classNames({
-                            my_message: socket.id === chat.username,
+                            my_message: "나" === chat.username,
                             alarm: !chat.username,
                         })}
                     >
