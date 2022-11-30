@@ -3,7 +3,7 @@ import { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState } from
 import { io } from "socket.io-client";
 import classNames from "classnames";
 
-const socket = io("http://127.0.0.1:4001/chat");
+const socket = io("http://localhost:4000/");
 
 interface IChat {
     username: string;
