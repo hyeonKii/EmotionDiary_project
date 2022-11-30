@@ -2,12 +2,18 @@ import { useRequestWriteDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
 import React from "react";
 
+interface Error {
+    message: string;
+}
+
 export default function DiaryRegister() {
     const { form, changeHandler } = useForm({ title: "", description: "", privateDiary: true });
 
     const { mutate: writeDiary } = useRequestWriteDiary(form, {
         onSuccess: () => {},
-        onError: () => {},
+        onError: (error: Error) => {
+            console.log(error.message);
+        },
     });
 
     const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {

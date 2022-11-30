@@ -1,5 +1,5 @@
-import { useState, forwardRef, useMemo, ForwardedRef } from "react";
-import { CardSection, Post, PostDetail, MessageBlock } from "@/styles/home/postList-style";
+import { useState } from "react";
+import { CardSection, Post, PostDetail } from "@/styles/home/postList-style";
 import { useRequestDeleteDiary, useRequestEditDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
 
@@ -10,10 +10,16 @@ interface Items {
     emotion: string;
     time: string;
     body: string;
+    privateDiary: boolean;
 }
 
 interface Props {
     post: Items;
+    refetch(): void;
+}
+
+interface Error {
+    message: string;
 }
 
 export default function AllDiariesPost({ post, refetch }: Props) {
@@ -35,21 +41,21 @@ export default function AllDiariesPost({ post, refetch }: Props) {
     };
 
     const { mutate: editDiary } = useRequestEditDiary(form, post.id, {
-        onSuccess: (res) => {
-            console.log(res);
+        onSuccess: () => {
             refetch();
         },
-        onError: (error) => {
-            console.log(error);
+        onError: (error: Error) => {
+            console.log(error.message);
         },
     });
 
     const { mutate: deleteDiary } = useRequestDeleteDiary(post.id, {
-        onSuccess: (res) => {
-            console.log(res);
+        onSuccess: () => {
             refetch();
         },
-        onError: () => {},
+        onError: (error: Error) => {
+            console.log(error.message);
+        },
     });
 
     const deleteHandler = () => {
