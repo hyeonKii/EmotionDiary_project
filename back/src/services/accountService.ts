@@ -138,8 +138,6 @@ class AccountService {
     async getUserIDByCertification(email: string, code: string) {
         const result = await certificationService.certifyEmailByCode(email, code);
 
-        console.log(result);
-
         if (result.ok !== true && !result.result) {
             return null;
         }
