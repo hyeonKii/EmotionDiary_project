@@ -35,6 +35,7 @@ export default function UserRegister({ setTabNumber, tabList }: Props) {
         {
             onSuccess: () => {
                 console.log("회원가입 성공");
+                setError("");
             },
 
             onError: (error: Error) => {

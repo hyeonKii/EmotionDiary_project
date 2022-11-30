@@ -32,6 +32,7 @@ export default function UserEmailCheckTab({ setTab, setRequiredEmail }: Props) {
     const { isSuccess: emailSuccess, mutate: sendCode } = useRequestSendCode(form, {
         onSuccess: () => {
             console.log("이메일 코드 전송 완료.");
+            setCodeError("");
         },
         onError: (error: Error) => {
             console.log("이메일 코드 전송 실패 :" + error.message);
