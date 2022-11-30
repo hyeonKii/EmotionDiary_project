@@ -28,7 +28,7 @@ class CertificationService {
             },
         });
 
-        if (result !== null) {
+        if (result !== null && codeType === "email") {
             throw new AppError("UserExistError");
         } else {
             try {
