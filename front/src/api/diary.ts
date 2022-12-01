@@ -2,6 +2,7 @@ import axios from "axios";
 import { URL } from "./url";
 import * as endpoint from "./constants/diaryEndpoints";
 import { useMutation, useQuery } from "react-query";
+import { useState } from "react";
 
 interface WriteDiary {
     userID: string;
@@ -25,7 +26,10 @@ const writeDiary = (diaryData: WriteDiary) => {
 };
 
 const getDiary = (params: string) => {
-    return axios.get(URL + endpoint.DIARY_GET + params, {
+    // const [page, setPage] = useState(0);
+    // const [count, setCount] = useState(0);
+
+    return axios.get(URL + endpoint.DIARY_GET + `?count=${count}&page=${page}}`, {
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
             Refreshtoken: sessionStorage.getItem("refreshToken"),
@@ -78,8 +82,8 @@ export const useRequestEditDiary = (diaryData, id, options?) =>
 export const useRequestDeleteDiary = (id, options?) =>
     useMutation(() => deleteMyDiary(id), options);
 
-export const useRequestGetAllDiaries = (key, params, options?) =>
-    useQuery(key, () => getDiary(params), options);
+export const useRequestGetAllDiaries = (params, options?) =>
+    useQuery(["diaries"], () => getDiary(params), options);
 
 export const useRequestGetDiary = (key, id, options?) =>
     useQuery(key, () => getMyDiary(id), options);
