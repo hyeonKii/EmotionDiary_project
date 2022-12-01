@@ -16,6 +16,16 @@ interface EditDiary {
     description: string;
 }
 
+interface DiaryData {
+    id: number;
+    title: string;
+    description: string;
+    emotion: string;
+    time: string;
+    body: string;
+    privateDiary: boolean;
+}
+
 const writeDiary = (diaryData: WriteDiary) => {
     return axios.post(URL + endpoint.DIARY_WRITE, diaryData, {
         headers: {
@@ -25,9 +35,10 @@ const writeDiary = (diaryData: WriteDiary) => {
     });
 };
 
-const getDiary = (params: string) => {
+const getDiary = (count: number, page: number) => {
     // const [page, setPage] = useState(0);
     // const [count, setCount] = useState(0);
+    // 이거 써서 하자
 
     return axios.get(URL + endpoint.DIARY_GET + `?count=${count}&page=${page}}`, {
         headers: {
@@ -46,7 +57,7 @@ const getEmotionDiary = (params: string) => {
     });
 };
 
-const getMyDiary = (id: string) => {
+const getMyDiary = (id: number) => {
     return axios.get(URL + endpoint.MYDIARY + "/" + id, {
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
@@ -55,7 +66,7 @@ const getMyDiary = (id: string) => {
     });
 };
 
-const editMyDiary = (myDiaryData: EditDiary, id: string) => {
+const editMyDiary = (myDiaryData: EditDiary, id: number) => {
     return axios.put(URL + endpoint.MYDIARY + "/" + id, myDiaryData, {
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
@@ -64,7 +75,7 @@ const editMyDiary = (myDiaryData: EditDiary, id: string) => {
     });
 };
 
-const deleteMyDiary = (id: string) => {
+const deleteMyDiary = (id: number) => {
     return axios.delete(URL + endpoint.MYDIARY + "/" + id, {
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
@@ -76,14 +87,14 @@ const deleteMyDiary = (id: string) => {
 export const useRequestWriteDiary = (diaryData, options?) =>
     useMutation(() => writeDiary(diaryData), options);
 
-export const useRequestEditDiary = (diaryData, id, options?) =>
+export const useRequestEditDiary = (diaryData, id: number, options?) =>
     useMutation(() => editMyDiary(diaryData, id), options);
 
-export const useRequestDeleteDiary = (id, options?) =>
+export const useRequestDeleteDiary = (id: number, options?) =>
     useMutation(() => deleteMyDiary(id), options);
 
-export const useRequestGetAllDiaries = (params, options?) =>
-    useQuery(["diaries"], () => getDiary(params), options);
+export const useRequestGetAllDiaries = (count: number, page: number, options?) =>
+    useQuery(["diaries"], () => getDiary(count, page), options);
 
-export const useRequestGetDiary = (key, id, options?) =>
+export const useRequestGetDiary = (key: string[], id: number, options?) =>
     useQuery(key, () => getMyDiary(id), options);
