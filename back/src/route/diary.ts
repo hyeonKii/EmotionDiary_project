@@ -34,11 +34,23 @@ diaryRouter.get(
     "/all",
     auth,
     wrapRouter(async (req: Req, res: Res) => {
-        const { count, page } = req.query;
-        if (count === undefined || page === undefined) {
+        const { count, page, privatediary, emotion } = req.query;
+        if (
+            count === undefined ||
+            page === undefined ||
+            privatediary === undefined ||
+            emotion === undefined
+        ) {
             throw new AppError("ArgumentError");
         }
-        const result = await diaryService.getDiaryList(Number(count), Number(page));
+        console.log(count, page, Boolean(privatediary), emotion);
+        const result = await diaryService.getDiaryList(
+            req.userID!,
+            Number(count),
+            Number(page),
+            Boolean(privatediary),
+            String(emotion)
+        );
         return { statusCode: 200, content: result };
     })
 );
