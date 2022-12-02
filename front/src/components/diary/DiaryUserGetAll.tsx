@@ -1,6 +1,6 @@
 import { useRequestGetMyAllDiaries } from "@/api/diary";
 import React, { useState } from "react";
-import AllDiariesPost from "../diary/AllDiariesPost";
+import DiaryPost from "./DiaryPost";
 
 interface Error {
     message: string;
@@ -40,7 +40,7 @@ export default function DiaryUserGetAll() {
             {response && (
                 <section>
                     {response.data.map((post: Post) => (
-                        <AllDiariesPost key={post.id + "포스트"} post={post} refetch={refetch} />
+                        <DiaryPost key={post.id + "포스트"} post={post} refetch={refetch} />
                     ))}
                 </section>
             )}

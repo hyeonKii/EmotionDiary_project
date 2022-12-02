@@ -22,7 +22,7 @@ interface Error {
     message: string;
 }
 
-export default function AllDiariesPost({ post, refetch }: Props) {
+export default function DiaryPost({ post, refetch }: Props) {
     const [isOpen, setIsOpen] = useState(false);
     const [like, setLike] = useState(false);
     const [editMode, setEditMode] = useState(false);
