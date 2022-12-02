@@ -110,6 +110,7 @@ class DiaryService {
         let postDatas;
         userID = "test";
         console.log(typeof privatediary, privatediary);
+        //비공개
         if (privatediary) {
             console.log(true, emotion);
             postDatas = await this.prisma.diary.findMany({
@@ -133,8 +134,8 @@ class DiaryService {
                     updatedAt: true,
                 },
             });
-        } else {
-            console.log(false);
+        } // 공개
+        else {
             postDatas = await this.prisma.diary.findMany({
                 take: Number(count),
                 skip: (Number(page) - 1) * Number(count),
@@ -153,29 +154,6 @@ class DiaryService {
             });
         }
 
-        if (postDatas === null) {
-            throw new AppError("NotFindError");
-        }
-        await this.prisma.$disconnect();
-        return postDatas;
-    }
-
-    async getEmotionDiaryList(count: number, page: number, emotion: string) {
-        const postDatas = await this.prisma.diary.findMany({
-            take: Number(count),
-            skip: (Number(page) - 1) * Number(count),
-            where: {
-                emotion: emotion,
-            },
-            select: {
-                id: true,
-                title: true,
-                description: true,
-                view: true,
-                createdAt: true,
-                updatedAt: true,
-            },
-        });
         if (postDatas === null) {
             throw new AppError("NotFindError");
         }
