@@ -16,7 +16,7 @@ interface Post {
     privateDiary: boolean;
 }
 
-export default function DiaryUserGetAll() {
+export default function DiaryUserPostList() {
     const [count, setCount] = useState(10);
     const [page, setPage] = useState(1);
 
