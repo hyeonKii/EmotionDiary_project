@@ -93,7 +93,7 @@ export const useRequestDeleteDiary = (id: number, options?) =>
     useMutation(() => deleteMyDiary(id), options);
 
 export const useRequestGetAllDiaries = (count: number, page: number, options?) =>
-    useQuery(["diaries"], () => getDiary(count, page), options);
+    useQuery(["diaries", page, count], () => getDiary(count, page), options);
 
 export const useRequestGetDiary = (key: string[], id: number, options?) =>
     useQuery(key, () => getMyDiary(id), options);
