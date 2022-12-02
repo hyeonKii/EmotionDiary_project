@@ -120,7 +120,7 @@ export function TodayDiary() {
                             />
                             <textarea
                                 className="description"
-                                rows="10"
+                                rows={10}
                                 name="description"
                                 value={newText.description}
                                 autoFocus
