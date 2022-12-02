@@ -1,8 +1,10 @@
-import { useState, ChangeEvent } from "react";
+import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import { useRecoilValue } from "recoil";
 import { currentUser } from "@/temp/userAtom";
 import useEmotion from "@/hooks/useEmotion";
+import useForm from "@/hooks/useForm";
+import { useRequestWriteDiary, useRequestGetDiary } from "@/api/diary";
 import {
     TodaySection,
     CalendarDetail,
@@ -11,12 +13,12 @@ import {
     ReadBlock,
 } from "@/styles/diary/todayDiary-style";
 
-const data = {
+const test = {
     id: 1,
     emotion: "슬픔",
     title: "test1",
     description: "test",
-    private: false,
+    privateDiary: false,
     view: 0,
     createdAt: "2022-11-28T05:53:27.072Z",
     user_model_id: 1,
@@ -25,48 +27,48 @@ const data = {
 export function TodayDiary() {
     const user = useRecoilValue(currentUser);
     const [value, setValue] = useState(new Date());
-    const [newText, setNewText] = useState({
-        title: data.title,
-        description: data.description,
-        private: data.private,
-    });
     const [isEdit, setIsEdit] = useState(false);
-    const { emotionState } = useEmotion(data.emotion, user?.nickname);
+
+    const { data, refetch } = useRequestGetDiary(["diary"], 32, {
+        enabled: false,
+        onSuccess: () => {
+            return data;
+        },
+        onError: (error: Error) => {
+            console.error(error.message);
+        },
+    });
+
+    useEffect(() => {
+        refetch();
+    }, [useRequestGetDiary, value]);
+
+    const { emotionState } = useEmotion(data?.data.emotion, user?.nickname);
+    const { form, changeHandler } = useForm({
+        title: data?.data.title,
+        description: "test",
+        privateDiary: true,
+    });
+    const { title, description, privateDiary } = form;
 
     const dateString = value.toLocaleDateString("ko-KR", {
         year: "numeric",
         month: "long",
         day: "numeric",
     });
-    console.log(data.createdAt);
 
-    const onChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-        const { name, value } = e.currentTarget;
-        setNewText((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
+    const { mutate: writeDiary } = useRequestWriteDiary(form, {
+        onSuccess: () => {
+            setIsEdit(false);
+        },
+        onError: ({ message }: Error) => {
+            console.error(message);
+        },
+    });
 
-        if (newText.description.length > 500) alert("500자");
+    const onSubmit = () => {
+        writeDiary();
     };
-
-    const onDelete = async () => {
-        try {
-            // await api.deleteMyDiary(`${id}`);
-            setNewText({ title: "", description: "", private: true });
-            setIsEdit(true);
-        } catch (e) {
-            console.error(e);
-        }
-    };
-
-    // const onEdit = async () => {
-    //   try {
-    //     await api.editMyDiary(`${id}`, {newText})
-    //   } catch(e) {
-    //     console.error(e)
-    //   }
-    // }
 
     return (
         <TodaySection>
@@ -83,7 +85,7 @@ export function TodayDiary() {
                     <article className="top">
                         <span className="date">{dateString}</span>
                         <div className="icons">
-                            {data.private ? (
+                            {test.privateDiary ? (
                                 <span className="material-symbols-outlined">lock</span>
                             ) : (
                                 <span className="material-symbols-outlined">lock_open</span>
@@ -94,11 +96,9 @@ export function TodayDiary() {
                             >
                                 edit
                             </button>
-                            <button className="material-symbols-outlined" onClick={onDelete}>
-                                delete
-                            </button>
+                            <button className="material-symbols-outlined">delete</button>
                         </div>
-                        {data.private ? (
+                        {test.privateDiary ? (
                             <select>
                                 <option value="나만보기">나만보기</option>
                                 <option value="전체공개">전체공개</option>
@@ -113,28 +113,33 @@ export function TodayDiary() {
                     {isEdit ? (
                         <EditBlock>
                             <input
+                                id="title"
                                 className="title"
-                                name="title"
-                                value={newText.title}
-                                onChange={onChange}
+                                value={title}
+                                onChange={changeHandler}
                             />
                             <textarea
+                                id="description"
                                 className="description"
-                                rows={10}
-                                name="description"
-                                value={newText.description}
+                                value={description}
+                                onChange={changeHandler}
+                                rows={9}
                                 autoFocus
-                                onChange={onChange}
                             />
                             <div>
-                                <span className="countText">{newText.description.length}/500</span>
+                                <span
+                                    className={description.length < 500 ? "countText" : "maxText"}
+                                >
+                                    {description.length}/500
+                                </span>
                                 <button
                                     type="submit"
                                     className="submitButton"
-                                    onClick={() => setIsEdit(false)}
+                                    onClick={onSubmit}
                                     disabled={
-                                        newText.description.length === 0 ||
-                                        newText.title.length === 0
+                                        description.length === 0 ||
+                                        description.length > 500 ||
+                                        title.length === 0
                                     }
                                 >
                                     저장
@@ -143,8 +148,8 @@ export function TodayDiary() {
                         </EditBlock>
                     ) : (
                         <ReadBlock>
-                            <p className="title">{newText.title}</p>
-                            <p className="description">{newText.description}</p>
+                            {data && <p className="title">{data?.data.title}</p>}
+                            {data && <p className="description">{data?.data.description}</p>}
                         </ReadBlock>
                     )}
                 </DiaryDetail>

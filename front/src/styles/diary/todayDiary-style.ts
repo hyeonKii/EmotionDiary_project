@@ -121,6 +121,13 @@ export const DiaryDetail = styled.div<{ isEdit: boolean }>`
     }
 
     .description {
+        width: 100%;
+        padding-top: 0.5rem;
+        resize: none;
+
+        border: 0;
+        outline: 0;
+
         word-break: break-all;
     }
 `;
@@ -135,15 +142,6 @@ export const EditBlock = styled.div`
         border-bottom: 1px solid ${color.lightGray};
     }
 
-    .description {
-        width: 100%;
-        padding-top: 0.5rem;
-        resize: none;
-
-        border: 0;
-        outline: 0;
-    }
-
     div {
         position: absolute;
         right: 30px;
@@ -151,6 +149,11 @@ export const EditBlock = styled.div`
 
         .countText {
             color: ${color.gray};
+            font-size: 0.8rem;
+        }
+
+        .maxText {
+            color: ${color.red};
             font-size: 0.8rem;
         }
 
