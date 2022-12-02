@@ -1,5 +1,5 @@
 import { useRequestGetAllDiaries } from "@/api/diary";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AllDiariesPost from "../diary/AllDiariesPost";
 
 interface Error {
@@ -17,10 +17,10 @@ interface Post {
 }
 
 export default function DiaryGetAll() {
-    const [count, setCount] = useState(10);
+    const [count, setCount] = useState("10");
     const [page, setPage] = useState(1);
 
-    const { data: response, refetch } = useRequestGetAllDiaries(10, page, {
+    const { data: response, refetch } = useRequestGetAllDiaries(count, page, {
         onSuccess: () => {
             console.log("일기 전부 GET 요청 성공");
         },
@@ -34,8 +34,8 @@ export default function DiaryGetAll() {
     };
 
     useEffect(() => {
-        console.log(page);
-    }, [page]);
+        console.log(page, count);
+    }, [page, count]);
 
     return (
         <>
@@ -55,6 +55,18 @@ export default function DiaryGetAll() {
                 이전 페이지
             </button>
             <button onClick={() => setPage((prevState) => prevState + 1)}>다음 페이지</button>
+            <select
+                onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+                    setCount(event.target.value)
+                }
+            >
+                <option value="5">5</option>
+                <option value="10" selected>
+                    10
+                </option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+            </select>
         </>
     );
 }
