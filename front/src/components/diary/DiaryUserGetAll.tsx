@@ -1,5 +1,5 @@
-import { useRequestGetAllDiaries } from "@/api/diary";
-import React, { useEffect, useState } from "react";
+import { useRequestGetMyAllDiaries } from "@/api/diary";
+import React, { useState } from "react";
 import AllDiariesPost from "../diary/AllDiariesPost";
 
 interface Error {
@@ -20,7 +20,7 @@ export default function DiaryUserGetAll() {
     const [count, setCount] = useState(10);
     const [page, setPage] = useState(1);
 
-    const { data: response, refetch } = useRequestGetAllDiaries(count, page, {
+    const { data: response, refetch } = useRequestGetMyAllDiaries(count, page, {
         onSuccess: () => {
             console.log("일기 전부 GET 요청 성공");
         },
