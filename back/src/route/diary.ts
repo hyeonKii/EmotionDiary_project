@@ -29,6 +29,7 @@ diaryRouter.patch(
     })
 );
 
+// privateddiary => 내가 쓴 일기
 //모든 일기 조회
 diaryRouter.get(
     "/all",

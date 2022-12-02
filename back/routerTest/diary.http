@@ -6,7 +6,7 @@ POST {{url}}/account/login
 Content-Type: application/json
 
 {
-    "userID": "test",
+    "userID": "euiho",
     "password": "0000"
 }
 ###logout
@@ -26,17 +26,15 @@ Content-Type: application/json
 
 
 ###회원가입
-post {{url}}/users/new
+post {{url}}/account/new
 Content-Type: application/json
 
 {
-  "userID": "euiho",
-  "password": "0000",
-  "email":"ehlee7003@gmail.com",
   "nickname":"euiho",
-  "emailVerification":"0"
+  "email":"ehlee7003@gmail.com",
+  "userID": "euiho",
+  "password": "0000"
 }
-
 
 ##################################################################################
 
@@ -50,13 +48,13 @@ Content-Type: application/json
 
 ### 일기 작성 api
 post {{url}}/diaries/write
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdCIsImlhdCI6MTY2OTk1ODUzNywiZXhwIjoxNjY5OTYwMzM3fQ.84Ugfuf7z46F13tnIVgPHtfKVJheRU0d5_2pEIw4atA
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5OTU4NTM3LCJleHAiOjE2Njk5NjkzMzd9.TtUKq3T3R5AXyUk1LWfIdXZsgDNrxrlLPaKP5wocYW4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2Njk5NjE4ODUsImV4cCI6MTY2OTk2MzY4NX0.UL-rhyKCILE7C7BKn03qmmiQCWmNECmQBIRwF4X36y4
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5OTYxODg1LCJleHAiOjE2Njk5NzI2ODV9.Cj117uDXEDM3Ru-7Ofind8RguCaqzpniv5n2Zv-0Hpg
 Content-Type: application/json
 
 {
-  "title": "test1122",
-  "description":"tes1112221t",
+  "title": "euiho1",
+  "description":"euiho",
   "privateDiary": "true"
 }
 
