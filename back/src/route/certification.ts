@@ -17,7 +17,7 @@ certificationRouter.post(
             throw new AppError("BodyDataError");
         }
 
-        if (!(target === "email" || target === "password")) {
+        if (!(target === "email" || target === "password" || target === "id")) {
             throw new AppError("BodyDataError");
         }
 

@@ -6,8 +6,7 @@ interface Items {
     title: string;
     description: string;
     emotion: string;
-    time: string;
-    body: string;
+    createdAt: Date;
 }
 
 interface Props {
@@ -17,7 +16,7 @@ interface Props {
 function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
     const [isOpen, setIsOpen] = useState(false);
     const [like, setLike] = useState(false);
-    const { id, emotion, title, description, body } = post;
+    const { id, emotion, title, description, createdAt } = post;
 
     const onClick = () => {
         setIsOpen((prev) => !prev);
@@ -27,6 +26,20 @@ function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
         setLike((prev) => !prev);
     };
 
+    const dateTime = (date: Date) => {
+        const milliSeconds = Number(new Date()) - Number(date);
+        const seconds = milliSeconds / 1000;
+        if (seconds < 60) return `방금 전`;
+        const minutes = seconds / 60;
+        if (minutes < 60) return `${Math.floor(minutes)}분 전`;
+        const hours = minutes / 60;
+        if (hours < 24) return `${Math.floor(hours)}시간 전`;
+        const dateString = date.toLocaleDateString();
+        return dateString;
+    };
+
+    const nowDate = dateTime(new Date(createdAt));
+
     const itemBody = useMemo(() => {
         return (
             <>
@@ -34,13 +47,13 @@ function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
                     <span className="emotion">{id}</span>
                     <span className="title">{title}</span>
                     <div className="time">
-                        <span>3시간 전</span>
+                        <span>{nowDate}</span>
                         <span className="arrow">{isOpen ? "▲" : "▼"}</span>
                     </div>
                 </Post>
                 {isOpen && (
                     <PostDetail>
-                        <p className="description">{body}</p>
+                        <p className="description">{description}</p>
                         <div>
                             <MessageBlock>
                                 <input
