@@ -34,7 +34,7 @@ export default function PostList() {
 
     const getPostPage = async (page = 1) => {
         try {
-            const { data } = await api.getDiary(`?count=10&page=${page}`);
+            const { data } = await api.getDiary(10, page, tab);
             return data;
         } catch (e) {
             console.error(e);
