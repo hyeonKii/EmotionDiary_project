@@ -56,23 +56,6 @@ diaryRouter.get(
 );
 
 diaryRouter.get(
-    "/all/emotion",
-    auth,
-    wrapRouter(async (req: Req, res: Res) => {
-        const { count, page, emotion } = req.query;
-        if (count === undefined || page === undefined || emotion === undefined) {
-            throw new AppError("ArgumentError");
-        }
-        const result = await diaryService.getEmotionDiaryList(
-            Number(count),
-            Number(page),
-            emotion as string
-        );
-        return { statusCode: 200, content: result };
-    })
-);
-
-diaryRouter.get(
     "/:id",
     auth,
     wrapRouter(async (req: Req, res: Res) => {
