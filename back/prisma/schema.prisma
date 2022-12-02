@@ -58,14 +58,14 @@ model Token {
   userID String @unique
 }
 
-model Chat{
-  id       Int     @id @default(autoincrement())
-  userID   String  @unique
-  messege  Messege  
-  chatRoom String 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-} 
-model Messege{
-  id       Int     @id @default(autoincrement())
-}
+// model Chat{
+//   id       Int     @id @default(autoincrement())
+//   userID   String  @unique
+//   messege  Messege  
+//   chatRoom String 
+//   createdAt   DateTime @default(now())
+//   updatedAt   DateTime @updatedAt
+// } 
+// model Messege{
+//   id       Int     @id @default(autoincrement())
+// }
