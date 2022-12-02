@@ -34,12 +34,12 @@ const writeDiary = (diaryData: WriteDiary) => {
     });
 };
 
-const getDiary = (count: string, page: number) => {
+export const getDiary = (count: number, page: number, emotion?: string) => {
     // const [page, setPage] = useState(0);
     // const [count, setCount] = useState(0);
     // 이거 써서 하자
 
-    return axios.get(URL + endpoint.DIARY_GET + `?count=${count}&page=${page}`, {
+    return axios.get(URL + endpoint.DIARY_GET + `?count=${count}&page=${page}&emtion=${emotion}`, {
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
             Refreshtoken: sessionStorage.getItem("refreshToken"),
