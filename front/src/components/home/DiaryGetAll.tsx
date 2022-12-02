@@ -1,4 +1,5 @@
 import { useRequestGetAllDiaries } from "@/api/diary";
+import { useEffect, useState } from "react";
 import AllDiariesPost from "../diary/AllDiariesPost";
 
 interface Error {
@@ -16,9 +17,10 @@ interface Post {
 }
 
 export default function DiaryGetAll() {
-    const { data: response, refetch } = useRequestGetAllDiaries("diaries", "?count=10&page=1", {
-        enabled: false,
+    const [count, setCount] = useState(10);
+    const [page, setPage] = useState(1);
 
+    const { data: response, refetch } = useRequestGetAllDiaries(10, page, {
         onSuccess: () => {
             console.log("일기 전부 GET 요청 성공");
         },
@@ -31,6 +33,10 @@ export default function DiaryGetAll() {
         refetch();
     };
 
+    useEffect(() => {
+        console.log(page);
+    }, [page]);
+
     return (
         <>
             <button onClick={buttonHandler}>데이터 체크</button>
@@ -41,6 +47,14 @@ export default function DiaryGetAll() {
                     ))}
                 </section>
             )}
+            <button
+                onClick={() =>
+                    setPage((prevState) => (prevState === 1 ? prevState : prevState - 1))
+                }
+            >
+                이전 페이지
+            </button>
+            <button onClick={() => setPage((prevState) => prevState + 1)}>다음 페이지</button>
         </>
     );
 }

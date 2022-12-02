@@ -5,7 +5,7 @@ interface Error {
 }
 
 export default function DiaryGet() {
-    const { data, refetch } = useRequestGetDiary("diary", "2", {
+    const { data, refetch } = useRequestGetDiary(["diary"], 2, {
         enabled: false,
 
         onSuccess: () => {
