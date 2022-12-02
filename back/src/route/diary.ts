@@ -32,20 +32,32 @@ diaryRouter.patch(
 //모든 일기 조회
 diaryRouter.get(
     "/all",
-    auth,
+    // auth,
     wrapRouter(async (req: Req, res: Res) => {
-        const { count, page } = req.query;
-        if (count === undefined || page === undefined) {
+        const { count, page, privatediary, emotion } = req.query;
+        if (
+            count === undefined ||
+            page === undefined ||
+            privatediary === undefined ||
+            emotion === undefined
+        ) {
             throw new AppError("ArgumentError");
         }
-        const result = await diaryService.getDiaryList(Number(count), Number(page));
+        console.log(count, page, Boolean(privatediary), emotion);
+        const result = await diaryService.getDiaryList(
+            req.userID!,
+            Number(count),
+            Number(page),
+            Boolean(privatediary),
+            String(emotion)
+        );
         return { statusCode: 200, content: result };
     })
 );
 
 diaryRouter.get(
     "/all/emotion",
-    // auth,
+    auth,
     wrapRouter(async (req: Req, res: Res) => {
         const { count, page, emotion } = req.query;
         if (count === undefined || page === undefined || emotion === undefined) {

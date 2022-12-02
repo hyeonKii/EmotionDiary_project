@@ -1,4 +1,10 @@
 import styled from "styled-components";
+const LeaveButton = styled.button`
+    margin-bottom: 0.5rem;
+    display: block;
+    margin-left: auto;
+`;
+
 const ChatContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -11,15 +17,7 @@ const ChatContainer = styled.div`
 
     background: #b2c7d9;
 `;
-const Container = styled.div`
-    width: 50vh;
-    height: 50vm;
-`;
-const FlexBox = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`;
+
 const MessageBox = styled.div`
     display: flex;
     flex-direction: column;
@@ -56,4 +54,4 @@ const MessageForm = styled.form`
     }
 `;
 
-export { FlexBox, Container, ChatContainer, MessageBox, Message, MessageForm };
+export { LeaveButton, ChatContainer, MessageBox, Message, MessageForm };

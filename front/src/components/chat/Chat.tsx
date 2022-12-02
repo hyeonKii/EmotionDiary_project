@@ -1,72 +1,33 @@
-import { ChatContainer, Message, MessageBox, MessageForm } from "@/styles/chat/chat-style";
+import {
+    ChatContainer,
+    Container,
+    Message,
+    FlexBox,
+    MessageBox,
+    MessageForm,
+} from "@/styles/chat/chat-style";
 import { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import classNames from "classnames";
-
-const socket = io("http://localhost:4000/");
-
-interface IChat {
-    username: string;
-    message: string;
-}
+import { ChatWindow } from "@/components/chat/chatwindow";
+import { Route, Routes } from "react-router-dom";
+import ChatRoom from "@/components/chat/chatroom";
+import WaitingRoom from "@/components/chat/waiting-room";
+export const socket = io("http://localhost:4000");
 
 export function Chat() {
-    const [chats, setChats] = useState<IChat[]>([]);
-    const [message, setMessage] = useState<string>("");
-    const chatContainerEl = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const messageHandler = (chat: IChat) => setChats((prevChats) => [...prevChats, chat]);
-        const changeName = () => {};
-        socket.on("message", messageHandler);
-        return () => {
-            socket.off("message", messageHandler);
-        };
-    }, []);
-
-    const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setMessage(e.target.value);
-    }, []);
-
-    const onSendMessage = useCallback(
-        (e: FormEvent<HTMLFormElement>) => {
-            console.log("send");
-            e.preventDefault();
-            if (!message) return alert("메시지를 입력해 주세요.");
-            socket.emit("message", message, "나", (chat: IChat) => {
-                setChats((prevChats) => [...prevChats, chat]);
-            });
-            setMessage("");
-        },
-        [message]
-    );
-    console.log();
     return (
         <>
-            <ChatContainer ref={chatContainerEl}>
-                {chats.map((chat, index) => (
-                    <MessageBox
-                        key={index}
-                        className={classNames({
-                            my_message: "나" === chat.username,
-                            alarm: !chat.username,
-                        })}
-                    >
-                        <span>
-                            {chat.username
-                                ? socket.id === chat.username
-                                    ? ""
-                                    : chat.username
-                                : ""}
-                        </span>
-                        <Message className="message">{chat.message}</Message>
-                    </MessageBox>
-                ))}
-            </ChatContainer>
-            <MessageForm onSubmit={onSendMessage}>
-                <input type="text" onChange={onChange} value={message} />
-                <button>보내기</button>
-            </MessageForm>
+            <FlexBox>
+                <Container>
+                    <WaitingRoom />
+                </Container>
+                <Container>
+                    <Routes>
+                        <Route path="/room/:roomName" element={<ChatRoom />} />
+                    </Routes>
+                </Container>
+            </FlexBox>
         </>
     );
 }
