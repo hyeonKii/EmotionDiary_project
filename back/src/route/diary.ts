@@ -43,30 +43,12 @@ diaryRouter.get(
         ) {
             throw new AppError("ArgumentError");
         }
-        console.log(count, page, Boolean(privatediary), emotion);
         const result = await diaryService.getDiaryList(
             req.userID!,
             Number(count),
             Number(page),
             Boolean(privatediary),
             String(emotion)
-        );
-        return { statusCode: 200, content: result };
-    })
-);
-
-diaryRouter.get(
-    "/all/emotion",
-    // auth,
-    wrapRouter(async (req: Req, res: Res) => {
-        const { count, page, emotion } = req.query;
-        if (count === undefined || page === undefined || emotion === undefined) {
-            throw new AppError("ArgumentError");
-        }
-        const result = await diaryService.getEmotionDiaryList(
-            Number(count),
-            Number(page),
-            emotion as string
         );
         return { statusCode: 200, content: result };
     })
