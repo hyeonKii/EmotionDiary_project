@@ -24,23 +24,19 @@ interface Error {
 
 export default function DiaryPost({ post, refetch }: Props) {
     const [isOpen, setIsOpen] = useState(false);
-    const [like, setLike] = useState(false);
     const [editMode, setEditMode] = useState(false);
 
-    const { form, changeHandler } = useForm({ title: post.title, description: post.description });
+    const { id, title, description, privateDiary } = post;
 
-    const { id, title, description } = post;
+    const { form, changeHandler } = useForm({ title, description });
+
     const emotion = "행복";
 
     const onClick = () => {
         setIsOpen((prev) => !prev);
     };
 
-    const onToggle = () => {
-        setLike((prev) => !prev);
-    };
-
-    const { mutate: editDiary } = useRequestEditDiary(form, post.id, {
+    const { mutate: editDiary } = useRequestEditDiary(form, id, {
         onSuccess: () => {
             refetch();
         },
@@ -49,7 +45,7 @@ export default function DiaryPost({ post, refetch }: Props) {
         },
     });
 
-    const { mutate: deleteDiary } = useRequestDeleteDiary(post.id, {
+    const { mutate: deleteDiary } = useRequestDeleteDiary(id, {
         onSuccess: () => {
             refetch();
         },
@@ -93,7 +89,7 @@ export default function DiaryPost({ post, refetch }: Props) {
                         ) : (
                             <>
                                 <p className="description">{description}</p>
-                                {post.privateDiary ? (
+                                {privateDiary ? (
                                     <span className="material-symbols-outlined">lock</span>
                                 ) : (
                                     <span className="material-symbols-outlined">lock_open</span>
