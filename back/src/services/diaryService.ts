@@ -161,29 +161,6 @@ class DiaryService {
         await this.prisma.$disconnect();
         return postDatas;
     }
-
-    async getEmotionDiaryList(count: number, page: number, emotion: string) {
-        const postDatas = await this.prisma.diary.findMany({
-            take: Number(count),
-            skip: (Number(page) - 1) * Number(count),
-            where: {
-                emotion: emotion,
-            },
-            select: {
-                id: true,
-                title: true,
-                description: true,
-                view: true,
-                createdAt: true,
-                updatedAt: true,
-            },
-        });
-        if (postDatas === null) {
-            throw new AppError("NotFindError");
-        }
-        await this.prisma.$disconnect();
-        return postDatas;
-    }
 }
 
 export default new DiaryService();
