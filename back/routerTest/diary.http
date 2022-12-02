@@ -48,6 +48,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iL
 RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MTgxMjcwLCJleHAiOjE2NjkxOTIwNzB9.UvSrCeRo9Q9L7T5CHRCfvwT9k96fMsa3YWOxqgnHLm0
 Content-Type: application/json
 
+### 나의 일기 조회
+get {{url}}/diaries/mine?count=10&page=1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdCIsImlhdCI6MTY2OTk2MjkxMCwiZXhwIjoxNjY5OTY0NzEwfQ.EQwfC_4uErc76F0n4EhNogLnFSFGE8Zn0uGQF80YJXA
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5OTYyOTEwLCJleHAiOjE2Njk5NzM3MTB9.vPguf8_cwmnXnZeIahRq71ZmvxLTbX2UxmRg3soAkOE
+Content-Type: application/json
+
 ### 일기 작성 api
 post {{url}}/diaries/write
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2NjkzNDE5MDksImV4cCI6MTY2OTM0MzcwOX0.R47c-1dGe_eU49gwhR5K8Iiul6XZ6iQ-TcQUnE61UKw
