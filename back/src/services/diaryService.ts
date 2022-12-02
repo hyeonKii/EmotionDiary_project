@@ -100,19 +100,59 @@ class DiaryService {
         return postData;
     }
 
-    async getDiaryList(count: number, page: number) {
-        const postDatas = await this.prisma.diary.findMany({
-            take: Number(count),
-            skip: (Number(page) - 1) * Number(count),
-            select: {
-                id: true,
-                title: true,
-                description: true,
-                view: true,
-                createdAt: true,
-                updatedAt: true,
-            },
-        });
+    async getDiaryList(
+        userID: string,
+        count: number,
+        page: number,
+        privatediary: boolean,
+        emotion: string
+    ) {
+        let postDatas;
+        userID = "test";
+        console.log(typeof privatediary, privatediary);
+        if (privatediary) {
+            console.log(true, emotion);
+            postDatas = await this.prisma.diary.findMany({
+                take: Number(count),
+                skip: (Number(page) - 1) * Number(count),
+                where: {
+                    emotion: emotion != "" ? emotion : undefined,
+                    user: {
+                        Account: {
+                            userID: userID,
+                        },
+                    },
+                },
+                select: {
+                    id: true,
+                    title: true,
+                    description: true,
+                    emotion: true,
+                    view: true,
+                    createdAt: true,
+                    updatedAt: true,
+                },
+            });
+        } else {
+            console.log(false);
+            postDatas = await this.prisma.diary.findMany({
+                take: Number(count),
+                skip: (Number(page) - 1) * Number(count),
+                where: {
+                    emotion: emotion != "" ? emotion : undefined,
+                },
+                select: {
+                    id: true,
+                    title: true,
+                    description: true,
+                    emotion: true,
+                    view: true,
+                    createdAt: true,
+                    updatedAt: true,
+                },
+            });
+        }
+
         if (postDatas === null) {
             throw new AppError("NotFindError");
         }
