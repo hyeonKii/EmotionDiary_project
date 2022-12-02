@@ -25,7 +25,7 @@ const writeDiary = (diaryData: WriteDiary) => {
 };
 
 export const getDiary = (count: number, page: number, emotion?: string) => {
-    return axios.get(URL + endpoint.DIARY_GET + `?count=${count}&page=${page}&emtion=${emotion}`, {
+    return axios.get(URL + endpoint.DIARY_GET + `?count=${count}&page=${page}&emotion=${emotion}`, {
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
             Refreshtoken: sessionStorage.getItem("refreshToken"),
@@ -62,15 +62,6 @@ const editMyDiary = (myDiaryData: EditDiary, id: number) => {
 
 const deleteMyDiary = (id: number) => {
     return axios.delete(URL + endpoint.MYDIARY + "/" + id, {
-        headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-            Refreshtoken: sessionStorage.getItem("refreshToken"),
-        },
-    });
-};
-
-const getEmotionDiary = (params: string) => {
-    return axios.get(URL + endpoint.DIARY_GET + params, {
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
             Refreshtoken: sessionStorage.getItem("refreshToken"),
