@@ -1,0 +1,99 @@
+@URL=http://localhost:3002/api/account
+
+### 회원가입
+### onSuccess: { "ok": true }
+### onError:
+### - 이메일이 형식에 부합하지않을때: Invalid email format
+### - 이미 가입된 계정일때: User already exists
+### - BodyData가 없을 때: BodyData is wrong
+
+POST {{URL}}/new
+Content-Type: application/json
+
+{
+    "userID": "test4",
+    "password": "test4",
+    "email": "test4@test.com",
+    "nickname": "test2"
+}
+
+
+### 로그인
+### onSuccess: {"accessToken": "...","refreshToken": "..."}
+### onError:
+### - 회원가입을  안한 유저일때: Login failed
+### - 아이디 또는 비밀번호를 틀렸을때: Login failed
+### - BodyData가 없을 때: BodyData is wrong
+
+POST {{URL}}/login
+Content-Type: application/json
+
+{
+    "userID": "test4",
+    "password": "test4"
+}
+
+
+### 유저 데이터 가져오기
+### onSuccess: {"certified_account": false,"User": {"nickname": "test2"}}
+### onError:
+### - 회원가입을  안한 유저일때: Login failed
+### - 토큰이 유효하지않으면: Token is invalid
+
+GET {{URL}}/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdDMiLCJpYXQiOjE2NjkzMTU2MjUsImV4cCI6MTY2OTMxNzQyNX0.RJcGYZpYBicEQ89Ef2PXNkRQ6aCxsMIsuPg8WaYnwjs
+Refreshtoken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MzE1NjI1LCJleHAiOjE2NjkzMjY0MjV9.tTTAdCq_P-d_mhEGA8pil4yc08366_jJS8Yuz8DLRRA
+
+
+### 로그아웃
+### onSuccess: {"ok": true}
+### onError:
+### - 로그인 안했는데 로그아웃 시도하면: Logout failed
+
+DELETE {{URL}}/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdDMiLCJpYXQiOjE2NjkzMTYwMzEsImV4cCI6MTY2OTMxNzgzMX0.rIngIySipSidb4-R1fwZWOdT7jsOq-LZghCdwfb3iMA
+Refreshtoken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MzE2MDMxLCJleHAiOjE2NjkzMjY4MzF9.w7PFXTP91ccUKUzuiu24x5n0AcgEi9k7BUlqwko4Moc
+
+
+### 아이디 찾기
+### onSuccess: {"ok": true}
+### onError:
+### - 
+
+GET {{URL}}/user-id
+
+{
+    "email": "test3@test.com",
+    "code": 
+}
+
+
+### 비밀번호 변경
+### onSuccess: {"ok": true}
+### onError:
+### -
+
+PUT {{URL}}/password
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdDMiLCJpYXQiOjE2NjkzMTYzMDksImV4cCI6MTY2OTMxODEwOX0.fSGOhBeL8aXSzPgzieBv-1xQx4630c0ANqvkWn8T0oI
+Refreshtoken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MzE2MzA5LCJleHAiOjE2NjkzMjcxMDl9.OkhhdUfUCd9YOMiIkZQs4In9BgpDQGuiZx3aVZo0nzc
+Content-Type: application/json
+
+{
+    "password": "test3"
+}
+
+
+### 계정 인증
+### onSuccess: {"ok": true}
+### onError:
+### -
+
+PATCH  {{URL}}/certify
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdDQiLCJpYXQiOjE2NjkzMTY2OTEsImV4cCI6MTY2OTMxODQ5MX0.oucWQCRrpySNGp9E2VotkKaP5frpiyH-mlqT7ECBsWs
+Refreshtoken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MzE2NjkxLCJleHAiOjE2NjkzMjc0OTF9.Thf3mN1omtvgxyYY0HoOZp4bm5mqjTvwEuohr1FaZB8
+Content-Type: application/json
+
+{
+    "isCertified": true
+}

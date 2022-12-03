@@ -6,18 +6,23 @@ import tokenService from "services/tokenService";
 
 const tokenRouter = Router();
 
-tokenRouter.put(
+tokenRouter.get(
     "/refresh",
     auth,
     wrapRouter(async (req, res) => {
-        if (req.userID === undefined) {
-            // Todo change error type
-            throw new AppError("ArgumentError");
-        }
-
-        const refreshToken = await tokenService.updateRefreshToken(req.userID);
+        const refreshToken = await tokenService.updateRefreshToken(req.userID!);
 
         return { statusCode: 200, content: refreshToken };
+    })
+);
+
+tokenRouter.get(
+    "/access",
+    auth,
+    wrapRouter(async (req, res) => {
+        const accessToken = await tokenService.getAccessToken(req.refreshToken!);
+
+        return { statusCode: 200, content: accessToken };
     })
 );
 

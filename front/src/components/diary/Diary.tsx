@@ -1,17 +1,28 @@
 import { useState } from "react";
-import DiaryEditForm from "./DiaryEditForm";
+import { TabList } from "@/styles/common/tab-style";
+import { DiarySection } from "@/styles/diary/diary-style";
+import { TodayDiary } from "./TodayDiary";
+import { Chat } from "@/components/chat/Chat";
+const tabList = ["하루일기", "전체일기", "대화목록"];
 
-export default function Diary({ data }) {
-    const [editMode, setEditMode] = useState(false);
+export function Diary() {
+    const [tab, setTab] = useState("하루일기");
 
-    return !editMode ? (
-        <div>
-            <div>{data.title}</div>
-            <div>{data.description}</div>
-            <div onClick={() => setEditMode(true)}>수정</div>
-            <div>삭제</div>
-        </div>
-    ) : (
-        <DiaryEditForm data={data} setEditMode={setEditMode} />
+    return (
+        <DiarySection>
+            <TabList>
+                {tabList?.map((tabName) => (
+                    <li
+                        key={tabName}
+                        className={tab === tabName ? "active" : undefined}
+                        onClick={() => setTab(tabName)}
+                    >
+                        {tabName}
+                    </li>
+                ))}
+            </TabList>
+            {tab === "하루일기" && <TodayDiary />}
+            {tab === "대화목록" && <Chat />}
+        </DiarySection>
     );
 }

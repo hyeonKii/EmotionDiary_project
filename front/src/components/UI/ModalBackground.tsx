@@ -1,7 +1,11 @@
 import styled from "styled-components";
 
-export default function ModalBackground({ setShowForm }) {
-    return <ModalBackgroundStyle onClick={() => setShowForm(false)}></ModalBackgroundStyle>;
+interface Props {
+    setShowLoginForm(value: boolean): void;
+}
+
+export default function ModalBackground({ setShowLoginForm }: Props) {
+    return <ModalBackgroundStyle onClick={() => setShowLoginForm(false)}></ModalBackgroundStyle>;
 }
 
 const ModalBackgroundStyle = styled.div`
@@ -11,5 +15,5 @@ const ModalBackgroundStyle = styled.div`
     top: 0;
     left: 0;
     z-index: 10;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(153, 153, 153, 1);
 `;

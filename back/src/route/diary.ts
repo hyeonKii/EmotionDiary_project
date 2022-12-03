@@ -10,15 +10,11 @@ diaryRouter.post(
     "/write",
     auth,
     wrapRouter(async (req: Req, res: Res) => {
-        const { userID, title, description } = req.body;
-        if (
-            typeof userID !== "string" ||
-            typeof title !== "string" ||
-            typeof description !== "string"
-        ) {
+        const { title, description, privateDiary } = req.body;
+        if (title && description && privateDiary === undefined) {
             throw new AppError("ArgumentError");
         }
-        const result = await diaryService.writeDiary(userID, title, description);
+        const result = await diaryService.writeDiary(req.userID!, title, description);
         return { statusCode: 200, content: true };
     })
 );
@@ -38,12 +34,36 @@ diaryRouter.get(
     "/all",
     auth,
     wrapRouter(async (req: Req, res: Res) => {
-        const { count, page } = req.query;
-        if (typeof count !== "string" || typeof page !== "string") {
-            console.log(typeof count, typeof page);
+        const { count, page, privatediary, emotion } = req.query;
+        if (
+            count === undefined ||
+            page === undefined ||
+            privatediary === undefined ||
+            emotion === undefined
+        ) {
             throw new AppError("ArgumentError");
         }
-        const result = await diaryService.getDiaryList(count, page);
+        const result = await diaryService.getDiaryList(
+            req.userID!,
+            Number(count),
+            Number(page),
+            Boolean(privatediary),
+            String(emotion)
+        );
+        return { statusCode: 200, content: result };
+    })
+);
+
+//나의 일기 조회
+diaryRouter.get(
+    "/mine",
+    auth,
+    wrapRouter(async (req: Req, res: Res) => {
+        const { count, page } = req.query;
+        if (count === undefined || page === undefined) {
+            throw new AppError("ArgumentError");
+        }
+        const result = await diaryService.getMyDiaryList(req.userID!, Number(count), Number(page));
         return { statusCode: 200, content: result };
     })
 );
@@ -54,7 +74,7 @@ diaryRouter.get(
     wrapRouter(async (req: Req, res: Res) => {
         const { id } = req.params;
         const result = await diaryService.getDiary(id);
-        return Promise.resolve({ statusCode: 200, content: result });
+        return { statusCode: 200, content: result };
     })
 );
 
@@ -65,6 +85,17 @@ diaryRouter.put(
         const { id } = req.params;
         const { title, description } = req.body;
         const result = await diaryService.updateDiary(id, title, description);
+        return Promise.resolve({ statusCode: 200, content: result });
+    })
+);
+
+diaryRouter.put(
+    "/emotion/:id",
+    auth,
+    wrapRouter(async (req: Req, res: Res) => {
+        const { id } = req.params;
+        const { emotion } = req.body;
+        const result = await diaryService.changeEmotion(id, emotion);
         return Promise.resolve({ statusCode: 200, content: result });
     })
 );

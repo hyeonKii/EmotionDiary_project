@@ -1,5 +1,6 @@
 import { sign, verify } from "jsonwebtoken";
 import { config } from "dotenv";
+import AppError from "./AppError";
 
 config();
 
@@ -39,5 +40,7 @@ export const verifyToken = (token: string) => {
         if (e.message === "jwt expired") {
             return null;
         }
+
+        throw new AppError("UnknownError");
     }
 };

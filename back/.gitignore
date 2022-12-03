@@ -5,3 +5,4 @@ senderinfo.json
 
 src/lib/apidoc/doc
 logs/*
+dev.db

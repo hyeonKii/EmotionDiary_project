@@ -10,35 +10,50 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-model User {
-  id                Int                @id @default(autoincrement())
-  email             String             @unique
-  nickname          String             
-  userID            String             @unique
-  password          String
-  withdrawal        Boolean            @default(false)
-  emailVerification String             @default("0")
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
+model Certification {
+  email String @unique
+  code  String @unique
+}
 
-  diary Diary[]
+model User {
+  id       Int     @id @default(autoincrement())
+  nickname String
+  blocking Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  diary   Diary[]
+  Account Account?
+}
+
+model Account {
+  email             String  @unique
+  userID            String  @unique
+  password          String
+  certified_account Boolean @default(false)
+
+  User User @relation(fields: [id], references: [id])
+  id   Int  @unique
 }
 
 model Diary {
-  id          Int           @id @unique @default(autoincrement())
-  author      String
+  id          Int      @id @unique @default(autoincrement())
+  emotion     String   @default("normal")
   title       String
   description String
-  private     Boolean       @default(false)
-  view        Int           @default(0)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  user        User          @relation(fields: [author], references: [userID])
+  private     Boolean  @default(false)
+  view        Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user_model_id Int
+  user          User @relation(fields: [user_model_id], references: [id])
 }
 
 model Token {
-  id    Int    @id @unique @default(autoincrement())
-  token String @unique
+  id    Int     @id @unique @default(autoincrement())
+  token String  @unique
 
   userID String @unique
 }
