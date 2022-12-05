@@ -29,7 +29,7 @@ export function TodayDiary() {
     const [value, setValue] = useState(new Date());
     const [isEdit, setIsEdit] = useState(false);
 
-    const { data, refetch } = useRequestGetDiary(["diary"], 32, {
+    const { data, refetch } = useRequestGetDiary(["diary"], 2, {
         enabled: false,
         onSuccess: () => {
             return data;
@@ -39,23 +39,27 @@ export function TodayDiary() {
         },
     });
 
+    const [newValue, setNewValue] = useState({
+        title: data?.data.title,
+        description: data?.data.description,
+        date: new Date(data?.data.createdAt),
+    });
+
     useEffect(() => {
         refetch();
+        const newDate = `${newValue.date.getFullYear()}년 ${newValue.date.getMonth()}월 ${newValue.date.getDate()}일`;
+        dateString !== newDate ? setIsEdit(true) : setIsEdit(false);
     }, [useRequestGetDiary, value]);
 
-    const { emotionState } = useEmotion(data?.data.emotion, user?.nickname);
+    const dateString = `${value.getFullYear()}년 ${value.getMonth()}월 ${value.getDate()}일`;
+
+    const { emotionState } = useEmotion(data?.data?.emotion, user?.nickname);
     const { form, changeHandler } = useForm({
-        title: data?.data.title,
+        title: data?.data?.title,
         description: "test",
         privateDiary: true,
     });
     const { title, description, privateDiary } = form;
-
-    const dateString = value.toLocaleDateString("ko-KR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    });
 
     const { mutate: writeDiary } = useRequestWriteDiary(form, {
         onSuccess: () => {

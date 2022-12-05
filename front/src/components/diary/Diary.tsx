@@ -3,10 +3,12 @@ import { TabList } from "@/styles/common/tab-style";
 import { DiarySection } from "@/styles/diary/diary-style";
 import { TodayDiary } from "./TodayDiary";
 import { Chat } from "@/components/chat/Chat";
-const tabList = ["하루일기", "전체일기", "대화목록"];
+
+const tabList = ["하루일기", "전체일기", "대화목록"] as const;
+type TabList = typeof tabList[number];
 
 export function Diary() {
-    const [tab, setTab] = useState("하루일기");
+    const [tab, setTab] = useState<TabList>("하루일기");
 
     return (
         <DiarySection>
