@@ -36,7 +36,7 @@ export default function PostList() {
         ({ pageParam = 1 }) => getPostPage(pageParam),
         {
             getNextPageParam: (lastPage, allPages) => {
-                return lastPage && allPages.length + 1;
+                return lastPage.length ? allPages.length + 1 : undefined;
             },
         }
     );
@@ -79,7 +79,7 @@ export default function PostList() {
             </TabList>
             <section>
                 {content}
-                {/* {isFetchingNextPage ? <p>Loading...</p> : undefined} */}
+                {isFetchingNextPage && <p>Loading...</p>}
             </section>
         </>
     );
