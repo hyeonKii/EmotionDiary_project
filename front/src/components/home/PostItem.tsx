@@ -17,7 +17,7 @@ interface Props {
 function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
     const [isOpen, setIsOpen] = useState(false);
     const [like, setLike] = useState(false);
-    const { id, emotion, title, description, createdAt } = post;
+    const { emotion, title, description, createdAt } = post;
 
     const onClick = () => {
         setIsOpen((prev) => !prev);
@@ -31,7 +31,7 @@ function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
         return (
             <>
                 <Post onClick={onClick} isOpen={isOpen} emotion={emotion}>
-                    <span className="emotion">{id}</span>
+                    <span className="emotion">{emotion}</span>
                     <span className="title">{title}</span>
                     <div className="time">
                         <span>{dateTime(new Date(createdAt))}</span>
