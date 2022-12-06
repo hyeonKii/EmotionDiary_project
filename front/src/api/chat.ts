@@ -1,6 +1,6 @@
 import axios from "axios";
 import { URL } from "./url";
-import * as endpoint from "./constants/diaryEndpoints";
+import * as endpoint from "./constants/chatEndpoints";
 import { useMutation, useQuery } from "react-query";
 
 interface WriteDiary {
@@ -15,31 +15,8 @@ interface EditDiary {
     description: string;
 }
 
-const writeDiary = (diaryData: WriteDiary) => {
-    return axios.post(URL + endpoint.DIARY_WRITE, diaryData, {
-        headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-            Refreshtoken: sessionStorage.getItem("refreshToken"),
-        },
-    });
-};
-
-export const getDiary = (count: number, page: number, emotion?: string) => {
-    return axios.get(
-        URL +
-            endpoint.DIARY_GET +
-            `?count=${count}&page=${page}&privatediary=${""}&emotion=${emotion}`,
-        {
-            headers: {
-                Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-                Refreshtoken: sessionStorage.getItem("refreshToken"),
-            },
-        }
-    );
-};
-
-const getMyDiary = (id: number) => {
-    return axios.get(URL + endpoint.MYDIARY + "/" + id, {
+export const getMessege = (roomName: string | undefined) => {
+    return axios.get(URL + endpoint.MESSEGE_GET + `?roomname=${roomName}`, {
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
             Refreshtoken: sessionStorage.getItem("refreshToken"),

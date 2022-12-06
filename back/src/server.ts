@@ -19,7 +19,7 @@ app.use(cors());
 app.use("/api/users", userRouter);
 app.use("/api/account", accountRouter);
 app.use("/api/diaries", diaryRouter);
-app.use("/api/chat", chatRouter);
+app.use("/api/chats", chatRouter);
 
 app.use("/api/certification", certificationRouter);
 app.use("/api/token", tokenRouter);

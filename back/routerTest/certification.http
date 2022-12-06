@@ -32,7 +32,7 @@ Content-Type: application/json
 
 {
   "nickname":"test",
-  "email":"jlee7003@naver.com",
+  "email":"jlee7002@naver.com",
   "userID": "test",
   "password": "0000"
 }

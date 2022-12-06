@@ -38,7 +38,7 @@ export function TodayDiary() {
         month: "long",
         day: "numeric",
     });
-    console.log(data.createdAt);
+    console.log(data.createdAt, dateString, "date");
 
     const onChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         const { name, value } = e.currentTarget;

@@ -81,7 +81,7 @@ export function Emotion() {
     return (
         <EmotionSection>
             <h1>
-                <span>{user?.nickname}</span>님의 지난달 감정들
+                <span>{user?.nickname}</span> 지난달 감정들
             </h1>
             <EmotionChartSection>
                 <RadarChart width={450} height={450} data={chart}>

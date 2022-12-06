@@ -28,7 +28,6 @@ const introduce = () => {
                 setInnerHeight((prev) => prev++);
                 section.current.style.top = `${top + innerHeight}px`;
 
-                console.log(top + innerHeight, "433");
                 changeSideNavStyle();
             }
 
@@ -76,7 +75,6 @@ const introduce = () => {
                         return (prev = resizeHeight);
                     });
                     section.current.style.top = `-${resizeHeight * i}px`;
-                    console.log(resizeHeight, 4);
                 }
             }
         };

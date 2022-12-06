@@ -44,7 +44,6 @@ diaryRouter.get(
         ) {
             throw new AppError("ArgumentError");
         }
-        console.log(count, page, Boolean(privatediary), emotion);
         const result = await diaryService.getDiaryList(
             req.userID!,
             Number(count),
@@ -56,21 +55,36 @@ diaryRouter.get(
     })
 );
 
+// diaryRouter.get(
+//     "/:id",
+//     auth,
+//     wrapRouter(async (req: Req, res: Res) => {
+//         const { id } = req.params;
+//         const result = await diaryService.getDiary(id);
+//         return { statusCode: 200, content: result };
+//     })
+// );
+
 diaryRouter.get(
-    "/:id",
-    auth,
+    "/",
+    // auth,
     wrapRouter(async (req: Req, res: Res) => {
-        const { id } = req.params;
-        const result = await diaryService.getDiary(id);
+        const { datetime } = req.query;
+        const date = new Date(String(datetime));
+        const nextDate = new Date(String(datetime));
+        nextDate.setDate(date.getDate() + 1);
+        console.log(date, nextDate);
+        const result = await diaryService.getDiaryByDate(date, nextDate);
         return { statusCode: 200, content: result };
     })
 );
 
 diaryRouter.put(
     "/:id",
-    auth,
+    // auth,
     wrapRouter(async (req: Req, res: Res) => {
         const { id } = req.params;
+        console.log(id);
         const { title, description } = req.body;
         const result = await diaryService.updateDiary(id, title, description);
         return Promise.resolve({ statusCode: 200, content: result });

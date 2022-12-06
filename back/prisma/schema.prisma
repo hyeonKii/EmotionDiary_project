@@ -3,11 +3,12 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "mysql"
+  url      = "mysql://pku1jbmbyq7767am:wh9k4gwoyzfagf8a@ohunm00fjsjs1uzy.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/gifk59kufewouggp"
 }
 
 model Certification {
@@ -22,9 +23,9 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  diary   Diary[]
-  Account Account?
+  diary     Diary[]
+  chat      Chat[]
+  Account   Account?
 }
 
 model Account {
@@ -32,40 +33,47 @@ model Account {
   userID            String  @unique
   password          String
   certified_account Boolean @default(false)
-
-  User User @relation(fields: [id], references: [id])
-  id   Int  @unique
+  User              User    @relation(fields: [id], references: [id])
+  id                Int     @unique
 }
 
 model Diary {
-  id          Int      @id @unique @default(autoincrement())
-  emotion     String   @default("normal")
-  title       String
-  description String
-  private     Boolean  @default(false)
-  view        Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  user_model_id Int
-  user          User @relation(fields: [user_model_id], references: [id])
+  id              Int       @id @unique @default(autoincrement())
+  emotion         String    @default("normal")
+  title           String
+  description     String
+  private         Boolean   @default(false)
+  view            Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  user_model_id   Int
+  user            User      @relation(fields: [user_model_id], references: [id])
 }
 
 model Token {
-  id    Int     @id @unique @default(autoincrement())
-  token String  @unique
-
-  userID String @unique
+  id              Int       @id @unique @default(autoincrement())
+  token           String    @unique
+  userID          String    @unique
 }
 
-// model Chat{
-//   id       Int     @id @default(autoincrement())
-//   userID   String  @unique
-//   messege  Messege  
-//   chatRoom String 
-//   createdAt   DateTime @default(now())
-//   updatedAt   DateTime @updatedAt
-// } 
-// model Messege{
-//   id       Int     @id @default(autoincrement())
-// }
+model Chat{
+  id              Int       @id @default(autoincrement())
+  user_model_id   String    @unique
+  inviter         String
+  invitee         String
+  messege         Messege[]
+  user            User[]    
+
+  @@fulltext([user_model_id])
+}
+
+model Messege {
+  id              Int       @id @default(autoincrement())
+  chatRoom        String 
+  sender          String
+  receiver        String
+  msgText         String
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  chat            Chat      @relation(fields: [chatRoom], references: [user_model_id])
+}

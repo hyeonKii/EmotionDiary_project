@@ -10,11 +10,10 @@ import { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState } from
 import { io } from "socket.io-client";
 import classNames from "classnames";
 import { ChatWindow } from "@/components/chat/chatwindow";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import ChatRoom from "@/components/chat/chatroom";
 import WaitingRoom from "@/components/chat/waiting-room";
 export const socket = io("http://localhost:4000");
-
 export function Chat() {
     return (
         <>

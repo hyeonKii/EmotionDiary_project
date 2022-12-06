@@ -1,17 +1,35 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import * as api from "@/api/chat";
 import { Head, Table } from "@/styles/chat/waiting-room.styles";
 import { socket } from "@/components/chat/Chat";
-
+import { currentUser } from "@/temp/userAtom";
+import { useRecoilValue } from "recoil";
 interface CreateRoomResponse {
     success: boolean;
     payload: string;
 }
 
+interface Items {
+    id: number;
+    user_model_id: string;
+}
+
 const WaitingRoom = () => {
     const [rooms, setRooms] = useState<string[]>([]);
     const navigate = useNavigate();
+    const user = useRecoilValue(currentUser);
 
+    const getRooms = async (myusermodelid = 1) => {
+        try {
+            // const { data } = await api.getDiary(user?.id);
+            // return data;
+            console.log(user?.id);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+    // navigate(`/`);
     useEffect(() => {
         const roomListHandler = (rooms: string[]) => {
             setRooms(rooms);
@@ -23,7 +41,8 @@ const WaitingRoom = () => {
             setRooms((prevRooms) => prevRooms.filter((room) => room !== roomName));
         };
 
-        socket.emit("room-list", roomListHandler);
+        socket.emit("room-list", String(user?.id), roomListHandler);
+
         socket.on("create-room", createRoomHandler);
         socket.on("delete-room", deleteRoomHandler);
 
@@ -48,7 +67,7 @@ const WaitingRoom = () => {
     const onJoinRoom = useCallback(
         (roomName: string) => () => {
             socket.emit("join-room", roomName, () => {
-                console.log(roomName);
+                console.log(roomName, "joinroom");
             });
             navigate(`/room/${roomName}`);
         },

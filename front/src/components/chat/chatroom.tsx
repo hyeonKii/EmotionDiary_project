@@ -2,6 +2,10 @@ import classNames from "classnames";
 import { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { socket } from "@/components/chat/Chat";
+import { currentUser } from "@/temp/userAtom";
+import * as api from "@/api/chat";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { chatMessgeList } from "@/temp/ChatRecoil";
 import {
     ChatContainer,
     LeaveButton,
@@ -11,17 +15,35 @@ import {
 } from "@/styles/chat/chatroom-style";
 
 interface IChat {
-    username: string;
-    message: string;
+    sender: string;
+    msgText: string;
 }
 
 export const ChatRoom = () => {
-    const [chats, setChats] = useState<IChat[]>([]);
-    const [message, setMessage] = useState<string>("");
+    const [chats, setChats] = useState<IChat[]>([
+        {
+            sender: "3",
+            msgText: "zzz",
+        },
+    ]);
+    // const [chats, setChats] = useRecoilState(chatMessgeList);
+    const [msgText, setMessage] = useState<string>("");
     const chatContainerEl = useRef<HTMLDivElement>(null);
-
     const { roomName } = useParams<"roomName">();
     const navigate = useNavigate();
+    const user = useRecoilValue(currentUser);
+    const userid = String(user?.id);
+
+    const getMessegetext = async (roomName: string | undefined) => {
+        try {
+            const { data } = await api.getMessege(roomName);
+            console.log(data, "messege", chats);
+            setChats(data.result);
+            return data;
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
     // 채팅이 길어지면(chats.length) 스크롤이 생성되므로, 스크롤의 위치를 최근 메시지에 위치시키기 위함
     useEffect(() => {
@@ -41,6 +63,8 @@ export const ChatRoom = () => {
 
         socket.on("message", messageHandler);
 
+        // getMessegetext(roomName);
+
         return () => {
             socket.off("message", messageHandler);
         };
@@ -50,18 +74,22 @@ export const ChatRoom = () => {
         setMessage(e.target.value);
     }, []);
 
+    useEffect(() => {
+        getMessegetext(roomName);
+    }, [roomName]);
+
     const onSendMessage = useCallback(
         (e: FormEvent<HTMLFormElement>) => {
             e.preventDefault();
-            if (!message) return alert("메시지를 입력해 주세요.");
+            if (!msgText) return alert("메시지를 입력해 주세요.");
 
-            socket.emit("message", { roomName, message }, (chat: IChat) => {
+            socket.emit("message", { roomName, msgText, userid }, (chat: IChat) => {
                 setChats((prevChats) => [...prevChats, chat]);
-                setMessage("");
-                console.log(socket.id === chat.username);
             });
+            setMessage("");
+            console.log(chats);
         },
-        [message, roomName]
+        [msgText, roomName]
     );
 
     const onLeaveRoom = useCallback(() => {
@@ -69,6 +97,12 @@ export const ChatRoom = () => {
         navigate("/");
     }, [navigate, roomName]);
 
+    if (window.performance) {
+        if (performance.navigation.type == 1) {
+        } else {
+            console.log("새로고침");
+        }
+    }
     return (
         <>
             <h1>Chat Room: {roomName}</h1>
@@ -78,23 +112,19 @@ export const ChatRoom = () => {
                     <MessageBox
                         key={index}
                         className={classNames({
-                            my_message: socket.id === chat.username,
-                            alarm: !chat.username,
+                            my_message: userid === chat.sender,
+                            alarm: !chat.sender,
                         })}
                     >
                         <span>
-                            {chat.username
-                                ? socket.id === chat.username
-                                    ? ""
-                                    : chat.username
-                                : ""}
+                            {/* {chat.sender ? (socket.id === chat.sender ? "" : chat.sender) : ""} */}
                         </span>
-                        <Message className="message">{chat.message}</Message>
+                        <Message className="message">{chat.msgText}</Message>
                     </MessageBox>
                 ))}
             </ChatContainer>
             <MessageForm onSubmit={onSendMessage}>
-                <input type="text" onChange={onChange} value={message} />
+                <input type="text" onChange={onChange} value={msgText} />
                 <button>보내기</button>
             </MessageForm>
         </>

@@ -15,10 +15,11 @@ interface Items {
     description: string;
     emotion: string;
     createdAt: Date;
+    user_model_id: number;
 }
 
 export default function PostList() {
-    const [tab, setTab] = useState("전체");
+    const [tab, setTab] = useState("");
 
     const { fetchNextPage, hasNextPage, isFetchingNextPage, data, status } = useInfiniteQuery(
         "posts",

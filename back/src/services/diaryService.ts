@@ -92,12 +92,29 @@ class DiaryService {
 
     async getDiary(id: string) {
         const postData = await this.prisma.diary.findUnique({
-            where: { id: Number(id) },
+            where: {
+                id: Number(id),
+            },
         });
         if (postData === null) {
             throw new AppError("NotFindError");
         }
-        console.log("works");
+        await this.prisma.$disconnect();
+        return postData;
+    }
+
+    async getDiaryByDate(datetime: Date, datetime2: Date) {
+        const postData = await this.prisma.diary.findMany({
+            where: {
+                createdAt: {
+                    gte: datetime,
+                    lte: datetime2,
+                },
+            },
+        });
+        if (postData === null) {
+            throw new AppError("NotFindError");
+        }
         await this.prisma.$disconnect();
         return postData;
     }
@@ -111,9 +128,7 @@ class DiaryService {
     ) {
         let postDatas;
         userID = "test";
-        console.log(typeof privatediary, privatediary);
         if (privatediary) {
-            console.log(true, emotion);
             postDatas = await this.prisma.diary.findMany({
                 take: Number(count),
                 skip: (Number(page) - 1) * Number(count),
@@ -131,12 +146,13 @@ class DiaryService {
                     description: true,
                     emotion: true,
                     view: true,
+                    user_model_id: true,
                     createdAt: true,
                     updatedAt: true,
                 },
+                orderBy: [{ createdAt: "desc" }],
             });
         } else {
-            console.log(false);
             postDatas = await this.prisma.diary.findMany({
                 take: Number(count),
                 skip: (Number(page) - 1) * Number(count),
@@ -149,9 +165,11 @@ class DiaryService {
                     description: true,
                     emotion: true,
                     view: true,
+                    user_model_id: true,
                     createdAt: true,
                     updatedAt: true,
                 },
+                orderBy: [{ createdAt: "desc" }],
             });
         }
 

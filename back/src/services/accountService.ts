@@ -102,6 +102,7 @@ class AccountService {
                 User: {
                     select: {
                         nickname: true,
+                        id: true,
                     },
                 },
             },

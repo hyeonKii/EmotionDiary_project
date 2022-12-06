@@ -6,7 +6,7 @@ POST {{url}}/account/login
 Content-Type: application/json
 
 {
-    "userID": "euiho",
+    "userID": "test",
     "password": "0000"
 }
 ###logout
@@ -41,20 +41,20 @@ Content-Type: application/json
 
 
 ### 모든 일기 조회
-get {{url}}/diaries/all?count=10&page=1&privatediary=true&emotion=
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdCIsImlhdCI6MTY2OTc5NjE0NSwiZXhwIjoxNjY5Nzk3OTQ1fQ.f_mppqnY8HI70fFfp27QrIO0RzJ0e7buSC-uvSxV5CY
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5Nzk2MTQ1LCJleHAiOjE2Njk4MDY5NDV9.5n7insxWELDB1bF16E9z2TZr_wmSY4cXYWQEcj4BdIw
+get {{url}}/diaries/all?count=10&page=1&privatediary=&emotion=
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdCIsImlhdCI6MTY3MDMzMzk3NCwiZXhwIjoxNjcwMzM1Nzc0fQ.1oKMuDqZ8_sMQTlUkDFhDM14Pf5Gbl4DTaMjbTyu4m0
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwMzMzOTc3LCJleHAiOjE2NzAzNDQ3Nzd9.pfD5YTbQ8fbwG_69ru_sUTi8k6NOV-j02HhDdZN7HxI
 Content-Type: application/json
 
 ### 일기 작성 api
 post {{url}}/diaries/write
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2Njk5NjE4ODUsImV4cCI6MTY2OTk2MzY4NX0.UL-rhyKCILE7C7BKn03qmmiQCWmNECmQBIRwF4X36y4
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5OTYxODg1LCJleHAiOjE2Njk5NzI2ODV9.Cj117uDXEDM3Ru-7Ofind8RguCaqzpniv5n2Zv-0Hpg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdCIsImlhdCI6MTY3MDMzMzk3NCwiZXhwIjoxNjcwMzM1Nzc0fQ.1oKMuDqZ8_sMQTlUkDFhDM14Pf5Gbl4DTaMjbTyu4m0
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwMzMzOTc3LCJleHAiOjE2NzAzNDQ3Nzd9.pfD5YTbQ8fbwG_69ru_sUTi8k6NOV-j02HhDdZN7HxI
 Content-Type: application/json
 
 {
-  "title": "euiho1",
-  "description":"euiho",
+  "title": "test13",
+  "description":"test is writing",
   "privateDiary": "true"
 }
 
@@ -69,7 +69,7 @@ Content-Type: application/json
 }
 
 ### 특정 일기 조회
-get {{url}}/diaries/2534
+get {{url}}/diaries/?datetime=2022-12-31
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2NjkxMDIzNTAsImV4cCI6MTY2OTEwNDE1MH0.ZQdV02n26JE3HV1K6SD5WAsye_EqCxEqwVAAou8n2rA
 RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MTAyMzUwLCJleHAiOjE2NzAzMTE5NTB9._Tjm0OlQf7KLYH9r8CyKGOzSSwQXQWZdAulWTYVg-ps
 Content-Type: application/json
