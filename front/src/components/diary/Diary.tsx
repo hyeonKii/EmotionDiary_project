@@ -3,6 +3,7 @@ import { TabList } from "@/styles/common/tab-style";
 import { DiarySection } from "@/styles/diary/diary-style";
 import { TodayDiary } from "./TodayDiary";
 import { Chat } from "@/components/chat/Chat";
+import DiaryUserPostList from "./DiaryUserPostList";
 
 const tabList = ["하루일기", "전체일기", "대화목록"] as const;
 type TabList = typeof tabList[number];
@@ -24,6 +25,7 @@ export function Diary() {
                 ))}
             </TabList>
             {tab === "하루일기" && <TodayDiary />}
+            {tab === "전체일기" && <DiaryUserPostList />}
             {tab === "대화목록" && <Chat />}
         </DiarySection>
     );

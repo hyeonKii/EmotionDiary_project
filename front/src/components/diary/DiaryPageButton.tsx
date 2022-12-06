@@ -35,7 +35,7 @@ export default function DiaryPageButton({ page, setPage, diaryCount, count }: Pr
 
         const lastIndex = Math.ceil(pageButtonCount / PAGE_LIMIT) * PAGE_LIMIT;
 
-        const startIndex = lastIndex - 10;
+        const startIndex = lastIndex - PAGE_LIMIT;
         const endIndex = lastIndex;
 
         setPage(pageButtonCount);
