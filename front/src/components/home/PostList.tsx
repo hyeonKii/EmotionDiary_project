@@ -7,7 +7,18 @@ import Loading from "../UI/Loading";
 import usePost from "@/hooks/usePost";
 import { TabList } from "@/styles/common/tab-style";
 
-const tabList = ["전체", "자신감", "만족감", "신남", "편안함", "불안", "슬픔", "상처", "분노"];
+const tabList = [
+    "전체",
+    "자신감",
+    "만족감",
+    "신남",
+    "편안함",
+    "불안",
+    "슬픔",
+    "상처",
+    "분노",
+] as const;
+type TabList = typeof tabList[number];
 
 interface Items {
     id: number;
@@ -18,14 +29,14 @@ interface Items {
 }
 
 export default function PostList() {
-    const [tab, setTab] = useState("전체");
+    const [tab, setTab] = useState<TabList>("전체");
 
     const { fetchNextPage, hasNextPage, isFetchingNextPage, data, status } = useInfiniteQuery(
         "posts",
         ({ pageParam = 1 }) => getPostPage(pageParam),
         {
             getNextPageParam: (lastPage, allPages) => {
-                return lastPage && allPages.length + 1;
+                return lastPage.length ? allPages.length + 1 : undefined;
             },
         }
     );
@@ -68,7 +79,7 @@ export default function PostList() {
             </TabList>
             <section>
                 {content}
-                {/* {isFetchingNextPage ? <p>Loading...</p> : undefined} */}
+                {isFetchingNextPage && <p>Loading...</p>}
             </section>
         </>
     );

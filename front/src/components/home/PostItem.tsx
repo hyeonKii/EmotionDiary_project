@@ -1,4 +1,5 @@
 import { useState, forwardRef, useMemo, ForwardedRef } from "react";
+import { dateTime } from "@/util/time";
 import { CardSection, Post, PostDetail, MessageBlock } from "@/styles/home/postList-style";
 
 interface Items {
@@ -26,20 +27,6 @@ function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
         setLike((prev) => !prev);
     };
 
-    const dateTime = (date: Date) => {
-        const milliSeconds = Number(new Date()) - Number(date);
-        const seconds = milliSeconds / 1000;
-        if (seconds < 60) return `방금 전`;
-        const minutes = seconds / 60;
-        if (minutes < 60) return `${Math.floor(minutes)}분 전`;
-        const hours = minutes / 60;
-        if (hours < 24) return `${Math.floor(hours)}시간 전`;
-        const dateString = date.toLocaleDateString();
-        return dateString;
-    };
-
-    const nowDate = dateTime(new Date(createdAt));
-
     const itemBody = useMemo(() => {
         return (
             <>
@@ -47,7 +34,7 @@ function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
                     <span className="emotion">{id}</span>
                     <span className="title">{title}</span>
                     <div className="time">
-                        <span>{nowDate}</span>
+                        <span>{dateTime(new Date(createdAt))}</span>
                         <span className="arrow">{isOpen ? "▲" : "▼"}</span>
                     </div>
                 </Post>
