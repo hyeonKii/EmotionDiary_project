@@ -1,5 +1,6 @@
 import { useRequestGetMyAllDiaries } from "@/api/diary";
 import React, { useState } from "react";
+import DiaryPageButton from "./DiaryPageButton";
 import DiaryPost from "./DiaryPost";
 
 interface Error {
@@ -16,13 +17,23 @@ interface Post {
     privateDiary: boolean;
 }
 
+interface Response {
+    data: { diaryCount: number; postDatas: Post };
+}
+
 export default function DiaryUserPostList() {
     const [count, setCount] = useState(10);
     const [page, setPage] = useState(1);
+    const [diaryCount, setDiaryCount] = useState(0);
 
-    const { data: response, refetch } = useRequestGetMyAllDiaries(count, page, {
-        onSuccess: () => {
+    const {
+        isLoading,
+        data: diaryData,
+        refetch,
+    } = useRequestGetMyAllDiaries(count, page, {
+        onSuccess: (res: Response) => {
             console.log("일기 전부 GET 요청 성공");
+            setDiaryCount(res.data.diaryCount);
         },
         onError: (error: Error) => {
             console.log(error.message);
@@ -37,27 +48,32 @@ export default function DiaryUserPostList() {
 
     return (
         <>
-            {response && (
-                <section>
-                    {response.data.map((post: Post) => (
-                        <DiaryPost key={post.id + "포스트"} post={post} refetch={refetch} />
-                    ))}
-                </section>
+            {!isLoading && (
+                <>
+                    {diaryData && (
+                        <section>
+                            {diaryData.data.postDatas.map((post: Post) => (
+                                <DiaryPost key={post.id + "포스트"} post={post} refetch={refetch} />
+                            ))}
+                        </section>
+                    )}
+                    <span>
+                        <DiaryPageButton
+                            page={page}
+                            setPage={setPage}
+                            diaryCount={diaryCount}
+                            count={count}
+                        />
+                    </span>
+                    <select onChange={selectChangeHandler} defaultValue={count}>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                    </select>
+                    ;
+                </>
             )}
-            <button
-                onClick={() =>
-                    setPage((prevState) => (prevState === 1 ? prevState : prevState - 1))
-                }
-            >
-                이전 페이지
-            </button>
-            <button onClick={() => setPage((prevState) => prevState + 1)}>다음 페이지</button>
-            <select onChange={selectChangeHandler} defaultValue={count}>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-            </select>
         </>
     );
 }

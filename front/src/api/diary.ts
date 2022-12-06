@@ -42,8 +42,8 @@ const getMyDiary = (id: number) => {
     });
 };
 
-const getMyAllDiaries = (count: number, page: number, emotion?: string) => {
-    return axios.get(URL + endpoint.DIARY_GET + `?count=${count}&page=${page}&emtion=${emotion}`, {
+const getMyAllDiaries = (count: number, page: number) => {
+    return axios.get(URL + endpoint.DIARY_GET_MY_ALL + `?count=${count}&page=${page}`, {
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
             Refreshtoken: sessionStorage.getItem("refreshToken"),
