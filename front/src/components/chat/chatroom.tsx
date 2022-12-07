@@ -14,30 +14,32 @@ import {
     MessageForm,
 } from "@/styles/chat/chatroom-style";
 
-interface IChat {
+interface ChatData {
     sender: string;
     msgText: string;
 }
 
 export const ChatRoom = () => {
-    const [chats, setChats] = useState<IChat[]>([
+    const [chats, setChats] = useState<ChatData[]>([
         {
             sender: "3",
             msgText: "zzz",
         },
     ]);
-    // const [chats, setChats] = useRecoilState(chatMessgeList);
-    const [msgText, setMessage] = useState<string>("");
-    const chatContainerEl = useRef<HTMLDivElement>(null);
+    const [msgText, setMsgText] = useState<string>("");
+
     const { roomName } = useParams<"roomName">();
-    const navigate = useNavigate();
+    const chatContainerEl = useRef<HTMLDivElement>(null);
+
     const user = useRecoilValue(currentUser);
+
+    const navigate = useNavigate();
     const userid = String(user?.id);
 
+    //todo : usecallback 사용하기
     const getMessegetext = async (roomName: string | undefined) => {
         try {
             const { data } = await api.getMessege(roomName);
-            console.log(data, "messege", chats);
             setChats(data.result);
             return data;
         } catch (e) {
@@ -59,11 +61,9 @@ export const ChatRoom = () => {
 
     // message event listener
     useEffect(() => {
-        const messageHandler = (chat: IChat) => setChats((prevChats) => [...prevChats, chat]);
+        const messageHandler = (chat: ChatData) => setChats((prevChats) => [...prevChats, chat]);
 
         socket.on("message", messageHandler);
-
-        // getMessegetext(roomName);
 
         return () => {
             socket.off("message", messageHandler);
@@ -71,7 +71,7 @@ export const ChatRoom = () => {
     }, []);
 
     const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setMessage(e.target.value);
+        setMsgText(e.target.value);
     }, []);
 
     useEffect(() => {
@@ -83,30 +83,23 @@ export const ChatRoom = () => {
             e.preventDefault();
             if (!msgText) return alert("메시지를 입력해 주세요.");
 
-            socket.emit("message", { roomName, msgText, userid }, (chat: IChat) => {
+            socket.emit("message", { roomName, msgText, userid }, (chat: ChatData) => {
                 setChats((prevChats) => [...prevChats, chat]);
             });
-            setMessage("");
+            setMsgText("");
             console.log(chats);
         },
         [msgText, roomName]
     );
 
     const onLeaveRoom = useCallback(() => {
-        socket.emit("leave-room", roomName, () => {});
-        navigate("/");
+        socket.emit("leave-room", roomName, () => {
+            navigate("/");
+        });
     }, [navigate, roomName]);
 
-    if (window.performance) {
-        if (performance.navigation.type == 1) {
-        } else {
-            console.log("새로고침");
-        }
-    }
     return (
         <>
-            {/* <h1>Chat Room: {roomName}</h1> */}
-
             <LeaveButton onClick={onLeaveRoom}>
                 <button>방 나가기</button>
             </LeaveButton>

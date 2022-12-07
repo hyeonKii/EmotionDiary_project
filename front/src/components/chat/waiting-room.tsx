@@ -20,13 +20,6 @@ const WaitingRoom = () => {
     const navigate = useNavigate();
     const user = useRecoilValue(currentUser);
 
-    const getRooms = async (myusermodelid = 1) => {
-        try {
-            console.log(user?.id);
-        } catch (e) {
-            console.error(e);
-        }
-    };
     useEffect(() => {
         const roomListHandler = (rooms: string[]) => {
             setRooms(rooms);
@@ -61,6 +54,7 @@ const WaitingRoom = () => {
         });
     }, [navigate]);
 
+    //()=> 지우기
     const onJoinRoom = useCallback(
         (roomName: string) => () => {
             socket.emit("join-room", roomName, () => {
