@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, FormEvent } from "react";
 import { useRecoilValue } from "recoil";
 import { currentUser } from "@/temp/userAtom";
 import { useRequestWriteDiary } from "@/api/diary";
@@ -21,7 +21,6 @@ export default function Main() {
 
     const { mutate: writeDiary } = useRequestWriteDiary(form, {
         onSuccess: () => {
-            console.log(form);
             setIsOpen(false);
         },
         onError: ({ message }: Error) => {
@@ -45,7 +44,8 @@ export default function Main() {
         setIsOpen(false);
     };
 
-    const onSubmit = () => {
+    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         writeDiary();
     };
 
@@ -62,15 +62,15 @@ export default function Main() {
                 onClick={() => setIsOpen(true)}
             />
             {isOpen && (
-                <Form ref={ref}>
+                <Form ref={ref} onSubmit={onSubmit}>
                     <button onClick={onClose} className="material-symbols-outlined">
                         close
                     </button>
                     <FormTitle>일기쓰기</FormTitle>
                     <PostBlock>
                         <select>
-                            <option value="나만보기">나만보기</option>
-                            <option value="전체공개">전체공개</option>
+                            <option value={true}>나만보기</option>
+                            <option value={false}>전체공개</option>
                         </select>
                         <input
                             id="title"
@@ -90,7 +90,7 @@ export default function Main() {
                         최대 500자로 작성할 수 있습니다. {description.length}/500
                     </span>
                     <FormButton
-                        onClick={onSubmit}
+                        type="submit"
                         disabled={
                             title.length === 0 ||
                             description.length === 0 ||
