@@ -1,15 +1,5 @@
-import {
-    ChatContainer,
-    Container,
-    Message,
-    FlexBox,
-    MessageBox,
-    MessageForm,
-} from "@/styles/chat/chat-style";
-import { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { Container, FlexBox } from "@/styles/chat/chat-style";
 import { io } from "socket.io-client";
-import classNames from "classnames";
-import { ChatWindow } from "@/components/chat/chatwindow";
 import { Route, Routes, Navigate } from "react-router-dom";
 import ChatRoom from "@/components/chat/chatroom";
 import WaitingRoom from "@/components/chat/waiting-room";
