@@ -133,7 +133,7 @@ class DiaryService {
                 take: Number(count),
                 skip: (Number(page) - 1) * Number(count),
                 where: {
-                    emotion: emotion != "" ? emotion : undefined,
+                    emotion: emotion != "전체" ? emotion : undefined,
                     user: {
                         Account: {
                             userID: userID,
@@ -157,7 +157,7 @@ class DiaryService {
                 take: Number(count),
                 skip: (Number(page) - 1) * Number(count),
                 where: {
-                    emotion: emotion != "" ? emotion : undefined,
+                    emotion: emotion != "전체" ? emotion : undefined,
                 },
                 select: {
                     id: true,
