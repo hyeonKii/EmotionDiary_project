@@ -68,15 +68,15 @@ diaryRouter.get(
         return { statusCode: 200, content: result };
     })
 );
-diaryRouter.get(
-    "/:id",
-    auth,
-    wrapRouter(async (req: Req, res: Res) => {
-        const { id } = req.params;
-        const result = await diaryService.getDiary(id);
-        return { statusCode: 200, content: result };
-    })
-);
+// diaryRouter.get(
+//     "/:id",
+//     auth,
+//     wrapRouter(async (req: Req, res: Res) => {
+//         const { id } = req.params;
+//         const result = await diaryService.getDiary(id);
+//         return { statusCode: 200, content: result };
+//     })
+// );
 
 diaryRouter.get(
     "/",
