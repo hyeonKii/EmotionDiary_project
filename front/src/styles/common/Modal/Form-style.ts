@@ -18,7 +18,7 @@ export const Form = styled.form`
     min-height: 550px;
     border-radius: 20px;
 
-    background: ${isdark => isdark.theme.modalBgColor};
+    background: ${color.white};
     box-shadow: 2px 2px 10px rgba(110, 110, 110, 1);
 
     .material-symbols-outlined {
@@ -85,7 +85,6 @@ export const FormTitle = styled.div`
 
     font-size: 2rem;
     font-weight: bold;
-    color: ${isdark => isdark.theme.textColor};
 `;
 
 export const FormButton = styled.button`
