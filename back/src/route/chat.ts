@@ -31,14 +31,14 @@ export const sc = new socket.Server(server, {
 
 if (sc !== undefined) {
     sc.on("connection", (socket: Socket) => {
-        sc.emit("message", {
-            message: `${socket.id}가 들어왔습니다.`,
-        });
-        socket.on("disconnect", () => {
-            sc.emit("message", {
-                message: `${socket.id}가 나갔습니다.`,
-            });
-        });
+        // sc.emit("message", {
+        //     message: `${socket.id}가 들어왔습니다.`,
+        // });
+        // socket.on("disconnect", () => {
+        //     sc.emit("message", {
+        //         message: `${socket.id}가 나갔습니다.`,
+        //     });
+        // });
 
         socket.on("message", async ({ roomName, msgText, userid }: MessagePayload) => {
             sc.to(roomName).emit("message", { sender: userid, msgText });
@@ -81,17 +81,17 @@ if (sc !== undefined) {
 
         socket.on("join-room", (roomName: string) => {
             socket.join(roomName); // join room
-            socket.broadcast
-                .to(roomName)
-                .emit("message", { message: `${socket.id}가 들어왔습니다.` });
+            // socket.broadcast
+            //     .to(roomName)
+            //     .emit("message", { message: `${socket.id}가 들어왔습니다.` });
 
             return { success: true };
         });
         socket.on("leave-room", (roomName: string) => {
             socket.leave(roomName); // leave room
-            socket.broadcast
-                .to(roomName)
-                .emit("message", { message: `${socket.id}가 나갔습니다.` });
+            // socket.broadcast
+            //     .to(roomName)
+            //     .emit("message", { message: `${socket.id}가 나갔습니다.` });
 
             return { success: true };
         });

@@ -4,8 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { socket } from "@/components/chat/Chat";
 import { currentUser } from "@/temp/userAtom";
 import * as api from "@/api/chat";
+import { recentlyMsgState } from "@/temp/ChatRecoil";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { chatMessgeList } from "@/temp/ChatRecoil";
 import {
     ChatContainer,
     LeaveButton,
@@ -20,21 +20,16 @@ interface ChatData {
 }
 
 export const ChatRoom = () => {
-    const [chats, setChats] = useState<ChatData[]>([
-        {
-            sender: "3",
-            msgText: "zzz",
-        },
-    ]);
+    const [chats, setChats] = useState<ChatData[]>([]);
     const [msgText, setMsgText] = useState<string>("");
 
-    const { roomName } = useParams<"roomName">();
     const chatContainerEl = useRef<HTMLDivElement>(null);
-
+    const { roomName } = useParams<"roomName">();
+    const [recentlyMessage, setRecentlyMessage] = useRecoilState(recentlyMsgState);
     const user = useRecoilValue(currentUser);
+    const userid = String(user?.id);
 
     const navigate = useNavigate();
-    const userid = String(user?.id);
 
     //todo : usecallback 사용하기
     const getMessegetext = async (roomName: string | undefined) => {
