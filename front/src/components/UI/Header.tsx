@@ -36,7 +36,7 @@ export default function Header() {
                 ) : (
                     <nav className="navList">
                         <DarkModeToggle />
-                        <LinkStyle to="/">소개</LinkStyle>
+                        <LinkStyle to="/intro">소개</LinkStyle>
                         <LinkStyle to="/diary">일기장</LinkStyle>
                         <button
                             className="nickButton"

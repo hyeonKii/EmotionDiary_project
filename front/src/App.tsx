@@ -6,6 +6,7 @@ import { ThemeProvider } from "styled-components";
 import Header from "./components/UI/Header";
 import Home from "@/pages/HomePage";
 import Diary from "@/pages/DiaryPage";
+import IntroducePage from "@/pages/IntroducePage";
 import Footer from "./components/UI/Footer";
 
 import useSetUser from "./hooks/useSetUser";
@@ -43,6 +44,7 @@ function App() {
                 <Router>
                     <Header />
                     <Routes>
+                        <Route path="/intro" element={<IntroducePage />} />
                         <Route path="/home" element={<Home />} />
                         <Route path="/diary" element={<Diary />} />
                     </Routes>
