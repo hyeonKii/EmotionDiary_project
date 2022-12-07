@@ -179,6 +179,45 @@ class DiaryService {
         await this.prisma.$disconnect();
         return postDatas;
     }
+
+    async getMyDiaryList(userID: string, count: number, page: number) {
+        let diarycount = await this.prisma.diary.count({
+            where: {
+                user: {
+                    Account: {
+                        userID: userID,
+                    },
+                },
+            },
+        });
+        const postDatas = await this.prisma.diary.findMany({
+            take: Number(count),
+            skip: (Number(page) - 1) * Number(count),
+
+            where: {
+                user: {
+                    Account: {
+                        userID: userID,
+                    },
+                },
+            },
+            select: {
+                id: true,
+                title: true,
+                description: true,
+                emotion: true,
+                view: true,
+                createdAt: true,
+                updatedAt: true,
+            },
+        });
+
+        if (postDatas === null) {
+            throw new AppError("NotFindError");
+        }
+        await this.prisma.$disconnect();
+        return { postDatas, diarycount };
+    }
 }
 
 export default new DiaryService();
