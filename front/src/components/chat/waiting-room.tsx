@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as api from "@/api/chat";
-import { Head, Table } from "@/styles/chat/waiting-room.styles";
+import { Head, Table, ChatRoom } from "@/styles/chat/waiting-room.styles";
 import { socket } from "@/components/chat/Chat";
 import { currentUser } from "@/temp/userAtom";
 import { useRecoilValue } from "recoil";
@@ -22,14 +22,11 @@ const WaitingRoom = () => {
 
     const getRooms = async (myusermodelid = 1) => {
         try {
-            // const { data } = await api.getDiary(user?.id);
-            // return data;
             console.log(user?.id);
         } catch (e) {
             console.error(e);
         }
     };
-    // navigate(`/`);
     useEffect(() => {
         const roomListHandler = (rooms: string[]) => {
             setRooms(rooms);
@@ -81,7 +78,18 @@ const WaitingRoom = () => {
                 <button onClick={onCreateRoom}>채팅방 생성</button>
             </Head>
 
-            <Table>
+            {rooms.map((room, index) => (
+                <ChatRoom onClick={onJoinRoom(room)}>
+                    <button>{room}</button>
+                    <div>
+                        <div>
+                            <div> 1</div>
+                        </div>
+                        <span> 메세지가 온 날짜</span>
+                    </div>
+                </ChatRoom>
+            ))}
+            {/* <Table>
                 <thead>
                     <tr>
                         <th>방번호</th>
@@ -91,16 +99,17 @@ const WaitingRoom = () => {
                 </thead>
                 <tbody>
                     {rooms.map((room, index) => (
-                        <tr key={room}>
-                            <td>{index + 1}</td>
-                            <td>{room}</td>
-                            <td>
-                                <button onClick={onJoinRoom(room)}>입장하기</button>
-                            </td>
-                        </tr>
+                        // <tr key={room}>
+                        //     <td>{index + 1}</td>
+                        //     <td>{room}</td>
+                        //     <td>
+                        //         <button onClick={onJoinRoom(room)}>입장하기</button>
+                        //     </td>
+                        // </tr>
+                        // <ChatRoom />
                     ))}
                 </tbody>
-            </Table>
+            </Table> */}
         </>
     );
 };

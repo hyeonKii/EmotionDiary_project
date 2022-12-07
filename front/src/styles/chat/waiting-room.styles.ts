@@ -11,6 +11,41 @@ const Head = styled.div`
     }
 `;
 
+const ChatRoom = styled.div`
+    background: #ffffff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    height: 80px;
+
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-left: 30px;
+
+    div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 130px;
+        flex-direction: column;
+        div {
+            text-align: center;
+            width: 40px;
+            height: 40px;
+            background: red;
+            border-radius: 20px;
+            /* display: flex;
+            align-items: center;
+            justify-content: center; */
+        }
+        span {
+            width: 100%;
+        }
+    }
+`;
+
 const Table = styled.table`
     width: 100%;
     border: 1px solid #000;
@@ -34,4 +69,4 @@ const Table = styled.table`
     }
 `;
 
-export { Head, Table };
+export { Head, Table, ChatRoom };

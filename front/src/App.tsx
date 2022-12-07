@@ -34,7 +34,7 @@ function App() {
         loadingCheck && (
             <Router>
                 <Header />
-                <Home />
+                {/* <Home /> */}
                 <Diary />
                 <Footer />
             </Router>

@@ -18,9 +18,11 @@ export function Chat() {
     return (
         <>
             <FlexBox>
-                <Container>
-                    <WaitingRoom />
-                </Container>
+                <span>
+                    <Container>
+                        <WaitingRoom />
+                    </Container>
+                </span>
                 <Container>
                     <Routes>
                         <Route path="/room/:roomName" element={<ChatRoom />} />

@@ -105,8 +105,11 @@ export const ChatRoom = () => {
     }
     return (
         <>
-            <h1>Chat Room: {roomName}</h1>
-            <LeaveButton onClick={onLeaveRoom}>방 나가기</LeaveButton>
+            {/* <h1>Chat Room: {roomName}</h1> */}
+
+            <LeaveButton onClick={onLeaveRoom}>
+                <button>방 나가기</button>
+            </LeaveButton>
             <ChatContainer ref={chatContainerEl}>
                 {chats.map((chat, index) => (
                     <MessageBox
@@ -124,8 +127,10 @@ export const ChatRoom = () => {
                 ))}
             </ChatContainer>
             <MessageForm onSubmit={onSendMessage}>
-                <input type="text" onChange={onChange} value={msgText} />
-                <button>보내기</button>
+                <div>
+                    <input type="text" onChange={onChange} value={msgText}></input>
+                    <button className="submitButton">전송</button>
+                </div>
             </MessageForm>
         </>
     );

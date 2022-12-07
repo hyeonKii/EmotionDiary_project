@@ -8,7 +8,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://pku1jbmbyq7767am:wh9k4gwoyzfagf8a@ohunm00fjsjs1uzy.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/gifk59kufewouggp"
+  url      = "mysql://pku1jbmbyq7767am:yqa023krqg5qi5en@ohunm00fjsjs1uzy.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/gifk59kufewouggp"
 }
 
 model Certification {
