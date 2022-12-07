@@ -37,6 +37,10 @@ export const getDiary = (count: number, page: number, emotion?: string) => {
 };
 
 const getMyDiary = (id: number) => {
+    if (id === 0) {
+        return;
+    }
+
     return axios.get(URL + endpoint.MYDIARY + "/" + id, {
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
@@ -47,6 +51,15 @@ const getMyDiary = (id: number) => {
 
 const getMyAllDiaries = (count: number, page: number) => {
     return axios.get(URL + endpoint.DIARY_GET_MY_ALL + `?count=${count}&page=${page}`, {
+        headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+            Refreshtoken: sessionStorage.getItem("refreshToken"),
+        },
+    });
+};
+
+const getMyMonthDiaries = (year: number, month: number) => {
+    return axios.get(URL + endpoint.DIARY_MONTH + `?datetime=${year}-${month}-01`, {
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
             Refreshtoken: sessionStorage.getItem("refreshToken"),
@@ -75,14 +88,17 @@ const deleteMyDiary = (id: number) => {
 export const useRequestWriteDiary = (diaryData, options?) =>
     useMutation(() => writeDiary(diaryData), options);
 
-export const useRequestGetDiary = (key: string[], id: number, options?) =>
-    useQuery(key, () => getMyDiary(id), options);
+export const useRequestGetDiary = (id: number, options?) =>
+    useQuery(["diary", id], () => getMyDiary(id), options);
 
 export const useRequestGetAllDiaries = (count: number, page: number, options?) =>
     useQuery(["diaries", page, count], () => getDiary(count, page), options);
 
 export const useRequestGetMyAllDiaries = (count: number, page: number, options?) =>
     useQuery(["diaries", page, count], () => getMyAllDiaries(count, page), options);
+
+export const useRequestGetMonthDiaries = (year: number, month: number, options?) =>
+    useQuery(["monthDiaries", year, month], () => getMyMonthDiaries(year, month), options);
 
 export const useRequestEditDiary = (diaryData, id: number, options?) =>
     useMutation(() => editMyDiary(diaryData, id), options);

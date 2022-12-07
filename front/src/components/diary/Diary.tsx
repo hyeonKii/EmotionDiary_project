@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { TabList } from "@/styles/common/tab-style";
 import { DiarySection } from "@/styles/diary/diary-style";
-import { TodayDiary } from "./TodayDiary";
+import { DiaryCalendar } from "./DiaryCalendar";
 import { Chat } from "@/components/chat/Chat";
 import DiaryUserPostList from "./DiaryUserPostList";
 
@@ -24,7 +24,7 @@ export function Diary() {
                     </li>
                 ))}
             </TabList>
-            {tab === "하루일기" && <TodayDiary />}
+            {tab === "하루일기" && <DiaryCalendar />}
             {tab === "전체일기" && <DiaryUserPostList />}
             {tab === "대화목록" && <Chat />}
         </DiarySection>
