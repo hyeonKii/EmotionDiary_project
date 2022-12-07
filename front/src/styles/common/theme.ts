@@ -1,4 +1,6 @@
 import {DefaultTheme} from "styled-components";
+import background from "@/assets/images/background.jpg";
+import backgroundDark from "@/assets/images/background_dark.jpg";
 
 export const lightTheme: DefaultTheme = {
   bgColor: "#FCF8E8",
@@ -8,6 +10,8 @@ export const lightTheme: DefaultTheme = {
   spanColor: "#000000",
 
   modalBgColor: "#FFFFFF",
+
+  backgroundImg: `${background}`,
 };
 
 
@@ -18,8 +22,9 @@ export const darkTheme: DefaultTheme = {
     textColor: "#FFFFFF",
     spanColor: "#000000",
 
-
     modalBgColor: "#2f3640",
+
+    backgroundImg: `${backgroundDark}`
 };
 
 
