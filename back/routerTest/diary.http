@@ -77,10 +77,11 @@ Content-Type: application/json
 }
 
 ### 특정 일기 조회
-get {{url}}/diaries/2534
+get {{url}}/diaries/?datetime=2022-12-02
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2NjkxMDIzNTAsImV4cCI6MTY2OTEwNDE1MH0.ZQdV02n26JE3HV1K6SD5WAsye_EqCxEqwVAAou8n2rA
 RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MTAyMzUwLCJleHAiOjE2NzAzMTE5NTB9._Tjm0OlQf7KLYH9r8CyKGOzSSwQXQWZdAulWTYVg-ps
 Content-Type: application/json
+
 
 ### 일기 수정
 put {{url}}/diaries/2
