@@ -7,7 +7,6 @@ export const Wrapper = styled.section`
 export const Main = styled.main`
     height: 100%;
     width: 100%;
-    /* background-color: teal; */
     position: absolute;
     z-index: 0;
     left: 0;
