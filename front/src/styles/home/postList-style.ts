@@ -11,6 +11,7 @@ export const CardSection = styled.section`
 
     border: none;
     border-radius: 8px;
+    background: ${color.white};
     box-shadow: 0 4px 4px 0 ${color.gray};
 `;
 

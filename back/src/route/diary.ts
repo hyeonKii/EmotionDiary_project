@@ -72,7 +72,7 @@ diaryRouter.get(
         const { datetime } = req.query;
         const date = new Date(String(datetime));
         const nextDate = new Date(String(datetime));
-        nextDate.setDate(date.getDate() + 1);
+        nextDate.setMonth(date.getMonth() + 1);
         console.log(date, nextDate);
         const result = await diaryService.getDiaryByDate(date, nextDate);
         return { statusCode: 200, content: result };
