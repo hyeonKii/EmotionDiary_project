@@ -36,9 +36,9 @@ export const Post = styled.article<{ isOpen: boolean; emotion: string }>`
                 : emotion === "불안"
                 ? color.green
                 : emotion === "슬픔"
-                ? color.deepBlue
+                ? color.lightBlue
                 : emotion === "상처"
-                ? color.darkBlue
+                ? color.deepBlue
                 : emotion === "분노"
                 ? color.red
                 : color.lightGray};

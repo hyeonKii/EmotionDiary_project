@@ -34,7 +34,7 @@ export default function PostList() {
     const { fetchNextPage, hasNextPage, isFetchingNextPage, data, error, status, refetch } =
         useInfiniteQuery("posts", ({ pageParam = 1 }) => getPostPage(pageParam), {
             getNextPageParam: (lastPage, allPages) => {
-                return lastPage.length ? allPages.length + 1 : undefined;
+                return lastPage?.length ? allPages?.length + 1 : undefined;
             },
         });
 
@@ -55,7 +55,7 @@ export default function PostList() {
 
     const content = data?.pages?.map((page) => {
         return page?.map((post: Items, index: number) => {
-            if (page.length === index + 1) {
+            if (page?.length === index + 1) {
                 return <PostItem ref={lastPostRef} key={post.id} post={post} />;
             }
             return <PostItem key={post.id} post={post} />;
