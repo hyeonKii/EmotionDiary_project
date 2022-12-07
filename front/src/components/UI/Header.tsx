@@ -5,6 +5,7 @@ import { useRecoilValue } from "recoil";
 import { currentUser } from "@/temp/userAtom";
 import UserFormController from "../user/UserFormController";
 import ModalBackground from "./ModalBackground";
+import DarkModeToggle from "@/styles/common/DarkModeToggle";
 
 export default function Header() {
     const user = useRecoilValue(currentUser);
@@ -33,7 +34,7 @@ export default function Header() {
                 ) : (
                     <ul>
                         <li>
-                            <button>다크 모드 아이콘</button>
+                            <DarkModeToggle />
                         </li>
                         <li>
                             <button>소개</button>
@@ -63,12 +64,15 @@ const NavStyle = styled.nav`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-
+    background-color: ${isdark => isdark.theme.navColor};
+    transition: background-color 0.5s linear;
     box-shadow: 0 6px 6px -6px gray;
 
     div {
         margin-left: 3rem;
         font-family: diary;
+        color: ${isdark => isdark.theme.textColor};
+        transition: color 0.5s linear;
     }
 
     ul {
@@ -89,7 +93,8 @@ const NavStyle = styled.nav`
 
     button {
         font-size: 1.5rem;
-
+        color: ${isdark => isdark.theme.textColor};
+        transition: color 0.5s linear;
         background-color: transparent;
         border: none;
     }
