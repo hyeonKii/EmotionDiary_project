@@ -6,14 +6,14 @@ function Footer() {
         <FooterStyle>
             <Icons>
                 <Left>
-                    <FooterIcon icon="gitIcon"/>
+                    <FooterIcon icon="gitIcon" />
                 </Left>
                 <Right>
-                    <FooterIcon icon="gitIcon1"/>
-                    <FooterIcon icon="gitIcon2"/>
-                    <FooterIcon icon="gitIcon3"/>
-                    <FooterIcon icon="gitIcon4"/>
-                    <FooterIcon icon="gitIcon5"/>
+                    <FooterIcon icon="gitIcon1" />
+                    <FooterIcon icon="gitIcon2" />
+                    <FooterIcon icon="gitIcon3" />
+                    <FooterIcon icon="gitIcon4" />
+                    <FooterIcon icon="gitIcon5" />
                 </Right>
             </Icons>
             <Copyright>Copyright 2022. team 투위터. all rights reserved.</Copyright>
@@ -25,7 +25,7 @@ export default Footer;
 
 const FooterStyle = styled.footer`
     width: 100%;
-    height: 15vh;
+    padding: 1rem 0;
 
     display: flex;
     flex-direction: column;
@@ -65,6 +65,6 @@ const Right = styled.div`
 `;
 
 const Copyright = styled.div`
+    font-size: 0.8rem;
     font-weight: bold;
-    height: 33%;
 `;
