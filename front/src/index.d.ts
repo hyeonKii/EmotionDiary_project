@@ -11,5 +11,6 @@ declare module 'styled-components' {
     textColor: string;
     spanColor: string;
     modalBgColor: string;
+    backgroundImg: string;
   }
 }
