@@ -79,6 +79,8 @@ export const Message = styled.div`
     .text {
         flex: 1;
         margin-right: 1rem;
+        color: ${isDark => isDark.theme.textColor};
+        transition: color 0.5s linear;
 
         .emotionText {
             color: ${color.lightBlue};

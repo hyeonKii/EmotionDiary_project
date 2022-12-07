@@ -8,6 +8,8 @@ export const EmotionSection = styled.section`
         margin-top: 1rem;
         font-size: 2rem;
         text-align: center;
+        color: ${isDark => isDark.theme.textColor};
+        transition: color 0.5s linear;
 
         span {
             color: ${color.lightBlue};
@@ -29,6 +31,8 @@ export const EmotionChartSection = styled.section`
         font-size: 1.4rem;
         text-align: center;
         line-height: 40px;
+        color: ${isDark => isDark.theme.textColor};
+        transition: color 0.5s linear;
 
         strong {
             color: ${color.lightBlue};

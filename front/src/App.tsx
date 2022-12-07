@@ -5,8 +5,13 @@ import Home from "@/pages/HomePage";
 import Diary from "@/pages/DiaryPage";
 import Footer from "./components/UI/Footer";
 import useSetUser from "./hooks/useSetUser";
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "@/styles/common/themeAtom";
+import { ThemeProvider } from "styled-components";
+import { darkTheme, lightTheme } from "./styles/common/theme";
 
 function App() {
+    const isDark = useRecoilValue(isDarkAtom);
     const { isLoading, setUser: setUser } = useSetUser();
 
     const [loadingCheck, setLoadingCheck] = useState(false);
@@ -33,10 +38,12 @@ function App() {
         !isLoading &&
         loadingCheck && (
             <Router>
-                <Header />
-                {/* <Home /> */}
-                <Diary />
-                <Footer />
+                <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+                    <Header />
+                    {/* <Home /> */}
+                    <Diary />
+                    <Footer />
+                </ThemeProvider>
             </Router>
         )
     );
