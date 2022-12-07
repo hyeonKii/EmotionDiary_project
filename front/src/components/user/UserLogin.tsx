@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useRequestLogin } from "@/api/account";
 import useForm from "@/hooks/useForm";
 import useSetUser from "@/hooks/useSetUser";
@@ -24,6 +25,7 @@ interface Props {
 }
 
 export default function UserLogin({ setTabNumber, tabList, setShowLoginForm }: Props) {
+    const navigate = useNavigate();
     const [error, setError] = useState(false);
     const { setUser } = useSetUser();
 
@@ -42,6 +44,7 @@ export default function UserLogin({ setTabNumber, tabList, setShowLoginForm }: P
             setUser();
 
             setShowLoginForm(false);
+            navigate("/home");
         },
 
         onError: (error: Error) => {
