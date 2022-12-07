@@ -55,15 +55,28 @@ diaryRouter.get(
     })
 );
 
-// diaryRouter.get(
-//     "/:id",
-//     auth,
-//     wrapRouter(async (req: Req, res: Res) => {
-//         const { id } = req.params;
-//         const result = await diaryService.getDiary(id);
-//         return { statusCode: 200, content: result };
-//     })
-// );
+//나의 일기 조회
+diaryRouter.get(
+    "/mine",
+    auth,
+    wrapRouter(async (req: Req, res: Res) => {
+        const { count, page } = req.query;
+        if (count === undefined || page === undefined) {
+            throw new AppError("ArgumentError");
+        }
+        const result = await diaryService.getMyDiaryList(req.userID!, Number(count), Number(page));
+        return { statusCode: 200, content: result };
+    })
+);
+diaryRouter.get(
+    "/:id",
+    auth,
+    wrapRouter(async (req: Req, res: Res) => {
+        const { id } = req.params;
+        const result = await diaryService.getDiary(id);
+        return { statusCode: 200, content: result };
+    })
+);
 
 diaryRouter.get(
     "/",
