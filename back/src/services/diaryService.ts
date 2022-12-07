@@ -1,4 +1,5 @@
 import { PrismaClient, User } from "@prisma/client";
+import { empty } from "@prisma/client/runtime";
 import AppError from "lib/AppError";
 import accountService from "./accountService";
 
@@ -91,7 +92,9 @@ class DiaryService {
 
     async getDiary(id: string) {
         const postData = await this.prisma.diary.findUnique({
-            where: { id: Number(id) },
+            where: {
+                id: Number(id),
+            },
         });
         if (postData === null) {
             throw new AppError("NotFindError");
@@ -100,42 +103,77 @@ class DiaryService {
         return postData;
     }
 
-    async getDiaryList(count: number, page: number) {
-        const postDatas = await this.prisma.diary.findMany({
-            take: Number(count),
-            skip: (Number(page) - 1) * Number(count),
-            select: {
-                id: true,
-                title: true,
-                description: true,
-                view: true,
-                createdAt: true,
-                updatedAt: true,
+    async getDiaryByDate(datetime: Date, datetime2: Date) {
+        const postData = await this.prisma.diary.findMany({
+            where: {
+                createdAt: {
+                    gte: datetime,
+                    lte: datetime2,
+                },
             },
         });
-        if (postDatas === null) {
+        if (postData === null) {
             throw new AppError("NotFindError");
         }
         await this.prisma.$disconnect();
-        return postDatas;
+        return postData;
     }
+    //테스트 해보기
+    async getDiaryList(
+        userID: string,
+        count: number,
+        page: number,
+        privatediary: boolean,
+        emotion: string
+    ) {
+        let postDatas;
+        userID = "test";
+        if (privatediary) {
+            postDatas = await this.prisma.diary.findMany({
+                take: Number(count),
+                skip: (Number(page) - 1) * Number(count),
+                where: {
+                    emotion: emotion != "전체" ? emotion : undefined,
+                    user: {
+                        Account: {
+                            userID: userID,
+                        },
+                    },
+                },
+                select: {
+                    id: true,
+                    title: true,
+                    description: true,
+                    emotion: true,
+                    private: true,
+                    view: true,
+                    user_model_id: true,
+                    createdAt: true,
+                    updatedAt: true,
+                },
+                orderBy: [{ createdAt: "desc" }],
+            });
+        } else {
+            postDatas = await this.prisma.diary.findMany({
+                take: Number(count),
+                skip: (Number(page) - 1) * Number(count),
+                where: {
+                    emotion: emotion != "전체" ? emotion : undefined,
+                },
+                select: {
+                    id: true,
+                    title: true,
+                    description: true,
+                    emotion: true,
+                    view: true,
+                    user_model_id: true,
+                    createdAt: true,
+                    updatedAt: true,
+                },
+                orderBy: [{ createdAt: "desc" }],
+            });
+        }
 
-    async getEmotionDiaryList(count: number, page: number, emotion: string) {
-        const postDatas = await this.prisma.diary.findMany({
-            take: Number(count),
-            skip: (Number(page) - 1) * Number(count),
-            where: {
-                emotion: emotion,
-            },
-            select: {
-                id: true,
-                title: true,
-                description: true,
-                view: true,
-                createdAt: true,
-                updatedAt: true,
-            },
-        });
         if (postDatas === null) {
             throw new AppError("NotFindError");
         }
