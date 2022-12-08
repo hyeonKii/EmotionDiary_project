@@ -4,6 +4,8 @@ import useEmotion from "@/hooks/useEmotion";
 import { useRequestGetDiary, useRequestGetMonthDiaries } from "@/api/diary";
 import { TodaySection, CalendarDetail } from "@/styles/diary/todayDiary-style";
 import DiaryTodayPost from "./DiaryTodayPost";
+import { currentUser } from "@/temp/userAtom";
+import { useRecoilValue } from "recoil";
 
 interface MonthData {
     createdAt: Date;
@@ -12,6 +14,7 @@ interface MonthData {
 }
 
 interface Post {
+    description: string;
     createdAt: Date;
     emotion: string;
     id: number;
@@ -27,13 +30,15 @@ interface DiaryResponse {
 }
 
 export function DiaryCalendar() {
+    const user = useRecoilValue(currentUser);
+
     const [date, setDate] = useState({
         year: new Date().getFullYear(),
         month: new Date().getMonth() + 1,
     });
 
     const [id, setId] = useState(0);
-    const [diary, setDiary] = useState<Post | null>();
+    const [diary, setDiary] = useState<Post | null>(null);
 
     const { refetch } = useRequestGetDiary(id, {
         retry: false,
@@ -60,6 +65,8 @@ export function DiaryCalendar() {
             console.log("월별 일기 요청 실패");
         },
     });
+
+    const { emotionState } = useEmotion(diary?.emotion, user?.nickname);
 
     const setCurrentDay = (event) => {
         const currentDay = new Date(event).getDate();
@@ -110,7 +117,7 @@ export function DiaryCalendar() {
                 tileClassName={({ date }) => setEmotionClassName(date)}
             />
             <CalendarDetail>
-                {/* {emotionState()} */}
+                {emotionState()}
                 {diary && <DiaryTodayPost post={diary} refetch={refetch} />}
             </CalendarDetail>
         </TodaySection>
