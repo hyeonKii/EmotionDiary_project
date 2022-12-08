@@ -13,7 +13,12 @@ export const chatMessgeList = atom<MessageModel | null>({
     default: null,
 });
 
-export const recentlyMsgState = atom<MessageModel | null>({
-    key: "commentState",
+export interface recentlyMessageModel {
+    id: string | null;
+    msgText: string | null;
+}
+
+export const recentlyMsgState = atom<recentlyMessageModel | null>({
+    key: "recentlyMsgState",
     default: null,
 });
