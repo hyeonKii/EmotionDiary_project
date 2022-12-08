@@ -24,7 +24,7 @@ interface Error {
 }
 
 export default function DiaryPost({ post, refetch }: Props) {
-    const { id, title, description, createdAt, private: privateDiary } = post;
+    const { id, title, description, createdAt, emotion, private: privateDiary } = post;
 
     const currentTotalDate = new Date().toISOString().split("T");
     const createdTotalDate = new Date(createdAt).toISOString().split("T");
@@ -45,8 +45,6 @@ export default function DiaryPost({ post, refetch }: Props) {
     const [privateMode, setPrivateMode] = useState(privateDiary);
 
     const { form, changeHandler } = useForm({ title, description });
-
-    const emotion = "행복";
 
     const onClick = () => {
         setIsOpen((prev) => !prev);
