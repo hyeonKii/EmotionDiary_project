@@ -16,6 +16,7 @@ const WaitingRoom = () => {
     const [results, setResults] = useRecoilState(recentlyMsgState);
     const [lastMessage, setLastMessage] = useState<
         | {
+              updatedAt: string;
               user_model_id: string;
               lastmessage: string;
           }[]
@@ -30,8 +31,9 @@ const WaitingRoom = () => {
             setRooms(rooms);
         };
         const createRoomHandler = (response: any) => {
+            console.log(response.result);
             setLastMessage(response.result);
-            setRooms((prevRooms) => [...prevRooms, results?.result[0].user_model_id]);
+            // setRooms((prevRooms) => [...prevRooms, results?.result[0].user_model_id]);
             // setLastMessage((prevRooms) => [...prevRooms, response.result.lastmessage]);
         };
         const deleteRoomHandler = (roomName: string) => {
@@ -77,6 +79,7 @@ const WaitingRoom = () => {
         if (lastMessage === null) {
             return null;
         }
+
         return (
             <>
                 {lastMessage.map((item, idx) => (
@@ -86,7 +89,7 @@ const WaitingRoom = () => {
                             <div>
                                 <div> 2</div>
                             </div>
-                            <span> 메세지가 온 날짜</span>
+                            <span> {item.updatedAt}</span>
                         </div>
                     </ChatRoom>
                 ))}
@@ -95,6 +98,17 @@ const WaitingRoom = () => {
         );
     }, [lastMessage]);
 
+    const dateTime = (date: Date) => {
+        const milliSeconds = Number(new Date()) - Number(date);
+        const seconds = milliSeconds / 1000;
+        if (seconds < 60) return `방금 전`;
+        const minutes = seconds / 60;
+        if (minutes < 60) return `${Math.floor(minutes)}분 전`;
+        const hours = minutes / 60;
+        if (hours < 24) return `${Math.floor(hours)}시간 전`;
+        const dateString = date.toLocaleDateString();
+        return dateString;
+    };
     return (
         <>
             <Head>

@@ -51,7 +51,6 @@ if (sc !== undefined) {
         socket.on("room-list", async (usermodel: string) => {
             //socket emit 으로 받아온 userid로 방을 검색
             const result = await chatService.roomList(Number(usermodel));
-            console.log(result);
             for (let value in Object.values(result.result)) {
                 strArr.push(...Object.values(result.result[value]));
             }
@@ -69,15 +68,20 @@ if (sc !== undefined) {
         });
 
         socket.on("create-room", async (inviter: string, invitee: string, message: string) => {
-            const exists = createdRooms.find((createdRoom) => createdRoom === inviter + invitee);
-            sc.to(inviter + invitee).emit("message", { username: socket.id, message });
+            const exists = createdRooms.find(
+                (createdRoom) => createdRoom === inviter + "," + invitee
+            );
+            sc.to(inviter + "," + invitee).emit("message", { username: socket.id, message });
             if (exists) {
                 console.log("exist");
-                return { success: false, payload: `${inviter + invitee} 방이 이미 존재합니다.` };
+                return {
+                    success: false,
+                    payload: `${inviter + "," + invitee} 방이 이미 존재합니다.`,
+                };
             }
-            socket.join(inviter + invitee); // 기존에 없던 room으로 join하면 room이 생성됨
-            createdRooms.push(inviter + invitee); // 유저가 생성한 room 목록에 추가
-            sc.emit("create-room", inviter + invitee); // 대기실 방 생성
+            socket.join(inviter + "," + invitee); // 기존에 없던 room으로 join하면 room이 생성됨
+            createdRooms.push(inviter + "," + invitee); // 유저가 생성한 room 목록에 추가
+            sc.emit("create-room", inviter + "," + invitee); // 대기실 방 생성
             const result = await chatService.saveChat(inviter, invitee);
 
             return { success: true, payload: inviter + invitee };
@@ -110,6 +114,18 @@ chatRouter.get(
             throw new AppError("ArgumentError");
         }
         const result = await chatService.getMessege(String(roomname));
+        return { statusCode: 200, content: result };
+    })
+);
+chatRouter.get(
+    "/count",
+    // auth,
+    wrapRouter(async (req: Req, res: Res) => {
+        const { roomname, userid } = req.query;
+        if (roomname === undefined || userid === undefined) {
+            throw new AppError("ArgumentError");
+        }
+        const result = await chatService.countMessegeNotRead(String(roomname), String(userid));
         return { statusCode: 200, content: result };
     })
 );

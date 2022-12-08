@@ -76,6 +76,7 @@ model Messege {
   sender          String
   receiver        String
   msgText         String
+  read            Boolean   @default(false)
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   chat            Chat      @relation(fields: [chatRoom], references: [user_model_id])
