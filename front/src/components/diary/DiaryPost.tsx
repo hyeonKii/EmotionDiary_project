@@ -10,7 +10,8 @@ interface Items {
     emotion: string;
     time: string;
     body: string;
-    privateDiary: boolean;
+    private: boolean;
+    createdAt: Date;
 }
 
 interface Props {
@@ -23,20 +24,33 @@ interface Error {
 }
 
 export default function DiaryPost({ post, refetch }: Props) {
+    const { id, title, description, createdAt, emotion, private: privateDiary } = post;
+
+    const currentTotalDate = new Date().toISOString().split("T");
+    const createdTotalDate = new Date(createdAt).toISOString().split("T");
+
+    const currentDate = Number(currentTotalDate[0].replace(/\-/g, ""));
+    const createdDate = Number(createdTotalDate[0].replace(/\-/g, ""));
+
+    const currentHour = Number(currentTotalDate[1].split(":")[0]);
+    const createdHour = Number(createdTotalDate[1].split(":")[0]);
+
+    const date =
+        currentDate - createdDate === 0
+            ? `${currentHour - createdHour}시간 전`
+            : currentTotalDate[0].replace(/\-/g, ".");
+
     const [isOpen, setIsOpen] = useState(false);
     const [editMode, setEditMode] = useState(false);
-
-    const { id, title, description, privateDiary } = post;
+    const [privateMode, setPrivateMode] = useState(privateDiary);
 
     const { form, changeHandler } = useForm({ title, description });
-
-    const emotion = "행복";
 
     const onClick = () => {
         setIsOpen((prev) => !prev);
     };
 
-    const { mutate: editDiary } = useRequestEditDiary(form, id, {
+    const { mutate: editDiary } = useRequestEditDiary({ ...form, privateDiary: privateMode }, id, {
         onSuccess: () => {
             refetch();
         },
@@ -63,6 +77,17 @@ export default function DiaryPost({ post, refetch }: Props) {
         setEditMode(false);
     };
 
+    const selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const { value } = event.target;
+
+        if (value === "나만보기") {
+            setPrivateMode(true);
+            return;
+        }
+
+        setPrivateMode(false);
+    };
+
     return (
         <>
             <CardSection>
@@ -70,7 +95,7 @@ export default function DiaryPost({ post, refetch }: Props) {
                     <span className="emotion">{emotion}</span>
                     <span className="title">{title}</span>
                     <div className="time">
-                        <span>3시간 전</span>
+                        <span>{date}</span>
                         <span className="arrow">{isOpen ? "▲" : "▼"}</span>
                     </div>
                 </Post>
@@ -84,6 +109,17 @@ export default function DiaryPost({ post, refetch }: Props) {
                                     onChange={changeHandler}
                                     id="description"
                                 />
+                                {privateDiary ? (
+                                    <select onChange={selectHandler}>
+                                        <option value="나만보기">나만보기</option>
+                                        <option value="전체공개">전체공개</option>
+                                    </select>
+                                ) : (
+                                    <select onChange={selectHandler}>
+                                        <option value="전체공개">전체공개</option>
+                                        <option value="나만보기">나만보기</option>
+                                    </select>
+                                )}
                                 <button onClick={editHandler}>저장</button>
                             </>
                         ) : (

@@ -14,7 +14,8 @@ interface Post {
     emotion: string;
     time: string;
     body: string;
-    privateDiary: boolean;
+    private: boolean;
+    createdAt: Date;
 }
 
 interface Response {
