@@ -21,6 +21,9 @@ interface Props {
 }
 
 export default function DiaryTodayPost({ post, refetch }: Props) {
+    const fullDate = new Date(post.createdAt).toISOString().split("T")[0].split("-");
+    const date = `${fullDate[0]}년 ${fullDate[1]}월 ${fullDate[2]}일`;
+
     const [isEdit, setIsEdit] = useState(false);
 
     const { form, changeHandler } = useForm({
@@ -56,7 +59,7 @@ export default function DiaryTodayPost({ post, refetch }: Props) {
     return (
         <DiaryDetail isEdit={isEdit}>
             <article className="top">
-                {/* <span className="date">{dateString}</span> */}
+                <span className="date">{date}</span>
                 <div className="icons">
                     {post.private ? (
                         <span className="material-symbols-outlined">lock</span>
