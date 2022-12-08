@@ -43,6 +43,14 @@ export const Form = styled.form`
     .maxText {
         color: ${color.red};
     }
+
+    .todayText {
+        width: 70%;
+        margin: 2rem 0;
+
+        text-align: center;
+        line-height: 30px;
+    }
 `;
 
 export const PostBlock = styled.div`
