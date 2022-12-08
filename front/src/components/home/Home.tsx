@@ -75,11 +75,11 @@ export default function Main() {
         today.getMonth() + 1,
         {
             onSuccess: () => {
-                console.log("성공");
+                return;
             },
 
-            onError: () => {
-                console.log("월별 일기 요청 실패");
+            onError: ({ message }: Error) => {
+                console.error(message);
             },
         }
     );
