@@ -112,6 +112,11 @@ class DiaryService {
                     lte: datetime2,
                 },
             },
+            select: {
+                id: true,
+                createdAt: true,
+                emotion: true,
+            },
         });
         if (postData === null) {
             throw new AppError("NotFindError");
