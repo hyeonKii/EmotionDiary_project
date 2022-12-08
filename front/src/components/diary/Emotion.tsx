@@ -1,19 +1,16 @@
+import { useState } from "react";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis } from "recharts";
 import { useRecoilValue } from "recoil";
+
+import { useRequestGetMonthDiaries } from "@/api/diary";
 import { currentUser } from "@/temp/userAtom";
+import { dayAgo, aMonthAgo, aYearAgo, dayString, monthString, yearString } from "@/util/date";
+import { EmotionToImg } from "@/hooks/useEmotion";
 import {
     EmotionSection,
     EmotionChartSection,
     EmotionDataSection,
 } from "@/styles/diary/emotion-style";
-
-const data = {
-    nickname: "윤아",
-    emotion: "",
-    body: "오늘 너무 힘들었다. 내일은 안 힘들겠지? 슬프다",
-    state: "나만보기",
-    date: "Fri Nov 22 2022 00:00:00 GMT+0900",
-};
 
 const chart = [
     {
@@ -50,33 +47,83 @@ const chart = [
     },
 ];
 
+interface GetPost {
+    id: number;
+    emotion: string;
+    createdAt: Date;
+}
+
 export function Emotion() {
     const user = useRecoilValue(currentUser);
     const topEmotion = chart.reduce((a, b) => {
         return a.A > b.A ? a : b;
     });
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
-    const day = today.getDate();
-
-    const dayAgo = new Date(year, month, day - 7).toLocaleDateString("ko-KR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
+    const [newArr, setNewArr] = useState({
+        day: {
+            title: "",
+            description: "",
+            emotion: "",
+        },
+        month: {
+            title: "",
+            description: "",
+            emotion: "",
+        },
+        year: {
+            title: "",
+            description: "",
+            emotion: "",
+        },
     });
 
-    const aMonthAgo = new Date(year, month - 1, day).toLocaleDateString("ko-KR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
+    const { data: Day } = useRequestGetMonthDiaries(dayAgo.getFullYear(), dayAgo.getMonth() + 1, {
+        onSuccess: () => {
+            const day = Day?.data?.filter(
+                (posts: GetPost) => new Date(posts.createdAt).getDate() === dayAgo.getDate()
+            );
+            day?.length !== 0 ? setNewArr((arr) => ({ ...arr, day })) : undefined;
+        },
+
+        onError: ({ message }: Error) => {
+            console.error(message);
+        },
     });
 
-    const aYearAgo = new Date(year - 1, month, day).toLocaleDateString("ko-KR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    });
+    const { data: Month } = useRequestGetMonthDiaries(
+        aMonthAgo.getFullYear(),
+        aMonthAgo.getMonth() + 1,
+        {
+            onSuccess: () => {
+                const month = Month?.data?.filter(
+                    (posts: GetPost) => new Date(posts.createdAt).getDate() === aMonthAgo.getDate()
+                );
+                month?.length !== 0 ? setNewArr((arr) => ({ ...arr, month })) : undefined;
+            },
+
+            onError: ({ message }: Error) => {
+                console.error(message);
+            },
+        }
+    );
+
+    console.log(newArr);
+
+    const { data: Year } = useRequestGetMonthDiaries(
+        aYearAgo.getFullYear(),
+        aYearAgo.getMonth() + 1,
+        {
+            onSuccess: () => {
+                const year = Year?.data?.filter(
+                    (posts: GetPost) => new Date(posts.createdAt).getDate() === aYearAgo.getDate()
+                );
+                year?.length !== 0 ? setNewArr((arr) => ({ ...arr, year })) : undefined;
+            },
+
+            onError: ({ message }: Error) => {
+                console.error(message);
+            },
+        }
+    );
 
     return (
         <EmotionSection>
@@ -102,21 +149,36 @@ export function Emotion() {
             <EmotionDataSection>
                 <article>
                     <h3>일주일 전 오늘</h3>
-                    <span className="emotionIcon">😶</span>
-                    <span>{dayAgo}</span>
-                    <span className="body">기록이 없습니다!</span>
+                    <span className="emotionIcon">
+                        {newArr.day?.emotion ? EmotionToImg["만족감"] : EmotionToImg["normal"]}
+                    </span>
+                    <span>{dayString}</span>
+                    <span className="body">
+                        {newArr.day?.title ? newArr.day.title : "작성된 글이 없습니다."}
+                    </span>
+                    <span className="body">{newArr.day?.description}</span>
                 </article>
                 <article>
                     <h3>한 달 전 오늘</h3>
-                    <span className="emotionIcon">😥</span>
-                    <span>{aMonthAgo}</span>
-                    <span className="body">{data.body}</span>
+                    <span className="emotionIcon">
+                        {newArr.month?.emotion ? EmotionToImg["자신감"] : EmotionToImg["normal"]}
+                    </span>
+                    <span>{monthString}</span>
+                    <span className="body">
+                        {newArr.month?.title ? newArr.month.title : "작성된 글이 없습니다."}
+                    </span>
+                    <span className="body">{newArr.month?.description}</span>
                 </article>
                 <article>
                     <h3>일 년 전 오늘</h3>
-                    <span className="emotionIcon">😶</span>
-                    <span>{aYearAgo}</span>
-                    <span className="body">기록이 없습니다!</span>
+                    <span className="emotionIcon">
+                        {newArr.year?.emotion ? EmotionToImg["자신감"] : EmotionToImg["normal"]}
+                    </span>
+                    <span>{yearString}</span>
+                    <span className="body">
+                        {newArr.year?.title ? newArr.year.title : "작성된 글이 없습니다."}
+                    </span>
+                    <span className="body">{newArr.year?.description}</span>
                 </article>
             </EmotionDataSection>
         </EmotionSection>
