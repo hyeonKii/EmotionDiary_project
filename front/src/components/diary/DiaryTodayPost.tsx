@@ -2,21 +2,10 @@ import { useRequestDeleteDiary, useRequestEditDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
 import { DiaryDetail, EditBlock, ReadBlock } from "@/styles/diary/todayDiary-style";
 import { ChangeEvent, useState } from "react";
-
-interface Post {
-    createdAt: Date;
-    description: string;
-    emotion: string;
-    id: number;
-    private: boolean;
-    title: string;
-    updatedAt: Date;
-    user_model_id: number;
-    view: number;
-}
+import { PostInterface } from "./interface/post";
 
 interface Props {
-    post: Post;
+    post: PostInterface;
     refetch(): void;
 }
 

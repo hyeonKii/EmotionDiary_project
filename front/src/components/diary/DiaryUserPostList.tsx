@@ -2,24 +2,13 @@ import { useRequestGetMyAllDiaries } from "@/api/diary";
 import React, { useState } from "react";
 import DiaryPageButton from "./DiaryPageButton";
 import DiaryPost from "./DiaryPost";
+import { PostInterface } from "./interface/post";
 
 interface Error {
     message: string;
 }
-
-interface Post {
-    id: number;
-    title: string;
-    description: string;
-    emotion: string;
-    time: string;
-    body: string;
-    private: boolean;
-    createdAt: Date;
-}
-
 interface Response {
-    data: { diarycount: number; postDatas: Post };
+    data: { diarycount: number; postDatas: PostInterface };
 }
 
 export default function DiaryUserPostList() {
@@ -53,7 +42,7 @@ export default function DiaryUserPostList() {
                 <>
                     {diaryData && (
                         <section>
-                            {diaryData.data.postDatas.map((post: Post) => (
+                            {diaryData.data.postDatas.map((post: PostInterface) => (
                                 <DiaryPost key={post.id + "포스트"} post={post} refetch={refetch} />
                             ))}
                         </section>

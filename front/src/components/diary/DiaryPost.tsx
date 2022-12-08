@@ -2,20 +2,10 @@ import { useState } from "react";
 import { CardSection, Post, PostDetail } from "@/styles/home/postList-style";
 import { useRequestDeleteDiary, useRequestEditDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
-
-interface Items {
-    id: number;
-    title: string;
-    description: string;
-    emotion: string;
-    time: string;
-    body: string;
-    private: boolean;
-    createdAt: Date;
-}
+import { PostInterface } from "./interface/post";
 
 interface Props {
-    post: Items;
+    post: PostInterface;
     refetch(): void;
 }
 

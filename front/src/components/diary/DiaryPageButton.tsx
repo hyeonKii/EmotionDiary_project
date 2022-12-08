@@ -6,10 +6,9 @@ interface Props {
     diaryCount: number;
     count: number;
 }
+const PAGE_LIMIT = 10;
 
 export default function DiaryPageButton({ page, setPage, diaryCount, count }: Props) {
-    const PAGE_LIMIT = 10;
-
     const pageButtonCount = Math.ceil(diaryCount / count);
     const pageButtonList = new Array(pageButtonCount).fill(0);
     const currentIndexPos = Math.floor(page / PAGE_LIMIT);
