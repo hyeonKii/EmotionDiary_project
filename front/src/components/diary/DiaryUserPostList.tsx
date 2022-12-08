@@ -15,6 +15,7 @@ interface Post {
     time: string;
     body: string;
     private: boolean;
+    createdAt: Date;
 }
 
 interface Response {
@@ -33,7 +34,6 @@ export default function DiaryUserPostList() {
     } = useRequestGetMyAllDiaries(count, page, {
         onSuccess: (res: Response) => {
             console.log("일기 전부 GET 요청 성공");
-            console.log(res);
             setDiaryCount(res.data.diarycount);
         },
         onError: (error: Error) => {
