@@ -36,6 +36,11 @@ export const TodaySection = styled.section`
             font-size: 1rem;
         }
 
+        // 감정 스타일 예시
+        .react-calendar__tile.normal {
+            background: ${color.gray};
+        }
+
         .react-calendar__tile--now {
             border-radius: 50%;
             background: none;
@@ -79,7 +84,7 @@ export const Message = styled.div`
     .text {
         flex: 1;
         margin-right: 1rem;
-        color: ${isDark => isDark.theme.textColor};
+        color: ${(isDark) => isDark.theme.textColor};
         transition: color 0.5s linear;
 
         .emotionText {

@@ -5,9 +5,14 @@ import { useRequestGetDiary, useRequestGetMonthDiaries } from "@/api/diary";
 import { TodaySection, CalendarDetail } from "@/styles/diary/todayDiary-style";
 import DiaryTodayPost from "./DiaryTodayPost";
 
+interface MonthData {
+    createdAt: Date;
+    emotion: string;
+    id: number;
+}
+
 interface Post {
     createdAt: Date;
-    description: string;
     emotion: string;
     id: number;
     private: boolean;
@@ -15,10 +20,6 @@ interface Post {
     updatedAt: Date;
     user_model_id: number;
     view: number;
-}
-
-interface DiariesResponse {
-    data: Post[];
 }
 
 interface DiaryResponse {
@@ -63,17 +64,17 @@ export function DiaryCalendar() {
     const setCurrentDay = (event) => {
         const currentDay = new Date(event).getDate();
 
-        const currentDiary = monthDiaries?.data.filter(
+        const currentDiary = monthDiaries?.data.find(
             (diary: Post) => currentDay === new Date(diary.createdAt).getDate()
         );
 
-        if (!currentDiary[0]) {
+        if (!currentDiary) {
             setDiary(null);
             setId(0);
             return;
         }
 
-        setId(currentDiary[0].id);
+        setId(currentDiary.id);
     };
 
     const setCurrentYearMonth = (event) => {
@@ -86,12 +87,27 @@ export function DiaryCalendar() {
         });
     };
 
+    const setEmotionClassName = (date) => {
+        const currentDate = new Date(date).getDate();
+
+        const matchedDiary = monthDiaries?.data.find(
+            (diary: MonthData) => new Date(diary.createdAt).getDate() === currentDate
+        );
+
+        if (matchedDiary) {
+            return `${matchedDiary.emotion}`;
+        }
+
+        return null;
+    };
+
     return (
         <TodaySection>
             <Calendar
                 locale="en-EN"
                 onChange={setCurrentDay}
                 onActiveStartDateChange={setCurrentYearMonth}
+                tileClassName={({ date }) => setEmotionClassName(date)}
             />
             <CalendarDetail>
                 {/* {emotionState()} */}
