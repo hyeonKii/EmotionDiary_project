@@ -10,7 +10,7 @@ interface Items {
     emotion: string;
     time: string;
     body: string;
-    privateDiary: boolean;
+    private: boolean;
 }
 
 interface Props {
@@ -23,7 +23,7 @@ interface Error {
 }
 
 export default function DiaryPost({ post, refetch }: Props) {
-    const { id, title, description, privateDiary } = post;
+    const { id, title, description, private: privateDiary } = post;
 
     const [isOpen, setIsOpen] = useState(false);
     const [editMode, setEditMode] = useState(false);
@@ -95,19 +95,9 @@ export default function DiaryPost({ post, refetch }: Props) {
                             <>
                                 <p className="description">{description}</p>
                                 {privateDiary ? (
-                                    <span
-                                        className="material-symbols-outlined"
-                                        onClick={togglePrivateMode}
-                                    >
-                                        lock
-                                    </span>
+                                    <span className="material-symbols-outlined">lock</span>
                                 ) : (
-                                    <span
-                                        className="material-symbols-outlined"
-                                        onClick={togglePrivateMode}
-                                    >
-                                        lock_open
-                                    </span>
+                                    <span className="material-symbols-outlined">lock_open</span>
                                 )}
                                 <button
                                     className="material-symbols-outlined"

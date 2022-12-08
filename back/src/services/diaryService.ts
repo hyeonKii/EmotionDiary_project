@@ -195,6 +195,7 @@ class DiaryService {
                 view: true,
                 createdAt: true,
                 updatedAt: true,
+                private: true,
             },
         });
 
