@@ -1,7 +1,7 @@
 import { useRequestDeleteDiary, useRequestEditDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
 import { DiaryDetail, EditBlock, ReadBlock } from "@/styles/diary/todayDiary-style";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 interface Post {
     createdAt: Date;
@@ -25,6 +25,7 @@ export default function DiaryTodayPost({ post, refetch }: Props) {
     const date = `${fullDate[0]}년 ${fullDate[1]}월 ${fullDate[2]}일`;
 
     const [isEdit, setIsEdit] = useState(false);
+    const [privateDiary, setPrivateDiary] = useState(post.private);
 
     const { form, changeHandler } = useForm({
         title: post.title,
@@ -41,7 +42,7 @@ export default function DiaryTodayPost({ post, refetch }: Props) {
         },
     });
 
-    const { mutate: editDiary } = useRequestEditDiary(form, post.id, {
+    const { mutate: editDiary } = useRequestEditDiary({ ...form, privateDiary }, post.id, {
         onSuccess: () => {
             console.log("일기 편집 요청 성공");
             refetch();
@@ -54,6 +55,17 @@ export default function DiaryTodayPost({ post, refetch }: Props) {
     const editHandler = () => {
         editDiary();
         setIsEdit(false);
+    };
+
+    const selectHandler = (event: ChangeEvent<HTMLSelectElement>) => {
+        const { value } = event.target;
+
+        if (value === "나만보기") {
+            setPrivateDiary(true);
+            return;
+        }
+
+        setPrivateDiary(false);
     };
 
     return (
@@ -74,12 +86,12 @@ export default function DiaryTodayPost({ post, refetch }: Props) {
                     </button>
                 </div>
                 {post.private ? (
-                    <select>
+                    <select onChange={selectHandler}>
                         <option value="나만보기">나만보기</option>
                         <option value="전체공개">전체공개</option>
                     </select>
                 ) : (
-                    <select>
+                    <select onChange={selectHandler}>
                         <option value="전체공개">전체공개</option>
                         <option value="나만보기">나만보기</option>
                     </select>

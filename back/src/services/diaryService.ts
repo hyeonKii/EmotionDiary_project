@@ -67,10 +67,10 @@ class DiaryService {
         return { result: true };
     }
 
-    async updateDiary(id: string, title: string, description: string) {
+    async updateDiary(id: string, title: string, description: string, privateDiary: boolean) {
         const postUpdate = await this.prisma.diary.update({
             where: { id: Number(id) },
-            data: { title, description },
+            data: { title, description, private: privateDiary },
         });
         if (postUpdate === null) {
             throw new AppError("NotFindError");

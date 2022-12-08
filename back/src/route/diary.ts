@@ -99,8 +99,8 @@ diaryRouter.put(
     wrapRouter(async (req: Req, res: Res) => {
         const { id } = req.params;
         console.log(id);
-        const { title, description } = req.body;
-        const result = await diaryService.updateDiary(id, title, description);
+        const { title, description, privateDiary } = req.body;
+        const result = await diaryService.updateDiary(id, title, description, privateDiary);
         return Promise.resolve({ statusCode: 200, content: result });
     })
 );
