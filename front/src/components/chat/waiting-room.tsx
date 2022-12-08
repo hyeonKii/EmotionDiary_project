@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import * as api from "@/api/chat";
 import { Head, Table, ChatRoom } from "@/styles/chat/waiting-room.styles";
@@ -11,29 +11,27 @@ interface CreateRoomResponse {
     payload: string;
 }
 
-interface Items {
-    id: number;
-    user_model_id: string;
-}
-
 const WaitingRoom = () => {
     const [rooms, setRooms] = useState<string[]>([]);
     const [results, setResults] = useRecoilState(recentlyMsgState);
-    const [lastMessage, setLastMessage] = useRecoilState(recentlyMsgState);
+    const [lastMessage, setLastMessage] = useState<
+        | {
+              user_model_id: string;
+              lastmessage: string;
+          }[]
+        | null
+    >(null);
     const navigate = useNavigate();
     const user = useRecoilValue(currentUser);
 
     useEffect(() => {
         // console.log(rooms, "room");
         const roomListHandler = (rooms: string[]) => {
-            console.log(rooms);
             setRooms(rooms);
         };
         const createRoomHandler = (response: any) => {
-            console.log(response.result);
-            setResults(response.result);
-            console.log(results, 1333);
-            setRooms((prevRooms) => [...prevRooms, response.result.user_model_id]);
+            setLastMessage(response.result);
+            setRooms((prevRooms) => [...prevRooms, results?.result[0].user_model_id]);
             // setLastMessage((prevRooms) => [...prevRooms, response.result.lastmessage]);
         };
         const deleteRoomHandler = (roomName: string) => {
@@ -74,18 +72,40 @@ const WaitingRoom = () => {
         [navigate]
     );
 
+    const ChatRoomComponents = useMemo(() => {
+        console.log(lastMessage);
+        if (lastMessage === null) {
+            return null;
+        }
+        return (
+            <>
+                {lastMessage.map((item, idx) => (
+                    <ChatRoom onClick={onJoinRoom(item.user_model_id)} key={idx}>
+                        <button>{item.lastmessage}</button>
+                        <div>
+                            <div>
+                                <div> 2</div>
+                            </div>
+                            <span> 메세지가 온 날짜</span>
+                        </div>
+                    </ChatRoom>
+                ))}
+                <div>어어어ㅓㅓ</div>
+            </>
+        );
+    }, [lastMessage]);
+
     return (
         <>
             <Head>
                 <div>채팅방 목록</div>
                 <button onClick={onCreateRoom}>채팅방 생성</button>
             </Head>
-
-            {rooms.map((room, index) => (
+            {lastMessage && ChatRoomComponents}
+            {/* {rooms.map((room, index) => (
                 <ChatRoom onClick={onJoinRoom(room)} key={index}>
                     <button>
                         {room}
-                        {/* {lastMessage} */}
                     </button>
                     <div>
                         <div>
@@ -94,7 +114,18 @@ const WaitingRoom = () => {
                         <span> 메세지가 온 날짜</span>
                     </div>
                 </ChatRoom>
-            ))}
+            ))} */}
+            {/* {Object.entries(results?.result).map((room: any, index: any) => (
+                <ChatRoom onClick={onJoinRoom(room)} key={index}>
+                    <button>{room.lastmessage}</button>
+                    <div>
+                        <div>
+                            <div> 1</div>
+                        </div>
+                        <span> 메세지가 온 날짜</span>
+                    </div>
+                </ChatRoom>
+            ))} */}
             {/* {lastMessage.map((room, index) => (
                 <ChatRoom onClick={onJoinRoom(room)} key={room}>
                     <button>{room}</button>

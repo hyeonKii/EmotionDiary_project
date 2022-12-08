@@ -49,10 +49,10 @@ class ChatService {
                     },
                 ],
             },
-
             select: {
                 user_model_id: true,
                 lastmessage: true,
+                // updatedAt: true,
             },
         });
         console.log(result, "roomlist");

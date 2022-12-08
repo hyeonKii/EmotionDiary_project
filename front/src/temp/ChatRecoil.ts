@@ -14,8 +14,7 @@ export const chatMessgeList = atom<MessageModel | null>({
 });
 
 export interface recentlyMessageModel {
-    id: string | null;
-    msgText: string | null;
+    result: [user_model_id: string, lastmessage: string] | any;
 }
 
 export const recentlyMsgState = atom<recentlyMessageModel | null>({
