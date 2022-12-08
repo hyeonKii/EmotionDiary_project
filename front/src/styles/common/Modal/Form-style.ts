@@ -14,7 +14,7 @@ export const Form = styled.form`
 
     width: 30%;
     height: 50%;
-    min-width: 350px;
+    min-width: 400px;
     min-height: 550px;
     border-radius: 20px;
 
@@ -51,7 +51,10 @@ export const PostBlock = styled.div`
     height: 55%;
 
     select {
+        width: 40%;
+        height: 25px;
         margin-bottom: 1rem;
+        outline: 0;
     }
 
     #title {

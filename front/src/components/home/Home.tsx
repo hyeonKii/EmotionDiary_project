@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, FormEvent } from "react";
+import { useState, useEffect, useRef, FormEvent, ChangeEvent } from "react";
 import { useRecoilValue } from "recoil";
 import { currentUser } from "@/temp/userAtom";
 import { useRequestWriteDiary } from "@/api/diary";
@@ -11,13 +11,13 @@ export default function Main() {
     const user = useRecoilValue(currentUser);
     const ref = useRef<HTMLFormElement>(null);
 
-    const { form, changeHandler } = useForm({
+    const { form, setForm, changeHandler } = useForm({
         title: "",
         description: "",
         privateDiary: true,
     });
 
-    const { title, description, privateDiary } = form;
+    const { title, description } = form;
 
     const { mutate: writeDiary } = useRequestWriteDiary(form, {
         onSuccess: () => {
@@ -31,6 +31,7 @@ export default function Main() {
     useEffect(() => {
         const onClickOutside = (e: MouseEvent) => {
             if (ref.current !== null && !ref.current.contains(e.target as Node)) {
+                setForm((form) => ({ ...form, title: "", description: "", privateDiary: true }));
                 setIsOpen(false);
             }
         };
@@ -40,13 +41,20 @@ export default function Main() {
         };
     }, [ref, setIsOpen]);
 
-    const onClose = () => {
-        setIsOpen(false);
-    };
-
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         writeDiary();
+        setForm((form) => ({ ...form, title: "", description: "", privateDiary: true }));
+    };
+
+    const onPrivateSelect = (e: ChangeEvent<HTMLSelectElement>) => {
+        const value = e.target.value === "true" ? true : false;
+        setForm((form) => ({ ...form, privateDiary: value }));
+    };
+
+    const onClose = () => {
+        setForm((form) => ({ ...form, title: "", description: "", privateDiary: true }));
+        setIsOpen(false);
     };
 
     return (
@@ -68,9 +76,11 @@ export default function Main() {
                     </button>
                     <FormTitle>일기쓰기</FormTitle>
                     <PostBlock>
-                        <select>
-                            <option>나만보기</option>
-                            <option>전체공개</option>
+                        <select onChange={onPrivateSelect}>
+                            <option value="true" selected>
+                                나만보기
+                            </option>
+                            <option value="false">전체공개</option>
                         </select>
                         <input
                             id="title"

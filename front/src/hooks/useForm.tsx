@@ -24,7 +24,7 @@ function useForm<T>(initialState: T, validationFn?: ValidationFn) {
         }
     };
 
-    return { form, validatedForm, changeHandler };
+    return { form, setForm, validatedForm, changeHandler };
 }
 
 export default useForm;
