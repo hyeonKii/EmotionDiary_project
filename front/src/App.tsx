@@ -8,7 +8,7 @@ import Home from "@/pages/HomePage";
 import Diary from "@/pages/DiaryPage";
 import IntroducePage from "@/pages/IntroducePage";
 import Footer from "./components/UI/Footer";
-
+import Loading from "./components/UI/Loading";
 import useSetUser from "./hooks/useSetUser";
 
 import { darkTheme, lightTheme } from "@/styles/common/theme";
@@ -40,21 +40,22 @@ function App() {
         fetchUser();
     }, []);
 
-    return (
-        !isLoading &&
-        loadingCheck && (
-            <ThemeProvider theme={theme === LIGHT ? lightTheme : darkTheme}>
-                <Router>
-                    <Header />
-                    <Routes>
-                        <Route path="/intro" element={<IntroducePage />} />
-                        <Route path="/home" element={<Home />} />
-                        <Route path="/diary" element={<Diary />} />
-                    </Routes>
-                    <Footer />
-                </Router>
-            </ThemeProvider>
-        )
+    return isLoading ? (
+        <Loading />
+    ) : !loadingCheck ? (
+        <Loading />
+    ) : (
+        <ThemeProvider theme={theme === LIGHT ? lightTheme : darkTheme}>
+            <Router>
+                <Header />
+                <Routes>
+                    <Route path="/intro" element={<IntroducePage />} />
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/diary" element={<Diary />} />
+                </Routes>
+                <Footer />
+            </Router>
+        </ThemeProvider>
     );
 }
 

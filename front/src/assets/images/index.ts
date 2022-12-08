@@ -7,5 +7,6 @@ import none from "./none.png";
 import sad from "./sad.png";
 import satisfaction from "./satisfaction.png";
 import wound from "./wound.png";
+import loading from "./loading.gif";
 
-export { angry, anxiety, comfort, confidence, happy, none, sad, satisfaction, wound };
+export { angry, anxiety, comfort, confidence, happy, none, sad, satisfaction, wound, loading };
