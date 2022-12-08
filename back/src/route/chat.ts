@@ -17,6 +17,8 @@ const chatRouter = Router();
 const app = express();
 let createdRooms: string[] = [];
 let strArr: string[] = [];
+let sendArr: string[] = [];
+let LastMessageStr: string;
 
 const server = http.createServer(app);
 export const sc = new socket.Server(server, {
@@ -45,22 +47,39 @@ if (sc !== undefined) {
             const result = await chatService.saveMessege(roomName, msgText, String(userid));
         });
         //foreach 사용하기 => for 대신에
+
         socket.on("room-list", async (usermodel: string) => {
+            //socket emit 으로 받아온 userid로 방을 검색
             const result = await chatService.roomList(Number(usermodel));
+            console.log(result);
+            // const msgresult = await chatService.LastMessage(Number(usermodel));
             for (let value in Object.values(result.result)) {
                 strArr.push(...Object.values(result.result[value]));
             }
+            // for (let value in Object.values(msgresult.result)) {
+            //     msgArr.push(...Object.values(msgresult.result[value]));
+            // }
             const uniqueArr = strArr.filter((element, index) => {
                 return strArr.indexOf(element) === index;
             });
+            // const uniqueMsgArr = msgArr.filter((element, index) => {
+            //     return msgArr.indexOf(element) === index;
+            // });
 
             for (let room in uniqueArr) {
                 sc.emit("delete-room", uniqueArr[room]);
             }
 
             for (let room in uniqueArr) {
-                sc.emit("create-room", uniqueArr[room]); // 대기실 방 생성
+                // if (sendArr.includes(uniqueArr[room])) {
+                //     return;
+                // }
+                // sendArr.push(uniqueArr[room]);
+                //room 생성 -> sc.emit으로 서버에서 클라이언트 쪽 이벤트를 실행 시키는 것
             }
+            sc.emit("create-room", result); // 대기실 방 생성
+            console.log(sendArr, "send");
+            // const LastMessageStr = await chatService.getLastMessege(uniqueArr[room]);
             return createdRooms;
         });
 

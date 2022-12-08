@@ -25,6 +25,7 @@ export const ChatRoom = () => {
 
     const chatContainerEl = useRef<HTMLDivElement>(null);
     const { roomName } = useParams<"roomName">();
+
     const [recentlyMessage, setRecentlyMessage] = useRecoilState(recentlyMsgState);
     const user = useRecoilValue(currentUser);
     const userid = String(user?.id);
@@ -32,16 +33,6 @@ export const ChatRoom = () => {
     const navigate = useNavigate();
 
     //todo : usecallback 사용하기
-    const getMessegetext = async (roomName: string | undefined) => {
-        try {
-            const { data } = await api.getMessege(roomName);
-            setChats(data.result);
-            return data;
-        } catch (e) {
-            console.error(e);
-        }
-    };
-
     // 채팅이 길어지면(chats.length) 스크롤이 생성되므로, 스크롤의 위치를 최근 메시지에 위치시키기 위함
     useEffect(() => {
         if (!chatContainerEl.current) return;
@@ -65,13 +56,34 @@ export const ChatRoom = () => {
         };
     }, []);
 
-    const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setMsgText(e.target.value);
-    }, []);
-
     useEffect(() => {
         getMessegetext(roomName);
     }, [roomName]);
+
+    //전체 메세지 받아오기
+    const getMessegetext = async (roomName: string | undefined) => {
+        try {
+            const { data } = await api.getMessege(roomName);
+            setChats(data.result);
+            return data;
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    const getRecentlyMessege = async (roomName: string | undefined) => {
+        try {
+            const { data } = await api.getMessege(roomName);
+            setChats(data.result);
+            return data;
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        setMsgText(e.target.value);
+    }, []);
 
     const onSendMessage = useCallback(
         (e: FormEvent<HTMLFormElement>) => {

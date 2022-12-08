@@ -61,6 +61,9 @@ model Chat{
   user_model_id   String    @unique
   inviter         String
   invitee         String
+  lastmessage     String
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
   messege         Messege[]
   user            User[]    
 

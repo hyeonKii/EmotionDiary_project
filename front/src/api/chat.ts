@@ -24,20 +24,14 @@ export const getMessege = (roomName: string | undefined) => {
     });
 };
 
-const getMyAllDiaries = (count: number, page: number, emotion?: string) => {
-    return axios.get(
-        URL +
-            endpoint.DIARY_GET +
-            `?count=${count}&page=${page}&privatediary=${""}&emotion=${emotion}`,
-        {
-            headers: {
-                Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-                Refreshtoken: sessionStorage.getItem("refreshToken"),
-            },
-        }
-    );
+export const getRecentlyMessege = (roomName: string | undefined) => {
+    return axios.get(URL + endpoint.MESSEGE_GET + `?roomname=${roomName}`, {
+        headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+            Refreshtoken: sessionStorage.getItem("refreshToken"),
+        },
+    });
 };
-
 const editMyDiary = (myDiaryData: EditDiary, id: number) => {
     return axios.put(URL + endpoint.MYDIARY + "/" + id, myDiaryData, {
         headers: {

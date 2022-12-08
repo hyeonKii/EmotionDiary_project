@@ -22,6 +22,7 @@ class ChatService {
                         user_model_id: inviter + invitee,
                         inviter: inviter,
                         invitee: invitee,
+                        lastmessage: "",
                     },
                 });
             } catch (e: any) {
@@ -51,13 +52,48 @@ class ChatService {
 
             select: {
                 user_model_id: true,
+                lastmessage: true,
             },
         });
+        console.log(result, "roomlist");
         await this.prisma.$disconnect();
         return { result };
     }
 
+    // async LastMessage(usermodel: number) {
+    //     console.log(usermodel, "usermodel");
+    //     const result = await this.prisma.chat.findMany({
+    //         where: {
+    //             OR: [
+    //                 {
+    //                     inviter: String(usermodel),
+    //                 },
+    //                 {
+    //                     invitee: String(usermodel),
+    //                 },
+    //             ],
+    //         },
+
+    //         select: {
+    //             // user_model_id: true,
+    //             lastmessage: true,
+    //         },
+    //     });
+    //     console.log(result, "roomlist");
+    //     await this.prisma.$disconnect();
+    //     return { result };
+    // }
+
     async saveMessege(roomName: string, message: string, userid: string) {
+        const result = await this.prisma.chat.update({
+            where: {
+                user_model_id: roomName,
+            },
+            data: {
+                lastmessage: message,
+            },
+        });
+
         try {
             await this.prisma.messege.create({
                 data: {
@@ -74,7 +110,7 @@ class ChatService {
             }
         }
         await this.prisma.$disconnect();
-        return { result: true };
+        return { result: result };
     }
 
     async getMessege(roomName: string) {
@@ -87,6 +123,23 @@ class ChatService {
                 sender: true,
             },
         });
+        await this.prisma.$disconnect();
+        return { result };
+    }
+
+    async getLastMessege(roomName: string) {
+        console.log(4234243, typeof roomName);
+        const result = await this.prisma.messege.findMany({
+            where: {
+                chatRoom: roomName,
+            },
+            select: {
+                msgText: true,
+                sender: true,
+            },
+            orderBy: [{ id: "desc" }],
+        });
+        console.log(result, 4234243);
         await this.prisma.$disconnect();
         return { result };
     }

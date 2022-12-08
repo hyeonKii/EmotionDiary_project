@@ -6,7 +6,7 @@ POST {{url}}/account/login
 Content-Type: application/json
 
 {
-    "userID": "test",
+    "userID": "test2",
     "password": "0000"
 }
 ###logout
@@ -41,20 +41,20 @@ Content-Type: application/json
 
 
 ### 모든 일기 조회
-get {{url}}/diaries/all?count=10&page=1&privatediary=&emotion=
+get {{url}}/diaries/all?count=10&page=1&privatediary=true&emotion=
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdCIsImlhdCI6MTY3MDMzMzk3NCwiZXhwIjoxNjcwMzM1Nzc0fQ.1oKMuDqZ8_sMQTlUkDFhDM14Pf5Gbl4DTaMjbTyu4m0
 RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwMzMzOTc3LCJleHAiOjE2NzAzNDQ3Nzd9.pfD5YTbQ8fbwG_69ru_sUTi8k6NOV-j02HhDdZN7HxI
 Content-Type: application/json
 
 ### 일기 작성 api
 post {{url}}/diaries/write
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdCIsImlhdCI6MTY3MDMzMzk3NCwiZXhwIjoxNjcwMzM1Nzc0fQ.1oKMuDqZ8_sMQTlUkDFhDM14Pf5Gbl4DTaMjbTyu4m0
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwMzMzOTc3LCJleHAiOjE2NzAzNDQ3Nzd9.pfD5YTbQ8fbwG_69ru_sUTi8k6NOV-j02HhDdZN7HxI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdDIiLCJpYXQiOjE2NzA0Njk3OTMsImV4cCI6MTY3MDQ3MTU5M30.HDJ0hb0-WHs2zv1m1Yaex6CCe6sL-mqCMnanPpWs3gU
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwNDY5Nzk2LCJleHAiOjE2NzA0ODA1OTZ9.mcaE3sX2eQjXk5qsUkmzo1RAE7mfZnkrDjcRxMJXREo
 Content-Type: application/json
 
 {
-  "title": "test13",
-  "description":"test is writing",
+  "title": "test3",
+  "description":"test is writing, allright",
   "privateDiary": "true"
 }
 

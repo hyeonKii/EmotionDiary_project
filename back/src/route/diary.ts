@@ -14,7 +14,7 @@ diaryRouter.post(
         if (title && description && privateDiary === undefined) {
             throw new AppError("ArgumentError");
         }
-        const result = await diaryService.writeDiary(req.userID!, title, description);
+        const result = await diaryService.writeDiary(req.userID!, title, description, privateDiary);
         return { statusCode: 200, content: true };
     })
 );
@@ -48,9 +48,10 @@ diaryRouter.get(
             req.userID!,
             Number(count),
             Number(page),
-            Boolean(privatediary),
+            String(privatediary),
             String(emotion)
         );
+        console.log(result);
         return { statusCode: 200, content: result };
     })
 );
