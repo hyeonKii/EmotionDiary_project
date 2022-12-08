@@ -6,7 +6,7 @@ import accountService from "./accountService";
 class DiaryService {
     prisma = new PrismaClient();
 
-    async writeDiary(userID: string, title: string, description: string, privateDiary: string) {
+    async writeDiary(userID: string, title: string, description: string, privateDiary: boolean) {
         try {
             const result = await accountService.getUserByUserID_login(userID);
             result?.User.id;
@@ -23,7 +23,7 @@ class DiaryService {
                             id: result?.User.id,
                         },
                     },
-                    private: privateDiary == "true" ? true : false,
+                    private: privateDiary == true ? true : false,
                 },
             });
         } catch (error) {
@@ -124,7 +124,7 @@ class DiaryService {
         userID: string,
         count: number,
         page: number,
-        privatediary: string,
+        privatediary: boolean,
         emotion: string
     ) {
         console.log(typeof privatediary, privatediary);
@@ -133,8 +133,8 @@ class DiaryService {
             take: Number(count),
             skip: (Number(page) - 1) * Number(count),
             where: {
-                emotion: emotion != "" ? emotion : undefined,
-                private: privatediary === "true" ? true : false,
+                emotion: emotion != "전체" ? emotion : undefined,
+                private: privatediary === true ? true : false,
             },
             select: {
                 id: true,

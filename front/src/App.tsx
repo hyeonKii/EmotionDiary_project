@@ -27,8 +27,8 @@ function App() {
     return (
         <Router>
             <Header />
-            {/* <Home /> */}
-            <Diary />
+            <Home />
+            {/* <Diary /> */}
             <Footer />
         </Router>
     );
