@@ -121,6 +121,8 @@ class DiaryService {
                 id: true,
                 createdAt: true,
                 emotion: true,
+                title: true,
+                description: true,
             },
         });
         if (postData === null) {
