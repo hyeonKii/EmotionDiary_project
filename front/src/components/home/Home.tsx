@@ -69,8 +69,8 @@ export default function Main() {
                     <FormTitle>일기쓰기</FormTitle>
                     <PostBlock>
                         <select>
-                            <option value={true}>나만보기</option>
-                            <option value={false}>전체공개</option>
+                            <option>나만보기</option>
+                            <option>전체공개</option>
                         </select>
                         <input
                             id="title"

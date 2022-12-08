@@ -1,12 +1,11 @@
 import styled from "styled-components";
 import { color } from "@/styles/common/colorPalette";
 
-
 export const HomeSection = styled.section`
     width: 100vw;
     height: 100vh;
 
-    background-image: url(${isdark => isdark.theme.backgroundImg});
+    background-image: url(${(isdark) => isdark.theme.backgroundImg});
     transition: background-image 0.5s linear;
     background-size: cover;
 `;
@@ -18,14 +17,14 @@ export const TitleBlock = styled.div`
     transform: translate(-50%, -35%);
 
     text-align: center;
-    color: ${isdark => isdark.theme.textColor};
+    color: ${(isdark) => isdark.theme.textColor};
     transition: color 0.5s linear;
 
     h1 {
         margin-bottom: 1rem;
 
         font-family: "diary";
-        font-size: 4rem; 
+        font-size: 4rem;
     }
 `;
 
