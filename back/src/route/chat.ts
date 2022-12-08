@@ -130,6 +130,19 @@ chatRouter.get(
     })
 );
 
+chatRouter.put(
+    "/read",
+    // auth,
+    wrapRouter(async (req: Req, res: Res) => {
+        const { roomname, userid } = req.query;
+        if (roomname === undefined || userid === undefined) {
+            throw new AppError("ArgumentError");
+        }
+        const result = await chatService.readMessage(String(roomname), String(userid));
+        return { statusCode: 200, content: result };
+    })
+);
+
 server.listen(4000, () => {
     console.log("chat server is loaded on " + 4000);
 });

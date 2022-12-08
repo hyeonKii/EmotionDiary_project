@@ -93,7 +93,6 @@ const WaitingRoom = () => {
                         </div>
                     </ChatRoom>
                 ))}
-                <div>어어어ㅓㅓ</div>
             </>
         );
     }, [lastMessage]);
@@ -116,62 +115,6 @@ const WaitingRoom = () => {
                 <button onClick={onCreateRoom}>채팅방 생성</button>
             </Head>
             {lastMessage && ChatRoomComponents}
-            {/* {rooms.map((room, index) => (
-                <ChatRoom onClick={onJoinRoom(room)} key={index}>
-                    <button>
-                        {room}
-                    </button>
-                    <div>
-                        <div>
-                            <div> 1</div>
-                        </div>
-                        <span> 메세지가 온 날짜</span>
-                    </div>
-                </ChatRoom>
-            ))} */}
-            {/* {Object.entries(results?.result).map((room: any, index: any) => (
-                <ChatRoom onClick={onJoinRoom(room)} key={index}>
-                    <button>{room.lastmessage}</button>
-                    <div>
-                        <div>
-                            <div> 1</div>
-                        </div>
-                        <span> 메세지가 온 날짜</span>
-                    </div>
-                </ChatRoom>
-            ))} */}
-            {/* {lastMessage.map((room, index) => (
-                <ChatRoom onClick={onJoinRoom(room)} key={room}>
-                    <button>{room}</button>
-                    <div>
-                        <div>
-                            <div> 2</div>
-                        </div>
-                        <span> 메세지가 온 날짜</span>
-                    </div>
-                </ChatRoom>
-            ))} */}
-            {/* <Table>
-                <thead>
-                    <tr>
-                        <th>방번호</th>
-                        <th>방이름</th>
-                        <th>입장</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {rooms.map((room, index) => (
-                        // <tr key={room}>
-                        //     <td>{index + 1}</td>
-                        //     <td>{room}</td>
-                        //     <td>
-                        //         <button onClick={onJoinRoom(room)}>입장하기</button>
-                        //     </td>
-                        // </tr>
-                        // <ChatRoom />
-                    ))}
-                </tbody>
-            </Table> */}
         </>
     );
 };

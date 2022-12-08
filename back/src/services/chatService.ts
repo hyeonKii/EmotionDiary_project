@@ -164,15 +164,27 @@ class ChatService {
     }
 
     async countMessegeNotRead(roomName: string, userid: string) {
-        const result = await this.prisma.messege.findMany({
+        let result = await this.prisma.messege.count({
+            where: {
+                chatRoom: roomName,
+                read: false,
+                sender: userid,
+            },
+        });
+
+        await this.prisma.$disconnect();
+        return { result };
+    }
+
+    async readMessage(roomName: string, userid: string) {
+        const result = await this.prisma.messege.updateMany({
             where: {
                 chatRoom: roomName,
                 sender: userid,
-                read: true,
+                read: false,
             },
-            select: {
-                msgText: true,
-                sender: true,
+            data: {
+                read: true,
             },
         });
         await this.prisma.$disconnect();
