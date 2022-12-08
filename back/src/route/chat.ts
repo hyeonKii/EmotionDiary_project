@@ -52,34 +52,19 @@ if (sc !== undefined) {
             //socket emit 으로 받아온 userid로 방을 검색
             const result = await chatService.roomList(Number(usermodel));
             console.log(result);
-            // const msgresult = await chatService.LastMessage(Number(usermodel));
             for (let value in Object.values(result.result)) {
                 strArr.push(...Object.values(result.result[value]));
             }
-            // for (let value in Object.values(msgresult.result)) {
-            //     msgArr.push(...Object.values(msgresult.result[value]));
-            // }
             const uniqueArr = strArr.filter((element, index) => {
                 return strArr.indexOf(element) === index;
             });
-            // const uniqueMsgArr = msgArr.filter((element, index) => {
-            //     return msgArr.indexOf(element) === index;
-            // });
 
             for (let room in uniqueArr) {
                 sc.emit("delete-room", uniqueArr[room]);
             }
 
-            for (let room in uniqueArr) {
-                // if (sendArr.includes(uniqueArr[room])) {
-                //     return;
-                // }
-                // sendArr.push(uniqueArr[room]);
-                //room 생성 -> sc.emit으로 서버에서 클라이언트 쪽 이벤트를 실행 시키는 것
-            }
             sc.emit("create-room", result); // 대기실 방 생성
             console.log(sendArr, "send");
-            // const LastMessageStr = await chatService.getLastMessege(uniqueArr[room]);
             return createdRooms;
         });
 
