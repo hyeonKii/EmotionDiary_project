@@ -10,11 +10,14 @@ import IntroducePage from "@/pages/IntroducePage";
 import Footer from "./components/UI/Footer";
 
 import useSetUser from "./hooks/useSetUser";
-import { isDarkAtom } from "@/temp/themeAtom";
-import { darkTheme, lightTheme } from "./styles/common/theme";
+
+import { darkTheme, lightTheme } from "@/styles/common/theme";
+import { ThemeEnums, themeMode } from "@/temp/themeAtom";
 
 function App() {
-    const isDark = useRecoilValue(isDarkAtom);
+    const theme: ThemeEnums = useRecoilValue(themeMode);
+    const { LIGHT } = ThemeEnums;
+
     const { isLoading, setUser: setUser } = useSetUser();
 
     const [loadingCheck, setLoadingCheck] = useState(false);
@@ -40,7 +43,7 @@ function App() {
     return (
         !isLoading &&
         loadingCheck && (
-            <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+            <ThemeProvider theme={theme === LIGHT ? lightTheme : darkTheme}>
                 <Router>
                     <Header />
                     <Routes>
