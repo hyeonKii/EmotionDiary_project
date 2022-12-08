@@ -3,7 +3,24 @@ import useForm from "@/hooks/useForm";
 import { DiaryDetail, EditBlock, ReadBlock } from "@/styles/diary/todayDiary-style";
 import { useState } from "react";
 
-export default function DiaryTodayPost({ post, refetch }) {
+interface Post {
+    createdAt: Date;
+    description: string;
+    emotion: string;
+    id: number;
+    private: boolean;
+    title: string;
+    updatedAt: Date;
+    user_model_id: number;
+    view: number;
+}
+
+interface Props {
+    post: Post;
+    refetch(): void;
+}
+
+export default function DiaryTodayPost({ post, refetch }: Props) {
     const [isEdit, setIsEdit] = useState(false);
 
     const { form, changeHandler } = useForm({
@@ -41,7 +58,7 @@ export default function DiaryTodayPost({ post, refetch }) {
             <article className="top">
                 {/* <span className="date">{dateString}</span> */}
                 <div className="icons">
-                    {post.privateDiary ? (
+                    {post.private ? (
                         <span className="material-symbols-outlined">lock</span>
                     ) : (
                         <span className="material-symbols-outlined">lock_open</span>
@@ -53,7 +70,7 @@ export default function DiaryTodayPost({ post, refetch }) {
                         delete
                     </button>
                 </div>
-                {post.privateDiary ? (
+                {post.private ? (
                     <select>
                         <option value="나만보기">나만보기</option>
                         <option value="전체공개">전체공개</option>
