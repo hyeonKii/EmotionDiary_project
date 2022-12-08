@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Icon from "../UI/Icon";
+import { LOGIN } from "./constants/tabList";
 
 interface Props {
     form: {
@@ -11,7 +12,6 @@ interface Props {
     error: string;
     isSuccess: boolean;
     setTabNumber(value: number): void;
-    tabList: { LOGIN: number };
 }
 
 export default function UserRegisterTab({
@@ -20,7 +20,6 @@ export default function UserRegisterTab({
     error,
     isSuccess,
     setTabNumber,
-    tabList,
 }: Props) {
     const checkPassword = form.password !== form.confirmPwd ? true : false;
 
@@ -79,7 +78,7 @@ export default function UserRegisterTab({
             ) : (
                 <>
                     <div>회원가입에 성공하셨습니다!</div>
-                    <LoginButtonStyle type="button" onClick={() => setTabNumber(tabList.LOGIN)}>
+                    <LoginButtonStyle type="button" onClick={() => setTabNumber(LOGIN)}>
                         로그인 하기
                     </LoginButtonStyle>
                 </>

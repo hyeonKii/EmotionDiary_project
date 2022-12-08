@@ -6,6 +6,7 @@ import setSession from "@/util/setSession";
 import React, { useState } from "react";
 import styled from "styled-components";
 import Icon from "../UI/Icon";
+import { REGISTER, FIND_ID, FIND_PW } from "./constants/tabList";
 
 interface Response {
     data: {
@@ -20,11 +21,10 @@ interface Error {
 
 interface Props {
     setTabNumber(value: number): void;
-    tabList: { LOGIN: number; REGISTER: number; FIND_ID: number; FIND_PW: number };
     setShowLoginForm(value: boolean): void;
 }
 
-export default function UserLogin({ setTabNumber, tabList, setShowLoginForm }: Props) {
+export default function UserLogin({ setTabNumber, setShowLoginForm }: Props) {
     const navigate = useNavigate();
     const [error, setError] = useState(false);
     const { setUser } = useSetUser();
@@ -87,20 +87,20 @@ export default function UserLogin({ setTabNumber, tabList, setShowLoginForm }: P
                     <BottomRegisterStyle>
                         <span>계정이 없으신가요? </span>
                         <Register>
-                            <button type="button" onClick={() => setTabNumber(tabList.REGISTER)}>
+                            <button type="button" onClick={() => setTabNumber(REGISTER)}>
                                 회원가입
                             </button>
                         </Register>
                     </BottomRegisterStyle>
                     <BottomFindSomethingStyle>
                         <span>
-                            <button type="button" onClick={() => setTabNumber(tabList.FIND_ID)}>
+                            <button type="button" onClick={() => setTabNumber(FIND_ID)}>
                                 아이디
                             </button>
                         </span>
                         <span> / </span>
                         <span>
-                            <button type="button" onClick={() => setTabNumber(tabList.FIND_PW)}>
+                            <button type="button" onClick={() => setTabNumber(FIND_PW)}>
                                 비밀번호 찾기
                             </button>
                         </span>

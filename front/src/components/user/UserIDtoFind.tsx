@@ -1,19 +1,13 @@
 import { useRequestFindID } from "@/api/account";
-import { useRequestCheckCode, useRequestSendCode } from "@/api/certificate";
+import { useRequestSendCode } from "@/api/certificate";
 import useForm from "@/hooks/useForm";
 import { useState } from "react";
 import styled from "styled-components";
 import Icon from "../UI/Icon";
-
-interface Response {
-    data: {
-        result: boolean;
-    };
-}
+import { FIND_PW, LOGIN, REGISTER } from "./constants/tabList";
 
 interface Props {
     setTabNumber(value: number): void;
-    tabList: { REGISTER: number; LOGIN: number; FIND_PW: number };
 }
 
 interface IDResponse {
@@ -26,7 +20,7 @@ interface Error {
     };
 }
 
-export default function UserIDtoFind({ setTabNumber, tabList }: Props) {
+export default function UserIDtoFind({ setTabNumber }: Props) {
     const [id, setId] = useState("");
     const [emailError, setEmailError] = useState("");
     const [codeError, setCodeError] = useState("");
@@ -125,21 +119,19 @@ export default function UserIDtoFind({ setTabNumber, tabList }: Props) {
                         아이디는 <span>{id}</span>입니다.
                     </IDStyle>
                 )}
-                <LoginButtonStyle onClick={() => setTabNumber(tabList.LOGIN)}>
-                    로그인 하기
-                </LoginButtonStyle>
+                <LoginButtonStyle onClick={() => setTabNumber(LOGIN)}>로그인 하기</LoginButtonStyle>
                 <BottomSectionStyle>
                     <BottomRegisterStyle>
                         <span>계정이 없으신가요? </span>
                         <Register>
-                            <button type="button" onClick={() => setTabNumber(tabList.REGISTER)}>
+                            <button type="button" onClick={() => setTabNumber(REGISTER)}>
                                 회원가입
                             </button>
                         </Register>
                     </BottomRegisterStyle>
                     <BottomFindSomethingStyle>
                         <span>
-                            <button type="button" onClick={() => setTabNumber(tabList.FIND_PW)}>
+                            <button type="button" onClick={() => setTabNumber(FIND_PW)}>
                                 비밀번호 찾기
                             </button>
                         </span>
