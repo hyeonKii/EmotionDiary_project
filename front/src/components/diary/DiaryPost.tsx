@@ -23,9 +23,7 @@ interface Error {
     message: string;
 }
 
-export default function DiaryPost({ post, refetch }: Props) {
-    const { id, title, description, createdAt, emotion, private: privateDiary } = post;
-
+const getPostedTime = (createdAt: Date) => {
     const currentTotalDate = new Date().toISOString().split("T");
     const createdTotalDate = new Date(createdAt).toISOString().split("T");
 
@@ -35,10 +33,17 @@ export default function DiaryPost({ post, refetch }: Props) {
     const currentHour = Number(currentTotalDate[1].split(":")[0]);
     const createdHour = Number(createdTotalDate[1].split(":")[0]);
 
-    const date =
-        currentDate - createdDate === 0
-            ? `${currentHour - createdHour}시간 전`
-            : currentTotalDate[0].replace(/\-/g, ".");
+    if (currentDate - createdDate === 0) {
+        return currentHour - createdHour === 0 ? "방금 전" : `${currentHour - createdHour}시간 전`;
+    }
+
+    return currentTotalDate[0].replace(/\-/g, ".");
+};
+
+export default function DiaryPost({ post, refetch }: Props) {
+    const { id, title, description, createdAt, emotion, private: privateDiary } = post;
+
+    const postedDate = getPostedTime(createdAt);
 
     const [isOpen, setIsOpen] = useState(false);
     const [editMode, setEditMode] = useState(false);
@@ -95,7 +100,7 @@ export default function DiaryPost({ post, refetch }: Props) {
                     <span className="emotion">{emotion}</span>
                     <span className="title">{title}</span>
                     <div className="time">
-                        <span>{date}</span>
+                        <span>{postedDate}</span>
                         <span className="arrow">{isOpen ? "▲" : "▼"}</span>
                     </div>
                 </Post>

@@ -20,11 +20,16 @@ interface Props {
     refetch(): void;
 }
 
+const getPostedDate = (createdAt: Date) => {
+    const fullDate = new Date(createdAt).toISOString().split("T")[0].split("-");
+
+    return `${fullDate[0]}년 ${fullDate[1]}월 ${fullDate[2]}일`;
+};
+
 export default function DiaryTodayPost({ post, refetch }: Props) {
     const { id, title, description, createdAt, private: privateDiary } = post;
 
-    const fullDate = new Date(createdAt).toISOString().split("T")[0].split("-");
-    const date = `${fullDate[0]}년 ${fullDate[1]}월 ${fullDate[2]}일`;
+    const postedDate = getPostedDate(createdAt);
 
     const [isEdit, setIsEdit] = useState(false);
     const [privateMode, setPrivateMode] = useState(privateDiary);
@@ -73,7 +78,7 @@ export default function DiaryTodayPost({ post, refetch }: Props) {
     return (
         <DiaryDetail isEdit={isEdit}>
             <article className="top">
-                <span className="date">{date}</span>
+                <span className="date">{postedDate}</span>
                 <div className="icons">
                     {privateDiary ? (
                         <span className="material-symbols-outlined">lock</span>
