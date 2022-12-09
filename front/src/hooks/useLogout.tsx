@@ -22,7 +22,6 @@ export default function useLogout() {
                 setUser(null);
                 setSession("accessToken", "");
                 setSession("refreshToken", "");
-                location.reload();
             }
         },
 

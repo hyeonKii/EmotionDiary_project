@@ -50,7 +50,7 @@ export function DiaryCalendar() {
     const { refetch: getMonthDiaries, data: monthDiaries } = useRequestGetMonthDiaries(
         date.year,
         date.month,
-        "diaries",
+        "calendar-diaries",
         {
             onSuccess: () => {
                 console.log("월별 일기 요청 성공");

@@ -43,6 +43,7 @@ export default function Main() {
     const { data: monthDiaries } = useRequestGetMonthDiaries(
         today.getFullYear(),
         today.getMonth() + 1,
+        "home-diaries",
         {
             onSuccess: () => {
                 return;
