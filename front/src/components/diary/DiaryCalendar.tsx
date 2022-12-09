@@ -29,9 +29,9 @@ export function DiaryCalendar() {
 
     const [id, setId] = useState(0);
     const [diary, setDiary] = useState<PostInterface | null>(null);
-    const [clickedDate, setClickedDate] = useState<string>("");
+    const [clickedDate, setClickedDate] = useState<Date | null>(null);
 
-    const { refetch } = useRequestGetDiary(id, {
+    const { refetch: getDiary } = useRequestGetDiary(id, {
         retry: false,
 
         onSuccess: (res: DiaryResponse) => {
@@ -47,21 +47,27 @@ export function DiaryCalendar() {
         },
     });
 
-    const { data: monthDiaries } = useRequestGetMonthDiaries(date.year, date.month, {
-        onSuccess: () => {
-            console.log("월별 일기 요청 성공");
-        },
+    const { refetch: getMonthDiaries, data: monthDiaries } = useRequestGetMonthDiaries(
+        date.year,
+        date.month,
+        {
+            onSuccess: () => {
+                console.log("월별 일기 요청 성공");
+            },
 
-        onError: () => {
-            console.log("월별 일기 요청 실패");
-        },
-    });
+            onError: () => {
+                console.log("월별 일기 요청 실패");
+            },
+        }
+    );
 
     const { emotionState } = useEmotion(diary?.emotion, user?.nickname);
 
     const setCurrentDay = (event) => {
+        console.log(event);
+
         const postDate = new Date(event);
-        const clickedDate = postDate.toISOString().split("T")[0];
+        postDate.setHours(postDate.getHours() + 9);
         const currentDay = postDate.getDate();
 
         const currentDiary = monthDiaries?.data.find(
@@ -70,7 +76,7 @@ export function DiaryCalendar() {
 
         if (!currentDiary) {
             setDiary(null);
-            setClickedDate(clickedDate);
+            setClickedDate(postDate);
             setId(0);
             return;
         }
@@ -102,6 +108,26 @@ export function DiaryCalendar() {
         return null;
     };
 
+    const refreshDiaries = () => {
+        if (!clickedDate) {
+            return;
+        }
+
+        getMonthDiaries().then((res) => {
+            const date = clickedDate.toISOString().split("T")[0];
+            const currentDay = new Date(date).getDate();
+
+            console.log(currentDay);
+            console.log(res);
+
+            const currentDiary = res.data.data.find(
+                (diary: PostInterface) => currentDay === new Date(diary.createdAt).getDate()
+            );
+
+            setId(currentDiary.id);
+        });
+    };
+
     return (
         <TodaySection>
             <Calendar
@@ -112,9 +138,9 @@ export function DiaryCalendar() {
             />
             <CalendarDetail>
                 {emotionState()}
-                {diary && <DiaryTodayPost post={diary} refetch={refetch} />}
+                {diary && <DiaryTodayPost post={diary} refetch={getDiary} />}
                 {!diary && clickedDate && (
-                    <DiaryCreatePost refetch={refetch} clickedDate={clickedDate} />
+                    <DiaryCreatePost refreshDiaries={refreshDiaries} clickedDate={clickedDate} />
                 )}
             </CalendarDetail>
         </TodaySection>

@@ -7,13 +7,13 @@ interface Props {
     refetch(): void;
 }
 
-const getCurrentDate = (clickedDate) => {
-    const currentDate = clickedDate.split("-");
+const getCurrentDate = (clickedDate: Date) => {
+    const currentDate = clickedDate.toISOString().split("T")[0].split("-");
 
     return `${currentDate[0]}년 ${currentDate[1]}월 ${currentDate[2]}일`;
 };
 
-export default function DiaryCreatePost({ refetch, clickedDate }: Props) {
+export default function DiaryCreatePost({ refreshDiaries, clickedDate }: Props) {
     const date = getCurrentDate(clickedDate);
 
     const [privateMode, setPrivateMode] = useState(true);
@@ -24,11 +24,11 @@ export default function DiaryCreatePost({ refetch, clickedDate }: Props) {
     });
 
     const { mutate: writeHandler } = useRequestWriteDiary(
-        { ...form, privateDiary: privateMode },
+        { ...form, privateDiary: privateMode, createdAt: clickedDate },
         {
             onSuccess: () => {
                 console.log("일기 작성 요청 성공");
-                refetch();
+                refreshDiaries();
             },
             onError: () => {
                 console.log("일기 작성 요청 실패");
