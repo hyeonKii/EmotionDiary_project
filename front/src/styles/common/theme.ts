@@ -11,6 +11,8 @@ export const lightTheme: DefaultTheme = {
     spanColor: "#000000",
 
     modalBgColor: "#FFFFFF",
+    inputBgColor: "#FFFFFF",
+    textAreaBgColor: "#f0f0f0",
 
     backgroundImg: `${background}`,
 };
@@ -24,6 +26,8 @@ export const darkTheme: DefaultTheme = {
     spanColor: "#000000",
 
     modalBgColor: "#2f3640",
+    inputBgColor: "#242a30",
+    textAreaBgColor: "#242a30",
 
     backgroundImg: `${backgroundDark}`,
 };

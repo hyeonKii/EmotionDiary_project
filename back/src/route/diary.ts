@@ -10,11 +10,17 @@ diaryRouter.post(
     "/write",
     auth,
     wrapRouter(async (req: Req, res: Res) => {
-        const { title, description, privateDiary } = req.body;
+        const { title, description, privateDiary, createdAt } = req.body;
         if (title && description && privateDiary === undefined) {
             throw new AppError("ArgumentError");
         }
-        const result = await diaryService.writeDiary(req.userID!, title, description, privateDiary);
+        const result = await diaryService.writeDiary(
+            req.userID!,
+            title,
+            description,
+            privateDiary,
+            createdAt
+        );
         return { statusCode: 200, content: true };
     })
 );
@@ -56,26 +62,40 @@ diaryRouter.get(
     })
 );
 
-// diaryRouter.get(
-//     "/:id",
-//     auth,
-//     wrapRouter(async (req: Req, res: Res) => {
-//         const { id } = req.params;
-//         const result = await diaryService.getDiary(id);
-//         return { statusCode: 200, content: result };
-//     })
-// );
+//나의 일기 조회
+diaryRouter.get(
+    "/mine",
+    auth,
+    wrapRouter(async (req: Req, res: Res) => {
+        const { count, page } = req.query;
+        if (count === undefined || page === undefined) {
+            throw new AppError("ArgumentError");
+        }
+        const result = await diaryService.getMyDiaryList(req.userID!, Number(count), Number(page));
+        return { statusCode: 200, content: result };
+    })
+);
+
+diaryRouter.get(
+    "/:id",
+    auth,
+    wrapRouter(async (req: Req, res: Res) => {
+        const { id } = req.params;
+        const result = await diaryService.getDiary(id);
+        return { statusCode: 200, content: result };
+    })
+);
 
 diaryRouter.get(
     "/",
-    // auth,
+    auth,
     wrapRouter(async (req: Req, res: Res) => {
         const { datetime } = req.query;
         const date = new Date(String(datetime));
         const nextDate = new Date(String(datetime));
         nextDate.setDate(date.getDate() + 1);
         console.log(date, nextDate);
-        const result = await diaryService.getDiaryByDate(date, nextDate);
+        const result = await diaryService.getDiaryByDate(req.userID!, date, nextDate);
         return { statusCode: 200, content: result };
     })
 );
@@ -86,8 +106,8 @@ diaryRouter.put(
     wrapRouter(async (req: Req, res: Res) => {
         const { id } = req.params;
         console.log(id);
-        const { title, description } = req.body;
-        const result = await diaryService.updateDiary(id, title, description);
+        const { title, description, privateDiary } = req.body;
+        const result = await diaryService.updateDiary(id, title, description, privateDiary);
         return Promise.resolve({ statusCode: 200, content: result });
     })
 );

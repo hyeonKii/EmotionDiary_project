@@ -3,6 +3,7 @@ import "styled-components";
 declare module "*.jpg";
 declare module "*.ttf";
 declare module "*.png";
+declare module "*.gif";
 
 declare module "styled-components" {
     export interface DefaultTheme {
@@ -11,6 +12,8 @@ declare module "styled-components" {
         textColor: string;
         spanColor: string;
         modalBgColor: string;
+        inputBgColor: string;
+        textAreaBgColor: string;
         backgroundImg: string;
         homeBgColor: string;
     }

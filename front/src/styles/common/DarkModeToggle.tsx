@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { isDarkAtom } from "@/temp/themeAtom";
+import { useRecoilState } from "recoil";
+import { useCallback } from "react";
+import { ThemeEnums, themeMode } from "@/temp/themeAtom";
 
 const Button = styled.button`
     display: flex;
@@ -25,14 +26,26 @@ const Moon = styled.svg`
     transition: svg 1s linear;
 `;
 
-const DarkModeToggle = () => {
-    const isDark = useRecoilValue(isDarkAtom);
-    const setMode = useSetRecoilState(isDarkAtom);
-    const toggleMode = () => setMode((prev) => !prev);
+const DarkModeToggle = (): JSX.Element => {
+    const [theme, setTheme] = useRecoilState<ThemeEnums>(themeMode);
+    const { LIGHT, DARK } = ThemeEnums;
+
+    const handleChangeTheme = useCallback((): void => {
+        if (theme === DARK) {
+        localStorage.setItem("theme", `${LIGHT}`);
+        setTheme(LIGHT);
+        return;
+        }
+
+        localStorage.setItem( "theme" , `${DARK}`);
+        setTheme(DARK);
+    }, [DARK, LIGHT, setTheme, theme]);
+
+
 
     return (
-        <Button onClick={toggleMode}>
-            {isDark ? (
+        <Button onClick={handleChangeTheme}>
+            {theme === DARK ? (
                 <Moon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35">
                     <path
                         style={{ fill: "#F6C358" }}

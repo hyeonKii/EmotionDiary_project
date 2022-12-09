@@ -1,6 +1,24 @@
-import { atom } from "recoil";
+import { atom } from 'recoil';
 
-export const isDarkAtom = atom({
-  key: "isDark",
-  default: false,
+export enum ThemeEnums {
+  LIGHT = 0,
+  DARK = 1,
+};
+
+const { LIGHT, DARK } = ThemeEnums;
+
+export const getTheme = (): ThemeEnums => {
+  const theme: number = Number(localStorage.getItem('theme'));
+
+  if (theme === DARK) {
+    return DARK;
+  }
+
+  return LIGHT;
+}
+
+export const themeMode = atom<ThemeEnums>({
+  key: 'theme',
+  default: getTheme(),
+  
 });

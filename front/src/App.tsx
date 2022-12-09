@@ -8,13 +8,16 @@ import Home from "@/pages/HomePage";
 import Diary from "@/pages/DiaryPage";
 import IntroducePage from "@/pages/IntroducePage";
 import Footer from "./components/UI/Footer";
-
+import Loading from "./components/UI/Loading";
 import useSetUser from "./hooks/useSetUser";
-import { isDarkAtom } from "@/temp/themeAtom";
-import { darkTheme, lightTheme } from "./styles/common/theme";
+
+import { darkTheme, lightTheme } from "@/styles/common/theme";
+import { ThemeEnums, themeMode } from "@/temp/themeAtom";
 
 function App() {
-    const isDark = useRecoilValue(isDarkAtom);
+    const theme: ThemeEnums = useRecoilValue(themeMode);
+    const { LIGHT } = ThemeEnums;
+
     const { isLoading, setUser: setUser } = useSetUser();
 
     const [loadingCheck, setLoadingCheck] = useState(false);
@@ -37,21 +40,22 @@ function App() {
         fetchUser();
     }, []);
 
-    return (
-        !isLoading &&
-        loadingCheck && (
-            <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-                <Router>
-                    <Header />
-                    <Routes>
-                        <Route path="/intro" element={<IntroducePage />} />
-                        <Route path="/home" element={<Home />} />
-                        <Route path="/diary" element={<Diary />} />
-                    </Routes>
-                    <Footer />
-                </Router>
-            </ThemeProvider>
-        )
+    return isLoading ? (
+        <Loading />
+    ) : !loadingCheck ? (
+        <Loading />
+    ) : (
+        <ThemeProvider theme={theme === LIGHT ? lightTheme : darkTheme}>
+            <Router>
+                <Header />
+                <Routes>
+                    <Route path="/intro" element={<IntroducePage />} />
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/diary" element={<Diary />} />
+                </Routes>
+                <Footer />
+            </Router>
+        </ThemeProvider>
     );
 }
 

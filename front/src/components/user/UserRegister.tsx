@@ -4,10 +4,10 @@ import { useState } from "react";
 import styled from "styled-components";
 import UserEmailCheckTab from "./UserEmailCheckTab";
 import UserRegisterTab from "./UserRegisterTab";
+import { LOGIN } from "./constants/tabList";
 
 interface Props {
     setTabNumber(value: number): void;
-    tabList: { LOGIN: number };
 }
 
 interface Error {
@@ -17,7 +17,7 @@ interface Error {
     };
 }
 
-export default function UserRegister({ setTabNumber, tabList }: Props) {
+export default function UserRegister({ setTabNumber }: Props) {
     const [tab, setTab] = useState(false);
     const [requiredEmail, setRequiredEmail] = useState("");
     const [error, setError] = useState("");
@@ -70,14 +70,13 @@ export default function UserRegister({ setTabNumber, tabList }: Props) {
                         error={error}
                         isSuccess={isSuccess}
                         setTabNumber={setTabNumber}
-                        tabList={tabList}
                     />
                 )}
                 {!isSuccess && (
                     <BottomSectionStyle>
                         <span>이미 계정이 있으신가요? </span>
                         <Register>
-                            <button type="button" onClick={() => setTabNumber(tabList.LOGIN)}>
+                            <button type="button" onClick={() => setTabNumber(LOGIN)}>
                                 로그인
                             </button>
                         </Register>

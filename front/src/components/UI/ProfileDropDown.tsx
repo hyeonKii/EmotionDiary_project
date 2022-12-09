@@ -10,10 +10,6 @@ interface Props {
     setShowDropDown(value: boolean): void;
 }
 
-interface Error {
-    message: string;
-}
-
 export default function ProfileDropDown({ setShowDropDown }: Props) {
     const navigate = useNavigate();
     const [showInfo, setShowInfo] = useState(false);
@@ -41,12 +37,8 @@ export default function ProfileDropDown({ setShowDropDown }: Props) {
                 </>
             )}
             <DropDownStyle>
-                <li>
-                    <button onClick={() => setShowInfo(true)}>정보</button>
-                </li>
-                <li>
-                    <button onClick={logoutHandler}>로그아웃</button>
-                </li>
+                <button onClick={() => setShowInfo(true)}>정보</button>
+                <button onClick={logoutHandler}>로그아웃</button>
             </DropDownStyle>
         </>
     );
