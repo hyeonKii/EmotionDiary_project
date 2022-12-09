@@ -7,6 +7,7 @@ import DiaryTodayPost from "./DiaryTodayPost";
 import { currentUser } from "@/temp/userAtom";
 import { useRecoilValue } from "recoil";
 import { PostInterface } from "./interface/post";
+import DiaryCreatePost from "./DiaryCreatePost";
 
 interface MonthData {
     createdAt: Date;
@@ -28,6 +29,7 @@ export function DiaryCalendar() {
 
     const [id, setId] = useState(0);
     const [diary, setDiary] = useState<PostInterface | null>(null);
+    const [clickedDate, setClickedDate] = useState<string>("");
 
     const { refetch } = useRequestGetDiary(id, {
         retry: false,
@@ -58,7 +60,9 @@ export function DiaryCalendar() {
     const { emotionState } = useEmotion(diary?.emotion, user?.nickname);
 
     const setCurrentDay = (event) => {
-        const currentDay = new Date(event).getDate();
+        const postDate = new Date(event);
+        const clickedDate = postDate.toISOString().split("T")[0];
+        const currentDay = postDate.getDate();
 
         const currentDiary = monthDiaries?.data.find(
             (diary: PostInterface) => currentDay === new Date(diary.createdAt).getDate()
@@ -66,6 +70,7 @@ export function DiaryCalendar() {
 
         if (!currentDiary) {
             setDiary(null);
+            setClickedDate(clickedDate);
             setId(0);
             return;
         }
@@ -108,6 +113,9 @@ export function DiaryCalendar() {
             <CalendarDetail>
                 {emotionState()}
                 {diary && <DiaryTodayPost post={diary} refetch={refetch} />}
+                {!diary && clickedDate && (
+                    <DiaryCreatePost refetch={refetch} clickedDate={clickedDate} />
+                )}
             </CalendarDetail>
         </TodaySection>
     );

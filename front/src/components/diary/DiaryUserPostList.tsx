@@ -11,9 +11,12 @@ interface Response {
     data: { diarycount: number; postDatas: PostInterface };
 }
 
+const POST_COUNT = 5;
+const INITIAL_PAGE = 1;
+
 export default function DiaryUserPostList() {
-    const [count, setCount] = useState(10);
-    const [page, setPage] = useState(1);
+    const [count, setCount] = useState(POST_COUNT);
+    const [page, setPage] = useState(INITIAL_PAGE);
     const [diaryCount, setDiaryCount] = useState(0);
 
     const {
@@ -61,7 +64,6 @@ export default function DiaryUserPostList() {
                         <option value="15">15</option>
                         <option value="20">20</option>
                     </select>
-                    ;
                 </>
             )}
         </>

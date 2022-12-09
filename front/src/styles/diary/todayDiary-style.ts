@@ -38,7 +38,8 @@ export const TodaySection = styled.section`
 
         // 감정 스타일 예시
         .react-calendar__tile.normal {
-            background: ${color.gray};
+            background: ${color.lightGray};
+            border-radius: 50%;
         }
 
         .react-calendar__tile--now {
