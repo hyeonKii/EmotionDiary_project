@@ -12,9 +12,8 @@ import {
     FormButton,
     EditSection,
     InputBlock,
-    InputSection,
     Error,
-} from "@/styles/common/Modal/Form-style";
+} from "@/styles/common/modal/form-style";
 
 interface Props {
     setShowInfo(value: boolean): void;
