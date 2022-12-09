@@ -3,24 +3,25 @@ import { useState } from "react";
 import ProfileDropDown from "./ProfileDropDown";
 import { useRecoilValue } from "recoil";
 import { currentUser } from "@/temp/userAtom";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ROUTES_LIST } from "@/routes/route";
+import UserFormController from "../user/UserFormController";
+import ModalBackground from "./ModalBackground";
 
 export default function Header() {
     const user = useRecoilValue(currentUser);
+    const userCheck = user ? false : true;
 
-    const [showLoginForm, setShowLoginForm] = useState(false);
+    const [showLoginForm, setShowLoginForm] = useState(userCheck);
     const [showDropDown, setShowDropDown] = useState(false);
 
     return (
         <header>
             {showLoginForm && (
-                <Routes>
-                    {ROUTES_LIST.map(({ path, Component }, idx) => (
-                        <Route key={idx} path={path} element={<Component />} />
-                    ))}
-                </Routes>
+                <>
+                    <UserFormController setShowLoginForm={setShowLoginForm} />
+                    <ModalBackground />
+                </>
             )}
+            {showDropDown && <ProfileDropDown setShowDropDown={setShowDropDown} />}
             <NavStyle>
                 <div>마음일기</div>
                 {!user ? (
@@ -48,7 +49,6 @@ export default function Header() {
                     </ul>
                 )}
             </NavStyle>
-            {showDropDown && <ProfileDropDown />}
         </header>
     );
 }

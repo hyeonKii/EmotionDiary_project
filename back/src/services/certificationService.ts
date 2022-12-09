@@ -28,6 +28,10 @@ class CertificationService {
             },
         });
 
+        if (result === null && (codeType === "password" || codeType === "id")) {
+            throw new AppError("UserNotExistError");
+        }
+
         if (result !== null && codeType === "email") {
             throw new AppError("UserExistError");
         } else {

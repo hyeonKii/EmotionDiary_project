@@ -10,7 +10,7 @@ import sad from "@/assets/images/sad.png";
 import angry from "@/assets/images/angry.png";
 import none from "@/assets/images/none.png";
 
-export default function useEmotion(emotion: string, nickname: string) {
+export default function useEmotion(emotion: string, nickname?: string) {
     const emotionState = useCallback(() => {
         if (
             emotion === "신남" ||

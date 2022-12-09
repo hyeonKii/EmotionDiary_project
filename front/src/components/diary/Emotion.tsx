@@ -1,4 +1,6 @@
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis } from "recharts";
+import { useRecoilValue } from "recoil";
+import { currentUser } from "@/temp/userAtom";
 import {
     EmotionSection,
     EmotionChartSection,
@@ -49,6 +51,7 @@ const chart = [
 ];
 
 export function Emotion() {
+    const user = useRecoilValue(currentUser);
     const topEmotion = chart.reduce((a, b) => {
         return a.A > b.A ? a : b;
     });
@@ -78,7 +81,7 @@ export function Emotion() {
     return (
         <EmotionSection>
             <h1>
-                <span>{data.nickname}</span>님의 지난달 감정들
+                <span>{user?.nickname}</span> 지난달 감정들
             </h1>
             <EmotionChartSection>
                 <RadarChart width={450} height={450} data={chart}>
