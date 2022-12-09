@@ -7,14 +7,6 @@ interface Props {
     refetch(): void;
 }
 
-const getCurrentDate = (day: number) => {
-    const dayToDate = new Date();
-
-    dayToDate.setDate(day);
-
-    return dayToDate;
-};
-
 const getCurrentDateText = (dayToDate: Date) => {
     const currentDate = new Date(dayToDate);
 
@@ -25,9 +17,8 @@ const getCurrentDateText = (dayToDate: Date) => {
     return `${currentYear}년 ${currentMonth}월 ${currentDay}일`;
 };
 
-export default function DiaryCreatePost({ getMonthDiaries, day }: Props) {
-    const currentDate = getCurrentDate(day);
-    const currentDateText = getCurrentDateText(currentDate);
+export default function DiaryCreatePost({ getMonthDiaries, fullDate }: Props) {
+    const currentDateText = getCurrentDateText(fullDate);
 
     const [privateMode, setPrivateMode] = useState(true);
 
@@ -37,7 +28,7 @@ export default function DiaryCreatePost({ getMonthDiaries, day }: Props) {
     });
 
     const { mutate: writeHandler } = useRequestWriteDiary(
-        { ...form, privateDiary: privateMode, createdAt: currentDate },
+        { ...form, privateDiary: privateMode, createdAt: fullDate },
         {
             onSuccess: () => {
                 getMonthDiaries();
@@ -64,7 +55,7 @@ export default function DiaryCreatePost({ getMonthDiaries, day }: Props) {
     return (
         <DiaryDetail isEdit={true}>
             <article className="top">
-                {day && <span className="date">{currentDateText}</span>}
+                {fullDate && <span className="date">{currentDateText}</span>}
                 <select onChange={selectHandler}>
                     <option value="나만보기">나만보기</option>
                     <option value="전체공개">전체공개</option>

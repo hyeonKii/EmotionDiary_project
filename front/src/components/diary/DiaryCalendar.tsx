@@ -17,10 +17,11 @@ interface MonthData {
 const currentDate = new Date();
 const currentYear = currentDate.getFullYear();
 const currentMonth = currentDate.getMonth() + 1;
-const currentDay = currentDate.getDate();
 
-const getCurrentDiary = (data, day) => {
-    return data.find((diary: PostInterface) => new Date(diary.createdAt).getDate() === day);
+const getCurrentDiary = (data, date) => {
+    return data.find(
+        (diary: PostInterface) => new Date(diary.createdAt).getDate() === new Date(date).getDate()
+    );
 };
 
 export function DiaryCalendar() {
@@ -31,7 +32,7 @@ export function DiaryCalendar() {
         month: currentMonth,
     });
 
-    const [day, setDay] = useState(currentDay);
+    const [fullDate, setFullDate] = useState(currentDate);
     const [id, setID] = useState(null);
     const [diary, setDiary] = useState<PostInterface | null>(null);
 
@@ -59,7 +60,7 @@ export function DiaryCalendar() {
         "calendar-diaries",
         {
             onSuccess: (res) => {
-                const currentDiary = getCurrentDiary(res.data, day);
+                const currentDiary = getCurrentDiary(res.data, fullDate);
 
                 if (currentDiary) {
                     setID(currentDiary.id);
@@ -81,16 +82,12 @@ export function DiaryCalendar() {
     const setCurrentDay = (event) => {
         const postDate = new Date(event);
 
-        postDate.setHours(12);
-
-        const clickedDay = postDate.getDate();
-
-        setDay(clickedDay);
+        setFullDate(postDate);
 
         if (monthDiaries) {
             const { data } = monthDiaries;
 
-            const currentDiary = getCurrentDiary(data, clickedDay);
+            const currentDiary = getCurrentDiary(data, postDate);
 
             if (currentDiary) {
                 setID(currentDiary.id);
@@ -150,7 +147,7 @@ export function DiaryCalendar() {
                         getMonthDiaries={getMonthDiaries}
                     />
                 ) : (
-                    <DiaryCreatePost getMonthDiaries={getMonthDiaries} day={day} />
+                    <DiaryCreatePost getMonthDiaries={getMonthDiaries} fullDate={fullDate} />
                 )}
             </CalendarDetail>
         </TodaySection>
