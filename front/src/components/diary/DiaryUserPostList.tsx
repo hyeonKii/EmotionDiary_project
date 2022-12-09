@@ -1,5 +1,6 @@
 import { useRequestGetMyAllDiaries } from "@/api/diary";
 import React, { useState } from "react";
+import styled from "styled-components";
 import DiaryPageButton from "./DiaryPageButton";
 import DiaryPost from "./DiaryPost";
 import { PostInterface } from "./interface/post";
@@ -50,22 +51,43 @@ export default function DiaryUserPostList() {
                             ))}
                         </section>
                     )}
-                    <span>
-                        <DiaryPageButton
-                            page={page}
-                            setPage={setPage}
-                            diaryCount={diaryCount}
-                            count={count}
-                        />
-                    </span>
-                    <select onChange={selectChangeHandler} defaultValue={count}>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                    </select>
+                    <PageButtonStyle>
+                        <div>
+                            <DiaryPageButton
+                                page={page}
+                                setPage={setPage}
+                                diaryCount={diaryCount}
+                                count={count}
+                            />
+                        </div>
+                        <select onChange={selectChangeHandler} defaultValue={count}>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                    </PageButtonStyle>
                 </>
             )}
         </>
     );
 }
+
+const PageButtonStyle = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 5rem;
+
+    div {
+        display: flex;
+        flex-direction: row;
+
+        button {
+            font-size: 1rem;
+            margin-right: 1rem;
+        }
+    }
+`;

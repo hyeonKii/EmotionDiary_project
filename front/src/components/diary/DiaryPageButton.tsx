@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
     page: number;
@@ -24,7 +24,6 @@ export default function DiaryPageButton({ page, setPage, diaryCount, count }: Pr
         }
 
         setPage(1);
-        setIndex({ startIndex: 0, endIndex: PAGE_LIMIT });
     };
 
     const lastPageBtn = () => {
@@ -32,45 +31,38 @@ export default function DiaryPageButton({ page, setPage, diaryCount, count }: Pr
             return;
         }
 
-        const lastIndex = Math.ceil(pageButtonCount / PAGE_LIMIT) * PAGE_LIMIT;
-
-        const startIndex = lastIndex - PAGE_LIMIT;
-        const endIndex = lastIndex;
-
         setPage(pageButtonCount);
-        setIndex({ startIndex, endIndex });
     };
 
     const leftBtn = () => {
-        if (index.startIndex === 0) {
+        if (page === 1) {
             return;
         }
 
-        setPage(index.startIndex - PAGE_LIMIT + 1);
-
-        setIndex((prevState) => ({
-            startIndex: prevState.startIndex - PAGE_LIMIT,
-            endIndex: prevState.endIndex - PAGE_LIMIT,
-        }));
+        setPage(page - 1);
     };
 
     const rightBtn = () => {
-        if (index.endIndex > pageButtonCount) {
+        if (page === pageButtonCount) {
             return;
         }
 
-        setPage(index.endIndex + 1);
-
-        setIndex((prevState) => ({
-            startIndex: prevState.startIndex + PAGE_LIMIT,
-            endIndex: prevState.endIndex + PAGE_LIMIT,
-        }));
+        setPage(page + 1);
     };
+
+    useEffect(() => {
+        const pageIndex = Math.floor((page - 1) / PAGE_LIMIT);
+
+        setIndex({
+            startIndex: pageIndex * PAGE_LIMIT,
+            endIndex: pageIndex * PAGE_LIMIT + PAGE_LIMIT,
+        });
+    }, [page]);
 
     return (
         <>
-            <button onClick={startPageBtn}>처음 페이지</button>
-            <button onClick={leftBtn}>이전 페이지</button>
+            <button onClick={startPageBtn}>&lt;&lt;</button>
+            <button onClick={leftBtn}>&lt;</button>
             {pageButtonCount &&
                 pageButtonList.slice(index.startIndex, index.endIndex).map((_, i) => (
                     <button
@@ -81,8 +73,8 @@ export default function DiaryPageButton({ page, setPage, diaryCount, count }: Pr
                         {i + 1 + index.startIndex}
                     </button>
                 ))}
-            <button onClick={rightBtn}>다음 페이지</button>
-            <button onClick={lastPageBtn}>마지막 페이지</button>
+            <button onClick={rightBtn}>&gt;</button>
+            <button onClick={lastPageBtn}>&gt;&gt;</button>
         </>
     );
 }
