@@ -21,14 +21,14 @@ const isCertifiedEmail = (email: string) => {
 class CertificationService {
     private prisma = new PrismaClient();
 
-    async generateCode(codeType: "email" | "password", email: string) {
+    async generateCode(codeType: "email" | "password" | "id", email: string) {
         const result = await this.prisma.account.findUnique({
             where: {
                 email: email,
             },
         });
 
-        if (result !== null) {
+        if (result !== null && codeType === "email") {
             throw new AppError("UserExistError");
         } else {
             try {

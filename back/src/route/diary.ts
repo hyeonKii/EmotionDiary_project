@@ -14,7 +14,7 @@ diaryRouter.post(
         if (title && description && privateDiary === undefined) {
             throw new AppError("ArgumentError");
         }
-        const result = await diaryService.writeDiary(req.userID!, title, description);
+        const result = await diaryService.writeDiary(req.userID!, title, description, privateDiary);
         return { statusCode: 200, content: true };
     })
 );
@@ -29,37 +29,45 @@ diaryRouter.patch(
     })
 );
 
+// privateddiary => 내가 쓴 일기
 //모든 일기 조회
 diaryRouter.get(
     "/all",
+    // auth,
+    wrapRouter(async (req: Req, res: Res) => {
+        const { count, page, privatediary, emotion } = req.query;
+        if (
+            count === undefined ||
+            page === undefined ||
+            privatediary === undefined ||
+            emotion === undefined
+        ) {
+            throw new AppError("ArgumentError");
+        }
+        const result = await diaryService.getDiaryList(
+            req.userID!,
+            Number(count),
+            Number(page),
+            Boolean(privatediary),
+            String(emotion)
+        );
+        return { statusCode: 200, content: result };
+    })
+);
+
+//나의 일기 조회
+diaryRouter.get(
+    "/mine",
     auth,
     wrapRouter(async (req: Req, res: Res) => {
         const { count, page } = req.query;
         if (count === undefined || page === undefined) {
             throw new AppError("ArgumentError");
         }
-        const result = await diaryService.getDiaryList(Number(count), Number(page));
+        const result = await diaryService.getMyDiaryList(req.userID!, Number(count), Number(page));
         return { statusCode: 200, content: result };
     })
 );
-
-diaryRouter.get(
-    "/all/emotion",
-    // auth,
-    wrapRouter(async (req: Req, res: Res) => {
-        const { count, page, emotion } = req.query;
-        if (count === undefined || page === undefined || emotion === undefined) {
-            throw new AppError("ArgumentError");
-        }
-        const result = await diaryService.getEmotionDiaryList(
-            Number(count),
-            Number(page),
-            emotion as string
-        );
-        return { statusCode: 200, content: result };
-    })
-);
-
 diaryRouter.get(
     "/:id",
     auth,
@@ -70,11 +78,26 @@ diaryRouter.get(
     })
 );
 
+diaryRouter.get(
+    "/",
+    // auth,
+    wrapRouter(async (req: Req, res: Res) => {
+        const { datetime } = req.query;
+        const date = new Date(String(datetime));
+        const nextDate = new Date(String(datetime));
+        nextDate.setMonth(date.getMonth() + 1);
+        console.log(date, nextDate);
+        const result = await diaryService.getDiaryByDate(date, nextDate);
+        return { statusCode: 200, content: result };
+    })
+);
+
 diaryRouter.put(
     "/:id",
-    auth,
+    // auth,
     wrapRouter(async (req: Req, res: Res) => {
         const { id } = req.params;
+        console.log(id);
         const { title, description } = req.body;
         const result = await diaryService.updateDiary(id, title, description);
         return Promise.resolve({ statusCode: 200, content: result });
