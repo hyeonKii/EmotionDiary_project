@@ -2,6 +2,7 @@ import { useRequestDeleteDiary, useRequestEditDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
 import { DiaryDetail, EditBlock, ReadBlock } from "@/styles/diary/todayDiary-style";
 import { ChangeEvent, useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
 import { PostInterface } from "./interface/post";
 
 interface Props {
@@ -18,8 +19,10 @@ const getPostedDate = (createdAt: Date) => {
     return `${currentYear}년 ${currentMonth}월 ${currentDay}일`;
 };
 
-export default function DiaryTodayPost({ post, getDiary, getMonthDiaries }: Props) {
+export default function DiaryTodayPost({ post }: Props) {
     const { id, title, description, createdAt, private: privateDiary } = post;
+
+    const queryClient = useQueryClient();
 
     const postedDate = getPostedDate(createdAt);
 
@@ -33,7 +36,7 @@ export default function DiaryTodayPost({ post, getDiary, getMonthDiaries }: Prop
 
     const { mutate: deleteDiary } = useRequestDeleteDiary(id, {
         onSuccess: () => {
-            getMonthDiaries();
+            queryClient.invalidateQueries("calendar-diaries");
 
             console.log("일기 삭제 요청 성공");
         },
@@ -44,7 +47,7 @@ export default function DiaryTodayPost({ post, getDiary, getMonthDiaries }: Prop
 
     const { mutate: editDiary } = useRequestEditDiary({ ...form, privateDiary: privateMode }, id, {
         onSuccess: () => {
-            getDiary();
+            queryClient.invalidateQueries("diary", id);
             resetForm();
 
             console.log("일기 편집 요청 성공");

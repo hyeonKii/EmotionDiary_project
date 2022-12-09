@@ -95,7 +95,7 @@ export const useRequestGetAllDiaries = (count: number, page: number, options?) =
     useQuery(["diaries", page, count], () => getDiary(count, page), options);
 
 export const useRequestGetMyAllDiaries = (count: number, page: number, options?) =>
-    useQuery(["diaries", page, count], () => getMyAllDiaries(count, page), options);
+    useQuery(["my-diaries", page, count], () => getMyAllDiaries(count, page), options);
 
 export const useRequestGetMonthDiaries = (year: number, month: number, key: string, options?) =>
     useQuery([`${key}`, year, month], () => getMyMonthDiaries(year, month), options);

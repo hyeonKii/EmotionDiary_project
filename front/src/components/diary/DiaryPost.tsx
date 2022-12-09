@@ -3,10 +3,10 @@ import { CardSection, Post, PostDetail } from "@/styles/home/postList-style";
 import { useRequestDeleteDiary, useRequestEditDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
 import { PostInterface } from "./interface/post";
+import { useQueryClient } from "react-query";
 
 interface Props {
     post: PostInterface;
-    getMyAllDiaries(): void;
 }
 
 interface Error {
@@ -33,8 +33,10 @@ const getPostedTime = (createdAt: Date) => {
     return `${createdYear}.${createdMonth}.${createdDay}`;
 };
 
-export default function DiaryPost({ post, getMyAllDiaries }: Props) {
+export default function DiaryPost({ post }: Props) {
     const { id, title, description, createdAt, emotion, private: privateDiary } = post;
+
+    const queryClient = useQueryClient();
 
     const postedDate = getPostedTime(createdAt);
 
@@ -50,7 +52,7 @@ export default function DiaryPost({ post, getMyAllDiaries }: Props) {
 
     const { mutate: editDiary } = useRequestEditDiary({ ...form, privateDiary: privateMode }, id, {
         onSuccess: () => {
-            getMyAllDiaries();
+            queryClient.invalidateQueries("my-diaries");
         },
         onError: (error: Error) => {
             console.log(error.message);
@@ -59,7 +61,7 @@ export default function DiaryPost({ post, getMyAllDiaries }: Props) {
 
     const { mutate: deleteDiary } = useRequestDeleteDiary(id, {
         onSuccess: () => {
-            getMyAllDiaries();
+            queryClient.invalidateQueries("my-diaries");
         },
         onError: (error: Error) => {
             console.log(error.message);

@@ -2,6 +2,7 @@ import { useRequestWriteDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
 import { DiaryDetail, EditBlock } from "@/styles/diary/todayDiary-style";
 import { ChangeEvent, useState } from "react";
+import { useQueryClient } from "react-query";
 
 interface Props {
     refetch(): void;
@@ -17,7 +18,9 @@ const getCurrentDateText = (dayToDate: Date) => {
     return `${currentYear}년 ${currentMonth}월 ${currentDay}일`;
 };
 
-export default function DiaryCreatePost({ getMonthDiaries, fullDate }: Props) {
+export default function DiaryCreatePost({ fullDate }: Props) {
+    const queryClient = useQueryClient();
+
     const currentDateText = getCurrentDateText(fullDate);
 
     const [privateMode, setPrivateMode] = useState(true);
@@ -31,7 +34,7 @@ export default function DiaryCreatePost({ getMonthDiaries, fullDate }: Props) {
         { ...form, privateDiary: privateMode, createdAt: fullDate },
         {
             onSuccess: () => {
-                getMonthDiaries();
+                queryClient.invalidateQueries(["calendar-diaries"]);
 
                 console.log("일기 작성 요청 성공");
             },
