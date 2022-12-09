@@ -45,6 +45,7 @@ if (sc !== undefined) {
             for (let value in Object.values(result.result)) {
                 strArr.push(...Object.values(result.result[value]));
             }
+
             const uniqueArr = strArr.filter((element, index) => {
                 return strArr.indexOf(element) === index;
             });
@@ -78,7 +79,10 @@ if (sc !== undefined) {
             return { success: true, payload: inviter + invitee };
         });
 
-        socket.on("join-room", (roomName: string) => {
+        socket.on("join-room", async (roomName: string, userid: string) => {
+            const result2 = await chatService.readMessage(String(roomName), String(userid));
+            console.log(userid, "user");
+            sc.emit("join-room", result2);
             socket.join(roomName); // join room
             return { success: true };
         });

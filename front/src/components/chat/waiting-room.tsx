@@ -20,63 +20,41 @@ interface ChatData {
 
 const WaitingRoom = () => {
     const [rooms, setRooms] = useState<string[]>([]);
-    let [recentlyMessage, setRecentlyMessage] = useRecoilState(recentlyMsgState);
+    const [count, setCount] = useState();
     const [chatList, setChatList] = useState<
         | {
               updatedAt: string;
               user_model_id: string;
               lastmessage: string;
+              count: string;
           }[]
         | null
     >(null);
 
     const navigate = useNavigate();
     const user = useRecoilValue(currentUser);
-    const recentMessage = useRecoilValue(recentlyMsgState);
     const setrecentMessage = useSetRecoilState(recentlyMsgState);
+    const userid = String(user?.id);
+
+    console.log(chatList, "chatList");
 
     useEffect(() => {
-        // console.log(rooms, "room");
-
         // socket handler
-        const roomListHandler = (rooms: string[]) => {
-            setRooms(rooms);
-        };
+        navigate(`/room/`);
+        const roomListHandler = (rooms: string[]) => {};
 
         const createRoomHandler = (response: any) => {
-            console.log(response.result, "create chatList");
             setChatList(response.result);
+            console.log(chatList, "create chatList");
         };
         const deleteRoomHandler = (roomName: string) => {
             setRooms((prevRooms) => prevRooms.filter((room) => room !== roomName));
         };
-        const messageHandler = (chat: ChatData) => {
-            console.log("chat", chat);
-            setrecentMessage({
-                sender: chat.sender,
-                msgText: chat.msgText,
-            });
 
-            console.log(chatList, "console");
-            // 어쩔때 null이 되는거지??
-            // if (chatList === null) return;
-
-            if (chatList !== null) {
-                setChatList((prev) => {
-                    return prev!.map((item) => {
-                        if (item.user_model_id == chat.roomName) {
-                            item.lastmessage = chat.msgText;
-                        }
-                        return item;
-                    });
-                });
-            }
-        };
         socket.emit("room-list", String(user?.id), roomListHandler);
 
         socket.on("create-room", createRoomHandler);
         socket.on("delete-room", deleteRoomHandler);
-        socket.on("message", messageHandler);
 
         return () => {
             socket.off("room-list", roomListHandler);
@@ -84,6 +62,34 @@ const WaitingRoom = () => {
             socket.off("delete-room", deleteRoomHandler);
         };
     }, []);
+
+    useEffect(() => {
+        // socket handler
+
+        const messageHandler = (chat: ChatData) => {
+            console.log("chat", chat, chatList);
+            setrecentMessage({
+                sender: chat.sender,
+                msgText: chat.msgText,
+            });
+
+            if (chatList !== null) {
+                setChatList((prev) => {
+                    return prev!.map((item) => {
+                        if (item.user_model_id == chat.roomName) {
+                            item.lastmessage = chat.msgText;
+                            item.updatedAt = "방금 전";
+                        }
+                        return item;
+                    });
+                });
+            }
+        };
+        socket.on("message", messageHandler);
+        return () => {
+            socket.off("message", messageHandler);
+        };
+    }, [chatList]);
 
     const onCreateRoom = useCallback(() => {
         const roomName = prompt("방 이름을 입력해 주세요.");
@@ -99,13 +105,28 @@ const WaitingRoom = () => {
     //()=> 지우기
     const onJoinRoom = useCallback(
         (roomName: string) => () => {
-            socket.emit("join-room", roomName, () => {
+            socket.emit("join-room", roomName, user?.id, () => {
                 console.log(roomName, "joinroom");
             });
+            getMessegetext(roomName, userid);
             navigate(`/room/${roomName}`);
         },
         [navigate]
     );
+
+    const getMessegetext = async (
+        roomName: string,
+        userid: string
+    ): Promise<JSX.Element[] | JSX.Element | undefined> => {
+        try {
+            const { data } = await api.getCountMessege(roomName, userid);
+            setCount(data.result);
+            console.log(count, roomName, userid);
+            return data;
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
     const ChatRoomComponents = useMemo(() => {
         if (chatList === null) {
@@ -118,9 +139,7 @@ const WaitingRoom = () => {
                     <ChatRoom onClick={onJoinRoom(item.user_model_id)} key={idx}>
                         <button>{item.lastmessage}</button>
                         <div>
-                            <div>
-                                <div> 2</div>
-                            </div>
+                            <div>{count}</div>
                             <span> {item.updatedAt}</span>
                         </div>
                     </ChatRoom>
@@ -129,39 +148,6 @@ const WaitingRoom = () => {
         );
     }, [chatList]);
 
-    //   const ChatRoomComponents = useMemo(() => {
-    //       if (chatList === null) {
-    //           return null;
-    //       }
-    //       console.log(chatList);
-    //       return (
-    //           <>
-    //               {chatList.map((item, idx) => (
-    //                   <ChatRoom onClick={onJoinRoom(item.user_model_id)} key={idx}>
-    //                       <button>{item.chatList}</button>
-    //                       <div>
-    //                           <div>
-    //                               <div> 2</div>
-    //                           </div>
-    //                           <span> {item.updatedAt}</span>
-    //                       </div>
-    //                   </ChatRoom>
-    //               ))}
-    //           </>
-    //       );
-    //   }, [chatList]);
-
-    const dateTime = (date: Date) => {
-        const milliSeconds = Number(new Date()) - Number(date);
-        const seconds = milliSeconds / 1000;
-        if (seconds < 60) return `방금 전`;
-        const minutes = seconds / 60;
-        if (minutes < 60) return `${Math.floor(minutes)}분 전`;
-        const hours = minutes / 60;
-        if (hours < 24) return `${Math.floor(hours)}시간 전`;
-        const dateString = date.toLocaleDateString();
-        return dateString;
-    };
     return (
         <>
             <Head>
@@ -172,4 +158,5 @@ const WaitingRoom = () => {
         </>
     );
 };
+
 export default WaitingRoom;

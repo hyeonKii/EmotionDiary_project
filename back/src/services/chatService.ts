@@ -49,6 +49,7 @@ class ChatService {
 
     async roomList(usermodel: number) {
         console.log(usermodel, "usermodel");
+
         const result1 = await this.prisma.chat.findMany({
             where: {
                 OR: [
@@ -66,6 +67,7 @@ class ChatService {
                 updatedAt: true,
             },
         });
+
         await this.prisma.$disconnect();
 
         const result = result1.map((item) => ({

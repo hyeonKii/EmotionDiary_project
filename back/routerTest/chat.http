@@ -43,7 +43,7 @@ Content-Type: application/json
 
 
 ### 모든 일기 조회
-get {{url}}/chat/get
+get {{url}}/chats/count?roomname=3,1&userid=1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdCIsImlhdCI6MTY2OTc5NjE0NSwiZXhwIjoxNjY5Nzk3OTQ1fQ.f_mppqnY8HI70fFfp27QrIO0RzJ0e7buSC-uvSxV5CY
 RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5Nzk2MTQ1LCJleHAiOjE2Njk4MDY5NDV9.5n7insxWELDB1bF16E9z2TZr_wmSY4cXYWQEcj4BdIw
 Content-Type: application/json
