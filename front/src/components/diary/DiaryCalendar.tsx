@@ -124,6 +124,11 @@ export function DiaryCalendar() {
                 (diary: PostInterface) => currentDay === new Date(diary.createdAt).getDate()
             );
 
+            if (!currentDiary) {
+                setDiary(null);
+                return;
+            }
+
             setId(currentDiary.id);
         });
     };
@@ -138,7 +143,13 @@ export function DiaryCalendar() {
             />
             <CalendarDetail>
                 {emotionState()}
-                {diary && <DiaryTodayPost post={diary} refetch={getDiary} />}
+                {diary && (
+                    <DiaryTodayPost
+                        post={diary}
+                        refetch={getDiary}
+                        refetchDelete={refreshDiaries}
+                    />
+                )}
                 {!diary && clickedDate && (
                     <DiaryCreatePost refreshDiaries={refreshDiaries} clickedDate={clickedDate} />
                 )}

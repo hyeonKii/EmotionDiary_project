@@ -15,7 +15,7 @@ const getPostedDate = (createdAt: Date) => {
     return `${fullDate[0]}년 ${fullDate[1]}월 ${fullDate[2]}일`;
 };
 
-export default function DiaryTodayPost({ post, refetch }: Props) {
+export default function DiaryTodayPost({ post, refetch, refetchDelete }: Props) {
     const { id, title, description, createdAt, private: privateDiary } = post;
 
     const postedDate = getPostedDate(createdAt);
@@ -31,7 +31,7 @@ export default function DiaryTodayPost({ post, refetch }: Props) {
     const { mutate: deleteDiary } = useRequestDeleteDiary(id, {
         onSuccess: () => {
             console.log("일기 삭제 요청 성공");
-            refetch();
+            refetchDelete();
         },
         onError: () => {
             console.log("일기 삭제 요청 실패");
