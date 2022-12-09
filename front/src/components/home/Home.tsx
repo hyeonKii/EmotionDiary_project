@@ -9,7 +9,8 @@ import { PostInterface } from "@/components/diary/interface/post";
 
 import { happy } from "@/assets/images/index";
 import { HomeSection, TitleBlock, Input } from "@/styles/home/home-style";
-import { Form, FormTitle, FormButton, PostBlock } from "@/styles/common/Modal/Form-style";
+import { Form, FormTitle, FormButton, PostBlock } from "@/styles/common/modal/form-style";
+import { ModalBackgroundStyle } from "@/styles/common/modal/background-style";
 
 export default function Main() {
     const [isOpen, setIsOpen] = useState(false);
@@ -100,62 +101,70 @@ export default function Main() {
             />
             {isOpen &&
                 (todayPost ? (
-                    <Form ref={ref}>
-                        <button onClick={onClose} className="material-symbols-outlined">
-                            close
-                        </button>
-                        <img src={happy} alt="happy" />
-                        <p className="todayText">
-                            {user?.nickname}님!
-                            <br /> 오늘은 이미 일기를 작성하셨네요!
-                            <br /> 아래의 버튼을 눌러 이동하시면 <br />
-                            일기의 조회, 수정, 삭제가 가능합니다 :)
-                        </p>
-                        <FormButton onClick={() => navigate("/diary")}>
-                            내 일기 보러 가기
-                        </FormButton>
-                    </Form>
+                    <>
+                        <Form ref={ref}>
+                            <button onClick={onClose} className="material-symbols-outlined">
+                                close
+                            </button>
+                            <img src={happy} alt="happy" />
+                            <p className="todayText">
+                                {user?.nickname}님!
+                                <br /> 오늘은 이미 일기를 작성하셨네요!
+                                <br /> 아래의 버튼을 눌러 이동하시면 <br />
+                                일기의 조회, 수정, 삭제가 가능합니다 :)
+                            </p>
+                            <FormButton onClick={() => navigate("/diary")}>
+                                내 일기 보러 가기
+                            </FormButton>
+                        </Form>
+                        <ModalBackgroundStyle />
+                    </>
                 ) : (
-                    <Form ref={ref} onSubmit={onSubmit}>
-                        <button onClick={onClose} className="material-symbols-outlined">
-                            close
-                        </button>
-                        <FormTitle>일기쓰기</FormTitle>
-                        <PostBlock>
-                            <select onChange={onPrivateSelect} defaultValue="true">
-                                <option value="true">나만보기</option>
-                                <option value="false">전체공개</option>
-                            </select>
-                            <input
-                                id="title"
-                                value={title}
-                                onChange={changeHandler}
-                                placeholder="제목"
-                            />
-                            <textarea
-                                id="description"
-                                value={description}
-                                onChange={changeHandler}
-                                rows={9}
-                                placeholder={`${user?.nickname}의 오늘의 마음을 기록해 보세요!`}
-                            />
-                        </PostBlock>
-                        <span
-                            className={description.length > 500 ? "countText maxText" : "countText"}
-                        >
-                            최대 500자로 작성할 수 있습니다. {description.length}/500
-                        </span>
-                        <FormButton
-                            type="submit"
-                            disabled={
-                                title.length === 0 ||
-                                description.length === 0 ||
-                                description.length > 500
-                            }
-                        >
-                            저장
-                        </FormButton>
-                    </Form>
+                    <>
+                        <Form ref={ref} onSubmit={onSubmit}>
+                            <button onClick={onClose} className="material-symbols-outlined">
+                                close
+                            </button>
+                            <FormTitle>일기쓰기</FormTitle>
+                            <PostBlock>
+                                <select onChange={onPrivateSelect} defaultValue="true">
+                                    <option value="true">나만보기</option>
+                                    <option value="false">전체공개</option>
+                                </select>
+                                <input
+                                    id="title"
+                                    value={title}
+                                    onChange={changeHandler}
+                                    placeholder="제목"
+                                />
+                                <textarea
+                                    id="description"
+                                    value={description}
+                                    onChange={changeHandler}
+                                    rows={9}
+                                    placeholder={`${user?.nickname}의 오늘의 마음을 기록해 보세요!`}
+                                />
+                            </PostBlock>
+                            <span
+                                className={
+                                    description.length > 500 ? "countText maxText" : "countText"
+                                }
+                            >
+                                최대 500자로 작성할 수 있습니다. {description.length}/500
+                            </span>
+                            <FormButton
+                                type="submit"
+                                disabled={
+                                    title.length === 0 ||
+                                    description.length === 0 ||
+                                    description.length > 500
+                                }
+                            >
+                                저장
+                            </FormButton>
+                        </Form>
+                        <ModalBackgroundStyle />
+                    </>
                 ))}
         </HomeSection>
     );

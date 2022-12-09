@@ -180,13 +180,13 @@ export const BottomSection = styled.div`
 export const PostBlock = styled.div`
     margin: 0 auto;
     width: 70%;
-    height: 55%;
+    height: 60%;
     margin-bottom: 1rem;
 
     select {
         width: 40%;
         height: 30px;
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
         padding: 0.3rem;
         outline: 0;
 

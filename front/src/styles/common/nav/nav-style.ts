@@ -70,6 +70,10 @@ export const LinkStyle = styled(NavLink)`
 `;
 
 export const DropDownStyle = styled.ul`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
     position: absolute;
     top: 65px;
     right: 0;
@@ -83,6 +87,13 @@ export const DropDownStyle = styled.ul`
     text-align: center;
 
     button {
+        width: 100%;
+
         font-size: 1.2rem;
+        line-height: 45px;
+
+        &:first-child {
+            border-bottom: 1px solid ${color.lightGray};
+        }
     }
 `;
