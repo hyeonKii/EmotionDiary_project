@@ -13,7 +13,8 @@ type ErrorName =
     | "InvalidAccessError"
     | "InternalServerError"
     | "BodyDataError"
-    | "UpdateError";
+    | "UpdateError"
+    | "TokenExistError";
 
 interface ErrorInfo {
     statusCode: number;
@@ -80,6 +81,10 @@ const ERROR_MAP: Record<ErrorName, ErrorInfo> = {
     UpdateError: {
         statusCode: 400,
         message: "Update fails because of wrong data",
+    },
+    TokenExistError: {
+        statusCode: 400,
+        message: "Token of user already exists",
     },
 };
 
