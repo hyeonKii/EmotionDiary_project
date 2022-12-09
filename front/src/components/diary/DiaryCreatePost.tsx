@@ -48,7 +48,7 @@ export default function DiaryCreatePost({ refetch, clickedDate }: Props) {
     };
 
     return (
-        <DiaryDetail>
+        <DiaryDetail isEdit={true}>
             <article className="top">
                 {clickedDate && <span className="date">{date}</span>}
                 <select onChange={selectHandler}>
