@@ -64,8 +64,6 @@ export function DiaryCalendar() {
     const { emotionState } = useEmotion(diary?.emotion, user?.nickname);
 
     const setCurrentDay = (event) => {
-        console.log(event);
-
         const postDate = new Date(event);
         postDate.setHours(postDate.getHours() + 9);
         const currentDay = postDate.getDate();
@@ -117,7 +115,7 @@ export function DiaryCalendar() {
         }
 
         getMonthDiaries().then((res) => {
-            const date = clickedDate.toISOString().split("T")[0];
+            const date = new Date(clickedDate).toISOString().split("T")[0];
             const currentDay = new Date(date).getDate();
 
             const currentDiary = res.data.data.find(
@@ -148,6 +146,7 @@ export function DiaryCalendar() {
                         post={diary}
                         refetch={getDiary}
                         refetchDelete={refreshDiaries}
+                        setClickedDate={setClickedDate}
                     />
                 )}
                 {!diary && clickedDate && (

@@ -8,7 +8,7 @@ interface Props {
 }
 
 const getCurrentDate = (clickedDate: Date) => {
-    const currentDate = clickedDate.toISOString().split("T")[0].split("-");
+    const currentDate = new Date(clickedDate).toISOString().split("T")[0].split("-");
 
     return `${currentDate[0]}년 ${currentDate[1]}월 ${currentDate[2]}일`;
 };

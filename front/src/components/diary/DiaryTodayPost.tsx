@@ -1,7 +1,7 @@
 import { useRequestDeleteDiary, useRequestEditDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
 import { DiaryDetail, EditBlock, ReadBlock } from "@/styles/diary/todayDiary-style";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { PostInterface } from "./interface/post";
 
 interface Props {
@@ -15,7 +15,7 @@ const getPostedDate = (createdAt: Date) => {
     return `${fullDate[0]}년 ${fullDate[1]}월 ${fullDate[2]}일`;
 };
 
-export default function DiaryTodayPost({ post, refetch, refetchDelete }: Props) {
+export default function DiaryTodayPost({ post, refetch, refetchDelete, setClickedDate }: Props) {
     const { id, title, description, createdAt, private: privateDiary } = post;
 
     const postedDate = getPostedDate(createdAt);
@@ -63,6 +63,10 @@ export default function DiaryTodayPost({ post, refetch, refetchDelete }: Props) 
 
         setPrivateMode(false);
     };
+
+    useEffect(() => {
+        setClickedDate(createdAt);
+    }, []);
 
     return (
         <DiaryDetail isEdit={isEdit}>
