@@ -18,7 +18,7 @@ export default function useSetUser() {
 
     const { isLoading, refetch: setUser } = useFetchUser(["user"], {
         enabled: false,
-        retry: 3,
+        retry: false,
 
         onSuccess: (res: Response) => {
             console.log(res);

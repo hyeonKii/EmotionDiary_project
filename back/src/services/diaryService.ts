@@ -6,7 +6,7 @@ import accountService from "./accountService";
 class DiaryService {
     prisma = new PrismaClient();
 
-    async writeDiary(userID: string, title: string, description: string, privateDiary: string) {
+    async writeDiary(userID: string, title: string, description: string) {
         try {
             const result = await accountService.getUserByUserID_login(userID);
             result?.User.id;
@@ -23,7 +23,6 @@ class DiaryService {
                             id: result?.User.id,
                         },
                     },
-                    private: privateDiary == "true" ? true : false,
                 },
             });
         } catch (error) {
@@ -112,7 +111,6 @@ class DiaryService {
                     lte: datetime2,
                 },
             },
-            orderBy: [{ createdAt: "desc" }],
         });
         if (postData === null) {
             throw new AppError("NotFindError");
@@ -125,18 +123,84 @@ class DiaryService {
         userID: string,
         count: number,
         page: number,
-        privatediary: string,
+        privatediary: boolean,
         emotion: string
     ) {
-        console.log(typeof privatediary, privatediary);
         let postDatas;
-        postDatas = await this.prisma.diary.findMany({
+        userID = "test";
+        if (privatediary) {
+            postDatas = await this.prisma.diary.findMany({
+                take: Number(count),
+                skip: (Number(page) - 1) * Number(count),
+                where: {
+                    emotion: emotion != "전체" ? emotion : undefined,
+                    user: {
+                        Account: {
+                            userID: userID,
+                        },
+                    },
+                },
+                select: {
+                    id: true,
+                    title: true,
+                    description: true,
+                    emotion: true,
+                    private: true,
+                    view: true,
+                    user_model_id: true,
+                    createdAt: true,
+                    updatedAt: true,
+                },
+                orderBy: [{ createdAt: "desc" }],
+            });
+        } else {
+            postDatas = await this.prisma.diary.findMany({
+                take: Number(count),
+                skip: (Number(page) - 1) * Number(count),
+                where: {
+                    emotion: emotion != "전체" ? emotion : undefined,
+                },
+                select: {
+                    id: true,
+                    title: true,
+                    description: true,
+                    emotion: true,
+                    view: true,
+                    user_model_id: true,
+                    createdAt: true,
+                    updatedAt: true,
+                },
+                orderBy: [{ createdAt: "desc" }],
+            });
+        }
+
+        if (postDatas === null) {
+            throw new AppError("NotFindError");
+        }
+        await this.prisma.$disconnect();
+        return postDatas;
+    }
+
+    async getMyDiaryList(userID: string, count: number, page: number) {
+        const diarycount = await this.prisma.diary.count({
+            where: {
+                user: {
+                    Account: {
+                        userID: userID,
+                    },
+                },
+            },
+        });
+        const postDatas = await this.prisma.diary.findMany({
             take: Number(count),
             skip: (Number(page) - 1) * Number(count),
 
             where: {
-                emotion: emotion != "" ? emotion : undefined,
-                private: privatediary === "true" ? true : false,
+                user: {
+                    Account: {
+                        userID: userID,
+                    },
+                },
             },
             select: {
                 id: true,
@@ -144,21 +208,15 @@ class DiaryService {
                 description: true,
                 emotion: true,
                 view: true,
-                user_model_id: true,
-                private: true,
                 createdAt: true,
                 updatedAt: true,
             },
-            orderBy: [{ createdAt: "desc" }],
         });
 
         if (postDatas === null) {
             throw new AppError("NotFindError");
         }
         await this.prisma.$disconnect();
-
-        const diarycount = 1;
-
         return { postDatas, diarycount };
     }
 }

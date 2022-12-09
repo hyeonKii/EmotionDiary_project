@@ -20,7 +20,7 @@ const introduce = () => {
                 return;
             }
             section.current.style.transition = "all 0.7s";
-            let top = Number(section.current.style.top.replace("px", ""));
+            const top = Number(section.current.style.top.replace("px", ""));
 
             const height = Number(-innerHeight * 1);
 
@@ -40,7 +40,7 @@ const introduce = () => {
                 return;
             }
             section.current.style.transition = "all 0.7s";
-            let top = Number(section.current.style.top.replace("px", ""));
+            const top = Number(section.current.style.top.replace("px", ""));
             const height = Number(-innerHeight * 1);
             if (0 >= top || top <= height) {
                 setInnerHeight((prev) => prev--);
@@ -56,7 +56,7 @@ const introduce = () => {
         if (section.current == null) {
             return;
         }
-        let top = Number(section.current.style.top.replace("px", ""));
+        const top = Number(section.current.style.top.replace("px", ""));
     };
 
     useEffect(() => {

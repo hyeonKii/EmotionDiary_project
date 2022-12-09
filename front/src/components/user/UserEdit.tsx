@@ -113,9 +113,9 @@ export default function UserEdit({ setShowInfo, setShowDropDown }: Props) {
                 <LoginButtonStyle type="button" onClick={submitHandler}>
                     저장
                 </LoginButtonStyle>
-                <button type="button" onClick={deleteHandler}>
+                <LogOutButton type="button" onClick={deleteHandler}>
                     회원 탈퇴
-                </button>
+                </LogOutButton>
             </fieldset>
         </FormStyle>
     );
@@ -130,7 +130,9 @@ const FormStyle = styled.form`
     box-shadow: 2px 2px 10px rgba(110, 110, 110, 1);
     z-index: 20;
     border-radius: 20px;
-    background-color: white;
+    background-color: ${isdark => isdark.theme.modalBgColor};
+    color: ${isdark => isdark.theme.textColor};
+
     height: 55%;
     width: 25%;
     min-width: 250px;
@@ -154,6 +156,7 @@ const FormStyle = styled.form`
 
         h2 {
             margin-bottom: 3rem;
+            color: ${isdark => isdark.theme.textColor};
         }
     }
 `;
@@ -198,3 +201,7 @@ const DescriptionLabel = styled.label`
     font-size: 0.8rem;
     margin-bottom: 0.5rem;
 `;
+
+const LogOutButton = styled.button`
+    color: ${isdark => isdark.theme.textColor};
+`

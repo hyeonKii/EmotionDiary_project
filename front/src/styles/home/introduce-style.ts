@@ -13,7 +13,8 @@ export const HomeBlock = styled.section`
 export const HomeSection1 = styled.section`
     width: 100vw;
     height: 100vh;
-    background: #fcf8e8;
+    background: ${isdark => isdark.theme.bgColor};
+    transition: background 0.5s linear;
     background-size: cover;
     display: flex;
 `;
@@ -29,6 +30,9 @@ export const LeftSection = styled.section`
     height: 100vh;
     align-items: center;
     justify-content: center;
+    color: ${isdark => isdark.theme.textColor};
+    transition: color 0.5s linear;
+
     h1 {
         font-size: 3.4vw;
         margin-left: 30px;
@@ -41,27 +45,31 @@ export const LeftSection = styled.section`
 `;
 export const CenterSection = styled.section`
     width: 75vw;
+    min-width: 700px;
     height: 100vh;
     text-align: center;
+    color: ${isdark => isdark.theme.textColor};
+    transition: color 0.5s linear;
+
     h1 {
-        font-size: 3.4vw;
+        font-size: 2.8vw;
         margin-left: 25px;
         margin: 50px 0px;
     }
     p:first-child {
-        font-size: 2.5vw;
+        font-size: 2.2vw;
         font-weight: bold;
         b {
             color: #26ade8;
-            font-size: 3.4vw;
+            font-size: 2.2vw;
         }
         margin: 30px 0px;
     }
     p {
-        font-size: 1.8vw;
+        font-size: 1.5vw;
         b {
             color: #26ade8;
-            font-size: 3.4vw;
+            font-size: 1.5vw;
         }
     }
     div {
@@ -72,7 +80,10 @@ export const CenterSection = styled.section`
 
 export const HomeSection2 = styled.section`
     width: 100vw;
+    min-width: 700px;
     height: 100vh;
+    background: ${isdark => isdark.theme.bgColor};
+    transition: background 0.5s linear;
     background-size: cover;
     display: flex;
     align-items: center;

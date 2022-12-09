@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { ThemeProvider } from "styled-components";
+
 import Header from "./components/UI/Header";
 import Home from "@/pages/HomePage";
 import Diary from "@/pages/DiaryPage";
+import IntroducePage from "@/pages/IntroducePage";
 import Footer from "./components/UI/Footer";
+
 import useSetUser from "./hooks/useSetUser";
+import { isDarkAtom } from "@/temp/themeAtom";
+import { darkTheme, lightTheme } from "./styles/common/theme";
 
 function App() {
+    const isDark = useRecoilValue(isDarkAtom);
     const { isLoading, setUser: setUser } = useSetUser();
 
     const [loadingCheck, setLoadingCheck] = useState(false);
@@ -32,12 +40,17 @@ function App() {
     return (
         !isLoading &&
         loadingCheck && (
-            <Router>
-                <Header />
-                {/* <Home /> */}
-                <Diary />
-                <Footer />
-            </Router>
+            <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+                <Router>
+                    <Header />
+                    <Routes>
+                        <Route path="/intro" element={<IntroducePage />} />
+                        <Route path="/home" element={<Home />} />
+                        <Route path="/diary" element={<Diary />} />
+                    </Routes>
+                    <Footer />
+                </Router>
+            </ThemeProvider>
         )
     );
 }

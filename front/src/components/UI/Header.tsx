@@ -1,10 +1,13 @@
-import styled from "styled-components";
 import { useState } from "react";
-import ProfileDropDown from "./ProfileDropDown";
 import { useRecoilValue } from "recoil";
+
 import { currentUser } from "@/temp/userAtom";
-import UserFormController from "../user/UserFormController";
+
+import ProfileDropDown from "./ProfileDropDown";
 import ModalBackground from "./ModalBackground";
+import UserFormController from "@/components/user/UserFormController";
+import { NavStyle, LinkStyle } from "@/styles/common/nav/nav-style";
+import DarkModeToggle from "@/styles/common/DarkModeToggle";
 
 export default function Header() {
     const user = useRecoilValue(currentUser);
@@ -21,76 +24,30 @@ export default function Header() {
                     <ModalBackground />
                 </>
             )}
-            {showDropDown && <ProfileDropDown setShowDropDown={setShowDropDown} />}
+
             <NavStyle>
-                <div>마음일기</div>
+                <LinkStyle to="/home" className="logo">
+                    마음일기
+                </LinkStyle>
                 {!user ? (
-                    <ul>
-                        <li>
-                            <button onClick={() => setShowLoginForm(true)}>로그인</button>
-                        </li>
-                    </ul>
+                    <button className="loginButton" onClick={() => setShowLoginForm(true)}>
+                        로그인
+                    </button>
                 ) : (
-                    <ul>
-                        <li>
-                            <button>다크 모드 아이콘</button>
-                        </li>
-                        <li>
-                            <button>소개</button>
-                        </li>
-                        <li>
-                            <button>일기장</button>
-                        </li>
-                        <li>
-                            <button onClick={() => setShowDropDown((prevState) => !prevState)}>
-                                {user.nickname[0]}
-                            </button>
-                        </li>
-                    </ul>
+                    <nav className="navList">
+                        <DarkModeToggle />
+                        <LinkStyle to="/intro">소개</LinkStyle>
+                        <LinkStyle to="/diary">일기장</LinkStyle>
+                        <button
+                            className="nickButton"
+                            onClick={() => setShowDropDown((prevState) => !prevState)}
+                        >
+                            {user.nickname[0]}
+                        </button>
+                    </nav>
                 )}
+                {showDropDown && <ProfileDropDown setShowDropDown={setShowDropDown} />}
             </NavStyle>
         </header>
     );
 }
-
-const NavStyle = styled.nav`
-    width: 100%;
-    height: 6vh;
-
-    font-size: 2rem;
-
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-
-    box-shadow: 0 6px 6px -6px gray;
-
-    div {
-        margin-left: 3rem;
-        font-family: diary;
-    }
-
-    ul {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-
-        margin-right: 3rem;
-        list-style: none;
-    }
-
-    li {
-        &:not(:last-of-type) {
-            margin-right: 2rem;
-        }
-    }
-
-    button {
-        font-size: 1.5rem;
-
-        background-color: transparent;
-        border: none;
-    }
-`;
