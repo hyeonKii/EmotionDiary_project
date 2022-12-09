@@ -97,8 +97,8 @@ export const useRequestGetAllDiaries = (count: number, page: number, options?) =
 export const useRequestGetMyAllDiaries = (count: number, page: number, options?) =>
     useQuery(["diaries", page, count], () => getMyAllDiaries(count, page), options);
 
-export const useRequestGetMonthDiaries = (year: number, month: number, options?) =>
-    useQuery(["monthDiaries", year, month], () => getMyMonthDiaries(year, month), options);
+export const useRequestGetMonthDiaries = (year: number, month: number, key: string, options?) =>
+    useQuery([`${key}`, year, month], () => getMyMonthDiaries(year, month), options);
 
 export const useRequestEditDiary = (diaryData, id: number, options?) =>
     useMutation(() => editMyDiary(diaryData, id), options);
