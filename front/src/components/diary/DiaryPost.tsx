@@ -52,7 +52,7 @@ export default function DiaryPost({ post }: Props) {
 
     const { mutate: editDiary } = useRequestEditDiary({ ...form, privateDiary: privateMode }, id, {
         onSuccess: () => {
-            queryClient.invalidateQueries("my-diaries");
+            queryClient.invalidateQueries(["my-diaries"]);
         },
         onError: (error: Error) => {
             console.log(error.message);
@@ -61,7 +61,7 @@ export default function DiaryPost({ post }: Props) {
 
     const { mutate: deleteDiary } = useRequestDeleteDiary(id, {
         onSuccess: () => {
-            queryClient.invalidateQueries("my-diaries");
+            queryClient.invalidateQueries(["my-diaries"]);
         },
         onError: (error: Error) => {
             console.log(error.message);

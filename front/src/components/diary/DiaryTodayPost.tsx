@@ -36,7 +36,7 @@ export default function DiaryTodayPost({ post }: Props) {
 
     const { mutate: deleteDiary } = useRequestDeleteDiary(id, {
         onSuccess: () => {
-            queryClient.invalidateQueries("calendar-diaries");
+            queryClient.invalidateQueries(["calendar-diaries"]);
 
             console.log("일기 삭제 요청 성공");
         },
@@ -47,7 +47,7 @@ export default function DiaryTodayPost({ post }: Props) {
 
     const { mutate: editDiary } = useRequestEditDiary({ ...form, privateDiary: privateMode }, id, {
         onSuccess: () => {
-            queryClient.invalidateQueries("diary", id);
+            queryClient.invalidateQueries(["diary", id]);
             resetForm();
 
             console.log("일기 편집 요청 성공");

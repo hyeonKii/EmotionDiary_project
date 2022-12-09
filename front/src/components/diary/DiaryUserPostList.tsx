@@ -20,11 +20,7 @@ export default function DiaryUserPostList() {
     const [page, setPage] = useState(INITIAL_PAGE);
     const [diaryCount, setDiaryCount] = useState(0);
 
-    const {
-        isLoading,
-        data: diaryData,
-        refetch: getMyAllDiaries,
-    } = useRequestGetMyAllDiaries(count, page, {
+    const { isLoading, data: diaryData } = useRequestGetMyAllDiaries(count, page, {
         onSuccess: (res: Response) => {
             console.log("일기 전부 GET 요청 성공");
             setDiaryCount(res.data.diarycount);
@@ -47,11 +43,7 @@ export default function DiaryUserPostList() {
                     {diaryData && (
                         <section>
                             {diaryData.data.postDatas.map((post: PostInterface) => (
-                                <DiaryPost
-                                    key={post.id + "포스트"}
-                                    post={post}
-                                    getMyAllDiaries={getMyAllDiaries}
-                                />
+                                <DiaryPost key={post.id + "포스트"} post={post} />
                             ))}
                         </section>
                     )}
