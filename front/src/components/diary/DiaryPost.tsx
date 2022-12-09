@@ -6,7 +6,7 @@ import { PostInterface } from "./interface/post";
 
 interface Props {
     post: PostInterface;
-    refetch(): void;
+    getMyAllDiaries(): void;
 }
 
 interface Error {
@@ -33,7 +33,7 @@ const getPostedTime = (createdAt: Date) => {
     return `${createdYear}.${createdMonth}.${createdDay}`;
 };
 
-export default function DiaryPost({ post, refetch }: Props) {
+export default function DiaryPost({ post, getMyAllDiaries }: Props) {
     const { id, title, description, createdAt, emotion, private: privateDiary } = post;
 
     const postedDate = getPostedTime(createdAt);
@@ -50,7 +50,7 @@ export default function DiaryPost({ post, refetch }: Props) {
 
     const { mutate: editDiary } = useRequestEditDiary({ ...form, privateDiary: privateMode }, id, {
         onSuccess: () => {
-            refetch();
+            getMyAllDiaries();
         },
         onError: (error: Error) => {
             console.log(error.message);
@@ -59,7 +59,7 @@ export default function DiaryPost({ post, refetch }: Props) {
 
     const { mutate: deleteDiary } = useRequestDeleteDiary(id, {
         onSuccess: () => {
-            refetch();
+            getMyAllDiaries();
         },
         onError: (error: Error) => {
             console.log(error.message);
