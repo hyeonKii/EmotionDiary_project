@@ -1,11 +1,19 @@
+import { useRecoilState } from "recoil";
+
 import { useRequestChangePwd } from "@/api/account";
 import { useRequestDeleteUser, useRequestEditNickname } from "@/api/user";
 import useForm from "@/hooks/useForm";
 import useLogout from "@/hooks/useLogout";
 import { currentUser } from "@/temp/userAtom";
-import { useRecoilState } from "recoil";
-import styled from "styled-components";
-import Icon from "../UI/Icon";
+import Icon from "@/components/UI/Icon";
+import {
+    Form,
+    FormTitle,
+    FormButton,
+    EditSection,
+    InputBlock,
+    Error,
+} from "@/styles/common/Modal/Form-style";
 
 interface Props {
     setShowInfo(value: boolean): void;
@@ -87,11 +95,14 @@ export default function UserEdit({ setShowInfo, setShowDropDown }: Props) {
     };
 
     return (
-        <FormStyle>
-            <fieldset>
-                <h2>내 정보</h2>
-                <DescriptionLabel htmlFor="nickname">닉네임</DescriptionLabel>
-                <InputSection>
+        <Form>
+            <FormTitle>내 정보</FormTitle>
+            <button onClick={() => setShowInfo(false)} className="material-symbols-outlined">
+                close
+            </button>
+            <EditSection>
+                <InputBlock>
+                    <label htmlFor="nickname">닉네임</label>
                     <Icon icon="userID" />
                     <input
                         type="text"
@@ -99,109 +110,24 @@ export default function UserEdit({ setShowInfo, setShowDropDown }: Props) {
                         defaultValue={form.nickname}
                         onChange={changeHandler}
                     />
-                </InputSection>
-                <DescriptionLabel htmlFor="password">새 비밀번호</DescriptionLabel>
-                <InputSection>
+                </InputBlock>
+                <InputBlock>
+                    <label htmlFor="password">새 비밀번호</label>
                     <Icon icon="password" />
                     <input type="password" id="password" onChange={changeHandler} />
-                </InputSection>
-                <DescriptionLabel>새 비밀번호 확인</DescriptionLabel>
-                <InputSection>
+                </InputBlock>
+                <InputBlock>
+                    <label>새 비밀번호 확인</label>
                     <Icon icon="password" />
                     <input type="password" id="confirmPassword" onChange={changeHandler} />
-                </InputSection>
-                <LoginButtonStyle type="button" onClick={submitHandler}>
-                    저장
-                </LoginButtonStyle>
-                <LogOutButton type="button" onClick={deleteHandler}>
-                    회원 탈퇴
-                </LogOutButton>
-            </fieldset>
-        </FormStyle>
+                </InputBlock>
+            </EditSection>
+            <FormButton type="button" onClick={submitHandler}>
+                저장
+            </FormButton>
+            <button className="deleteButton" type="button" onClick={deleteHandler}>
+                회원 탈퇴
+            </button>
+        </Form>
     );
 }
-
-const FormStyle = styled.form`
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    box-shadow: 2px 2px 10px rgba(110, 110, 110, 1);
-    z-index: 20;
-    border-radius: 20px;
-    background-color: ${isdark => isdark.theme.modalBgColor};
-    color: ${isdark => isdark.theme.textColor};
-
-    height: 55%;
-    width: 25%;
-    min-width: 250px;
-    min-height: 460px;
-
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-
-    fieldset {
-        width: 70%;
-        height: 100%;
-
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-        border: none;
-
-        h2 {
-            margin-bottom: 3rem;
-            color: ${isdark => isdark.theme.textColor};
-        }
-    }
-`;
-
-const InputSection = styled.div`
-    width: 100%;
-    margin-bottom: 1rem;
-    position: relative;
-
-    input {
-        width: 100%;
-        height: 2.5rem;
-
-        border: 1px solid lightgray;
-        border-radius: 8px;
-
-        padding-left: 2rem;
-    }
-`;
-
-const Error = styled.div`
-    color: red;
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
-`;
-
-const LoginButtonStyle = styled.button`
-    width: 100%;
-    height: 2.5rem;
-
-    margin-top: 2rem;
-    margin-bottom: 1.5rem;
-
-    color: white;
-    border: none;
-    border-radius: 8px;
-    background-color: ${(props) => (props.disabled ? "gray" : "lightblue")};
-`;
-
-const DescriptionLabel = styled.label`
-    display: inline-block;
-    font-size: 0.8rem;
-    margin-bottom: 0.5rem;
-`;
-
-const LogOutButton = styled.button`
-    color: ${isdark => isdark.theme.textColor};
-`

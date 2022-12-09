@@ -18,7 +18,7 @@ export const Form = styled.form`
     min-height: 550px;
     border-radius: 20px;
 
-    background: ${color.white};
+    background: ${(isdark) => isdark.theme.modalBgColor};
     box-shadow: 2px 2px 10px rgba(110, 110, 110, 1);
 
     .material-symbols-outlined {
@@ -31,11 +31,12 @@ export const Form = styled.form`
 
     .countText {
         position: absolute;
-        right: 15px;
-        bottom: 25%;
+        right: 20px;
+        bottom: 26%;
 
         width: 70%;
 
+        color: ${(isdark) => isdark.theme.textColor};
         font-size: 0.5rem;
         text-align: center;
     }
@@ -51,41 +52,57 @@ export const Form = styled.form`
         text-align: center;
         line-height: 30px;
     }
+
+    .deleteButton {
+        margin-top: 1rem;
+
+        color: ${color.gray};
+        font-size: 0.7rem;
+    }
 `;
 
 export const PostBlock = styled.div`
     margin: 0 auto;
     width: 70%;
     height: 55%;
+    margin-bottom: 1rem;
 
     select {
         width: 40%;
-        height: 25px;
+        height: 30px;
         margin-bottom: 1rem;
+        padding: 0.3rem;
         outline: 0;
+
+        background: ${(isdark) => isdark.theme.inputBgColor};
+        color: ${(isdark) => isdark.theme.textColor};
     }
 
     #title {
         width: 100%;
+        height: 30px;
         margin-bottom: 1rem;
-        padding-top: 0.5rem;
+        padding: 0.3rem;
         padding-left: 0.5rem;
         border: 0;
         border-bottom: 1px solid ${color.lightGray};
         outline: 0;
+
+        background: ${(isdark) => isdark.theme.inputBgColor};
+        color: ${(isdark) => isdark.theme.textColor};
     }
 
     #description {
         width: 100%;
         height: 70%;
-        margin-bottom: 1rem;
-        padding-top: 0.5rem;
-        padding-left: 0.5rem;
+        padding: 1rem;
+        padding-bottom: 1.5rem;
         resize: none;
 
         border: 0;
         outline: 0;
-        background: ${color.lightGray};
+        background: ${(isdark) => isdark.theme.textAreaBgColor};
+        color: ${(isdark) => isdark.theme.textColor};
 
         word-break: break-all;
     }
@@ -94,6 +111,7 @@ export const PostBlock = styled.div`
 export const FormTitle = styled.div`
     margin-bottom: 20px;
 
+    color: ${(isdark) => isdark.theme.textColor};
     font-size: 2rem;
     font-weight: bold;
 `;
@@ -111,6 +129,10 @@ export const FormButton = styled.button`
     color: ${color.white};
     font-size: 0.8rem;
 
+    &:hover {
+        background: ${color.deepBlue};
+    }
+
     &:disabled {
         background: ${color.lightGray};
     }
@@ -121,8 +143,54 @@ export const Container = styled.div`
     margin-bottom: 20px;
 `;
 
+export const EditSection = styled.section`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 70%;
+    height: 50%;
+`;
+
+export const Error = styled.div`
+    margin-top: 0.5rem;
+
+    color: ${color.red};
+    font-size: 0.8rem;
+`;
+
+export const InputBlock = styled.div`
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    height: 65px;
+    &:last-child {
+        margin-bottom: 1rem;
+    }
+
+    label {
+        flex: 0.5;
+        margin-left: 0.3rem;
+        margin-bottom: 0.5rem;
+
+        color: ${(isdark) => isdark.theme.textColor};
+        font-size: 0.9rem;
+    }
+
+    input {
+        flex: 1.5;
+        height: 40px;
+        padding-left: 2.3rem;
+
+        border: 1px solid ${color.lightGray};
+        border-radius: 8px;
+        outline: 0;
+        background: ${(isdark) => isdark.theme.inputBgColor};
+        color: ${(isdark) => isdark.theme.textColor};
+    }
+`;
+
 export const Input = styled.input`
-    width: 200px;
     border: 1px solid #c9cacc;
     border-radius: 4px;
     box-sizing: border;
