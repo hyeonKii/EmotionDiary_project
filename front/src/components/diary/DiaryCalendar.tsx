@@ -19,8 +19,6 @@ const currentYear = currentDate.getFullYear();
 const currentMonth = currentDate.getMonth() + 1;
 const currentDay = currentDate.getDate();
 
-console.log(currentDate, currentYear, currentMonth, currentDay);
-
 const getCurrentDiary = (data, day) => {
     return data.find((diary: PostInterface) => new Date(diary.createdAt).getDate() === day);
 };
@@ -61,8 +59,6 @@ export function DiaryCalendar() {
         "calendar-diaries",
         {
             onSuccess: (res) => {
-                console.log(res);
-
                 const currentDiary = getCurrentDiary(res.data, day);
 
                 if (currentDiary) {

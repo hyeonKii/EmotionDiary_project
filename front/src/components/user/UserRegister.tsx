@@ -52,7 +52,6 @@ export default function UserRegister({ setTabNumber }: Props) {
 
     const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log(requiredEmail);
         registerRequest();
     };
 
