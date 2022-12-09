@@ -21,7 +21,7 @@ interface ChatData {
 const WaitingRoom = () => {
     const [rooms, setRooms] = useState<string[]>([]);
     let [recentlyMessage, setRecentlyMessage] = useRecoilState(recentlyMsgState);
-    const [lastMessage, setLastMessage] = useState<
+    const [chatList, setChatList] = useState<
         | {
               updatedAt: string;
               user_model_id: string;
@@ -34,34 +34,43 @@ const WaitingRoom = () => {
     const user = useRecoilValue(currentUser);
     const recentMessage = useRecoilValue(recentlyMsgState);
     const setrecentMessage = useSetRecoilState(recentlyMsgState);
+
     useEffect(() => {
         // console.log(rooms, "room");
+
+        // socket handler
         const roomListHandler = (rooms: string[]) => {
             setRooms(rooms);
         };
+
         const createRoomHandler = (response: any) => {
-            console.log(response.result, "create lastmessage");
-            setLastMessage(response.result);
+            console.log(response.result, "create chatList");
+            setChatList(response.result);
         };
         const deleteRoomHandler = (roomName: string) => {
             setRooms((prevRooms) => prevRooms.filter((room) => room !== roomName));
         };
         const messageHandler = (chat: ChatData) => {
-            console.log(chat);
+            console.log("chat", chat);
             setrecentMessage({
                 sender: chat.sender,
                 msgText: chat.msgText,
             });
-            lastMessage?.map((item) => {
-                if (item.user_model_id == chat.roomName) {
-                    item.lastmessage = chat.msgText;
-                }
-                return item;
-            });
-            console.log(lastMessage, "console");
+
+            console.log(chatList, "console");
             // 어쩔때 null이 되는거지??
-            if (lastMessage === null) return;
-            setLastMessage(lastMessage);
+            // if (chatList === null) return;
+
+            if (chatList !== null) {
+                setChatList((prev) => {
+                    return prev!.map((item) => {
+                        if (item.user_model_id == chat.roomName) {
+                            item.lastmessage = chat.msgText;
+                        }
+                        return item;
+                    });
+                });
+            }
         };
         socket.emit("room-list", String(user?.id), roomListHandler);
 
@@ -99,13 +108,13 @@ const WaitingRoom = () => {
     );
 
     const ChatRoomComponents = useMemo(() => {
-        if (lastMessage === null) {
+        if (chatList === null) {
             return null;
         }
-        console.log(lastMessage);
+        console.log("chatList", chatList);
         return (
             <>
-                {lastMessage.map((item, idx) => (
+                {chatList.map((item, idx) => (
                     <ChatRoom onClick={onJoinRoom(item.user_model_id)} key={idx}>
                         <button>{item.lastmessage}</button>
                         <div>
@@ -118,18 +127,18 @@ const WaitingRoom = () => {
                 ))}
             </>
         );
-    }, [lastMessage]);
+    }, [chatList]);
 
     //   const ChatRoomComponents = useMemo(() => {
-    //       if (lastMessage === null) {
+    //       if (chatList === null) {
     //           return null;
     //       }
-    //       console.log(lastMessage);
+    //       console.log(chatList);
     //       return (
     //           <>
-    //               {lastMessage.map((item, idx) => (
+    //               {chatList.map((item, idx) => (
     //                   <ChatRoom onClick={onJoinRoom(item.user_model_id)} key={idx}>
-    //                       <button>{item.lastmessage}</button>
+    //                       <button>{item.chatList}</button>
     //                       <div>
     //                           <div>
     //                               <div> 2</div>
@@ -140,7 +149,7 @@ const WaitingRoom = () => {
     //               ))}
     //           </>
     //       );
-    //   }, [lastMessage]);
+    //   }, [chatList]);
 
     const dateTime = (date: Date) => {
         const milliSeconds = Number(new Date()) - Number(date);
@@ -159,7 +168,7 @@ const WaitingRoom = () => {
                 <div>채팅방 목록</div>
                 <button onClick={onCreateRoom}>채팅방 생성</button>
             </Head>
-            {lastMessage && ChatRoomComponents}
+            {chatList && ChatRoomComponents}
         </>
     );
 };
