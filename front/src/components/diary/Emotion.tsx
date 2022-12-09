@@ -5,7 +5,8 @@ import { useRecoilValue } from "recoil";
 import { useRequestGetMonthDiaries } from "@/api/diary";
 import { currentUser } from "@/temp/userAtom";
 import { dayAgo, aMonthAgo, aYearAgo, dayString, monthString, yearString } from "@/util/date";
-import { EmotionToImg } from "@/hooks/useEmotion";
+import { emotionImg } from "@/hooks/useEmotion";
+import { PostInterface } from "./interface/post";
 import {
     EmotionSection,
     EmotionChartSection,
@@ -47,12 +48,6 @@ const chart = [
     },
 ];
 
-interface GetPost {
-    id: number;
-    emotion: string;
-    createdAt: Date;
-}
-
 export function Emotion() {
     const user = useRecoilValue(currentUser);
     const topEmotion = chart.reduce((a, b) => {
@@ -78,10 +73,10 @@ export function Emotion() {
 
     const { data: Day } = useRequestGetMonthDiaries(dayAgo.getFullYear(), dayAgo.getMonth() + 1, {
         onSuccess: () => {
-            const day = Day?.data?.filter(
-                (posts: GetPost) => new Date(posts.createdAt).getDate() === dayAgo.getDate()
+            const day = Day?.data?.find(
+                (posts: PostInterface) => new Date(posts.createdAt).getDate() === dayAgo.getDate()
             );
-            day?.length !== 0 ? setNewArr((arr) => ({ ...arr, day })) : undefined;
+            day !== undefined ? setNewArr((arr) => ({ ...arr, day })) : undefined;
         },
 
         onError: ({ message }: Error) => {
@@ -94,10 +89,11 @@ export function Emotion() {
         aMonthAgo.getMonth() + 1,
         {
             onSuccess: () => {
-                const month = Month?.data?.filter(
-                    (posts: GetPost) => new Date(posts.createdAt).getDate() === aMonthAgo.getDate()
+                const month = Month?.data?.find(
+                    (posts: PostInterface) =>
+                        new Date(posts.createdAt).getDate() === aMonthAgo.getDate()
                 );
-                month?.length !== 0 ? setNewArr((arr) => ({ ...arr, month })) : undefined;
+                month !== undefined ? setNewArr((arr) => ({ ...arr, month })) : undefined;
             },
 
             onError: ({ message }: Error) => {
@@ -106,17 +102,16 @@ export function Emotion() {
         }
     );
 
-    console.log(newArr);
-
     const { data: Year } = useRequestGetMonthDiaries(
         aYearAgo.getFullYear(),
         aYearAgo.getMonth() + 1,
         {
             onSuccess: () => {
-                const year = Year?.data?.filter(
-                    (posts: GetPost) => new Date(posts.createdAt).getDate() === aYearAgo.getDate()
+                const year = Year?.data?.find(
+                    (posts: PostInterface) =>
+                        new Date(posts.createdAt).getDate() === aYearAgo.getDate()
                 );
-                year?.length !== 0 ? setNewArr((arr) => ({ ...arr, year })) : undefined;
+                year !== undefined ? setNewArr((arr) => ({ ...arr, year })) : undefined;
             },
 
             onError: ({ message }: Error) => {
@@ -149,9 +144,7 @@ export function Emotion() {
             <EmotionDataSection>
                 <article>
                     <h3>일주일 전 오늘</h3>
-                    <span className="emotionIcon">
-                        {newArr.day?.emotion ? EmotionToImg["만족감"] : EmotionToImg["normal"]}
-                    </span>
+                    <span className="emotionIcon">{emotionImg(newArr.day?.emotion)}</span>
                     <span>{dayString}</span>
                     <span className="body">
                         {newArr.day?.title ? newArr.day.title : "작성된 글이 없습니다."}
@@ -160,9 +153,7 @@ export function Emotion() {
                 </article>
                 <article>
                     <h3>한 달 전 오늘</h3>
-                    <span className="emotionIcon">
-                        {newArr.month?.emotion ? EmotionToImg["자신감"] : EmotionToImg["normal"]}
-                    </span>
+                    <span className="emotionIcon">{emotionImg(newArr.month?.emotion)}</span>
                     <span>{monthString}</span>
                     <span className="body">
                         {newArr.month?.title ? newArr.month.title : "작성된 글이 없습니다."}
@@ -171,9 +162,7 @@ export function Emotion() {
                 </article>
                 <article>
                     <h3>일 년 전 오늘</h3>
-                    <span className="emotionIcon">
-                        {newArr.year?.emotion ? EmotionToImg["자신감"] : EmotionToImg["normal"]}
-                    </span>
+                    <span className="emotionIcon">{emotionImg(newArr.year?.emotion)}</span>
                     <span>{yearString}</span>
                     <span className="body">
                         {newArr.year?.title ? newArr.year.title : "작성된 글이 없습니다."}

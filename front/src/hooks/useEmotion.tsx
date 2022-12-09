@@ -12,7 +12,7 @@ import {
     wound,
 } from "@/assets/images";
 
-export const EmotionToImg = {
+const EmotionToImg = {
     신남: <img src={happy} alt="happy" className="emotionIcon" />,
     자신감: <img src={confidence} alt="confidence" className="emotionIcon" />,
     만족감: <img src={satisfaction} alt="satisfaction" className="emotionIcon" />,
@@ -22,6 +22,23 @@ export const EmotionToImg = {
     상처: <img src={anxiety} alt="anxiety" className="emotionIcon" />,
     분노: <img src={angry} alt="angry" className="emotionIcon" />,
     normal: <img src={none} alt="normal" className="emotionIcon" />,
+};
+
+export const emotionImg = (emotion: string) => {
+    if (
+        emotion === "신남" ||
+        emotion === "자신감" ||
+        emotion === "만족감" ||
+        emotion === "편안함" ||
+        emotion === "슬픔" ||
+        emotion === "불안" ||
+        emotion === "상처" ||
+        emotion === "분노" ||
+        emotion === "normal"
+    ) {
+        return <>{EmotionToImg[emotion]}</>;
+    }
+    return <>{EmotionToImg["normal"]}</>;
 };
 
 export default function useEmotion(emotion: string, nickname?: string) {
