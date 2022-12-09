@@ -4,14 +4,29 @@ const ChatContainer = styled.div`
     flex-direction: column;
     border: 1px solid #000;
     padding: 1rem;
+    height: 600px;
 
-    min-height: 360px;
-    max-height: 600px;
+    /* min-height: 360px; */
+    /* max-height: 600px; */
     overflow: auto;
 
     background: #b2c7d9;
 `;
-
+const Container = styled.div`
+    width: 50vh;
+    height: 600px;
+`;
+const FlexBox = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 20px;
+    }
+`;
 const MessageBox = styled.div`
     display: flex;
     flex-direction: column;
@@ -48,4 +63,4 @@ const MessageForm = styled.form`
     }
 `;
 
-export { ChatContainer, MessageBox, Message, MessageForm };
+export { FlexBox, Container, ChatContainer, MessageBox, Message, MessageForm };

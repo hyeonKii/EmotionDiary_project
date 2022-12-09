@@ -1,6 +1,6 @@
 import axios from "axios";
 import { URL } from "./url";
-import * as endpoint from "./constants/diaryEndpoints";
+import * as endpoint from "./constants/chatEndpoints";
 import { useMutation, useQuery } from "react-query";
 
 interface WriteDiary {
@@ -15,8 +15,8 @@ interface EditDiary {
     description: string;
 }
 
-const writeDiary = (diaryData: WriteDiary) => {
-    return axios.post(URL + endpoint.DIARY_WRITE, diaryData, {
+export const getMessege = (roomName: string | undefined) => {
+    return axios.get(URL + endpoint.MESSEGE_GET + `?roomname=${roomName}`, {
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
             Refreshtoken: sessionStorage.getItem("refreshToken"),
@@ -24,11 +24,17 @@ const writeDiary = (diaryData: WriteDiary) => {
     });
 };
 
-export const getDiary = (count: number, page: number, emotion?: string) => {
-    return axios.get(
-        URL +
-            endpoint.DIARY_GET +
-            `?count=${count}&page=${page}&privatediary=${""}&emotion=${emotion}`,
+export const getCountMessege = (roomName: string, userid: string | undefined) => {
+    return axios.get(URL + endpoint.MESSEGE_COUNT + `?roomname=${roomName}&userid=${userid}`, {
+        headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+            Refreshtoken: sessionStorage.getItem("refreshToken"),
+        },
+    });
+};
+export const readMessege = (roomName: string, userid: string | undefined) => {
+    return axios.put(
+        URL + endpoint.MESSEGE_READ_UPDATE + `?roomname=${roomName}&userid=${userid}`,
         {
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
@@ -36,38 +42,6 @@ export const getDiary = (count: number, page: number, emotion?: string) => {
             },
         }
     );
-};
-
-const getMyDiary = (id: number) => {
-    return axios.get(URL + endpoint.MYDIARY + "/" + id, {
-        headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-            Refreshtoken: sessionStorage.getItem("refreshToken"),
-        },
-    });
-};
-
-const getMyAllDiaries = (count: number, page: number, emotion?: string) => {
-    return axios.get(
-        URL +
-            endpoint.DIARY_GET +
-            `?count=${count}&page=${page}&privatediary=${""}&emotion=${emotion}`,
-        {
-            headers: {
-                Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-                Refreshtoken: sessionStorage.getItem("refreshToken"),
-            },
-        }
-    );
-};
-
-const editMyDiary = (myDiaryData: EditDiary, id: number) => {
-    return axios.put(URL + endpoint.MYDIARY + "/" + id, myDiaryData, {
-        headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-            Refreshtoken: sessionStorage.getItem("refreshToken"),
-        },
-    });
 };
 
 const deleteMyDiary = (id: number) => {

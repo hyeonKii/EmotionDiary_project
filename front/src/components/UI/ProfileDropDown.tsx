@@ -1,22 +1,54 @@
+import useLogout from "@/hooks/useLogout";
+import { useState } from "react";
 import styled from "styled-components";
+import UserEdit from "../user/UserEdit";
+import ModalBackground from "./ModalBackground";
 
-function ProfileDropDown() {
-    return (
-        <DropDownStyle>
-            <li>
-                <button>정보</button>
-            </li>
-            <li>
-                <button>로그아웃</button>
-            </li>
-        </DropDownStyle>
-    );
+interface Props {
+    setShowDropDown(value: boolean): void;
 }
 
-export default ProfileDropDown;
+interface Error {
+    message: string;
+}
 
+export default function ProfileDropDown({ setShowDropDown }: Props) {
+    const [showInfo, setShowInfo] = useState(false);
+
+    const { logout } = useLogout();
+
+    const logoutHandler = () => {
+        try {
+            setShowDropDown(false);
+            logout();
+        } catch (error) {
+            if (error instanceof Error) {
+                console.log(error.message);
+            }
+        }
+    };
+
+    return (
+        <>
+            {showInfo && (
+                <>
+                    <UserEdit setShowInfo={setShowInfo} setShowDropDown={setShowDropDown} />
+                    <ModalBackground setShowLoginForm={setShowDropDown} />
+                </>
+            )}
+            <DropDownStyle>
+                <li>
+                    <button onClick={() => setShowInfo(true)}>정보</button>
+                </li>
+                <li>
+                    <button onClick={logoutHandler}>로그아웃</button>
+                </li>
+            </DropDownStyle>
+        </>
+    );
+}
 const DropDownStyle = styled.ul`
-    width: 6rem;
+    width: 8rem;
     height: 5rem;
 
     margin-top: 1rem;
@@ -30,8 +62,8 @@ const DropDownStyle = styled.ul`
     align-items: center;
 
     position: absolute;
-    top: 5vh;
-    right: 1.25rem;
+    top: 4vh;
+    right: 0rem;
 
     background-color: white;
 

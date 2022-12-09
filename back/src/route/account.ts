@@ -41,7 +41,6 @@ accountRouter.post(
     "/login",
     wrapRouter(async (req: Req, res: Res) => {
         const { userID, password } = req.body;
-
         if ((userID && password) === undefined) {
             throw new AppError("BodyDataError");
         }

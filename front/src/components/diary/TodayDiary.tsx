@@ -1,24 +1,29 @@
 import { useState, ChangeEvent } from "react";
 import Calendar from "react-calendar";
-import * as api from "@/api/diary";
+import { useRecoilValue } from "recoil";
+import { currentUser } from "@/temp/userAtom";
 import useEmotion from "@/hooks/useEmotion";
 import {
     TodaySection,
     CalendarDetail,
     DiaryDetail,
     EditBlock,
+    ReadBlock,
 } from "@/styles/diary/todayDiary-style";
 
 const data = {
-    nickname: "윤아",
+    id: 1,
     emotion: "슬픔",
-    title: "오늘 너무 힘들었다. 내일은 안 힘들겠지? 슬프다",
+    title: "test1",
     description: "test",
     private: false,
-    date: "Fri Nov 22 2022 00:00:00 GMT+0900",
+    view: 0,
+    createdAt: "2022-11-28T05:53:27.072Z",
+    user_model_id: 1,
 };
 
 export function TodayDiary() {
+    const user = useRecoilValue(currentUser);
     const [value, setValue] = useState(new Date());
     const [newText, setNewText] = useState({
         title: data.title,
@@ -26,20 +31,22 @@ export function TodayDiary() {
         private: data.private,
     });
     const [isEdit, setIsEdit] = useState(false);
-    const { emotionState } = useEmotion(data.emotion, data.nickname);
+    const { emotionState } = useEmotion(data.emotion, user?.nickname);
 
     const dateString = value.toLocaleDateString("ko-KR", {
         year: "numeric",
         month: "long",
         day: "numeric",
     });
+    console.log(data.createdAt, dateString, "date");
 
-    const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const onChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         const { name, value } = e.currentTarget;
         setNewText((prev) => ({
             ...prev,
             [name]: value,
         }));
+
         if (newText.description.length > 500) alert("500자");
     };
 
@@ -73,7 +80,7 @@ export function TodayDiary() {
             <CalendarDetail>
                 {emotionState()}
                 <DiaryDetail isEdit={isEdit}>
-                    <article className="title">
+                    <article className="top">
                         <span className="date">{dateString}</span>
                         <div className="icons">
                             {data.private ? (
@@ -105,9 +112,16 @@ export function TodayDiary() {
                     </article>
                     {isEdit ? (
                         <EditBlock>
+                            <input
+                                className="title"
+                                name="title"
+                                value={newText.title}
+                                onChange={onChange}
+                            />
                             <textarea
-                                className="body"
-                                rows="10"
+                                className="description"
+                                rows={10}
+                                name="description"
                                 value={newText.description}
                                 autoFocus
                                 onChange={onChange}
@@ -115,16 +129,23 @@ export function TodayDiary() {
                             <div>
                                 <span className="countText">{newText.description.length}/500</span>
                                 <button
+                                    type="submit"
                                     className="submitButton"
                                     onClick={() => setIsEdit(false)}
-                                    disabled={newText.description.length === 0}
+                                    disabled={
+                                        newText.description.length === 0 ||
+                                        newText.title.length === 0
+                                    }
                                 >
                                     저장
                                 </button>
                             </div>
                         </EditBlock>
                     ) : (
-                        <span className="body">{newText.description}</span>
+                        <ReadBlock>
+                            <p className="title">{newText.title}</p>
+                            <p className="description">{newText.description}</p>
+                        </ReadBlock>
                     )}
                 </DiaryDetail>
             </CalendarDetail>
