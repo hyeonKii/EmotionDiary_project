@@ -96,9 +96,12 @@ export function DiaryCalendar() {
 
     const setEmotionClassName = (date) => {
         const currentDate = new Date(date).getDate();
+        const currentMonth = new Date(date).getMonth();
 
         const matchedDiary = monthDiaries?.data.find(
-            (diary: MonthData) => new Date(diary.createdAt).getDate() === currentDate
+            (diary: MonthData) =>
+                new Date(diary.createdAt).getDate() === currentDate &&
+                new Date(diary.createdAt).getMonth() === currentMonth
         );
 
         if (matchedDiary) {
@@ -116,9 +119,6 @@ export function DiaryCalendar() {
         getMonthDiaries().then((res) => {
             const date = clickedDate.toISOString().split("T")[0];
             const currentDay = new Date(date).getDate();
-
-            console.log(currentDay);
-            console.log(res);
 
             const currentDiary = res.data.data.find(
                 (diary: PostInterface) => currentDay === new Date(diary.createdAt).getDate()
