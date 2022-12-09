@@ -6,7 +6,13 @@ import accountService from "./accountService";
 class DiaryService {
     prisma = new PrismaClient();
 
-    async writeDiary(userID: string, title: string, description: string, privateDiary: boolean) {
+    async writeDiary(
+        userID: string,
+        title: string,
+        description: string,
+        privateDiary: boolean,
+        createdAt?: Date
+    ) {
         try {
             const result = await accountService.getUserByUserID_login(userID);
             result?.User.id;
@@ -24,6 +30,7 @@ class DiaryService {
                         },
                     },
                     private: privateDiary == true ? true : false,
+                    createdAt: createdAt,
                 },
             });
         } catch (error) {
