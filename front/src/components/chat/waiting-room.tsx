@@ -5,15 +5,22 @@ import { Head, Table, ChatRoom } from "@/styles/chat/waiting-room.styles";
 import { socket } from "@/components/chat/Chat";
 import { recentlyMsgState } from "@/temp/ChatRecoil";
 import { currentUser } from "@/temp/userAtom";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
+
 interface CreateRoomResponse {
     success: boolean;
     payload: string;
 }
 
+interface ChatData {
+    sender: string;
+    msgText: string;
+    roomName: string;
+}
+
 const WaitingRoom = () => {
     const [rooms, setRooms] = useState<string[]>([]);
-    const [results, setResults] = useRecoilState(recentlyMsgState);
+    let [recentlyMessage, setRecentlyMessage] = useRecoilState(recentlyMsgState);
     const [lastMessage, setLastMessage] = useState<
         | {
               updatedAt: string;
@@ -22,28 +29,45 @@ const WaitingRoom = () => {
           }[]
         | null
     >(null);
+
     const navigate = useNavigate();
     const user = useRecoilValue(currentUser);
-
+    const recentMessage = useRecoilValue(recentlyMsgState);
+    const setrecentMessage = useSetRecoilState(recentlyMsgState);
     useEffect(() => {
         // console.log(rooms, "room");
         const roomListHandler = (rooms: string[]) => {
             setRooms(rooms);
         };
         const createRoomHandler = (response: any) => {
-            console.log(response.result);
+            console.log(response.result, "create lastmessage");
             setLastMessage(response.result);
-            // setRooms((prevRooms) => [...prevRooms, results?.result[0].user_model_id]);
-            // setLastMessage((prevRooms) => [...prevRooms, response.result.lastmessage]);
         };
         const deleteRoomHandler = (roomName: string) => {
             setRooms((prevRooms) => prevRooms.filter((room) => room !== roomName));
         };
-
+        const messageHandler = (chat: ChatData) => {
+            console.log(chat);
+            setrecentMessage({
+                sender: chat.sender,
+                msgText: chat.msgText,
+            });
+            lastMessage?.map((item) => {
+                if (item.user_model_id == chat.roomName) {
+                    item.lastmessage = chat.msgText;
+                }
+                return item;
+            });
+            console.log(lastMessage, "console");
+            // 어쩔때 null이 되는거지??
+            if (lastMessage === null) return;
+            setLastMessage(lastMessage);
+        };
         socket.emit("room-list", String(user?.id), roomListHandler);
 
         socket.on("create-room", createRoomHandler);
         socket.on("delete-room", deleteRoomHandler);
+        socket.on("message", messageHandler);
 
         return () => {
             socket.off("room-list", roomListHandler);
@@ -75,11 +99,10 @@ const WaitingRoom = () => {
     );
 
     const ChatRoomComponents = useMemo(() => {
-        console.log(lastMessage);
         if (lastMessage === null) {
             return null;
         }
-
+        console.log(lastMessage);
         return (
             <>
                 {lastMessage.map((item, idx) => (
@@ -96,6 +119,28 @@ const WaitingRoom = () => {
             </>
         );
     }, [lastMessage]);
+
+    //   const ChatRoomComponents = useMemo(() => {
+    //       if (lastMessage === null) {
+    //           return null;
+    //       }
+    //       console.log(lastMessage);
+    //       return (
+    //           <>
+    //               {lastMessage.map((item, idx) => (
+    //                   <ChatRoom onClick={onJoinRoom(item.user_model_id)} key={idx}>
+    //                       <button>{item.lastmessage}</button>
+    //                       <div>
+    //                           <div>
+    //                               <div> 2</div>
+    //                           </div>
+    //                           <span> {item.updatedAt}</span>
+    //                       </div>
+    //                   </ChatRoom>
+    //               ))}
+    //           </>
+    //       );
+    //   }, [lastMessage]);
 
     const dateTime = (date: Date) => {
         const milliSeconds = Number(new Date()) - Number(date);

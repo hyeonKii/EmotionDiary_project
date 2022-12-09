@@ -17,6 +17,7 @@ import {
 interface ChatData {
     sender: string;
     msgText: string;
+    roomName: string;
 }
 
 export const ChatRoom = () => {
@@ -47,7 +48,14 @@ export const ChatRoom = () => {
 
     // message event listener
     useEffect(() => {
-        const messageHandler = (chat: ChatData) => setChats((prevChats) => [...prevChats, chat]);
+        const messageHandler = (chat: ChatData) => {
+            setChats((prevChats) => [...prevChats, chat]);
+            if (chat === null) {
+                return null;
+            }
+            console.log("setRecentlyMessage");
+            setRecentlyMessage(chat);
+        };
 
         socket.on("message", messageHandler);
 

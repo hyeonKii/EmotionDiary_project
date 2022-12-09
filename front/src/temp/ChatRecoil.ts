@@ -14,10 +14,14 @@ export const chatMessgeList = atom<MessageModel | null>({
 });
 
 export interface recentlyMessageModel {
-    result: [user_model_id: string, lastmessage: string] | any;
+    result: [sender: string, msgText: string] | any;
+}
+export interface ChatData {
+    sender: string;
+    msgText: string;
 }
 
-export const recentlyMsgState = atom<recentlyMessageModel | null>({
+export const recentlyMsgState = atom<ChatData>({
     key: "recentlyMsgState",
-    default: null,
+    default: { sender: "", msgText: "" },
 });
