@@ -11,6 +11,7 @@ import {
     EmotionSection,
     EmotionChartSection,
     EmotionDataSection,
+    ChartBlock,
 } from "@/styles/diary/emotion-style";
 
 const chart = [
@@ -122,52 +123,66 @@ export function Emotion() {
 
     return (
         <EmotionSection>
-            <h1>
-                <span>{user?.nickname}</span>님의 지난달 감정들
-            </h1>
             <EmotionChartSection>
-                <RadarChart width={450} height={450} data={chart}>
-                    <PolarGrid />
-                    <PolarAngleAxis dataKey="emotion" />
-                    <Radar dataKey="A" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-                </RadarChart>
-                <span>
-                    지난 한 달 간의 감정들 입니다.
-                    <br />
-                    가장 많이 자치한 감정은 <strong>{topEmotion.emotion}</strong>
-                    이군요! <br />
-                    자신의 감정을 돌아보는 건 <br />
-                    정서적 건강을 관리하는 데 도움이 됩니다. <br />
-                    꾸준히 기록하며 마음을 되돌아 보세요!
-                </span>
+                <h1>
+                    <span className="nickName">{user?.nickname}</span>님의 지난달 감정들
+                </h1>
+                <ChartBlock>
+                    <RadarChart width={600} height={600} data={chart}>
+                        <PolarGrid />
+                        <PolarAngleAxis dataKey="emotion" />
+                        <Radar dataKey="A" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+                    </RadarChart>
+                    <span className="description">
+                        지난 한 달 간의 감정들 입니다.
+                        <br />
+                        가장 많이 자치한 감정은 <strong>{topEmotion.emotion}</strong>
+                        이군요! <br />
+                        자신의 감정을 돌아보는 건 <br />
+                        정서적 건강을 관리하는 데 도움이 됩니다. <br />
+                        꾸준히 기록하며 마음을 되돌아 보세요!
+                    </span>
+                </ChartBlock>
             </EmotionChartSection>
             <EmotionDataSection>
                 <article>
                     <h3>일주일 전 오늘</h3>
                     <span className="emotionIcon">{emotionImg(newArr.day?.emotion)}</span>
-                    <span>{dayString}</span>
-                    <span className="body">
-                        {newArr.day?.title ? newArr.day.title : "작성된 글이 없습니다."}
-                    </span>
-                    <span className="body">{newArr.day?.description}</span>
+                    <span className="date">{dayString}</span>
+                    <div className="diary">
+                        <span>{newArr.day?.title}</span>
+                        <span className="body">
+                            {newArr.day?.description
+                                ? newArr.day.description
+                                : "작성된 글이 없습니다."}
+                        </span>
+                    </div>
                 </article>
                 <article>
                     <h3>한 달 전 오늘</h3>
                     <span className="emotionIcon">{emotionImg(newArr.month?.emotion)}</span>
-                    <span>{monthString}</span>
-                    <span className="body">
-                        {newArr.month?.title ? newArr.month.title : "작성된 글이 없습니다."}
-                    </span>
-                    <span className="body">{newArr.month?.description}</span>
+                    <span className="date">{monthString}</span>
+                    <div className="diary">
+                        <span>{newArr.month?.title}</span>
+                        <span className="body">
+                            {newArr.month?.description
+                                ? newArr.month?.description
+                                : "작성된 글이 없습니다."}
+                        </span>
+                    </div>
                 </article>
                 <article>
                     <h3>일 년 전 오늘</h3>
                     <span className="emotionIcon">{emotionImg(newArr.year?.emotion)}</span>
-                    <span>{yearString}</span>
-                    <span className="body">
-                        {newArr.year?.title ? newArr.year.title : "작성된 글이 없습니다."}
-                    </span>
-                    <span className="body">{newArr.year?.description}</span>
+                    <span className="date">{yearString}</span>
+                    <div className="diary">
+                        <span>{newArr.year?.title}</span>
+                        <span className="body">
+                            {newArr.year?.description
+                                ? newArr.year?.description
+                                : "작성된 글이 없습니다."}
+                        </span>
+                    </div>
                 </article>
             </EmotionDataSection>
         </EmotionSection>

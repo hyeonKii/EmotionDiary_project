@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { color } from "@/styles/common/colorPalette";
 
 export const DiarySection = styled.section`
+    height: 100vh;
     padding: 70px 0;
 `;
