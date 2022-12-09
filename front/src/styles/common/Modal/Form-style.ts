@@ -4,7 +4,7 @@ import { color } from "@/styles/common/colorPalette";
 export const Form = styled.form`
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     position: fixed;
     top: 50%;
@@ -16,6 +16,7 @@ export const Form = styled.form`
     height: 50%;
     min-width: 400px;
     min-height: 550px;
+    padding: 3rem 0;
     border-radius: 20px;
 
     background: ${(isdark) => isdark.theme.modalBgColor};
@@ -58,6 +59,121 @@ export const Form = styled.form`
 
         color: ${color.gray};
         font-size: 0.7rem;
+    }
+`;
+
+export const FormTitle = styled.div`
+    display: flex;
+    align-items: center;
+    height: 20%;
+
+    color: ${(isdark) => isdark.theme.textColor};
+    font-size: 2rem;
+    font-weight: bold;
+`;
+
+export const FormButton = styled.button`
+    width: 70%;
+    height: 40px;
+    margin-top: 15px;
+    outline: 0;
+    border: 0;
+    border-radius: 8px;
+
+    background: ${color.lightBlue};
+
+    color: ${color.white};
+    font-size: 0.8rem;
+
+    &:hover {
+        background: ${color.deepBlue};
+    }
+
+    &:disabled {
+        background: ${color.lightGray};
+    }
+`;
+
+export const EditSection = styled.section`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    width: 70%;
+    height: 50%;
+`;
+
+export const InputSection = styled.section`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 70%;
+    height: 40%;
+
+    text-align: center;
+`;
+
+export const InputBlock = styled.div`
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    width: 100%;
+    height: 65px;
+    &:last-child {
+        margin-bottom: 1rem;
+    }
+
+    label {
+        flex: 0.5;
+        margin-left: 0.3rem;
+        margin-bottom: 0.5rem;
+
+        color: ${(isdark) => isdark.theme.textColor};
+        font-size: 0.8rem;
+    }
+
+    input {
+        flex: 1.5;
+        width: 100%;
+        height: 40px;
+        padding-left: 2.3rem;
+
+        border: 1px solid ${color.lightGray};
+        border-radius: 8px;
+        outline: 0;
+        background: ${(isdark) => isdark.theme.inputBgColor};
+        color: ${(isdark) => isdark.theme.textColor};
+    }
+
+    .registerButton {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+
+        width: 60px;
+        height: 42px;
+        border-radius: 0 8px 8px 0;
+        background: ${color.lightBlue};
+        color: ${color.white};
+    }
+`;
+
+export const BottomSection = styled.div`
+    width: 100%;
+    height: 30%;
+
+    text-align: center;
+    font-size: 0.8rem;
+
+    .register {
+        margin: 2rem 0 0.8rem 0;
+    }
+
+    button:not(:first-child) {
+        color: ${color.lightBlue};
     }
 `;
 
@@ -108,86 +224,16 @@ export const PostBlock = styled.div`
     }
 `;
 
-export const FormTitle = styled.div`
-    margin-bottom: 20px;
-
-    color: ${(isdark) => isdark.theme.textColor};
-    font-size: 2rem;
-    font-weight: bold;
-`;
-
-export const FormButton = styled.button`
-    width: 70%;
-    height: 40px;
-    margin-top: 15px;
-    outline: 0;
-    border: 0;
-    border-radius: 8px;
-
-    background: ${color.lightBlue};
-
-    color: ${color.white};
-    font-size: 0.8rem;
-
-    &:hover {
-        background: ${color.deepBlue};
-    }
-
-    &:disabled {
-        background: ${color.lightGray};
-    }
-`;
-
-export const Container = styled.div`
-    position: relative;
-    margin-bottom: 20px;
-`;
-
-export const EditSection = styled.section`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    width: 70%;
-    height: 50%;
-`;
-
 export const Error = styled.div`
-    margin-top: 0.5rem;
+    margin-top: 1rem;
 
     color: ${color.red};
     font-size: 0.8rem;
 `;
 
-export const InputBlock = styled.div`
-    display: flex;
-    flex-direction: column;
+export const Container = styled.div`
     position: relative;
-
-    height: 65px;
-    &:last-child {
-        margin-bottom: 1rem;
-    }
-
-    label {
-        flex: 0.5;
-        margin-left: 0.3rem;
-        margin-bottom: 0.5rem;
-
-        color: ${(isdark) => isdark.theme.textColor};
-        font-size: 0.9rem;
-    }
-
-    input {
-        flex: 1.5;
-        height: 40px;
-        padding-left: 2.3rem;
-
-        border: 1px solid ${color.lightGray};
-        border-radius: 8px;
-        outline: 0;
-        background: ${(isdark) => isdark.theme.inputBgColor};
-        color: ${(isdark) => isdark.theme.textColor};
-    }
+    margin-bottom: 20px;
 `;
 
 export const Input = styled.input`

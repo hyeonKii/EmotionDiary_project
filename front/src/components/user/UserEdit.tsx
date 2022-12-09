@@ -12,6 +12,7 @@ import {
     FormButton,
     EditSection,
     InputBlock,
+    InputSection,
     Error,
 } from "@/styles/common/Modal/Form-style";
 
