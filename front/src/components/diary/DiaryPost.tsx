@@ -14,20 +14,23 @@ interface Error {
 }
 
 const getPostedTime = (createdAt: Date) => {
-    const currentTotalDate = new Date().toISOString().split("T");
-    const createdTotalDate = new Date(createdAt).toISOString().split("T");
+    const currentDate = new Date();
+    const createdDate = new Date(createdAt);
 
-    const currentDate = Number(currentTotalDate[0].replace(/\-/g, ""));
-    const createdDate = Number(createdTotalDate[0].replace(/\-/g, ""));
+    const createdYear = createdDate.getFullYear();
+    const createdMonth = createdDate.getMonth() + 1;
 
-    const currentHour = Number(currentTotalDate[1].split(":")[0]);
-    const createdHour = Number(createdTotalDate[1].split(":")[0]);
+    const createdDay = createdDate.getDate();
+    const currentDay = currentDate.getDate();
 
-    if (currentDate - createdDate === 0) {
+    const currentHour = currentDate.getHours();
+    const createdHour = createdDate.getHours();
+
+    if (currentDay - createdDay === 0) {
         return currentHour - createdHour === 0 ? "방금 전" : `${currentHour - createdHour}시간 전`;
     }
 
-    return currentTotalDate[0].replace(/\-/g, ".");
+    return `${createdYear}.${createdMonth}.${createdDay}`;
 };
 
 export default function DiaryPost({ post, refetch }: Props) {

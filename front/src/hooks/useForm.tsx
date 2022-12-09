@@ -24,7 +24,11 @@ function useForm<T>(initialState: T, validationFn?: ValidationFn) {
         }
     };
 
-    return { form, setForm, validatedForm, changeHandler };
+    const resetForm = () => {
+        setForm(null);
+    };
+
+    return { form, setForm, validatedForm, changeHandler, resetForm };
 }
 
 export default useForm;

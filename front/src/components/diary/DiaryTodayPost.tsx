@@ -6,16 +6,19 @@ import { PostInterface } from "./interface/post";
 
 interface Props {
     post: PostInterface;
-    refetch(): void;
 }
 
 const getPostedDate = (createdAt: Date) => {
-    const fullDate = new Date(createdAt).toISOString().split("T")[0].split("-");
+    const currentDate = new Date(createdAt);
 
-    return `${fullDate[0]}년 ${fullDate[1]}월 ${fullDate[2]}일`;
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentDay = currentDate.getDate();
+
+    return `${currentYear}년 ${currentMonth}월 ${currentDay}일`;
 };
 
-export default function DiaryTodayPost({ post, refetch, refetchDelete, setClickedDate }: Props) {
+export default function DiaryTodayPost({ post, getDiary, getMonthDiaries }: Props) {
     const { id, title, description, createdAt, private: privateDiary } = post;
 
     const postedDate = getPostedDate(createdAt);
@@ -23,15 +26,16 @@ export default function DiaryTodayPost({ post, refetch, refetchDelete, setClicke
     const [isEdit, setIsEdit] = useState(false);
     const [privateMode, setPrivateMode] = useState(privateDiary);
 
-    const { form, changeHandler } = useForm({
+    const { form, changeHandler, resetForm } = useForm({
         title,
         description,
     });
 
     const { mutate: deleteDiary } = useRequestDeleteDiary(id, {
         onSuccess: () => {
+            getMonthDiaries();
+
             console.log("일기 삭제 요청 성공");
-            refetchDelete();
         },
         onError: () => {
             console.log("일기 삭제 요청 실패");
@@ -40,8 +44,10 @@ export default function DiaryTodayPost({ post, refetch, refetchDelete, setClicke
 
     const { mutate: editDiary } = useRequestEditDiary({ ...form, privateDiary: privateMode }, id, {
         onSuccess: () => {
+            getDiary();
+            resetForm();
+
             console.log("일기 편집 요청 성공");
-            refetch();
         },
         onError: () => {
             console.log("일기 편집 요청 실패");
@@ -63,10 +69,6 @@ export default function DiaryTodayPost({ post, refetch, refetchDelete, setClicke
 
         setPrivateMode(false);
     };
-
-    useEffect(() => {
-        setClickedDate(createdAt);
-    }, []);
 
     return (
         <DiaryDetail isEdit={isEdit}>

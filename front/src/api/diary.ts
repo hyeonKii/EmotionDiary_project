@@ -36,8 +36,8 @@ export const getDiary = (count: number, page: number, emotion?: string) => {
     );
 };
 
-const getMyDiary = (id: number) => {
-    if (id === 0) {
+const getMyDiary = (id: number | null) => {
+    if (!id) {
         return;
     }
 
@@ -88,7 +88,7 @@ const deleteMyDiary = (id: number) => {
 export const useRequestWriteDiary = (diaryData, options?) =>
     useMutation(() => writeDiary(diaryData), options);
 
-export const useRequestGetDiary = (id: number, options?) =>
+export const useRequestGetDiary = (id: number | null, options?) =>
     useQuery(["diary", id], () => getMyDiary(id), options);
 
 export const useRequestGetAllDiaries = (count: number, page: number, options?) =>

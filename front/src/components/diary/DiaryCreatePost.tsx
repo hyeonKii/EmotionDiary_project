@@ -7,14 +7,27 @@ interface Props {
     refetch(): void;
 }
 
-const getCurrentDate = (clickedDate: Date) => {
-    const currentDate = new Date(clickedDate).toISOString().split("T")[0].split("-");
+const getCurrentDate = (day: number) => {
+    const dayToDate = new Date();
 
-    return `${currentDate[0]}년 ${currentDate[1]}월 ${currentDate[2]}일`;
+    dayToDate.setDate(day);
+
+    return dayToDate;
 };
 
-export default function DiaryCreatePost({ refreshDiaries, clickedDate }: Props) {
-    const date = getCurrentDate(clickedDate);
+const getCurrentDateText = (dayToDate: Date) => {
+    const currentDate = new Date(dayToDate);
+
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentDay = currentDate.getDate();
+
+    return `${currentYear}년 ${currentMonth}월 ${currentDay}일`;
+};
+
+export default function DiaryCreatePost({ getMonthDiaries, day }: Props) {
+    const currentDate = getCurrentDate(day);
+    const currentDateText = getCurrentDateText(currentDate);
 
     const [privateMode, setPrivateMode] = useState(true);
 
@@ -24,11 +37,12 @@ export default function DiaryCreatePost({ refreshDiaries, clickedDate }: Props) 
     });
 
     const { mutate: writeHandler } = useRequestWriteDiary(
-        { ...form, privateDiary: privateMode, createdAt: clickedDate },
+        { ...form, privateDiary: privateMode, createdAt: currentDate },
         {
             onSuccess: () => {
+                getMonthDiaries();
+
                 console.log("일기 작성 요청 성공");
-                refreshDiaries();
             },
             onError: () => {
                 console.log("일기 작성 요청 실패");
@@ -50,7 +64,7 @@ export default function DiaryCreatePost({ refreshDiaries, clickedDate }: Props) 
     return (
         <DiaryDetail isEdit={true}>
             <article className="top">
-                {clickedDate && <span className="date">{date}</span>}
+                {day && <span className="date">{currentDateText}</span>}
                 <select onChange={selectHandler}>
                     <option value="나만보기">나만보기</option>
                     <option value="전체공개">전체공개</option>

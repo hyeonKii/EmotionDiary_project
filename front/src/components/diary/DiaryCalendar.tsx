@@ -8,42 +8,50 @@ import { currentUser } from "@/temp/userAtom";
 import { useRecoilValue } from "recoil";
 import { PostInterface } from "./interface/post";
 import DiaryCreatePost from "./DiaryCreatePost";
-
 interface MonthData {
     createdAt: Date;
     emotion: string;
     id: number;
 }
 
-interface DiaryResponse {
-    data: PostInterface;
-}
+const currentDate = new Date();
+const currentYear = currentDate.getFullYear();
+const currentMonth = currentDate.getMonth() + 1;
+const currentDay = currentDate.getDate();
+
+console.log(currentDate, currentYear, currentMonth, currentDay);
+
+const getCurrentDiary = (data, day) => {
+    return data.find((diary: PostInterface) => new Date(diary.createdAt).getDate() === day);
+};
 
 export function DiaryCalendar() {
     const user = useRecoilValue(currentUser);
 
     const [date, setDate] = useState({
-        year: new Date().getFullYear(),
-        month: new Date().getMonth() + 1,
+        year: currentYear,
+        month: currentMonth,
     });
 
-    const [id, setId] = useState(0);
+    const [day, setDay] = useState(currentDay);
+    const [id, setID] = useState(null);
     const [diary, setDiary] = useState<PostInterface | null>(null);
-    const [clickedDate, setClickedDate] = useState<Date | null>(null);
+
+    const { emotionState } = useEmotion(diary?.emotion, user?.nickname);
 
     const { refetch: getDiary } = useRequestGetDiary(id, {
-        retry: false,
+        onSuccess: (res) => {
+            console.log("일기 요청 성공");
 
-        onSuccess: (res: DiaryResponse) => {
-            if (res) {
-                setDiary(res.data);
-                console.log("하루 일기 요청 성공");
+            if (!res) {
+                return;
             }
+
+            setDiary(res.data);
         },
 
         onError: () => {
-            console.log("하루 일기 요청 실패");
-            setDiary(null);
+            console.log("일기 요청 실패");
         },
     });
 
@@ -52,7 +60,19 @@ export function DiaryCalendar() {
         date.month,
         "calendar-diaries",
         {
-            onSuccess: () => {
+            onSuccess: (res) => {
+                console.log(res);
+
+                const currentDiary = getCurrentDiary(res.data, day);
+
+                if (currentDiary) {
+                    setID(currentDiary.id);
+                    return;
+                }
+
+                setID(null);
+                setDiary(null);
+
                 console.log("월별 일기 요청 성공");
             },
 
@@ -62,25 +82,28 @@ export function DiaryCalendar() {
         }
     );
 
-    const { emotionState } = useEmotion(diary?.emotion, user?.nickname);
-
     const setCurrentDay = (event) => {
         const postDate = new Date(event);
-        postDate.setHours(postDate.getHours() + 9);
-        const currentDay = postDate.getDate();
 
-        const currentDiary = monthDiaries?.data.find(
-            (diary: PostInterface) => currentDay === new Date(diary.createdAt).getDate()
-        );
+        postDate.setHours(12);
 
-        if (!currentDiary) {
-            setDiary(null);
-            setClickedDate(postDate);
-            setId(0);
-            return;
+        const clickedDay = postDate.getDate();
+
+        setDay(clickedDay);
+
+        if (monthDiaries) {
+            const { data } = monthDiaries;
+
+            const currentDiary = getCurrentDiary(data, clickedDay);
+
+            if (currentDiary) {
+                setID(currentDiary.id);
+                return;
+            }
         }
 
-        setId(currentDiary.id);
+        setDiary(null);
+        setID(null);
     };
 
     const setCurrentYearMonth = (event) => {
@@ -94,42 +117,23 @@ export function DiaryCalendar() {
     };
 
     const setEmotionClassName = (date) => {
-        const currentDate = new Date(date).getDate();
-        const currentMonth = new Date(date).getMonth();
+        const currentDate = new Date(date);
+        const currentDay = currentDate.getDate();
+        const currentMonth = currentDate.getMonth();
 
-        const matchedDiary = monthDiaries?.data.find(
-            (diary: MonthData) =>
-                new Date(diary.createdAt).getDate() === currentDate &&
-                new Date(diary.createdAt).getMonth() === currentMonth
-        );
+        if (monthDiaries) {
+            const matchedDiary = monthDiaries?.data.find(
+                (diary: MonthData) =>
+                    new Date(diary.createdAt).getDate() === currentDay &&
+                    new Date(diary.createdAt).getMonth() === currentMonth
+            );
 
-        if (matchedDiary) {
-            return `${matchedDiary.emotion}`;
+            if (matchedDiary) {
+                return `${matchedDiary.emotion}`;
+            }
         }
 
         return null;
-    };
-
-    const refreshDiaries = () => {
-        if (!clickedDate) {
-            return;
-        }
-
-        getMonthDiaries().then((res) => {
-            const date = new Date(clickedDate).toISOString().split("T")[0];
-            const currentDay = new Date(date).getDate();
-
-            const currentDiary = res.data.data.find(
-                (diary: PostInterface) => currentDay === new Date(diary.createdAt).getDate()
-            );
-
-            if (!currentDiary) {
-                setDiary(null);
-                return;
-            }
-
-            setId(currentDiary.id);
-        });
     };
 
     return (
@@ -139,19 +143,18 @@ export function DiaryCalendar() {
                 onChange={setCurrentDay}
                 onActiveStartDateChange={setCurrentYearMonth}
                 tileClassName={({ date }) => setEmotionClassName(date)}
+                defaultValue={currentDate}
             />
             <CalendarDetail>
                 {emotionState()}
-                {diary && (
+                {diary ? (
                     <DiaryTodayPost
                         post={diary}
-                        refetch={getDiary}
-                        refetchDelete={refreshDiaries}
-                        setClickedDate={setClickedDate}
+                        getDiary={getDiary}
+                        getMonthDiaries={getMonthDiaries}
                     />
-                )}
-                {!diary && clickedDate && (
-                    <DiaryCreatePost refreshDiaries={refreshDiaries} clickedDate={clickedDate} />
+                ) : (
+                    <DiaryCreatePost getMonthDiaries={getMonthDiaries} day={day} />
                 )}
             </CalendarDetail>
         </TodaySection>
