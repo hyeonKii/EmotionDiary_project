@@ -5,23 +5,18 @@ import { useRecoilValue } from "recoil";
 import { currentUser } from "@/temp/userAtom";
 import { useRequestWriteDiary, useRequestGetMonthDiaries } from "@/api/diary";
 import useForm from "@/hooks/useForm";
+import { PostInterface } from "@/components/diary/interface/post";
 
 import { happy } from "@/assets/images/index";
 import { HomeSection, TitleBlock, Input } from "@/styles/home/home-style";
 import { Form, FormTitle, FormButton, PostBlock } from "@/styles/common/Modal/Form-style";
-
-interface GetPost {
-    id: number;
-    emotion: string;
-    createdAt: Date;
-}
 
 export default function Main() {
     const [isOpen, setIsOpen] = useState(false);
     const [todayPost, setTodayPost] = useState(false);
     const navigate = useNavigate();
     const user = useRecoilValue(currentUser);
-    const ref = useRef<HTMLFormElement>(null);
+    const ref = useRef<HTMLFormElement | null>(null);
     const today = new Date();
 
     const { form, setForm, changeHandler } = useForm({
@@ -29,17 +24,7 @@ export default function Main() {
         description: "",
         privateDiary: true,
     });
-
     const { title, description } = form;
-
-    const { mutate: writeDiary } = useRequestWriteDiary(form, {
-        onSuccess: () => {
-            setIsOpen(false);
-        },
-        onError: ({ message }: Error) => {
-            console.error(message);
-        },
-    });
 
     useEffect(() => {
         const onClickOutside = (e: MouseEvent) => {
@@ -53,22 +38,6 @@ export default function Main() {
             document.removeEventListener("mousedown", onClickOutside);
         };
     }, [ref, setIsOpen]);
-
-    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        writeDiary();
-        setForm((form) => ({ ...form, title: "", description: "", privateDiary: true }));
-    };
-
-    const onPrivateSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-        const value = e.target.value === "true" ? true : false;
-        setForm((form) => ({ ...form, privateDiary: value }));
-    };
-
-    const onClose = () => {
-        setForm((form) => ({ ...form, title: "", description: "", privateDiary: true }));
-        setIsOpen(false);
-    };
 
     const { data: monthDiaries } = useRequestGetMonthDiaries(
         today.getFullYear(),
@@ -85,13 +54,37 @@ export default function Main() {
     );
 
     useEffect(() => {
-        const day = monthDiaries?.data?.map((posts: GetPost) =>
+        const day = monthDiaries?.data?.map((posts: PostInterface) =>
             new Date(posts.createdAt).getDate()
         );
-        const post = day?.filter((posts: number) => posts === today.getDate());
-
-        post?.length !== 0 ? setTodayPost(true) : setTodayPost(false);
+        const post = day?.find((posts: number) => posts === today.getDate());
+        post !== undefined ? setTodayPost(true) : setTodayPost(false);
     }, [todayPost]);
+
+    const { mutate: writeDiary } = useRequestWriteDiary(form, {
+        onSuccess: () => {
+            setIsOpen(false);
+            setForm((form) => ({ ...form, title: "", description: "", privateDiary: true }));
+        },
+        onError: ({ message }: Error) => {
+            console.error(message);
+        },
+    });
+
+    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        writeDiary();
+    };
+
+    const onPrivateSelect = (e: ChangeEvent<HTMLSelectElement>) => {
+        const value = e.target.value === "true" ? true : false;
+        setForm((form) => ({ ...form, privateDiary: value }));
+    };
+
+    const onClose = () => {
+        setIsOpen(false);
+        setForm((form) => ({ ...form, title: "", description: "", privateDiary: true }));
+    };
 
     return (
         <HomeSection>
