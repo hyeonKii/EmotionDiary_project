@@ -36,6 +36,12 @@ export const TodaySection = styled.section`
             font-size: 1rem;
         }
 
+        // 감정 스타일 예시
+        .react-calendar__tile.normal {
+            background: ${color.lightGray};
+            border-radius: 50%;
+        }
+
         .react-calendar__tile--now {
             border-radius: 50%;
             background: none;
@@ -79,6 +85,8 @@ export const Message = styled.div`
     .text {
         flex: 1;
         margin-right: 1rem;
+        color: ${(isDark) => isDark.theme.textColor};
+        transition: color 0.5s linear;
 
         .emotionText {
             color: ${color.lightBlue};
@@ -100,11 +108,11 @@ export const DiaryDetail = styled.div<{ isEdit: boolean }>`
     background: white;
     text-align: start;
 
-    .title {
+    .top {
         display: flex;
         justify-content: space-between;
 
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
 
         .icons {
             display: ${({ isEdit }) => (isEdit ? "none" : "block")};
@@ -120,18 +128,26 @@ export const DiaryDetail = styled.div<{ isEdit: boolean }>`
         }
     }
 
-    .body {
+    .description {
+        width: 100%;
+        padding-top: 0.5rem;
+        resize: none;
+
+        border: 0;
+        outline: 0;
+
         word-break: break-all;
     }
 `;
 
 export const EditBlock = styled.div`
-    textarea {
+    .title {
         width: 100%;
-        resize: none;
+        padding-bottom: 0.5rem;
 
         border: 0;
         outline: 0;
+        border-bottom: 1px solid ${color.lightGray};
     }
 
     div {
@@ -141,6 +157,11 @@ export const EditBlock = styled.div`
 
         .countText {
             color: ${color.gray};
+            font-size: 0.8rem;
+        }
+
+        .maxText {
+            color: ${color.red};
             font-size: 0.8rem;
         }
 
@@ -157,5 +178,16 @@ export const EditBlock = styled.div`
                 background: ${color.lightGray};
             }
         }
+    }
+`;
+
+export const ReadBlock = styled.div`
+    .title {
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid ${color.lightGray};
+    }
+
+    .description {
+        padding-top: 0.5rem;
     }
 `;

@@ -1,13 +1,12 @@
 import styled from "styled-components";
 import { color } from "@/styles/common/colorPalette";
-import background from "@/assets/images/background.jpg";
-import backgroundDark from "@/assets/images/background_dark.jpg";
 
 export const HomeSection = styled.section`
     width: 100vw;
     height: 100vh;
 
-    background-image: url(${background});
+    background-image: url(${(isdark) => isdark.theme.backgroundImg});
+    transition: background-image 0.5s linear;
     background-size: cover;
 `;
 
@@ -18,6 +17,8 @@ export const TitleBlock = styled.div`
     transform: translate(-50%, -35%);
 
     text-align: center;
+    color: ${(isdark) => isdark.theme.textColor};
+    transition: color 0.5s linear;
 
     h1 {
         margin-bottom: 1rem;

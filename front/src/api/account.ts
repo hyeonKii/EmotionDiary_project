@@ -17,6 +17,7 @@ interface Register {
 
 interface FindID {
     email: string;
+    code: string;
 }
 
 interface ChangePwd {

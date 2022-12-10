@@ -15,13 +15,15 @@ export const TabList = styled.ul`
         margin-right: 1rem;
         padding: 0.3rem;
 
-        color: ${color.gray};
+        color: ${(isdark) => isdark.theme.textColor};
+        transition: color 0.2s linear;
+
         cursor: pointer;
 
         &.active {
             border-bottom: 3px solid ${color.lightBlue};
 
-            color: black;
+            color: ${(isdark) => isdark.theme.textColor};
             font-weight: 700;
         }
     }
