@@ -43,27 +43,21 @@ Content-Type: application/json
 
 
 ### 모든 일기 조회
-get {{url}}/diaries/all?count=10&page=1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2NjkxODEyNzAsImV4cCI6MTY2OTE4MzA3MH0.e-RuFJXakKuren9LMGoETfDZ5f3UeHkklNxqHkprAnk
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MTgxMjcwLCJleHAiOjE2NjkxOTIwNzB9.UvSrCeRo9Q9L7T5CHRCfvwT9k96fMsa3YWOxqgnHLm0
-Content-Type: application/json
-
-### 나의 일기 조회
-get {{url}}/diaries/mine?count=10&page=1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdCIsImlhdCI6MTY2OTk2MjkxMCwiZXhwIjoxNjY5OTY0NzEwfQ.EQwfC_4uErc76F0n4EhNogLnFSFGE8Zn0uGQF80YJXA
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5OTYyOTEwLCJleHAiOjE2Njk5NzM3MTB9.vPguf8_cwmnXnZeIahRq71ZmvxLTbX2UxmRg3soAkOE
+get {{url}}/diaries/all?count=10&page=1&emotion=전체&privatediary
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdDExMSIsImlhdCI6MTY3MDQ3MDc1MywiZXhwIjoxNjcwNDcyNTUzfQ.zict85tshEbI7eefZIMmAPQU0ntw6p2e6Q_S8dtkTeQ
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwNDcwNzUzLCJleHAiOjE2NzA0ODE1NTN9.vwSCDDjajagqUEK3mrtxLgUJVtpPCjI-iTpG7_iCNNI
 Content-Type: application/json
 
 ### 일기 작성 api
 post {{url}}/diaries/write
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2NjkzNDE5MDksImV4cCI6MTY2OTM0MzcwOX0.R47c-1dGe_eU49gwhR5K8Iiul6XZ6iQ-TcQUnE61UKw
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MzQxOTA5LCJleHAiOjE2NjkzNTI3MDl9._24NRpkNkajw5BsWC9hN9kGkU5M-rKF57KQeVdwWamM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdDExMSIsImlhdCI6MTY3MDQ3MDc1MywiZXhwIjoxNjcwNDcyNTUzfQ.zict85tshEbI7eefZIMmAPQU0ntw6p2e6Q_S8dtkTeQ
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwNDcwNzUzLCJleHAiOjE2NzA0ODE1NTN9.vwSCDDjajagqUEK3mrtxLgUJVtpPCjI-iTpG7_iCNNI
 Content-Type: application/json
 
 {
-  "title": "test1",
-  "description":"test",
-  "privateDiary": "true"
+  "title": "ttteeee",
+  "description":"ttteeee",
+  "privateDiary": true
 }
 
 ### 조회수 추가
@@ -77,10 +71,11 @@ Content-Type: application/json
 }
 
 ### 특정 일기 조회
-get {{url}}/diaries/2534
+get {{url}}/diaries/?datetime=2022-12-02
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2NjkxMDIzNTAsImV4cCI6MTY2OTEwNDE1MH0.ZQdV02n26JE3HV1K6SD5WAsye_EqCxEqwVAAou8n2rA
 RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MTAyMzUwLCJleHAiOjE2NzAzMTE5NTB9._Tjm0OlQf7KLYH9r8CyKGOzSSwQXQWZdAulWTYVg-ps
 Content-Type: application/json
+
 
 ### 일기 수정
 put {{url}}/diaries/2

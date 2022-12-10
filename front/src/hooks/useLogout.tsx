@@ -1,5 +1,6 @@
 import { useRequestLogout } from "@/api/account";
 import { currentUser } from "@/temp/userAtom";
+import { setSession, removeSession } from "@/util/setSession";
 import { useSetRecoilState } from "recoil";
 
 interface Data {
@@ -19,11 +20,9 @@ export default function useLogout() {
 
             if (ok) {
                 setUser(null);
-                sessionStorage.setItem("accessToken", "");
-                sessionStorage.setItem("refreshToken", "");
+                removeSession("accessToken");
+                removeSession("refreshToken");
             }
-
-            console.log(res);
         },
 
         onError: (error: Error) => {
