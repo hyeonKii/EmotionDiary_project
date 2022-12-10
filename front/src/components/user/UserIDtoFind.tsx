@@ -1,154 +1,81 @@
-import { useState } from "react";
+import styled from "styled-components";
 import useForm from "@/hooks/useForm";
-import { useRequestFindID } from "@/api/account";
-import { useRequestSendCode } from "@/api/certificate";
-import { FIND_PW, LOGIN, REGISTER } from "./constants/tabList";
-import Icon from "../UI/Icon";
+import { Link } from "react-router-dom";
+import { ROUTES } from "@/routes/route";
+import React from "react";
 import {
     Form,
     FormTitle,
-    InputSection,
-    InputBlock,
     FormButton,
-    Error,
-    BottomSection,
-    IDStyle,
+    Container,
+    FindMessage,
+    Input,
     AuthButton,
     CorrectButton,
-    FindError,
-    Success,
-    DescriptionLabel,
+    ModalLabel,
+    ConfirmAccount,
+    InputError,
 } from "@/styles/common/Modal/Form-style";
 
-interface Props {
-    setTabNumber(value: number): void;
-}
+export default function UserIDtoFind() {
+    const { form, validatedForm, changeHandler } = useForm({ email: "", certification: "" });
 
-interface IDResponse {
-    data: string;
-}
-
-interface Error {
-    response: {
-        data: string;
-    };
-}
-
-export default function UserIDtoFind({ setTabNumber }: Props) {
-    const [id, setId] = useState("");
-    const [emailError, setEmailError] = useState("");
-    const [codeError, setCodeError] = useState("");
-
-    const { form, changeHandler } = useForm({ email: "", target: "id", code: "" });
-
-    const { isSuccess: emailSuccess, mutate: sendCode } = useRequestSendCode(form, {
-        onSuccess: () => {
-            console.log("이메일 코드 전송 완료.");
-            setEmailError("");
-        },
-        onError: (error: Error) => {
-            console.log("이메일 전송 실패");
-
-            if (error.response.data === "User does not exists") {
-                setEmailError("아이디가 존재하지 않습니다.");
-                return;
-            }
-
-            setEmailError("코드 전송이 실패했습니다. 다시 한번 확인해주세요.");
-        },
-    });
-
-    const { isSuccess: codeSuccess, mutate: findID } = useRequestFindID(
-        { email: form.email, code: form.code },
-        {
-            onSuccess: (res: IDResponse) => {
-                console.log(res);
-
-                const { data } = res;
-
-                if (data) {
-                    setId(data);
-                    setCodeError("");
-                    return;
-                }
-
-                setCodeError("확인된 아이디가 없습니다. 다시 한번 확인해주세요.");
-            },
-            onError: () => {
-                console.log("아이디 찾기 실패");
-                setCodeError("확인 요청이 실패했습니다.");
-            },
-        }
-    );
-
-    const sendCodeHandler = () => {
-        sendCode();
+    const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
     };
 
-    const checkCodeHandler = () => {
-        findID();
-    };
     return (
-        <Form>
+        <Form onSubmit={submitHandler}>
             <FormTitle>아이디 찾기</FormTitle>
-                <InputSection>
-                    <InputBlock>
-                        <DescriptionLabel>
-                            가입하신 이메일을 입력해주세요.
-                        </DescriptionLabel>
-                        <Icon icon="email" />
-                        <input
-                            id="email"
-                            type="email"
-                            placeholder="이메일"
-                            onChange={changeHandler}
-                        />
-                        <AuthButton type="button" onClick={sendCodeHandler}>
-                            인증
-                        </AuthButton>
-                    </InputBlock>
-                    {emailSuccess && <Success>코드가 전송되었습니다.</Success>}
-                    {emailError && <FindError>{emailError}</FindError>}
-                </InputSection>
-                <InputSection>
-                    <InputBlock>
-                        <DescriptionLabel htmlFor="certifcation">
-                            이메일로 전송된 인증번호 8자리를 입력해주세요.
-                        </DescriptionLabel>
-                        <Icon icon="certification" />
-                        <input
-                            id="code"
-                            type="text"
-                            placeholder="인증번호 입력"
-                            onChange={changeHandler}
-                        />
-                        <CorrectButton type="button" onClick={checkCodeHandler}>
-                            확인
-                        </CorrectButton>
-                    </InputBlock>
-                    
-                    {codeSuccess && <Success>코드가 확인되었습니다.</Success>}
-                    {codeError && <FindError>{codeError}</FindError>}
-                </InputSection>
-                {id && (
-                    <IDStyle>
-                        아이디는 <span>{id}</span>입니다.
-                    </IDStyle>
-                )}
-                <BottomSection>
-                    <FormButton onClick={() => setTabNumber(LOGIN)}
-                    >로그인 하기
-                    </FormButton>
-                    <div className="register">
-                        <span>계정이 없으신가요? </span>
-                        <button type="button" onClick={() => setTabNumber(REGISTER)}>
-                            회원가입
-                        </button>
-                    </div>  
-                    <button type="button" onClick={() => setTabNumber(FIND_PW)}>
-                        비밀번호 찾기
-                    </button>
-                </BottomSection>
+
+            <ModalLabel htmlFor="email">가입하신 이메일을 입력해 주세요.</ModalLabel>
+            <Container>
+                {/* <Icon icon="email" /> */}
+                <Input id="email" type="email" onChange={changeHandler} placeholder="이메일" />
+                <AuthButton type="button">인증</AuthButton>
+                <InputError>가입되지 않은 이메일입니다.</InputError>
+            </Container>
+            <ModalLabel htmlFor="certifcation">
+                이메일로 전송된 인증번호 여덟 자리를 입력해주세요.
+            </ModalLabel>
+            <Container>
+                {/* <Icon icon="certification" /> */}
+                <Input
+                    id="certifcation"
+                    type="text"
+                    onChange={changeHandler}
+                    placeholder="인증번호 입력"
+                />
+                {/* <span>시간</span> */}
+                <CorrectButton type="button">확인</CorrectButton>
+                <InputError>올바르지 않은 인증번호입니다.</InputError>
+            </Container>
+
+            <ModalLabel>아이디는 ~입니다.</ModalLabel>
+            <FormButton>로그인 하기</FormButton>
+            <ConfirmAccount>
+                계정이 없으신가요? {""}
+                <Link
+                    to={ROUTES.REGISTER.path}
+                    style={{
+                        textDecoration: "none",
+                        color: "#47B5FF",
+                    }}
+                >
+                    회원가입
+                </Link>
+            </ConfirmAccount>
+            <FindMessage>
+                <Link
+                    to={ROUTES.FINDPW.path}
+                    style={{
+                        textDecoration: "none",
+                        color: "#47B5FF",
+                    }}
+                >
+                    비밀번호 찾기
+                </Link>
+            </FindMessage>
         </Form>
     );
-};
+}

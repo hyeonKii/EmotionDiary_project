@@ -1,15 +1,12 @@
 import { useState } from "react";
 import { TabList } from "@/styles/common/tab-style";
 import { DiarySection } from "@/styles/diary/diary-style";
-import { DiaryCalendar } from "./DiaryCalendar";
+import { TodayDiary } from "./TodayDiary";
 import { Chat } from "@/components/chat/Chat";
-import DiaryUserPostList from "./DiaryUserPostList";
-
-const tabList = ["하루일기", "전체일기", "대화목록"] as const;
-type TabList = typeof tabList[number];
+const tabList = ["하루일기", "전체일기", "대화목록"];
 
 export function Diary() {
-    const [tab, setTab] = useState<TabList>("하루일기");
+    const [tab, setTab] = useState("하루일기");
 
     return (
         <DiarySection>
@@ -24,8 +21,7 @@ export function Diary() {
                     </li>
                 ))}
             </TabList>
-            {tab === "하루일기" && <DiaryCalendar />}
-            {tab === "전체일기" && <DiaryUserPostList />}
+            {tab === "하루일기" && <TodayDiary />}
             {tab === "대화목록" && <Chat />}
         </DiarySection>
     );

@@ -1,5 +1,4 @@
 import { useState, forwardRef, useMemo, ForwardedRef } from "react";
-import { dateTime } from "@/util/time";
 import { CardSection, Post, PostDetail, MessageBlock } from "@/styles/home/postList-style";
 
 interface Items {
@@ -7,7 +6,8 @@ interface Items {
     title: string;
     description: string;
     emotion: string;
-    createdAt: Date;
+    time: string;
+    body: string;
 }
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
 function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
     const [isOpen, setIsOpen] = useState(false);
     const [like, setLike] = useState(false);
-    const { emotion, title, description, createdAt } = post;
+    const { id, emotion, title, description, body } = post;
 
     const onClick = () => {
         setIsOpen((prev) => !prev);
@@ -31,16 +31,16 @@ function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
         return (
             <>
                 <Post onClick={onClick} isOpen={isOpen} emotion={emotion}>
-                    <span className="emotion">{emotion}</span>
+                    <span className="emotion">{id}</span>
                     <span className="title">{title}</span>
                     <div className="time">
-                        <span>{dateTime(new Date(createdAt))}</span>
+                        <span>3시간 전</span>
                         <span className="arrow">{isOpen ? "▲" : "▼"}</span>
                     </div>
                 </Post>
                 {isOpen && (
                     <PostDetail>
-                        <p className="description">{description}</p>
+                        <p className="description">{body}</p>
                         <div>
                             <MessageBlock>
                                 <input

@@ -10,17 +10,11 @@ diaryRouter.post(
     "/write",
     auth,
     wrapRouter(async (req: Req, res: Res) => {
-        const { title, description, privateDiary, createdAt } = req.body;
+        const { title, description, privateDiary } = req.body;
         if (title && description && privateDiary === undefined) {
             throw new AppError("ArgumentError");
         }
-        const result = await diaryService.writeDiary(
-            req.userID!,
-            title,
-            description,
-            privateDiary,
-            createdAt
-        );
+        const result = await diaryService.writeDiary(req.userID!, title, description);
         return { statusCode: 200, content: true };
     })
 );
@@ -35,11 +29,10 @@ diaryRouter.patch(
     })
 );
 
-// privateddiary => 내가 쓴 일기
 //모든 일기 조회
 diaryRouter.get(
     "/all",
-    // auth,
+    auth,
     wrapRouter(async (req: Req, res: Res) => {
         const { count, page, privatediary, emotion } = req.query;
         if (
@@ -85,28 +78,13 @@ diaryRouter.get(
     })
 );
 
-diaryRouter.get(
-    "/",
-    auth,
-    wrapRouter(async (req: Req, res: Res) => {
-        const { datetime } = req.query;
-        const date = new Date(String(datetime));
-        const nextDate = new Date(String(datetime));
-        nextDate.setMonth(date.getMonth() + 1);
-        console.log(date, nextDate);
-        const result = await diaryService.getDiaryByDate(req.userID!, date, nextDate);
-        return { statusCode: 200, content: result };
-    })
-);
-
 diaryRouter.put(
     "/:id",
-    // auth,
+    auth,
     wrapRouter(async (req: Req, res: Res) => {
         const { id } = req.params;
-        console.log(id);
-        const { title, description, privateDiary } = req.body;
-        const result = await diaryService.updateDiary(id, title, description, privateDiary);
+        const { title, description } = req.body;
+        const result = await diaryService.updateDiary(id, title, description);
         return Promise.resolve({ statusCode: 200, content: result });
     })
 );

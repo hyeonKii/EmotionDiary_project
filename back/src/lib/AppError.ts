@@ -4,7 +4,6 @@ type ErrorName =
     | "InvalidTokenError"
     | "TokenExpiredError"
     | "UserExistError"
-    | "UserNotExistError"
     | "InvalidEmailFormatError"
     | "NotFindError"
     | "ArgumentError"
@@ -37,10 +36,6 @@ const ERROR_MAP: Record<ErrorName, ErrorInfo> = {
     UserExistError: {
         statusCode: 400,
         message: "User already exists",
-    },
-    UserNotExistError: {
-        statusCode: 400,
-        message: "User does not exists",
     },
     InvalidEmailFormatError: {
         statusCode: 400,

@@ -11,8 +11,8 @@ interface EditNickname {
     nickname: string | null | undefined;
 }
 
-async function deleteUser() {
-    return await axios.post(URL + endpoint.USER_DELETE, null, {
+async function deleteUser(userData: Delete) {
+    return await axios.post(URL + endpoint.USER_DELETE, userData, {
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
             Refreshtoken: sessionStorage.getItem("refreshToken"),
@@ -29,7 +29,8 @@ async function editNickname(userData: EditNickname) {
     });
 }
 
-export const useRequestDeleteUser = (options?) => useMutation(() => deleteUser(), options);
+export const useRequestDeleteUser = (userData: Delete, options?) =>
+    useMutation(() => deleteUser(userData), options);
 
 export const useRequestEditNickname = (userData: EditNickname, options?) =>
     useMutation(() => editNickname(userData), options);

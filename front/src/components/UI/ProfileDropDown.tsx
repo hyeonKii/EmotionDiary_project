@@ -1,45 +1,43 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
-import useLogout from "@/hooks/useLogout";
-import UserEdit from "@/components/user/UserEdit";
-import ModalBackground from "./ModalBackground";
-import { DropDownStyle } from "@/styles/common/nav/nav-style";
-
-interface Props {
-    setShowDropDown(value: boolean): void;
-}
-
-export default function ProfileDropDown({ setShowDropDown }: Props) {
-    const navigate = useNavigate();
-    const [showInfo, setShowInfo] = useState(false);
-
-    const { logout } = useLogout();
-
-    const logoutHandler = () => {
-        try {
-            setShowDropDown(false);
-            logout();
-            navigate("/home");
-        } catch (error) {
-            if (error instanceof Error) {
-                console.log(error.message);
-            }
-        }
-    };
-
+function ProfileDropDown() {
     return (
-        <>
-            {showInfo && (
-                <>
-                    <UserEdit setShowInfo={setShowInfo} setShowDropDown={setShowDropDown} />
-                    <ModalBackground setShowLoginForm={setShowDropDown} />
-                </>
-            )}
-            <DropDownStyle>
-                <button onClick={() => setShowInfo(true)}>정보</button>
-                <button onClick={logoutHandler}>로그아웃</button>
-            </DropDownStyle>
-        </>
+        <DropDownStyle>
+            <li>
+                <button>정보</button>
+            </li>
+            <li>
+                <button>로그아웃</button>
+            </li>
+        </DropDownStyle>
     );
 }
+
+export default ProfileDropDown;
+
+const DropDownStyle = styled.ul`
+    width: 6rem;
+    height: 5rem;
+
+    margin-top: 1rem;
+    padding: 1rem;
+
+    list-style: none;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    position: absolute;
+    top: 5vh;
+    right: 1.25rem;
+
+    background-color: white;
+
+    button {
+        background-color: transparent;
+        border: none;
+        font-size: 1.25rem;
+    }
+`;

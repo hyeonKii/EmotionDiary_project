@@ -1,21 +1,9 @@
-import { useState, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
-
 import { useRequestLogin } from "@/api/account";
 import useForm from "@/hooks/useForm";
 import useSetUser from "@/hooks/useSetUser";
-import { setSession } from "@/util/setSession";
-import Icon from "@/components/UI/Icon";
-import { REGISTER, FIND_ID, FIND_PW } from "./constants/tabList";
-import {
-    Form,
-    FormTitle,
-    InputSection,
-    InputBlock,
-    FormButton,
-    Error,
-    BottomSection,
-} from "@/styles/common/modal/form-style";
+import { ROUTES } from "@/routes/route";
+import React from "react";
+import { Link } from "react-router-dom";
 
 interface Response {
     data: {
@@ -28,85 +16,58 @@ interface Error {
     message: string;
 }
 
-interface Props {
-    setTabNumber(value: number): void;
-    setShowLoginForm(value: boolean): void;
-}
-
-export default function UserLogin({ setTabNumber, setShowLoginForm }: Props) {
-    const navigate = useNavigate();
-    const [error, setError] = useState(false);
-    const { setUser } = useSetUser();
-
+export default function UserLogin() {
     const { form, changeHandler } = useForm({
         userID: "",
         password: "",
     });
 
+    const { setUser } = useSetUser();
+
     const { mutate: loginRequest } = useRequestLogin(form, {
         onSuccess: (res: Response) => {
             const { accessToken, refreshToken } = res.data;
 
-            setSession("accessToken", accessToken);
-            setSession("refreshToken", refreshToken);
+            sessionStorage.setItem("accessToken", accessToken);
+            sessionStorage.setItem("refreshToken", refreshToken);
 
             setUser();
-
-            setShowLoginForm(false);
-            navigate("/home");
         },
 
         onError: (error: Error) => {
-            setError(true);
             console.log(error.message);
         },
     });
 
-    const submitHandler = (event: FormEvent<HTMLFormElement>) => {
+    const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         loginRequest();
     };
 
     return (
-        <Form onSubmit={submitHandler}>
-            <FormTitle>로그인</FormTitle>
-            <InputSection>
-                <InputBlock>
-                    <label htmlFor="userID">
-                        <Icon icon="userID" />
-                    </label>
-                    <input id="userID" type="text" onChange={changeHandler} placeholder="아이디" />
-                </InputBlock>
-                <InputBlock>
-                    <label htmlFor="password">
-                        <Icon icon="password" />
-                    </label>
-                    <input
-                        id="password"
-                        type="password"
-                        onChange={changeHandler}
-                        placeholder="비밀번호"
-                    />
-                </InputBlock>
-                {error && <Error>입력하신 정보를 다시 확인해주세요.</Error>}
-            </InputSection>
-            <BottomSection>
-                <FormButton disabled={!form.userID || !form.password ? true : false}>
-                    로그인
-                </FormButton>
-                <div className="register">
-                    <span>계정이 없으신가요? </span>
-                    <button type="button" onClick={() => setTabNumber(REGISTER)}>
-                        회원가입
-                    </button>
-                </div>
-                <button type="button" onClick={() => setTabNumber(FIND_ID)}>
-                    아이디/
-                </button>
-                <button type="button" onClick={() => setTabNumber(FIND_PW)}>
-                    비밀번호 찾기
-                </button>
-            </BottomSection>
-        </Form>
+        <form onSubmit={submitHandler}>
+            <div>
+                <input id="userID" type="text" onChange={changeHandler} placeholder="아이디" />
+            </div>
+            <div>
+                <input
+                    id="password"
+                    type="password"
+                    onChange={changeHandler}
+                    placeholder="비밀번호"
+                />
+            </div>
+            <button>로그인</button>
+            <div>계정이 없으신가요?</div>
+            <Link
+                to={ROUTES.REGISTER.path}
+                style={{
+                    textDecoration: "none",
+                    color: "#47B5FF",
+                }}
+            >
+                회원가입
+            </Link>
+        </form>
     );
 }

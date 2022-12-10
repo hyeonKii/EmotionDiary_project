@@ -16,9 +16,9 @@ interface Error {
 export default function useSetUser() {
     const setUserState = useSetRecoilState(currentUser);
 
-    const { isLoading, refetch: setUser } = useFetchUser(["user"], {
+    const { refetch: setUser } = useFetchUser(["user"], {
         enabled: false,
-        retry: false,
+        retry: 3,
 
         onSuccess: (res: Response) => {
             const {
@@ -36,5 +36,5 @@ export default function useSetUser() {
         },
     });
 
-    return { isLoading, setUser };
+    return { setUser };
 }

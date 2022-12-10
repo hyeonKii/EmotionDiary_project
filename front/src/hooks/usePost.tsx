@@ -13,10 +13,9 @@ export default function usePost({ isFetchingNextPage, hasNextPage, fetchNextPage
         (post: HTMLElement) => {
             if (isFetchingNextPage) return;
             if (intObserver.current) intObserver.current.disconnect();
-            intObserver.current = new IntersectionObserver((posts, observer) => {
+            intObserver.current = new IntersectionObserver((posts) => {
                 if (posts[0].isIntersecting && hasNextPage) {
                     fetchNextPage();
-                    observer.unobserve(posts[0].target);
                 }
             });
             if (post) intObserver.current.observe(post);
