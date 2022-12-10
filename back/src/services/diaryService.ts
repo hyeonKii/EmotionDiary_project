@@ -1,6 +1,6 @@
 import { PrismaClient, User } from "@prisma/client";
-import { empty } from "@prisma/client/runtime";
-import AppError from "lib/AppError";
+
+import AppError from "../lib/AppError";
 import accountService from "./accountService";
 
 class DiaryService {

@@ -1,8 +1,9 @@
 import { Router, Request as Req, Response as Res } from "express";
-import wrapRouter from "lib/wrapRouter";
+import wrapRouter from "../lib/wrapRouter";
 import diaryService from "../services/diaryService";
-import auth from "middleware/auth";
-import AppError from "lib/AppError";
+import auth from "../middleware/auth";
+import AppError from "../lib/AppError";
+
 const diaryRouter = Router();
 
 //일기 create API
@@ -54,7 +55,7 @@ diaryRouter.get(
             req.userID!,
             Number(count),
             Number(page),
-            String(privatediary),
+            Boolean(privatediary),
             String(emotion)
         );
         console.log(result);

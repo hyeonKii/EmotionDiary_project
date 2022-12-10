@@ -5,7 +5,6 @@ import { generateToken } from "../lib/token";
 import userService from "./userService";
 import tokenService from "./tokenService";
 import certificationService from "./certificationService";
-import { logger } from "../config/logger";
 import { isInvalidEmail } from "../lib/util";
 
 interface UserData {

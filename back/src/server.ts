@@ -1,13 +1,15 @@
 import express from "express";
 import { config } from "dotenv";
+import cors from "cors";
+
 import userRouter from "./route/user";
 import accountRouter from "./route/account";
 import diaryRouter from "./route/diary";
 import chatRouter from "./route/chat";
 import certificationRouter from "./route/certification";
-import tokenRouter from "route/token";
-import error from "middleware/error";
-import cors from "cors";
+import tokenRouter from "./route/token";
+import error from "./middleware/error";
+
 config();
 
 const app = express();

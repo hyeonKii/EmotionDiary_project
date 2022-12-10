@@ -1,10 +1,11 @@
 import { Router, Request as Req, Response as Res } from "express";
-import wrapRouter from "lib/wrapRouter";
-import AppError from "lib/AppError";
 import { Socket } from "socket.io";
 import socket from "socket.io";
 import express from "express";
 import http from "http";
+
+import wrapRouter from "../lib/wrapRouter";
+import AppError from "../lib/AppError";
 import chatService from "../services/chatService";
 
 interface MessagePayload {
