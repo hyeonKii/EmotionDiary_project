@@ -115,6 +115,18 @@ export const InputSection = styled.section`
     text-align: center;
 `;
 
+export const RegisterInputSection = styled.section`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-item: center;
+
+    width: 70%;
+    height: 60%;
+
+    text-align: center;
+`;
+
 export const InputBlock = styled.div`
     display: flex;
     flex-direction: column;
@@ -245,37 +257,29 @@ export const Input = styled.input`
 `;
 
 export const AuthButton = styled.button`
-    width: 2.5rem;
-    height: 2.15rem;
-
+    width: 17.5%;
+    height: 2.7rem;
     position: absolute;
-    right: 0.2px;
+    margin-top: 22px;
+    margin-left: 83.5%;
 
-    outline: none;
-    border: none;
-    border-radius: 4px;
+    border-radius: 0 8px 8px 0;
 
     background-color: ${color.lightBlue};
-    color: ${color.white};
-
-    font-size: 12px;
+    color: white;
 `;
 
 export const CorrectButton = styled.button`
-    width: 2.5rem;
-    height: 2.15rem;
-
+    width: 17.5%;
+    height: 2.67rem;
     position: absolute;
-    right: 0.2px;
+    margin-top: 22.3px;
+    margin-left: 83.5%;
 
-    outline: none;
-    border: none;
-    border-radius: 4px;
+    border-radius: 0 8px 8px 0;
 
     background-color: ${color.lightBlue};
-    color: ${color.white};
-
-    font-size: 12px;
+    color: white;
 `;
 
 export const AccountMessage = styled.div`
@@ -318,7 +322,50 @@ export const ModalTabList = styled.li`
     }
 `;
 
+export const SuccessMessage = styled.div`
+    color: blue;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+`;
+
+
 export const InputError = styled.div`
     font-size: 5px;
     color: ${color.red};
+`;
+
+
+
+
+
+//Find Modal
+export const IDStyle = styled.div`
+    span {
+        color: lightblue;
+    }
+`;
+
+export const FindError = styled.div`
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+`;
+
+export const SmallError = styled.div`
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+`;
+
+
+export const Success = styled.div`
+    color: blue;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+`;
+
+export const DescriptionLabel = styled.label`
+    display: inline-block;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
 `;
