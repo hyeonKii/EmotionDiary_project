@@ -31,9 +31,9 @@ post {{url}}/account/new
 Content-Type: application/json
 
 {
-  "nickname":"euiho",
-  "email":"jlee7004@naver.com",
-  "userID": "euiho",
+  "nickname":"euiho1",
+  "email":"jlee70041@naver.com",
+  "userID": "euiho1",
   "password": "0000"
 }
 

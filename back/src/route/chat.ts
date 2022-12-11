@@ -8,7 +8,7 @@ import http from "http";
 import chatService from "../services/chatService";
 
 interface MessagePayload {
-    roomName: string;
+    chatRoom: string;
     msgText: string;
     userid: string;
 }
@@ -33,14 +33,16 @@ export const sc = new socket.Server(server, {
 
 if (sc !== undefined) {
     sc.on("connection", (socket: Socket) => {
-        socket.on("message", async ({ roomName, msgText, userid }: MessagePayload) => {
-            sc.to(roomName).emit("message", { sender: userid, msgText, roomName });
-            const result = await chatService.saveMessege(roomName, msgText, String(userid));
+        socket.on("message", async ({ chatRoom, msgText, userid }: MessagePayload) => {
+            sc.to(chatRoom).emit("message", { sender: userid, msgText, chatRoom });
+            console.log(chatRoom, msgText, userid);
+            const result = await chatService.saveMessege(chatRoom, msgText, String(userid));
         });
         //foreach 사용하기 => for 대신에
 
         socket.on("room-list", async (usermodel: string) => {
             //socket emit 으로 받아온 userid로 방을 검색
+            console.log("몇번");
             const result = await chatService.roomList(Number(usermodel));
             for (let value in Object.values(result.result)) {
                 strArr.push(...Object.values(result.result[value]));
@@ -54,7 +56,7 @@ if (sc !== undefined) {
                 sc.emit("delete-room", uniqueArr[room]);
             }
 
-            sc.emit("create-room", result); // 대기실 방 생성
+            sc.emit("create-room", result, usermodel); // 대기실 방 생성
             console.log(sendArr, "send");
             return createdRooms;
         });
@@ -88,6 +90,7 @@ if (sc !== undefined) {
         });
         socket.on("leave-room", (roomName: string) => {
             socket.leave(roomName); // leave room
+            sc.emit("leave-room");
             return { success: true };
         });
     });

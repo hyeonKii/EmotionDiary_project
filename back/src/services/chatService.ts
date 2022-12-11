@@ -1,6 +1,6 @@
 import { PrismaClient, Prisma } from "@prisma/client";
 import AppError from "../lib/AppError";
-
+import accountService from "./accountService";
 class ChatService {
     private prisma = new PrismaClient();
 
@@ -65,6 +65,7 @@ class ChatService {
                 user_model_id: true,
                 lastmessage: true,
                 updatedAt: true,
+                //count: 안읽은 메세지 추가 해야함
             },
         });
 
@@ -102,15 +103,15 @@ class ChatService {
     //     return { result };
     // }
 
-    async saveMessege(roomName: string, message: string, userid: string) {
-        const members = roomName.split(",");
+    async saveMessege(chatRoom: string, message: string, userid: string) {
+        const members = chatRoom.split(",");
         let receiveris = members.filter((x) => {
             return x != userid;
         });
 
         const result = await this.prisma.chat.update({
             where: {
-                user_model_id: roomName,
+                user_model_id: chatRoom,
             },
             data: {
                 lastmessage: message,
@@ -120,7 +121,7 @@ class ChatService {
         try {
             await this.prisma.messege.create({
                 data: {
-                    chatRoom: roomName,
+                    chatRoom: chatRoom,
                     sender: userid,
                     receiver: receiveris.join(),
                     msgText: message,
@@ -144,6 +145,7 @@ class ChatService {
             select: {
                 msgText: true,
                 sender: true,
+                chatRoom: true,
             },
         });
         await this.prisma.$disconnect();
@@ -173,7 +175,7 @@ class ChatService {
                 sender: userid,
             },
         });
-
+        console.log("방:", roomName, "  ", userid, "번이 안읽은 메세지 갯수는", result, "입니다");
         await this.prisma.$disconnect();
         return { result };
     }

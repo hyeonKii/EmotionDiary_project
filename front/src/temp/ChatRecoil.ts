@@ -19,9 +19,15 @@ export interface recentlyMessageModel {
 export interface ChatData {
     sender: string;
     msgText: string;
+    chatRoom: string;
 }
 
 export const recentlyMsgState = atom<ChatData>({
     key: "recentlyMsgState",
-    default: { sender: "", msgText: "" },
+    default: { sender: "", msgText: "", chatRoom: "" },
+});
+
+export const currentroom = atom<string>({
+    key: "roomName",
+    default: "",
 });
