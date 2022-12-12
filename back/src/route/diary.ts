@@ -15,13 +15,8 @@ diaryRouter.post(
         if (title && description && privateDiary === undefined) {
             throw new AppError("ArgumentError");
         }
-        const result = await diaryService.writeDiary(
-            req.userID!,
-            title,
-            description,
-            privateDiary,
-            createdAt
-        );
+
+        await diaryService.writeDiary(req.userID!, title, description, privateDiary, createdAt);
         return { statusCode: 200, content: true };
     })
 );
@@ -94,12 +89,76 @@ diaryRouter.get(
         const { datetime } = req.query;
         const date = new Date(String(datetime));
         const nextDate = new Date(String(datetime));
+        console.log("hi!");
         nextDate.setDate(date.getDate() + 1);
         console.log(date, nextDate);
         const result = await diaryService.getDiaryByDate(req.userID!, date, nextDate);
         return { statusCode: 200, content: result };
     })
 );
+
+diaryRouter.get(
+    "/period/:target",
+    auth,
+    wrapRouter(async (req: Req, res: Res) => {
+        const { target } = req.params;
+
+        const start = new Date();
+        start.setHours(0, 0, 0, 0);
+
+        switch (target) {
+            case "week":
+                start.setDate(new Date().getDate() - 7);
+                break;
+
+            case "month":
+                start.setMonth(new Date().getMonth() - 1);
+                break;
+            case "year":
+                start.setFullYear(new Date().getFullYear() - 1);
+                break;
+            default:
+                throw new AppError("ArgumentError");
+        }
+
+        const end = new Date(start);
+        end.setDate(start.getDate() + 1);
+
+        const result = await diaryService.getDiaryByDate(req.userID!, start, end);
+
+        return { statusCode: 200, content: result };
+    })
+);
+
+// diaryRouter.get(
+//     "/",
+//     auth,
+//     wrapRouter(async (req: Req, res: Res) => {
+//         const { datetime } = req.query;
+//         const date = new Date(String(datetime));
+//         const nextDate = new Date(String(datetime));
+//         console.log("hi!");
+//         nextDate.setDate(date.getDate() + 1);
+//         console.log(date, nextDate);
+//         const result = await diaryService.getDiaryByDate(req.userID!, date, nextDate);
+//         return { statusCode: 200, content: result };
+//     })
+// );
+
+// diaryRouter.get(
+//     "/",
+//     auth,
+//     wrapRouter(async (req: Req, res: Res) => {
+//         const { datetime } = req.query;
+//         const date = new Date(String(datetime));
+//         const nextDate = new Date(String(datetime));
+//         console.log("hi!");
+//         nextDate.setDate(date.getDate() + 1);
+//         console.log(date, nextDate);
+//         const result = await diaryService.getDiaryByDate(req.userID!, date, nextDate);
+//         return { statusCode: 200, content: result };
+//     })
+// );
 
 diaryRouter.put(
     "/:id",
