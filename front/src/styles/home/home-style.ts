@@ -18,7 +18,9 @@ export const TitleBlock = styled.div`
 
     text-align: center;
     color: ${(isdark) => isdark.theme.textColor};
+
     transition: color 0.5s linear;
+    cursor: default;
 
     h1 {
         margin-bottom: 1rem;

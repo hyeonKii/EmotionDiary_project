@@ -84,21 +84,17 @@ const deleteMyDiary = (id: number) => {
 export const useRequestWriteDiary = (diaryData: any, options?: any) =>
     useMutation(() => writeDiary(diaryData), options);
 
-export const useRequestGetDiary = (id: number | null, options?: any) =>
+export const useRequestGetDiary = (id: number | null, options?) =>
     useQuery(["diary", id], () => getMyDiary(id), options);
 
 export const useRequestGetAllDiaries = (count: number, page: number, options?: any) =>
     useQuery(["diaries", page, count], () => getDiary(count, page), options);
 
-export const useRequestGetMyAllDiaries = (count: number, page: number, options?: any) =>
+export const useRequestGetMyAllDiaries = (count: number, page: number, options?) =>
     useQuery(["my-diaries", page, count], () => getMyAllDiaries(count, page), options);
 
-export const useRequestGetMonthDiaries = (
-    year: number,
-    month: number,
-    key: string,
-    options?: any
-) => useQuery([`${key}`, year, month], () => getMyMonthDiaries(year, month), options);
+export const useRequestGetMonthDiaries = (year: number, month: number, key: string, options?) =>
+    useQuery([`${key}`, year, month], () => getMyMonthDiaries(year, month), options);
 
 export const useRequestEditDiary = (diaryData: any, id: number, options?: any) =>
     useMutation(() => editMyDiary(diaryData, id), options);

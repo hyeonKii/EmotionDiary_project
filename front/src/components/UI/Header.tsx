@@ -11,9 +11,8 @@ import DarkModeToggle from "@/styles/common/DarkModeToggle";
 
 export default function Header() {
     const user = useRecoilValue(currentUser);
-    const userCheck = user ? false : true;
 
-    const [showLoginForm, setShowLoginForm] = useState(userCheck);
+    const [showLoginForm, setShowLoginForm] = useState(!user);
     const [showDropDown, setShowDropDown] = useState(false);
 
     return (

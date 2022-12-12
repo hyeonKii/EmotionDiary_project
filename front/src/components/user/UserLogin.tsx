@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useRequestLogin } from "@/api/account";
 import useForm from "@/hooks/useForm";
 import useSetUser from "@/hooks/useSetUser";
-import setSession from "@/util/setSession";
+import { setSession } from "@/util/setSession";
 import Icon from "@/components/UI/Icon";
 import { REGISTER, FIND_ID, FIND_PW } from "./constants/tabList";
 import {

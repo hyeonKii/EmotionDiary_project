@@ -9,6 +9,8 @@ export const TabList = styled.ul`
     margin: 0 auto;
     padding: 2rem 0;
 
+    white-space: nowrap;
+
     li {
         list-style: none;
 

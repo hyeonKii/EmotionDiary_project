@@ -2,19 +2,26 @@ import { useRequestWriteDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
 import { DiaryDetail, EditBlock } from "@/styles/diary/todayDiary-style";
 import { ChangeEvent, useState } from "react";
+import { useQueryClient } from "react-query";
 
 interface Props {
     refetch(): void;
 }
 
-const getCurrentDate = (clickedDate: Date) => {
-    const currentDate = clickedDate.toISOString().split("T")[0].split("-");
+const getCurrentDateText = (dayToDate: Date) => {
+    const currentDate = new Date(dayToDate);
 
-    return `${currentDate[0]}년 ${currentDate[1]}월 ${currentDate[2]}일`;
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentDay = currentDate.getDate();
+
+    return `${currentYear}년 ${currentMonth}월 ${currentDay}일`;
 };
 
-export default function DiaryCreatePost({ refreshDiaries, clickedDate }: Props) {
-    const date = getCurrentDate(clickedDate);
+export default function DiaryCreatePost({ clickedDate }: Props) {
+    const queryClient = useQueryClient();
+
+    const currentDateText = getCurrentDateText(clickedDate);
 
     const [privateMode, setPrivateMode] = useState(true);
 
@@ -27,8 +34,9 @@ export default function DiaryCreatePost({ refreshDiaries, clickedDate }: Props) 
         { ...form, privateDiary: privateMode, createdAt: clickedDate },
         {
             onSuccess: () => {
+                queryClient.invalidateQueries(["calendar-diaries"]);
+
                 console.log("일기 작성 요청 성공");
-                refreshDiaries();
             },
             onError: () => {
                 console.log("일기 작성 요청 실패");
@@ -50,7 +58,7 @@ export default function DiaryCreatePost({ refreshDiaries, clickedDate }: Props) 
     return (
         <DiaryDetail isEdit={true}>
             <article className="top">
-                {clickedDate && <span className="date">{date}</span>}
+                {clickedDate && <span className="date">{currentDateText}</span>}
                 <select onChange={selectHandler}>
                     <option value="나만보기">나만보기</option>
                     <option value="전체공개">전체공개</option>
