@@ -37,10 +37,6 @@ export const getDiary = (count: number, page: number, emotion?: string) => {
 };
 
 const getMyDiary = (id: number | null) => {
-    if (!id) {
-        return;
-    }
-
     return axios.get(URL + endpoint.MYDIARY + "/" + id, {
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,

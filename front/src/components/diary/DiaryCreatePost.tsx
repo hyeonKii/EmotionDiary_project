@@ -18,10 +18,10 @@ const getCurrentDateText = (dayToDate: Date) => {
     return `${currentYear}년 ${currentMonth}월 ${currentDay}일`;
 };
 
-export default function DiaryCreatePost({ fullDate }: Props) {
+export default function DiaryCreatePost({ clickedDate }: Props) {
     const queryClient = useQueryClient();
 
-    const currentDateText = getCurrentDateText(fullDate);
+    const currentDateText = getCurrentDateText(clickedDate);
 
     const [privateMode, setPrivateMode] = useState(true);
 
@@ -31,7 +31,7 @@ export default function DiaryCreatePost({ fullDate }: Props) {
     });
 
     const { mutate: writeHandler } = useRequestWriteDiary(
-        { ...form, privateDiary: privateMode, createdAt: fullDate },
+        { ...form, privateDiary: privateMode, createdAt: clickedDate },
         {
             onSuccess: () => {
                 queryClient.invalidateQueries(["calendar-diaries"]);
@@ -58,7 +58,7 @@ export default function DiaryCreatePost({ fullDate }: Props) {
     return (
         <DiaryDetail isEdit={true}>
             <article className="top">
-                {fullDate && <span className="date">{currentDateText}</span>}
+                {clickedDate && <span className="date">{currentDateText}</span>}
                 <select onChange={selectHandler}>
                     <option value="나만보기">나만보기</option>
                     <option value="전체공개">전체공개</option>
