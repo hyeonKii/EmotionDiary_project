@@ -50,6 +50,45 @@ export function DiaryCalendar() {
         setID(null);
     };
 
+    const setCurrentDay = (event) => {
+        const postDate = new Date(event);
+
+        setFullDate(postDate);
+        setCurrentDiary(monthDiaries, postDate);
+    };
+
+    const setCalendarYearMonth = (event) => {
+        const currentCalendarYear = event.activeStartDate.getYear() + 1900;
+        const currentCalendarMonth = (event.activeStartDate.getMonth() + 1)
+            .toString()
+            .padStart(2, "0");
+
+        setDate({
+            year: currentCalendarYear,
+            month: currentCalendarMonth,
+        });
+    };
+
+    const setEmotionClassName = (date) => {
+        const calendarDate = new Date(date);
+        const calendarDay = calendarDate.getDate();
+        const calendarMonth = calendarDate.getMonth();
+
+        if (monthDiaries) {
+            const matchedDiary = monthDiaries?.data.find(
+                (diary: MonthData) =>
+                    new Date(diary.createdAt).getDate() === calendarDay &&
+                    new Date(diary.createdAt).getMonth() === calendarMonth
+            );
+
+            if (matchedDiary) {
+                return `${matchedDiary.emotion}`;
+            }
+        }
+
+        return null;
+    };
+
     const { data: userDiary } = useRequestGetDiary(id, {
         onSuccess: () => {
             console.log("일기 요청 성공");
@@ -59,10 +98,6 @@ export function DiaryCalendar() {
             console.log("일기 요청 실패");
         },
     });
-
-    const diary = userDiary?.data;
-
-    const { emotionState } = useEmotion(diary?.emotion, user?.nickname);
 
     const { data: monthDiaries } = useRequestGetMonthDiaries(
         date.year,
@@ -81,43 +116,9 @@ export function DiaryCalendar() {
         }
     );
 
-    const setCurrentDay = (event) => {
-        const postDate = new Date(event);
+    const diary = userDiary?.data;
 
-        setFullDate(postDate);
-
-        setCurrentDiary(monthDiaries, postDate);
-    };
-
-    const setCalendarYearMonth = (event) => {
-        const currentYear = event.activeStartDate.getYear() + 1900;
-        const currentMonth = (event.activeStartDate.getMonth() + 1).toString().padStart(2, "0");
-
-        setDate({
-            year: currentYear,
-            month: currentMonth,
-        });
-    };
-
-    const setEmotionClassName = (date) => {
-        const currentDate = new Date(date);
-        const currentDay = currentDate.getDate();
-        const currentMonth = currentDate.getMonth();
-
-        if (monthDiaries) {
-            const matchedDiary = monthDiaries?.data.find(
-                (diary: MonthData) =>
-                    new Date(diary.createdAt).getDate() === currentDay &&
-                    new Date(diary.createdAt).getMonth() === currentMonth
-            );
-
-            if (matchedDiary) {
-                return `${matchedDiary.emotion}`;
-            }
-        }
-
-        return null;
-    };
+    const { emotionState } = useEmotion(diary?.emotion, user?.nickname);
 
     return (
         <TodaySection>
