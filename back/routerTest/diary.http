@@ -76,7 +76,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoicnV5cmlhI
 RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwODI3NzczLCJleHAiOjE2NzA4Mzg1NzN9.ThtWmxO67CYIZBFRCKLK70O63zKMKQ77h6cauGrdzCY
 
 ### 일주일 / 한달 / 일년 전 일기 조회
-get {{url}}/diaries/period/year
+get {{url}}/diaries/period/all
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoicnV5cmlhIiwiaWF0IjoxNjcwODMxNDYxLCJleHAiOjE2NzA4MzMyNjF9.tmcNLpMGtGV6WbYTw-VqAFShFqQC3DPlEoOV_ud9Sh8
 RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwODMxNDY0LCJleHAiOjE2NzA4NDIyNjR9.8zHxq-lhQAmXpuBWys20zOBKEUv5Q47mNK1BB9MpAMA
 

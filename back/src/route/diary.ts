@@ -98,33 +98,38 @@ diaryRouter.get(
 );
 
 diaryRouter.get(
-    "/period/:target",
+    "/period/all",
     auth,
     wrapRouter(async (req: Req, res: Res) => {
-        const { target } = req.params;
+        // week 기간 설정
+        const weekStart = new Date();
+        weekStart.setHours(0, 0, 0, 0);
+        weekStart.setDate(new Date().getDate() - 7);
 
-        const start = new Date();
-        start.setHours(0, 0, 0, 0);
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekStart.getDate() + 1);
 
-        switch (target) {
-            case "week":
-                start.setDate(new Date().getDate() - 7);
-                break;
+        // month 기간 설정
+        const monthStart = new Date();
+        monthStart.setHours(0, 0, 0, 0);
+        monthStart.setMonth(new Date().getMonth() - 1);
 
-            case "month":
-                start.setMonth(new Date().getMonth() - 1);
-                break;
-            case "year":
-                start.setFullYear(new Date().getFullYear() - 1);
-                break;
-            default:
-                throw new AppError("ArgumentError");
-        }
+        const monthEnd = new Date(monthStart);
+        monthEnd.setDate(monthStart.getDate() + 1);
 
-        const end = new Date(start);
-        end.setDate(start.getDate() + 1);
+        // year 기간 설정
+        const yearStart = new Date();
+        yearStart.setHours(0, 0, 0, 0);
+        yearStart.setFullYear(new Date().getFullYear() - 1);
 
-        const result = await diaryService.getDiaryByDate(req.userID!, start, end);
+        const yearEnd = new Date(yearStart);
+        yearEnd.setDate(yearStart.getDate() + 1);
+
+        const result = Promise.all([
+            diaryService.getDiaryByDate(req.userID!, weekStart, weekEnd),
+            diaryService.getDiaryByDate(req.userID!, monthStart, monthEnd),
+            diaryService.getDiaryByDate(req.userID!, yearStart, yearEnd),
+        ]);
 
         return { statusCode: 200, content: result };
     })
