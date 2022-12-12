@@ -41,7 +41,7 @@ Content-Type: application/json
 
 
 ### 모든 일기 조회
-get {{url}}/diaries/all?count=10&page=1&privatediary=true&emotion=
+get {{url}}/diaries/all?count=10&page=1&emotion=&privatediary=
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdCIsImlhdCI6MTY3MDMzMzk3NCwiZXhwIjoxNjcwMzM1Nzc0fQ.1oKMuDqZ8_sMQTlUkDFhDM14Pf5Gbl4DTaMjbTyu4m0
 RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwMzMzOTc3LCJleHAiOjE2NzAzNDQ3Nzd9.pfD5YTbQ8fbwG_69ru_sUTi8k6NOV-j02HhDdZN7HxI
 Content-Type: application/json

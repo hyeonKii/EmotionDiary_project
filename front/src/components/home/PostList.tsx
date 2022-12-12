@@ -33,7 +33,6 @@ interface Items {
 
 export default function PostList() {
     const [tab, setTab] = useState<TabList>("전체");
-
     const { fetchNextPage, hasNextPage, isFetchingNextPage, data, error, status, refetch } =
         useInfiniteQuery("posts", ({ pageParam = 1 }) => getPostPage(pageParam), {
             getNextPageParam: (lastPage, allPages) => {
@@ -46,6 +45,7 @@ export default function PostList() {
     const getPostPage = async (page = 1) => {
         try {
             const { data } = await api.getDiary(10, page, tab);
+            console.log(tab);
             return data;
         } catch (e) {
             console.error(e);
@@ -57,6 +57,8 @@ export default function PostList() {
     }, [tab]);
 
     const content = data?.pages?.map((page) => {
+        console.log(page, data);
+
         if (data?.pages[0].length === 0) {
             return (
                 <Empty>

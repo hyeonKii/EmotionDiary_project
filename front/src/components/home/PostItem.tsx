@@ -1,10 +1,11 @@
-import { useState, forwardRef, useMemo, ForwardedRef } from "react";
+import { useState, forwardRef, useMemo, ForwardedRef, useCallback, useRef } from "react";
 import { dateTime } from "@/util/time";
 import { CardSection, Post, PostDetail, MessageBlock } from "@/styles/home/postList-style";
 import { socket } from "@/components/chat/Chat";
-import { useNavigate } from "react-router-dom";
 import { currentUser } from "@/temp/userAtom";
 import { useRecoilValue } from "recoil";
+import { useNavigate } from "react-router-dom";
+
 interface Items {
     id: number;
     title: string;
@@ -26,7 +27,26 @@ interface CreateRoomResponse {
 function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
     const [isOpen, setIsOpen] = useState(false);
     const [like, setLike] = useState(false);
-    const { emotion, title, description, createdAt } = post;
+    const { emotion, title, description, createdAt, user_model_id } = post;
+    const messegeRef = useRef<HTMLInputElement>(null);
+    const navigate = useNavigate();
+    const user = useRecoilValue(currentUser);
+
+    const onCreateRoom = useCallback(() => {
+        const messege = messegeRef.current?.value;
+        let inviter = String(user?.id);
+        let invitee = String(user_model_id);
+
+        if (user_model_id === Number(user?.id)) {
+            return;
+        }
+
+        socket.emit("create-room", inviter, invitee, messege, (response: CreateRoomResponse) => {
+            if (!response.success) return alert(response.payload);
+
+            navigate(`/room/${response.payload}`);
+        });
+    }, [navigate]);
 
     const onClick = () => {
         setIsOpen((prev) => !prev);

@@ -150,7 +150,7 @@ class DiaryService {
             skip: (Number(page) - 1) * Number(count),
 
             where: {
-                emotion: emotion != "" ? emotion : undefined,
+                emotion: emotion != "전체" ? emotion : undefined,
                 private: privatediary === "true" ? true : false,
             },
             select: {

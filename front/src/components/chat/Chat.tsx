@@ -31,7 +31,7 @@ interface ChatList {
 
 export function Chat() {
     const [chats, setChats] = useState<ChatData[]>([]);
-    const [msgText, setMsgText] = useState<string>("");
+    const [joinedRoom, setJoinedRoom] = useState<string>();
     const [currentsroom, setCurrentsroom] = useRecoilState(currentroom);
     const chatContainerEl = useRef<HTMLDivElement>(null);
     let { roomName } = useParams<"roomName">();
@@ -165,13 +165,15 @@ export function Chat() {
             // onLeaveRoom(roomName);
             socket.emit("join-room", roomName, user?.id, () => {});
             socket.emit("leave-room", roomName, () => {});
-            navigate(`/room/${roomName}`);
+            // navigate(`/diary/room/${roomName}`);
+            console.log(roomName, 24242);
             setCurrentsroom(roomName);
+            setJoinedRoom(roomName);
             return () => {};
         },
         [navigate]
     );
-
+    console.log(joinedRoom);
     const ChatRoomComponents = useMemo(() => {
         console.log("create", chatList);
         if (chatList === null) {
@@ -221,10 +223,11 @@ export function Chat() {
                     </Container>
                 </span>
                 <Container>
-                    {chats && (
-                        <Routes>
-                            <Route path="/room/:roomName" element={<ChatRoom />} />
-                        </Routes>
+                    {joinedRoom && (
+                        // <Routes>
+                        //     <Route path="/room/:roomName" element={<ChatRoom />} />
+                        // </Routes>
+                        <ChatRoom joinedRoom={joinedRoom} setJoinedRoom={setJoinedRoom} />
                     )}
                 </Container>
             </FlexBox>

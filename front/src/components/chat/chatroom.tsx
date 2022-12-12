@@ -22,20 +22,20 @@ interface ChatData {
     chatRoom: string;
 }
 
-export const ChatRoom = () => {
+export const ChatRoom = (joinedRoom: any | undefined, setJoinedRoom: any) => {
     const [chats, setChats] = useState<ChatData[]>([]);
     const [msgText, setMsgText] = useState<string>("");
-    const [currentsroom, setCurrentsroom] = useRecoilState(currentroom);
-    const chatContainerEl = useRef<HTMLDivElement>(null);
-    let { roomName } = useParams<"roomName">();
-    const chatRoom = roomName;
-    let { room } = useParams();
     // const [currentsroom, setCurrentsroom] = useRecoilState(currentroom);
+    const chatContainerEl = useRef<HTMLDivElement>(null);
+    // const chatRoom = currentsroom;
+    let { room } = useParams();
+    const chatRoom = joinedRoom?.joinedRoom;
     const [recentlyMessage, setRecentlyMessage] = useRecoilState(recentlyMsgState);
     const user = useRecoilValue(currentUser);
-    const current_room = useRecoilValue(currentroom);
+    // const chatRoom = currentsroom;
     const userid = String(user?.id);
     const navigate = useNavigate();
+    console.log(chatRoom, joinedRoom?.joinedRoom);
     //todo : usecallback 사용하기
 
     // 채팅이 길어지면(chats.length) 스크롤이 생성되므로, 스크롤의 위치를 최근 메시지에 위치시키기 위함
@@ -48,7 +48,7 @@ export const ChatRoom = () => {
         if (scrollHeight > clientHeight) {
             chatContainer.scrollTop = scrollHeight - clientHeight;
         }
-        console.log(chats, roomName);
+        console.log(chats, chatRoom);
     }, [chats.length]);
 
     // message event listener
@@ -57,17 +57,14 @@ export const ChatRoom = () => {
             if (chat === null) {
                 return null;
             }
-            console.log("실행", chat, currentsroom);
-
-            if (chat.chatRoom == roomName) {
+            console.log("실행", chat, chatRoom);
+            if (chat.chatRoom == chatRoom && chatRoom != null) {
                 setChats((prevChats) => [...prevChats, chat]);
                 setRecentlyMessage(chat);
             }
-            console.log(chat, roomName, current_room);
-            console.log(currentsroom);
         };
-        const leaveRoomHandler = (roomName: string) => {
-            setCurrentsroom(roomName);
+        const leaveRoomHandler = (chatRoom: string) => {
+            // setCurrentsroom(chatRoom);
         };
 
         socket.on("message", messageHandler);
@@ -79,17 +76,17 @@ export const ChatRoom = () => {
     }, []);
 
     useEffect(() => {
-        getMessegetext(roomName);
-        // console.log("the rooms change", roomName);
-        if (roomName !== undefined) {
-            setCurrentsroom(roomName);
+        getMessegetext(chatRoom);
+        // console.log("the rooms change", chatRoom);
+        if (chatRoom !== undefined) {
+            // setCurrentsroom(chatRoom);
         }
-    }, [roomName]);
+    }, [chatRoom]);
 
     //전체 메세지 받아오기
-    const getMessegetext = async (roomName: string | undefined) => {
+    const getMessegetext = async (chatRoom: string | undefined) => {
         try {
-            const { data } = await api.getMessege(roomName);
+            const { data } = await api.getMessege(chatRoom);
             setChats(data.result);
             return data;
         } catch (e) {
@@ -97,9 +94,9 @@ export const ChatRoom = () => {
         }
     };
 
-    // const getRecentlyMessege = async (roomName: string | undefined) => {
+    // const getRecentlyMessege = async (chatRoom: string | undefined) => {
     //     try {
-    //         const { data } = await api.getMessege(roomName);
+    //         const { data } = await api.getMessege(chatRoom);
     //         setChats(data.result);
     //         return data;
     //     } catch (e) {
@@ -115,28 +112,30 @@ export const ChatRoom = () => {
         (e: FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             if (!msgText) return alert("메시지를 입력해 주세요.");
-
-            socket.emit("message", { chatRoom, msgText, userid }, (chat: ChatData) => {
-                setChats((prevChats) => [...prevChats, chat]);
-            });
-            setMsgText("");
+            if (chatRoom != null) {
+                console.log(chatRoom, "is not null");
+                socket.emit("message", { chatRoom, msgText, userid }, (chat: ChatData) => {
+                    setChats((prevChats) => [...prevChats, chat]);
+                });
+                setMsgText("");
+            }
         },
-        [msgText, roomName]
+        [msgText, chatRoom]
     );
 
     const onLeaveRoom = useCallback(() => {
-        socket.emit("leave-room", roomName, () => {});
+        socket.emit("leave-room", chatRoom, () => {});
         navigate("/");
-    }, [navigate, roomName]);
+    }, [navigate, chatRoom]);
 
     return (
         <>
             <LeaveButton onClick={onLeaveRoom}>
-                <button>방 나가기{roomName}</button>
+                <button>방 나가기{chatRoom}</button>
             </LeaveButton>
             <ChatContainer ref={chatContainerEl}>
                 {chats.map((chat, index) =>
-                    chat.chatRoom == roomName ? (
+                    chat.chatRoom == chatRoom ? (
                         <MessageBox
                             key={index}
                             className={classNames({

@@ -29,7 +29,7 @@ export const recentlyMsgState = atom<ChatData>({
 });
 
 export const currentroom = atom<string>({
-    key: "roomName",
+    key: "currentroom",
     default: "",
 });
 export interface ChatForm {
