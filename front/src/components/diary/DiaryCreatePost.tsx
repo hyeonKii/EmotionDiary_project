@@ -5,7 +5,7 @@ import { ChangeEvent, useState } from "react";
 import { useQueryClient } from "react-query";
 
 interface Props {
-    refetch(): void;
+    clickedDate: Date;
 }
 
 const getCurrentDateText = (dayToDate: Date) => {

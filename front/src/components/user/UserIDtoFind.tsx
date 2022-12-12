@@ -18,7 +18,7 @@ import {
     FindError,
     Success,
     DescriptionLabel,
-} from "@/styles/common/Modal/Form-style";
+} from "@/styles/common/modal/Form-style";
 
 interface Props {
     setTabNumber(value: number): void;
@@ -91,64 +91,55 @@ export default function UserIDtoFind({ setTabNumber }: Props) {
     return (
         <Form>
             <FormTitle>아이디 찾기</FormTitle>
-                <InputSection>
-                    <InputBlock>
-                        <DescriptionLabel>
-                            가입하신 이메일을 입력해주세요.
-                        </DescriptionLabel>
-                        <Icon icon="email" />
-                        <input
-                            id="email"
-                            type="email"
-                            placeholder="이메일"
-                            onChange={changeHandler}
-                        />
-                        <AuthButton type="button" onClick={sendCodeHandler}>
-                            인증
-                        </AuthButton>
-                    </InputBlock>
-                    {emailSuccess && <Success>코드가 전송되었습니다.</Success>}
-                    {emailError && <FindError>{emailError}</FindError>}
-                </InputSection>
-                <InputSection>
-                    <InputBlock>
-                        <DescriptionLabel htmlFor="certifcation">
-                            이메일로 전송된 인증번호 8자리를 입력해주세요.
-                        </DescriptionLabel>
-                        <Icon icon="certification" />
-                        <input
-                            id="code"
-                            type="text"
-                            placeholder="인증번호 입력"
-                            onChange={changeHandler}
-                        />
-                        <CorrectButton type="button" onClick={checkCodeHandler}>
-                            확인
-                        </CorrectButton>
-                    </InputBlock>
-                    
-                    {codeSuccess && <Success>코드가 확인되었습니다.</Success>}
-                    {codeError && <FindError>{codeError}</FindError>}
-                </InputSection>
-                {id && (
-                    <IDStyle>
-                        아이디는 <span>{id}</span>입니다.
-                    </IDStyle>
-                )}
-                <BottomSection>
-                    <FormButton onClick={() => setTabNumber(LOGIN)}
-                    >로그인 하기
-                    </FormButton>
-                    <div className="register">
-                        <span>계정이 없으신가요? </span>
-                        <button type="button" onClick={() => setTabNumber(REGISTER)}>
-                            회원가입
-                        </button>
-                    </div>  
-                    <button type="button" onClick={() => setTabNumber(FIND_PW)}>
-                        비밀번호 찾기
+            <InputSection>
+                <InputBlock>
+                    <DescriptionLabel>가입하신 이메일을 입력해주세요.</DescriptionLabel>
+                    <Icon icon="email" />
+                    <input id="email" type="email" placeholder="이메일" onChange={changeHandler} />
+                    <AuthButton type="button" onClick={sendCodeHandler}>
+                        인증
+                    </AuthButton>
+                </InputBlock>
+                {emailSuccess && <Success>코드가 전송되었습니다.</Success>}
+                {emailError && <FindError>{emailError}</FindError>}
+            </InputSection>
+            <InputSection>
+                <InputBlock>
+                    <DescriptionLabel htmlFor="certifcation">
+                        이메일로 전송된 인증번호 8자리를 입력해주세요.
+                    </DescriptionLabel>
+                    <Icon icon="certification" />
+                    <input
+                        id="code"
+                        type="text"
+                        placeholder="인증번호 입력"
+                        onChange={changeHandler}
+                    />
+                    <CorrectButton type="button" onClick={checkCodeHandler}>
+                        확인
+                    </CorrectButton>
+                </InputBlock>
+
+                {codeSuccess && <Success>코드가 확인되었습니다.</Success>}
+                {codeError && <FindError>{codeError}</FindError>}
+            </InputSection>
+            {id && (
+                <IDStyle>
+                    아이디는 <span>{id}</span>입니다.
+                </IDStyle>
+            )}
+            <BottomSection>
+                <FormButton onClick={() => setTabNumber(LOGIN)}>로그인 하기</FormButton>
+                <div className="register">
+                    <span>계정이 없으신가요? </span>
+                    <button type="button" onClick={() => setTabNumber(REGISTER)}>
+                        회원가입
                     </button>
-                </BottomSection>
+                </div>
+                <button type="button" onClick={() => setTabNumber(FIND_PW)}>
+                    비밀번호 찾기
+                </button>
+            </BottomSection>
         </Form>
     );
-};
+}
