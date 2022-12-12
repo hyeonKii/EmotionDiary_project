@@ -29,7 +29,7 @@ async function editNickname(userData: EditNickname) {
     });
 }
 
-export const useRequestDeleteUser = (options?) => useMutation(() => deleteUser(), options);
+export const useRequestDeleteUser = (options?: any) => useMutation(() => deleteUser(), options);
 
-export const useRequestEditNickname = (userData: EditNickname, options?) =>
+export const useRequestEditNickname = (userData: EditNickname, options?: any) =>
     useMutation(() => editNickname(userData), options);
