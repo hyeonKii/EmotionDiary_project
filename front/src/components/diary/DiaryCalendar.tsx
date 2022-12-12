@@ -54,7 +54,6 @@ export function DiaryCalendar() {
         const postDate = new Date(event);
 
         setFullDate(postDate);
-        setCurrentDiary(monthDiaries, postDate);
     };
 
     const setCalendarYearMonth = (event) => {
@@ -119,6 +118,10 @@ export function DiaryCalendar() {
     const diary = userDiary?.data;
 
     const { emotionState } = useEmotion(diary?.emotion, user?.nickname);
+
+    useEffect(() => {
+        setCurrentDiary(monthDiaries, fullDate);
+    }, [fullDate]);
 
     return (
         <TodaySection>
