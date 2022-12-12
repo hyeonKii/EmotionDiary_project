@@ -57,12 +57,12 @@ export const ChatRoom = () => {
             if (chat === null) {
                 return null;
             }
-            console.log("실행", chat);
+            console.log("실행", chat, currentsroom);
 
-            // if (chat.roomName == currentsroom) {
-            setChats((prevChats) => [...prevChats, chat]);
-            setRecentlyMessage(chat);
-            // }
+            if (chat.chatRoom == roomName) {
+                setChats((prevChats) => [...prevChats, chat]);
+                setRecentlyMessage(chat);
+            }
             console.log(chat, roomName, current_room);
             console.log(currentsroom);
         };

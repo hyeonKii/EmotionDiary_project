@@ -175,7 +175,7 @@ class ChatService {
                 sender: userid,
             },
         });
-        console.log("방:", roomName, "  ", userid, "번이 안읽은 메세지 갯수는", result, "입니다");
+        // console.log("방:", roomName, "  ", userid, "번이 안읽은 메세지 갯수는", result, "입니다");
         await this.prisma.$disconnect();
         return { result };
     }

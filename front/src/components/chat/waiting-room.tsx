@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import * as api from "@/api/chat";
-import { Head, Table, ChatRoom } from "@/styles/chat/waiting-room.styles";
+import { Head, Table, ChatRoomstyle } from "@/styles/chat/waiting-room.styles";
 import { socket } from "@/components/chat/Chat";
-import { recentlyMsgState } from "@/temp/ChatRecoil";
-import { currentroom } from "@/temp/ChatRecoil";
+import { recentlyMsgState, ChatListForm, currentroom } from "@/temp/ChatRecoil";
 import { currentUser } from "@/temp/userAtom";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 
@@ -25,7 +24,7 @@ interface ChatList {
     count: string;
 }
 
-const WaitingRoom = () => {
+const WaitingRoom = (prop: { chatList: ChatListForm | null }) => {
     const [count, setCount] = useState();
     const [chatList, setChatList] = useState<
         | {
@@ -151,18 +150,18 @@ const WaitingRoom = () => {
         if (chatList === null) {
             return null;
         }
-        console.log("chatList", chatList);
+        // console.log("chatList", chatList);
         return (
             <>
                 {chatList.map((item, idx) => (
-                    <ChatRoom onClick={onJoinRoom(item.user_model_id)} key={idx}>
+                    <ChatRoomstyle onClick={onJoinRoom(item.user_model_id)} key={idx}>
                         <button>{item.lastmessage}</button>
                         <div>
                             <div>{item.count}</div>
                             <span> {item.updatedAt}</span>
                         </div>
                         {/* <button>{item.lastmessage}</button> */}
-                    </ChatRoom>
+                    </ChatRoomstyle>
                 ))}
             </>
         );
@@ -174,7 +173,7 @@ const WaitingRoom = () => {
                 <div>채팅방 목록</div>
                 <button onClick={onCreateRoom}>채팅방 생성</button>
             </Head>
-            {chatList && ChatRoomComponents}
+            {prop.chatList && ChatRoomComponents}
         </>
     );
 };
