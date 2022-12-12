@@ -7,7 +7,7 @@ interface WriteDiary {
     title: string;
     description: string;
     privateDiary: boolean;
-    createdAt: Date;
+    createdAt?: Date;
 }
 
 interface EditDiary {
