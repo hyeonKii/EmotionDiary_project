@@ -17,7 +17,7 @@ export default function Header() {
 
     return (
         <header>
-            {(showLoginForm || !user) && (
+            {showLoginForm && (
                 <>
                     <UserFormController setShowLoginForm={setShowLoginForm} />
                     <ModalBackground />
