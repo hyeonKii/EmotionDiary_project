@@ -3,10 +3,10 @@ import { CardSection, Post, PostDetail } from "@/styles/home/postList-style";
 import { useRequestDeleteDiary, useRequestEditDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
 import { PostInterface } from "./interface/post";
+import { useQueryClient } from "react-query";
 
 interface Props {
     post: PostInterface;
-    refetch(): void;
 }
 
 interface Error {
@@ -14,24 +14,29 @@ interface Error {
 }
 
 const getPostedTime = (createdAt: Date) => {
-    const currentTotalDate = new Date().toISOString().split("T");
-    const createdTotalDate = new Date(createdAt).toISOString().split("T");
+    const currentDate = new Date();
+    const createdDate = new Date(createdAt);
 
-    const currentDate = Number(currentTotalDate[0].replace(/\-/g, ""));
-    const createdDate = Number(createdTotalDate[0].replace(/\-/g, ""));
+    const createdYear = createdDate.getFullYear();
+    const createdMonth = createdDate.getMonth() + 1;
 
-    const currentHour = Number(currentTotalDate[1].split(":")[0]);
-    const createdHour = Number(createdTotalDate[1].split(":")[0]);
+    const createdDay = createdDate.getDate();
+    const currentDay = currentDate.getDate();
 
-    if (currentDate - createdDate === 0) {
+    const currentHour = currentDate.getHours();
+    const createdHour = createdDate.getHours();
+
+    if (currentDay - createdDay === 0) {
         return currentHour - createdHour === 0 ? "방금 전" : `${currentHour - createdHour}시간 전`;
     }
 
-    return currentTotalDate[0].replace(/\-/g, ".");
+    return `${createdYear}.${createdMonth}.${createdDay}`;
 };
 
-export default function DiaryPost({ post, refetch }: Props) {
+export default function DiaryPost({ post }: Props) {
     const { id, title, description, createdAt, emotion, private: privateDiary } = post;
+
+    const queryClient = useQueryClient();
 
     const postedDate = getPostedTime(createdAt);
 
@@ -47,7 +52,7 @@ export default function DiaryPost({ post, refetch }: Props) {
 
     const { mutate: editDiary } = useRequestEditDiary({ ...form, privateDiary: privateMode }, id, {
         onSuccess: () => {
-            refetch();
+            queryClient.invalidateQueries(["my-diaries"]);
         },
         onError: (error: Error) => {
             console.log(error.message);
@@ -56,7 +61,7 @@ export default function DiaryPost({ post, refetch }: Props) {
 
     const { mutate: deleteDiary } = useRequestDeleteDiary(id, {
         onSuccess: () => {
-            refetch();
+            queryClient.invalidateQueries(["my-diaries"]);
         },
         onError: (error: Error) => {
             console.log(error.message);

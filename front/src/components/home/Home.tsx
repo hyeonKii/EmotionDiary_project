@@ -40,9 +40,10 @@ export default function Main() {
         };
     }, [ref, setIsOpen]);
 
-    const { data: monthDiaries } = useRequestGetMonthDiaries(
+    const { isSuccess, data: monthDiaries } = useRequestGetMonthDiaries(
         today.getFullYear(),
         today.getMonth() + 1,
+        "home-diaries",
         {
             onSuccess: () => {
                 return;
@@ -58,9 +59,11 @@ export default function Main() {
         const day = monthDiaries?.data?.map((posts: PostInterface) =>
             new Date(posts.createdAt).getDate()
         );
+
         const post = day?.find((posts: number) => posts === today.getDate());
+
         post !== undefined ? setTodayPost(true) : setTodayPost(false);
-    }, [todayPost]);
+    }, [isSuccess]);
 
     const { mutate: writeDiary } = useRequestWriteDiary(form, {
         onSuccess: () => {

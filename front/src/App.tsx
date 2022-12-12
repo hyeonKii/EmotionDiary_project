@@ -22,21 +22,20 @@ function App() {
 
     const [loadingCheck, setLoadingCheck] = useState(false);
 
-    const fetchUser = () => {
-        const accessToken = sessionStorage.getItem("accessToken");
-        const refreshToken = sessionStorage.getItem("refreshToken");
-
-        if (!accessToken || !refreshToken) {
-            setLoadingCheck(true);
-            return;
-        }
-
-        setUser().then(() => {
-            setLoadingCheck(true);
-        });
-    };
-
     useEffect(() => {
+        const fetchUser = async () => {
+            const accessToken = sessionStorage.getItem("accessToken");
+            const refreshToken = sessionStorage.getItem("refreshToken");
+
+            if (!accessToken || !refreshToken) {
+                setLoadingCheck(true);
+                return;
+            }
+
+            await setUser();
+            setLoadingCheck(true);
+        };
+
         fetchUser();
     }, []);
 

@@ -38,7 +38,7 @@ export const getDiary = (count: number, page: number, emotion?: string) => {
     );
 };
 
-const getMyDiary = (id: number) => {
+const getMyDiary = (id: number | null) => {
     return axios.get(URL + endpoint.MYDIARY + "/" + id, {
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
@@ -91,14 +91,17 @@ const getEmotionDiary = (params: string) => {
 export const useRequestWriteDiary = (diaryData, options?) =>
     useMutation(() => writeDiary(diaryData), options);
 
-export const useRequestGetDiary = (key: string[], id: number, options?) =>
-    useQuery(key, () => getMyDiary(id), options);
+export const useRequestGetDiary = (id: number | null, options?) =>
+    useQuery(["diary", id], () => getMyDiary(id), options);
 
 export const useRequestGetAllDiaries = (count: number, page: number, options?) =>
     useQuery(["diaries", page, count], () => getDiary(count, page), options);
 
 export const useRequestGetMyAllDiaries = (count: number, page: number, options?) =>
-    useQuery(["diaries", page, count], () => getMyAllDiaries(count, page), options);
+    useQuery(["my-diaries", page, count], () => getMyAllDiaries(count, page), options);
+
+export const useRequestGetMonthDiaries = (year: number, month: number, key: string, options?) =>
+    useQuery([`${key}`, year, month], () => getMyMonthDiaries(year, month), options);
 
 export const useRequestEditDiary = (diaryData, id: number, options?) =>
     useMutation(() => editMyDiary(diaryData, id), options);

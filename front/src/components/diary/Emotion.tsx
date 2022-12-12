@@ -72,9 +72,9 @@ export function Emotion() {
         },
     });
 
-    const { data: Day } = useRequestGetMonthDiaries(dayAgo.getFullYear(), dayAgo.getMonth() + 1, {
-        onSuccess: () => {
-            const day = Day?.data?.find(
+    useRequestGetMonthDiaries(dayAgo.getFullYear(), dayAgo.getMonth() + 1, "week", {
+        onSuccess: (res) => {
+            const day = res.data.find(
                 (posts: PostInterface) => new Date(posts.createdAt).getDate() === dayAgo.getDate()
             );
             day !== undefined ? setNewArr((arr) => ({ ...arr, day })) : undefined;
@@ -85,41 +85,32 @@ export function Emotion() {
         },
     });
 
-    const { data: Month } = useRequestGetMonthDiaries(
-        aMonthAgo.getFullYear(),
-        aMonthAgo.getMonth() + 1,
-        {
-            onSuccess: () => {
-                const month = Month?.data?.find(
-                    (posts: PostInterface) =>
-                        new Date(posts.createdAt).getDate() === aMonthAgo.getDate()
-                );
-                month !== undefined ? setNewArr((arr) => ({ ...arr, month })) : undefined;
-            },
+    useRequestGetMonthDiaries(aMonthAgo.getFullYear(), aMonthAgo.getMonth() + 1, "month", {
+        onSuccess: (res) => {
+            const month = res.data.find(
+                (posts: PostInterface) =>
+                    new Date(posts.createdAt).getDate() === aMonthAgo.getDate()
+            );
+            month !== undefined ? setNewArr((arr) => ({ ...arr, month })) : undefined;
+        },
 
-            onError: ({ message }: Error) => {
-                console.error(message);
-            },
-        }
-    );
+        onError: ({ message }: Error) => {
+            console.error(message);
+        },
+    });
 
-    const { data: Year } = useRequestGetMonthDiaries(
-        aYearAgo.getFullYear(),
-        aYearAgo.getMonth() + 1,
-        {
-            onSuccess: () => {
-                const year = Year?.data?.find(
-                    (posts: PostInterface) =>
-                        new Date(posts.createdAt).getDate() === aYearAgo.getDate()
-                );
-                year !== undefined ? setNewArr((arr) => ({ ...arr, year })) : undefined;
-            },
+    useRequestGetMonthDiaries(aYearAgo.getFullYear(), aYearAgo.getMonth() + 1, "year", {
+        onSuccess: (res) => {
+            const year = res.data.find(
+                (posts: PostInterface) => new Date(posts.createdAt).getDate() === aYearAgo.getDate()
+            );
+            year !== undefined ? setNewArr((arr) => ({ ...arr, year })) : undefined;
+        },
 
-            onError: ({ message }: Error) => {
-                console.error(message);
-            },
-        }
-    );
+        onError: ({ message }: Error) => {
+            console.error(message);
+        },
+    });
 
     return (
         <EmotionSection>
