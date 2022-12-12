@@ -11,6 +11,7 @@ export const CardSection = styled.section`
 
     border: none;
     border-radius: 8px;
+    background: ${color.white};
     box-shadow: 0 4px 4px 0 ${color.gray};
 `;
 
@@ -25,17 +26,23 @@ export const Post = styled.article<{ isOpen: boolean; emotion: string }>`
         margin-right: 1.5rem;
 
         background: ${({ emotion }) =>
-            emotion === "행복"
+            emotion === "자신감"
+                ? color.orange
+                : emotion === "만족감"
+                ? color.pink
+                : emotion === "편안함"
+                ? color.skyBlue
+                : emotion === "신남"
                 ? color.yellow
+                : emotion === "불안"
+                ? color.green
                 : emotion === "슬픔"
+                ? color.lightBlue
+                : emotion === "상처"
                 ? color.deepBlue
                 : emotion === "분노"
                 ? color.red
-                : emotion === "경멸"
-                ? color.orange
-                : emotion === "두려움"
-                ? color.darkBlue
-                : color.pink};
+                : color.lightGray};
 
         color: white;
         line-height: 40px;

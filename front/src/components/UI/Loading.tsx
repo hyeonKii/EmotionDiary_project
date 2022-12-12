@@ -1,3 +1,10 @@
+import { loading } from "@/assets/images";
+import { LoadingStyle } from "@/styles/common/loading/loading-style";
+
 export default function Loading() {
-    return <div>로딩 중...</div>;
+    return (
+        <LoadingStyle>
+            <img src={loading} alt="loading" />
+        </LoadingStyle>
+    );
 }

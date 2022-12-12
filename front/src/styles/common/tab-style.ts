@@ -9,19 +9,23 @@ export const TabList = styled.ul`
     margin: 0 auto;
     padding: 2rem 0;
 
+    white-space: nowrap;
+
     li {
         list-style: none;
 
         margin-right: 1rem;
         padding: 0.3rem;
 
-        color: ${color.gray};
+        color: ${(isdark) => isdark.theme.textColor};
+        transition: color 0.2s linear;
+
         cursor: pointer;
 
         &.active {
             border-bottom: 3px solid ${color.lightBlue};
 
-            color: black;
+            color: ${(isdark) => isdark.theme.textColor};
             font-weight: 700;
         }
     }

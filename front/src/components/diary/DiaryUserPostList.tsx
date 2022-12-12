@@ -1,28 +1,29 @@
 import { useRequestGetMyAllDiaries } from "@/api/diary";
 import React, { useState } from "react";
+import styled from "styled-components";
+import DiaryPageButton from "./DiaryPageButton";
 import DiaryPost from "./DiaryPost";
+import { PostInterface } from "./interface/post";
 
 interface Error {
     message: string;
 }
-
-interface Post {
-    id: number;
-    title: string;
-    description: string;
-    emotion: string;
-    time: string;
-    body: string;
-    privateDiary: boolean;
+interface Response {
+    data: { diarycount: number; postDatas: PostInterface };
 }
 
-export default function DiaryUserPostList() {
-    const [count, setCount] = useState(10);
-    const [page, setPage] = useState(1);
+const POST_COUNT = 5;
+const INITIAL_PAGE = 1;
 
-    const { data: response, refetch } = useRequestGetMyAllDiaries(count, page, {
-        onSuccess: () => {
+export default function DiaryUserPostList() {
+    const [count, setCount] = useState(POST_COUNT);
+    const [page, setPage] = useState(INITIAL_PAGE);
+    const [diaryCount, setDiaryCount] = useState(0);
+
+    const { isLoading, data: diaryData } = useRequestGetMyAllDiaries(count, page, {
+        onSuccess: (res: Response) => {
             console.log("일기 전부 GET 요청 성공");
+            setDiaryCount(res.data.diarycount);
         },
         onError: (error: Error) => {
             console.log(error.message);
@@ -37,27 +38,52 @@ export default function DiaryUserPostList() {
 
     return (
         <>
-            {response && (
-                <section>
-                    {response.data.map((post: Post) => (
-                        <DiaryPost key={post.id + "포스트"} post={post} refetch={refetch} />
-                    ))}
-                </section>
+            {!isLoading && (
+                <>
+                    {diaryData && (
+                        <section>
+                            {diaryData.data.postDatas.map((post: PostInterface) => (
+                                <DiaryPost key={post.id + "포스트"} post={post} />
+                            ))}
+                        </section>
+                    )}
+                    <PageButtonStyle>
+                        <div>
+                            <DiaryPageButton
+                                page={page}
+                                setPage={setPage}
+                                diaryCount={diaryCount}
+                                count={count}
+                            />
+                        </div>
+                        <select onChange={selectChangeHandler} defaultValue={count}>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                    </PageButtonStyle>
+                </>
             )}
-            <button
-                onClick={() =>
-                    setPage((prevState) => (prevState === 1 ? prevState : prevState - 1))
-                }
-            >
-                이전 페이지
-            </button>
-            <button onClick={() => setPage((prevState) => prevState + 1)}>다음 페이지</button>
-            <select onChange={selectChangeHandler} defaultValue={count}>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-            </select>
         </>
     );
 }
+
+const PageButtonStyle = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 5rem;
+
+    div {
+        display: flex;
+        flex-direction: row;
+
+        button {
+            font-size: 1rem;
+            margin-right: 1rem;
+        }
+    }
+`;

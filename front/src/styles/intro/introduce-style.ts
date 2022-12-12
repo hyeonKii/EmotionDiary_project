@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { color } from "@/styles/common/colorPalette";
-import bookpng from "@/assets/images/introduce_book.jpg";
 
 export const HomeBlock = styled.section`
     width: 100vw;
@@ -8,76 +7,102 @@ export const HomeBlock = styled.section`
 
     background-size: cover;
 `;
-/* background-image: url(${background}); */
 
-export const HomeSection1 = styled.section`
-    width: 100vw;
-    height: 100vh;
-    background: #fcf8e8;
-    background-size: cover;
+export const IntroSection1 = styled.section`
     display: flex;
+    flex-wrap: wrap;
+
+    width: 100%;
+    height: 100vh;
+
+    background: ${(isdark) => isdark.theme.bgColor};
+    background-size: cover;
+    transition: background 0.5s linear;
+`;
+
+export const LeftSection = styled.section`
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 50%;
+    padding-left: 5rem;
+
+    color: ${(isdark) => isdark.theme.textColor};
+    transition: color 0.5s linear;
+
+    h1 {
+        margin-bottom: 20px;
+        font-size: 3rem;
+    }
+    p {
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 50px;
+    }
 `;
 
 export const RightSection = styled.section`
     display: flex;
     align-items: center;
-    justify-content: center;
-`;
-export const LeftSection = styled.section`
-    width: 60vw;
-    display: flex;
-    height: 100vh;
-    align-items: center;
-    justify-content: center;
-    h1 {
-        font-size: 3.4vw;
-        margin-left: 30px;
-        margin-bottom: 20px;
-    }
-    p {
-        font-size: 1.8vw;
-        font-weight: bold;
-    }
-`;
-export const CenterSection = styled.section`
-    width: 75vw;
-    height: 100vh;
-    text-align: center;
-    h1 {
-        font-size: 3.4vw;
-        margin-left: 25px;
-        margin: 50px 0px;
-    }
-    p:first-child {
-        font-size: 2.5vw;
-        font-weight: bold;
-        b {
-            color: #26ade8;
-            font-size: 3.4vw;
-        }
-        margin: 30px 0px;
-    }
-    p {
-        font-size: 1.8vw;
-        b {
-            color: #26ade8;
-            font-size: 3.4vw;
-        }
-    }
-    div {
-        text-align: left;
-        margin-bottom: 50px;
+    justify-content: end;
+
+    width: 50%;
+
+    img {
+        width: 40vw;
+        height: 50vh;
     }
 `;
 
-export const HomeSection2 = styled.section`
-    width: 100vw;
-    height: 100vh;
-    background-size: cover;
+export const IntroSection2 = styled.section`
     display: flex;
     align-items: center;
     justify-content: center;
+
+    width: 100vw;
+    min-width: 700px;
+    height: 100vh;
+
+    background: ${(isdark) => isdark.theme.bgColor};
+    transition: background 0.5s linear;
 `;
+
+export const CenterSection = styled.section`
+    color: ${(isdark) => isdark.theme.textColor};
+    transition: color 0.5s linear;
+
+    article {
+        text-align: left;
+        margin-bottom: 50px;
+    }
+
+    h1 {
+        margin: 50px 0px;
+
+        text-align: center;
+        font-size: 2rem;
+    }
+
+    .title {
+        font-size: 1.5rem;
+        font-weight: bold;
+
+        margin: 30px 0px;
+
+        b {
+            color: ${color.lightBlue};
+            font-size: 1.6rem;
+        }
+    }
+
+    .description {
+        font-size: 1.1rem;
+        line-height: 30px;
+    }
+`;
+
 export const Input = styled.input`
     position: absolute;
     top: 60%;
@@ -130,12 +155,4 @@ export const InputBlock = styled.input`
     box-shadow: 0 4px 4px 0 ${color.gray};
 
     line-height: 60px;
-`;
-
-export const Bookimg = styled.img.attrs({
-    src: bookpng,
-    alt: "introduce_book",
-})`
-    width: 40vw;
-    height: 50vh;
 `;

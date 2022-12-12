@@ -2,43 +2,57 @@ import { useState } from "react";
 import { CardSection, Post, PostDetail } from "@/styles/home/postList-style";
 import { useRequestDeleteDiary, useRequestEditDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
-
-interface Items {
-    id: number;
-    title: string;
-    description: string;
-    emotion: string;
-    time: string;
-    body: string;
-    privateDiary: boolean;
-}
+import { PostInterface } from "./interface/post";
+import { useQueryClient } from "react-query";
 
 interface Props {
-    post: Items;
-    refetch(): void;
+    post: PostInterface;
 }
 
 interface Error {
     message: string;
 }
 
-export default function DiaryPost({ post, refetch }: Props) {
+const getPostedTime = (createdAt: Date) => {
+    const currentDate = new Date();
+    const createdDate = new Date(createdAt);
+
+    const createdYear = createdDate.getFullYear();
+    const createdMonth = createdDate.getMonth() + 1;
+
+    const createdDay = createdDate.getDate();
+    const currentDay = currentDate.getDate();
+
+    const currentHour = currentDate.getHours();
+    const createdHour = createdDate.getHours();
+
+    if (currentDay - createdDay === 0) {
+        return currentHour - createdHour === 0 ? "방금 전" : `${currentHour - createdHour}시간 전`;
+    }
+
+    return `${createdYear}.${createdMonth}.${createdDay}`;
+};
+
+export default function DiaryPost({ post }: Props) {
+    const { id, title, description, createdAt, emotion, private: privateDiary } = post;
+
+    const queryClient = useQueryClient();
+
+    const postedDate = getPostedTime(createdAt);
+
     const [isOpen, setIsOpen] = useState(false);
     const [editMode, setEditMode] = useState(false);
-
-    const { id, title, description, privateDiary } = post;
+    const [privateMode, setPrivateMode] = useState(privateDiary);
 
     const { form, changeHandler } = useForm({ title, description });
-
-    const emotion = "행복";
 
     const onClick = () => {
         setIsOpen((prev) => !prev);
     };
 
-    const { mutate: editDiary } = useRequestEditDiary(form, id, {
+    const { mutate: editDiary } = useRequestEditDiary({ ...form, privateDiary: privateMode }, id, {
         onSuccess: () => {
-            refetch();
+            queryClient.invalidateQueries(["my-diaries"]);
         },
         onError: (error: Error) => {
             console.log(error.message);
@@ -47,7 +61,7 @@ export default function DiaryPost({ post, refetch }: Props) {
 
     const { mutate: deleteDiary } = useRequestDeleteDiary(id, {
         onSuccess: () => {
-            refetch();
+            queryClient.invalidateQueries(["my-diaries"]);
         },
         onError: (error: Error) => {
             console.log(error.message);
@@ -63,6 +77,17 @@ export default function DiaryPost({ post, refetch }: Props) {
         setEditMode(false);
     };
 
+    const selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const { value } = event.target;
+
+        if (value === "나만보기") {
+            setPrivateMode(true);
+            return;
+        }
+
+        setPrivateMode(false);
+    };
+
     return (
         <>
             <CardSection>
@@ -70,7 +95,7 @@ export default function DiaryPost({ post, refetch }: Props) {
                     <span className="emotion">{emotion}</span>
                     <span className="title">{title}</span>
                     <div className="time">
-                        <span>3시간 전</span>
+                        <span>{postedDate}</span>
                         <span className="arrow">{isOpen ? "▲" : "▼"}</span>
                     </div>
                 </Post>
@@ -84,6 +109,17 @@ export default function DiaryPost({ post, refetch }: Props) {
                                     onChange={changeHandler}
                                     id="description"
                                 />
+                                {privateDiary ? (
+                                    <select onChange={selectHandler}>
+                                        <option value="나만보기">나만보기</option>
+                                        <option value="전체공개">전체공개</option>
+                                    </select>
+                                ) : (
+                                    <select onChange={selectHandler}>
+                                        <option value="전체공개">전체공개</option>
+                                        <option value="나만보기">나만보기</option>
+                                    </select>
+                                )}
                                 <button onClick={editHandler}>저장</button>
                             </>
                         ) : (
