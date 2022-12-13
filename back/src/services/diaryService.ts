@@ -111,6 +111,27 @@ class DiaryService {
         return postData;
     }
 
+    async getAllDiaryByDate(userID: string, datetime: Date, datetime2: Date) {
+        const postData = await this.prisma.diary.findMany({
+            where: {
+                user: {
+                    Account: {
+                        userID: userID,
+                    },
+                },
+                createdAt: {
+                    gte: datetime,
+                    lte: datetime2,
+                },
+            },
+        });
+        if (postData === null) {
+            throw new AppError("NotFindError");
+        }
+        await this.prisma.$disconnect();
+        return postData;
+    }
+
     async getDiaryByDate(userID: string, datetime: Date, datetime2: Date) {
         const postData = await this.prisma.diary.findMany({
             where: {

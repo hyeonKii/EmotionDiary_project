@@ -6,8 +6,8 @@ POST {{url}}/account/login
 Content-Type: application/json
 
 {
-    "userID": "ruyria",
-    "password": "test"
+    "userID": "ttest",
+    "password": "ttest"
 }
 ###logout
 delete {{url}}/account
@@ -77,8 +77,8 @@ RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwO
 
 ### 일주일 / 한달 / 일년 전 일기 조회
 get {{url}}/diaries/period/all
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoicnV5cmlhIiwiaWF0IjoxNjcwODM1NDUyLCJleHAiOjE2NzA4MzcyNTJ9.D0VrJQRHR91upH2rVSu2W2bpYC277iI-p2jon2eXJGE
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwODM1NDU0LCJleHAiOjE2NzA4NDYyNTR9.en8aGrk9gcPlp3w5iCpu8JF3qLTWtmfRDMtMnxdXqok
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidHRlc3QiLCJpYXQiOjE2NzA5MTg5ODAsImV4cCI6MTY3MDkyMDc4MH0.WjSgGcQj2rmogMkqaiB432uNez0kkPxuPCM-0PLsz1I
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwOTE4OTgyLCJleHAiOjE2NzA5Mjk3ODJ9.1Y7Oq2z6bhk80elqekoXNEnbnpLojcbxCmAiaCOX8vk
 
 
 ### 일기 수정
