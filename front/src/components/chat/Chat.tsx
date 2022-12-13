@@ -2,7 +2,7 @@ import { Container, FlexBox } from "@/styles/chat/chat-style";
 import { io } from "socket.io-client";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState, useMemo } from "react";
-import { currentUser } from "@/temp/userAtom";
+import { currentidUser } from "@/temp/userAtom";
 import * as api from "@/api/chat";
 import { Head, ChatRoomstyle } from "@/styles/chat/waiting-room.styles";
 import { recentlyMsgState } from "@/temp/ChatRecoil";
@@ -39,7 +39,7 @@ export function Chat() {
     const chatRoom = roomName;
     let { room } = useParams();
     // const [currentsroom, setCurrentsroom] = useRecoilState(currentroom);
-    const user = useRecoilValue(currentUser);
+    const user = useRecoilValue(currentidUser);
     const current_room = useRecoilValue(currentroom);
     const userid = String(user?.id);
     const [recentMessage, setRecentMessage] = useRecoilState(recentlyMsgState);

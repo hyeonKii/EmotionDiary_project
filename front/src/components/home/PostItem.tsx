@@ -2,7 +2,7 @@ import { useState, forwardRef, useMemo, ForwardedRef, useCallback, useRef } from
 import { dateTime } from "@/util/time";
 import { CardSection, Post, PostDetail, MessageBlock } from "@/styles/home/postList-style";
 import { socket } from "@/components/chat/Chat";
-import { currentUser } from "@/temp/userAtom";
+import { currentidUser } from "@/temp/userAtom";
 import { useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
 
@@ -30,7 +30,7 @@ function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
     const { emotion, title, description, createdAt, user_model_id } = post;
     const messegeRef = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
-    const user = useRecoilValue(currentUser);
+    const user = useRecoilValue(currentidUser);
 
     const onCreateRoom = useCallback(() => {
         const messege = messegeRef.current?.value;

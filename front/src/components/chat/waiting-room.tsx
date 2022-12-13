@@ -4,7 +4,7 @@ import * as api from "@/api/chat";
 import { Head, Table, ChatRoomstyle } from "@/styles/chat/waiting-room.styles";
 import { socket } from "@/components/chat/Chat";
 import { recentlyMsgState, ChatListForm, currentroom } from "@/temp/ChatRecoil";
-import { currentUser } from "@/temp/userAtom";
+import { currentidUser } from "@/temp/userAtom";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 
 interface CreateRoomResponse {
@@ -36,7 +36,7 @@ const WaitingRoom = (prop: { chatList: ChatListForm | null }) => {
         | null
     >(null);
     const navigate = useNavigate();
-    const user = useRecoilValue(currentUser);
+    const user = useRecoilValue(currentidUser);
     const [currentsroom, setCurrentsroom] = useRecoilState(currentroom);
     // const setrecentMessage = useSetRecoilState(recentlyMsgState);
     const userid = String(user?.id);
