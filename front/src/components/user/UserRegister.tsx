@@ -4,7 +4,7 @@ import { useRequestRegisterUser } from "@/api/account";
 import UserEmailCheckTab from "./UserEmailCheckTab";
 import UserRegisterTab from "./UserRegisterTab";
 import { LOGIN } from "./constants/tabList";
-import { Form, FormTitle, Error, BottomSection } from "@/styles/common/Modal/Form-style";
+import { Form, FormTitle, Error, BottomSection } from "@/styles/common/modal/Form-style";
 
 interface Props {
     setTabNumber(value: number): void;
@@ -38,10 +38,10 @@ export default function UserRegister({ setTabNumber }: Props) {
                 setError("");
             },
 
-            onError: (error: Error) => {
+            onError: (error) => {
                 console.log("회원가입 실패 :" + error.message);
 
-                if (error.response.data === "User already exists") {
+                if (error.response?.data === "User already exists") {
                     setError("이미 아이디가 존재합니다.");
                     return;
                 }

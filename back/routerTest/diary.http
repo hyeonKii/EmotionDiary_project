@@ -6,13 +6,13 @@ POST {{url}}/account/login
 Content-Type: application/json
 
 {
-    "userID": "test",
-    "password": "0000"
+    "userID": "ruyria",
+    "password": "test"
 }
 ###logout
 delete {{url}}/account
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdCIsImlhdCI6MTY2OTY5ODcwMywiZXhwIjoxNjY5NzAwNTAzfQ.jf1SjQfCkuJl_hQE1UrnURAtIlBhr-98cPKD3bjeV-c
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5Njk4NzAzLCJleHAiOjE2Njk3MDk1MDN9.dEvLKMxTrCc5C_dZTmFXdc7KTZGoukO7tzDozPBk6Jg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoicnV5cmlhIiwiaWF0IjoxNjcwODI1NTEzLCJleHAiOjE2NzA4MjczMTN9.bF7IQhHtU1kx8-LawnSHIXitx71sJxNYqbsQ3a-HXLg
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwODI1NTE1LCJleHAiOjE2NzA4MzYzMTV9.CPLRfDOPsDt3r9dGmlCjlRBWEFrunR_n-YDIh2D5ATM
 Content-Type: application/json
 
 
@@ -50,12 +50,12 @@ Content-Type: application/json
 
 ### 일기 작성 api
 post {{url}}/diaries/write
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdDExMSIsImlhdCI6MTY3MDQ3MDc1MywiZXhwIjoxNjcwNDcyNTUzfQ.zict85tshEbI7eefZIMmAPQU0ntw6p2e6Q_S8dtkTeQ
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwNDcwNzUzLCJleHAiOjE2NzA0ODE1NTN9.vwSCDDjajagqUEK3mrtxLgUJVtpPCjI-iTpG7_iCNNI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoicnV5cmlhIiwiaWF0IjoxNjcwODMxNDYxLCJleHAiOjE2NzA4MzMyNjF9.tmcNLpMGtGV6WbYTw-VqAFShFqQC3DPlEoOV_ud9Sh8
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwODMxNDY0LCJleHAiOjE2NzA4NDIyNjR9.8zHxq-lhQAmXpuBWys20zOBKEUv5Q47mNK1BB9MpAMA
 Content-Type: application/json
 
 {
-  "title": "ttteeee",
+  "title": "되나?",
   "description":"ttteeee",
   "privateDiary": true
 }
@@ -71,10 +71,14 @@ Content-Type: application/json
 }
 
 ### 특정 일기 조회
-get {{url}}/diaries/?datetime=2022-12-02
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2NjkxMDIzNTAsImV4cCI6MTY2OTEwNDE1MH0.ZQdV02n26JE3HV1K6SD5WAsye_EqCxEqwVAAou8n2rA
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MTAyMzUwLCJleHAiOjE2NzAzMTE5NTB9._Tjm0OlQf7KLYH9r8CyKGOzSSwQXQWZdAulWTYVg-ps
-Content-Type: application/json
+get {{url}}/diaries/?datetime=2021-12-12
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoicnV5cmlhIiwiaWF0IjoxNjcwODMzNjI2LCJleHAiOjE2NzA4MzU0MjZ9.4ZKDNnn5tBbJ5dBUAsvDLPR3S9VaRMGD82JjDffGETg
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwODMzNjI4LCJleHAiOjE2NzA4NDQ0Mjh9.4GNv13G65DlrK31DHV78PnxIT7ZLoEFGkY2pIJge9ls
+
+### 일주일 / 한달 / 일년 전 일기 조회
+get {{url}}/diaries/period/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoicnV5cmlhIiwiaWF0IjoxNjcwODM1NDUyLCJleHAiOjE2NzA4MzcyNTJ9.D0VrJQRHR91upH2rVSu2W2bpYC277iI-p2jon2eXJGE
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwODM1NDU0LCJleHAiOjE2NzA4NDYyNTR9.en8aGrk9gcPlp3w5iCpu8JF3qLTWtmfRDMtMnxdXqok
 
 
 ### 일기 수정

@@ -58,6 +58,7 @@ class AccountService {
 
         const result = await bcrypt.compare(password, user.password);
 
+        // TODO: error 변경
         if (!result) {
             throw new AppError("UnknownError");
         }
