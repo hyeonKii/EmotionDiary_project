@@ -5,7 +5,6 @@ import { generateToken } from "../lib/token";
 import userService from "./userService";
 import tokenService from "./tokenService";
 import certificationService from "./certificationService";
-import { logger } from "../config/logger";
 import { isInvalidEmail } from "../lib/util";
 
 interface UserData {
@@ -59,6 +58,7 @@ class AccountService {
 
         const result = await bcrypt.compare(password, user.password);
 
+        // TODO: error 변경
         if (!result) {
             throw new AppError("UnknownError");
         }
@@ -102,6 +102,7 @@ class AccountService {
                 User: {
                     select: {
                         nickname: true,
+                        id: true,
                     },
                 },
             },

@@ -1,7 +1,7 @@
 import * as nodeMailer from "nodemailer";
-import error from "../middleware/error";
-const ejs = require("ejs");
-const senderInfo = require("../lib/senderinfo.json");
+import ejs from "ejs";
+import senderInfo from "./senderinfo.json";
+
 let emailTemplate: string;
 
 const sendMail = async (
