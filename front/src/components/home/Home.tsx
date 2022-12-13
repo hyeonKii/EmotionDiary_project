@@ -9,7 +9,7 @@ import { PostInterface } from "@/components/diary/interface/post";
 
 import { happy } from "@/assets/images/index";
 import { HomeSection, TitleBlock, Input } from "@/styles/home/home-style";
-import { Form, FormTitle, FormButton, PostBlock } from "@/styles/common/modal/form-style";
+import { Form, FormTitle, FormButton, PostBlock } from "@/styles/common/modal/Form-style";
 import { ModalBackgroundStyle } from "@/styles/common/modal/background-style";
 
 export default function Main() {

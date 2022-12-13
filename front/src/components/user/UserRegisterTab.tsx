@@ -7,7 +7,7 @@ import {
     FormButton,
     Error,
     BottomSection,
-} from "@/styles/common/Modal/Form-style";
+} from "@/styles/common/modal/Form-style";
 
 interface Props {
     form: {
@@ -82,9 +82,7 @@ export default function UserRegisterTab({
                         {checkPassword && <Error>비밀번호가 일치하지 않습니다.</Error>}
                     </RegisterInputSection>
                     <BottomSection>
-                        <FormButton>
-                            회원가입
-                        </FormButton>
+                        <FormButton>회원가입</FormButton>
                     </BottomSection>
                 </>
             ) : (
@@ -97,4 +95,4 @@ export default function UserRegisterTab({
             )}
         </>
     );
-};
+}

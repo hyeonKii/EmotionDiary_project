@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import useEmotion from "@/hooks/useEmotion";
 import { useRequestGetDiary, useRequestGetMonthDiaries } from "@/api/diary";
@@ -6,13 +6,16 @@ import { TodaySection, CalendarDetail } from "@/styles/diary/todayDiary-style";
 import DiaryTodayPost from "./DiaryTodayPost";
 import { currentUser } from "@/temp/userAtom";
 import { useRecoilValue } from "recoil";
-import { PostInterface } from "./interface/post";
 import DiaryCreatePost from "./DiaryCreatePost";
 
 interface MonthData {
     createdAt: Date;
     emotion: string;
     id: number;
+}
+
+interface FetchedData {
+    data: MonthData[];
 }
 
 export function DiaryCalendar() {
@@ -22,15 +25,15 @@ export function DiaryCalendar() {
 
     const user = useRecoilValue(currentUser);
 
-    const [dateToReq, setDateToReq] = useState({
+    const [dateToReq, setDateToReq] = useState<{ year: number; month: number | string }>({
         year: currentYear,
         month: currentMonth,
     });
 
     const [clickedDate, setClickedDate] = useState(currentDate);
-    const [id, setID] = useState(null);
+    const [id, setID] = useState<number | null>(null);
 
-    const setCurrentDiary = (fetchedData, dateArg) => {
+    const setCurrentDiaryID = (fetchedData: FetchedData | undefined, dateArg: Date) => {
         if (!fetchedData) {
             return;
         }
@@ -38,7 +41,7 @@ export function DiaryCalendar() {
         const { data: diaries } = fetchedData;
 
         const currentDiary = diaries.find(
-            (diary: PostInterface) =>
+            (diary: MonthData) =>
                 new Date(diary.createdAt).getDate() === new Date(dateArg).getDate()
         );
 
@@ -50,14 +53,14 @@ export function DiaryCalendar() {
         setID(null);
     };
 
-    const setCurrentDay = (event) => {
+    const setCurrentDay = (event: Date) => {
         const postDate = new Date(event);
 
         setClickedDate(postDate);
     };
 
-    const setCalendarYearMonth = (event) => {
-        const currentCalendarYear = event.activeStartDate.getYear() + 1900;
+    const setCalendarYearMonth = (event: { activeStartDate: Date }) => {
+        const currentCalendarYear = event.activeStartDate.getFullYear();
         const currentCalendarMonth = (event.activeStartDate.getMonth() + 1)
             .toString()
             .padStart(2, "0");
@@ -68,7 +71,7 @@ export function DiaryCalendar() {
         });
     };
 
-    const setEmotionClassName = (dateArg) => {
+    const setEmotionClassName = (dateArg: Date) => {
         const calendarDate = new Date(dateArg);
         const calendarDay = calendarDate.getDate();
         const calendarMonth = calendarDate.getMonth();
@@ -105,8 +108,8 @@ export function DiaryCalendar() {
         dateToReq.month,
         "calendar-diaries",
         {
-            onSuccess: (res) => {
-                setCurrentDiary(res, currentDate);
+            onSuccess: (res: FetchedData) => {
+                setCurrentDiaryID(res, currentDate);
 
                 console.log("월별 일기 요청 성공");
             },
@@ -122,7 +125,7 @@ export function DiaryCalendar() {
     const { emotionState } = useEmotion(diary?.emotion, user?.nickname);
 
     useEffect(() => {
-        setCurrentDiary(monthDiaries, clickedDate);
+        setCurrentDiaryID(monthDiaries, clickedDate);
     }, [clickedDate]);
 
     return (

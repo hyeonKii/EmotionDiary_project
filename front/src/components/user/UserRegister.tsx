@@ -4,12 +4,7 @@ import { useRequestRegisterUser } from "@/api/account";
 import UserEmailCheckTab from "./UserEmailCheckTab";
 import UserRegisterTab from "./UserRegisterTab";
 import { LOGIN } from "./constants/tabList";
-import {
-    Form,
-    FormTitle,
-    Error,
-    BottomSection,
-} from "@/styles/common/Modal/Form-style";
+import { Form, FormTitle, Error, BottomSection } from "@/styles/common/modal/Form-style";
 
 interface Props {
     setTabNumber(value: number): void;
@@ -66,7 +61,7 @@ export default function UserRegister({ setTabNumber }: Props) {
             <div>{tab}</div>
             {!tab ? (
                 <UserEmailCheckTab setTab={setTab} setRequiredEmail={setRequiredEmail} />
-                ) : (
+            ) : (
                 <UserRegisterTab
                     form={form}
                     changeHandler={changeHandler}
@@ -74,7 +69,7 @@ export default function UserRegister({ setTabNumber }: Props) {
                     isSuccess={isSuccess}
                     setTabNumber={setTabNumber}
                 />
-                )}
+            )}
             {!isSuccess && (
                 <BottomSection>
                     <span>이미 계정이 있으신가요? </span>
@@ -82,7 +77,7 @@ export default function UserRegister({ setTabNumber }: Props) {
                         로그인
                     </button>
                 </BottomSection>
-            )} 
+            )}
         </Form>
     );
-};
+}

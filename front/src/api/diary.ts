@@ -4,15 +4,16 @@ import * as endpoint from "./constants/diaryEndpoints";
 import { useMutation, useQuery } from "react-query";
 
 interface WriteDiary {
-    userID: string;
     title: string;
     description: string;
+    privateDiary: boolean;
+    createdAt?: Date;
 }
 
 interface EditDiary {
-    id: string;
     title: string;
     description: string;
+    privateDiary: boolean;
 }
 
 const writeDiary = (diaryData: WriteDiary) => {
@@ -61,8 +62,8 @@ const getMyAllDiaries = (count: number, page: number, emotion?: string) => {
     );
 };
 
-const editMyDiary = (myDiaryData: EditDiary, id: number) => {
-    return axios.put(URL + endpoint.MYDIARY + "/" + id, myDiaryData, {
+const getMyMonthDiaries = (year: number, month: number | string) => {
+    return axios.get(URL + endpoint.DIARY_MONTH + `?datetime=${year}-${month}-01`, {
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
             Refreshtoken: sessionStorage.getItem("refreshToken"),
@@ -88,23 +89,27 @@ const getEmotionDiary = (params: string) => {
     });
 };
 
-export const useRequestWriteDiary = (diaryData, options?) =>
+export const useRequestWriteDiary = (diaryData: WriteDiary, options?: any) =>
     useMutation(() => writeDiary(diaryData), options);
 
-export const useRequestGetDiary = (id: number | null, options?) =>
+export const useRequestGetDiary = (id: number | null, options?: any) =>
     useQuery(["diary", id], () => getMyDiary(id), options);
 
-export const useRequestGetAllDiaries = (count: number, page: number, options?) =>
+export const useRequestGetAllDiaries = (count: number, page: number, options?: any) =>
     useQuery(["diaries", page, count], () => getDiary(count, page), options);
 
-export const useRequestGetMyAllDiaries = (count: number, page: number, options?) =>
+export const useRequestGetMyAllDiaries = (count: number, page: number, options?: any) =>
     useQuery(["my-diaries", page, count], () => getMyAllDiaries(count, page), options);
 
-export const useRequestGetMonthDiaries = (year: number, month: number, key: string, options?) =>
-    useQuery([`${key}`, year, month], () => getMyMonthDiaries(year, month), options);
+export const useRequestGetMonthDiaries = (
+    year: number,
+    month: number | string,
+    key: string,
+    options?: any
+) => useQuery([`${key}`, year, month], () => getMyMonthDiaries(year, month), options);
 
-export const useRequestEditDiary = (diaryData, id: number, options?) =>
+export const useRequestEditDiary = (diaryData: EditDiary, id: number, options?: any) =>
     useMutation(() => editMyDiary(diaryData, id), options);
 
-export const useRequestDeleteDiary = (id: number, options?) =>
+export const useRequestDeleteDiary = (id: number, options?: any) =>
     useMutation(() => deleteMyDiary(id), options);
