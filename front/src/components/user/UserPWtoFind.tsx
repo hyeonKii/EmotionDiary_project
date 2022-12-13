@@ -1,7 +1,7 @@
 import useForm from "@/hooks/useForm";
 import { useRequestSendCode } from "@/api/certificate";
 import { FIND_ID, LOGIN, REGISTER } from "./constants/tabList";
-import Icon from "../UI/Icon";
+import Icon from "@/components/UI/Icon";
 import {
     Form,
     FormTitle,
@@ -13,7 +13,7 @@ import {
     SmallError,
     Success,
     DescriptionLabel,
-} from "@/styles/common/Modal/Form-style";
+} from "@/styles/common/modal/Form-style";
 
 interface Props {
     setTabNumber(value: number): void;

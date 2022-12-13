@@ -1,13 +1,13 @@
 import React from "react";
 import { LOGIN } from "./constants/tabList";
-import Icon from "../UI/Icon";
+import Icon from "@/components/UI/Icon";
 import {
     RegisterInputSection,
     InputBlock,
     FormButton,
     Error,
     BottomSection,
-} from "@/styles/common/Modal/Form-style";
+} from "@/styles/common/modal/Form-style";
 
 interface Props {
     form: {

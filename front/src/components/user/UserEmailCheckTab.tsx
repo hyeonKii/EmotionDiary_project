@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useForm from "@/hooks/useForm";
 import { useRequestCheckCode, useRequestSendCode } from "@/api/certificate";
-import Icon from "../UI/Icon";
+import Icon from "@/components/UI/Icon";
 import {
     InputSection,
     InputBlock,
@@ -12,7 +12,7 @@ import {
     CorrectButton,
     Success,
     DescriptionLabel,
-} from "@/styles/common/Modal/Form-style";
+} from "@/styles/common/modal/Form-style";
 
 interface Response {
     data: {
