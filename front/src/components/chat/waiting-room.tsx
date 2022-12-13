@@ -81,7 +81,6 @@ const WaitingRoom = (prop: { chatList: ChatListForm | null }) => {
         // socket handler
 
         const messageHandler = (chat: ChatData) => {
-            // console.log("chat", chat, chatList, 42342342343);
             console.log("working");
             setRecentMessage({
                 sender: chat.sender,

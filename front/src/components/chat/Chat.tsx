@@ -55,7 +55,6 @@ export function Chat() {
           }[]
         | null
     >(null);
-    console.log(chatList, chats, recentMessage), 454545;
     useEffect(() => {
         //메세지 헨들러가 2개?
 
@@ -72,7 +71,6 @@ export function Chat() {
                 response.result[index]["count"] = countresult.data.result;
                 // setCount(countresult.data.result);
             });
-            console.log("createRoom response:", response.result);
             if (userid == usermodel) {
                 response.result.map(async (item: ChatList, index: number) => {
                     const countresult = await api.getCountMessege(item.user_model_id, userid);
@@ -83,14 +81,11 @@ export function Chat() {
         };
 
         const messageHandler = (chat: ChatData) => {
-            // console.log("chat", chat, chatList, 42342342343);
-            console.log("working");
             setRecentMessage({
                 sender: chat.sender,
                 msgText: chat.msgText,
                 chatRoom: chat.chatRoom,
             });
-            console.log("chatlist 갱신");
             if (chatList !== null) {
                 chatList.map(async (item: ChatList, index: number) => {
                     const countresult = await api.getCountMessege(item.user_model_id, userid);
@@ -99,10 +94,8 @@ export function Chat() {
             }
 
             setChatList((prev) => {
-                console.log(prev, "ㄷㄱㅎㄱ", count);
                 return prev!.map((item) => {
                     if (item.user_model_id == chat.chatRoom) {
-                        console.log("update");
                         item.lastmessage = chat.msgText;
                         item.updatedAt = "방금 전";
                         if (chat.sender == userid) {
@@ -131,27 +124,15 @@ export function Chat() {
         // socket handler
 
         const messageHandler = (chat: ChatData) => {
-            // console.log("chat", chat, chatList, 42342342343);
-            console.log("working");
             setRecentMessage({
                 sender: chat.sender,
                 msgText: chat.msgText,
                 chatRoom: chat.chatRoom,
             });
-            console.log("chatlist 갱신");
-            // if (chatList !== null) {
-            //     console.log("count");
-            //     chatList.map(async (item: ChatList, index: number) => {
-            //         const countresult = await api.getCountMessege(item.user_model_id, userid);
-            //         chatList[index]["count"] = countresult.data.result;
-            //     });
-            // }
 
             setChatList((prev) => {
-                console.log(prev, "ㄷㄱㅎㄱ");
                 return prev!.map((item) => {
                     if (item.user_model_id == chat.chatRoom) {
-                        console.log("update");
                         item.lastmessage = chat.msgText;
                         item.updatedAt = "방금 전";
                         if (chat.sender == userid) {
@@ -160,7 +141,6 @@ export function Chat() {
                             item.count = String(Number(item.count) + 0.5);
                         }
                     }
-                    console.log(prev, "변경 후");
                     return item;
                 });
             });
@@ -172,28 +152,33 @@ export function Chat() {
         };
     }, [chatList]);
 
+    const setCountZero = () => {
+        setChatList((prev) => {
+            return prev!.map((item) => {
+                item.count = "0";
+                return item;
+            });
+        });
+    };
     const onJoinRoom = useCallback(
         (roomName: string) => async () => {
             // onLeaveRoom(roomName);
             socket.emit("join-room", roomName, user?.id, () => {});
             socket.emit("leave-room", roomName, () => {});
             // navigate(`/diary/room/${roomName}`);
+            setCountZero();
             await api.readMessege(roomName, userid);
 
-            console.log(roomName, 24242);
             setCurrentsroom(roomName);
             setJoinedRoom(roomName);
             return () => {};
         },
         [navigate]
     );
-    console.log(joinedRoom);
     const ChatRoomComponents = useMemo(() => {
-        console.log("create", chatList);
         if (chatList === null) {
             return null;
         }
-        // console.log("chatList", chatList);
         return (
             <>
                 {chatList.map((item, idx) => (
@@ -203,7 +188,6 @@ export function Chat() {
                             <div>{item.count}</div>
                             <span> {item.updatedAt}</span>
                         </div>
-                        {/* <button>{item.lastmessage}</button> */}
                     </ChatRoomstyle>
                 ))}
             </>
@@ -226,14 +210,11 @@ export function Chat() {
             <FlexBox>
                 <span>
                     <Container>
-                        {/* <WaitingRoom chatList={chatList} setChatList={setChatList} /> */}
-                        <>
-                            <Head>
-                                <div>채팅방 목록</div>
-                                <button onClick={onCreateRoom}>채팅방 생성</button>
-                            </Head>
-                            {chatList && ChatRoomComponents}
-                        </>
+                        <Head>
+                            <div>채팅방 목록</div>
+                            <button onClick={onCreateRoom}>채팅방 생성</button>
+                        </Head>
+                        {chatList && ChatRoomComponents}
                     </Container>
                 </span>
                 <Container>
@@ -241,7 +222,11 @@ export function Chat() {
                         // <Routes>
                         //     <Route path="/room/:roomName" element={<ChatRoom />} />
                         // </Routes>
-                        <ChatRoom joinedRoom={joinedRoom} setJoinedRoom={setJoinedRoom} />
+                        <ChatRoom
+                            joinedRoom={joinedRoom}
+                            setJoinedRoom={setJoinedRoom}
+                            focusEvent={() => setCountZero()}
+                        />
                     )}
                 </Container>
             </FlexBox>

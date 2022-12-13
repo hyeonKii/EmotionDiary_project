@@ -86,7 +86,6 @@ if (sc !== undefined) {
             const user_model_id = inviter + "," + invitee;
             sc.emit("message", { sender: inviter, msgText: message, chatRoom: user_model_id });
             await chatService.saveMessege(user_model_id, message, String(inviter));
-            console.log(444);
             if (exists) {
                 console.log("exist");
                 return {
