@@ -35,6 +35,7 @@ export default function DiaryCreatePost({ clickedDate }: Props) {
         {
             onSuccess: () => {
                 queryClient.invalidateQueries(["calendar-diaries"]);
+                queryClient.invalidateQueries(["diary"]);
 
                 console.log("일기 작성 요청 성공");
             },

@@ -109,7 +109,7 @@ export function DiaryCalendar() {
         "calendar-diaries",
         {
             onSuccess: (res: FetchedData) => {
-                setCurrentDiaryID(res, currentDate);
+                setCurrentDiaryID(res, clickedDate);
 
                 console.log("월별 일기 요청 성공");
             },
@@ -127,6 +127,10 @@ export function DiaryCalendar() {
     useEffect(() => {
         setCurrentDiaryID(monthDiaries, clickedDate);
     }, [clickedDate]);
+
+    useEffect(() => {
+        console.log(id);
+    }, [id]);
 
     return (
         <TodaySection>

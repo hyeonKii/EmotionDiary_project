@@ -57,7 +57,9 @@ export function Emotion() {
     });
 
     const { data: pastDiaries } = useRequestPastDiaries({
-        onSuccess: () => {},
+        onSuccess: (res) => {
+            console.log(res);
+        },
         onError: () => {},
     });
 
