@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import * as api from "@/api/chat";
-import { Head, Table, ChatRoom } from "@/styles/chat/waiting-room.styles";
+import { Head, Table, ChatRoomstyle } from "@/styles/chat/waiting-room.styles";
 import { socket } from "@/components/chat/Chat";
-import { recentlyMsgState } from "@/temp/ChatRecoil";
-import { currentUser } from "@/temp/userAtom";
+import { recentlyMsgState, ChatListForm, currentroom } from "@/temp/ChatRecoil";
+import { currentidUser } from "@/temp/userAtom";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 
 interface CreateRoomResponse {
@@ -15,11 +15,16 @@ interface CreateRoomResponse {
 interface ChatData {
     sender: string;
     msgText: string;
-    roomName: string;
+    chatRoom: string;
+}
+interface ChatList {
+    updatedAt: string;
+    user_model_id: string;
+    lastmessage: string;
+    count: string;
 }
 
-const WaitingRoom = () => {
-    const [rooms, setRooms] = useState<string[]>([]);
+const WaitingRoom = (prop: { chatList: ChatListForm | null }) => {
     const [count, setCount] = useState();
     const [chatList, setChatList] = useState<
         | {
@@ -30,60 +35,80 @@ const WaitingRoom = () => {
           }[]
         | null
     >(null);
-
     const navigate = useNavigate();
-    const user = useRecoilValue(currentUser);
-    const setrecentMessage = useSetRecoilState(recentlyMsgState);
+    const user = useRecoilValue(currentidUser);
+    const [currentsroom, setCurrentsroom] = useRecoilState(currentroom);
+    // const setrecentMessage = useSetRecoilState(recentlyMsgState);
     const userid = String(user?.id);
-
-    console.log(chatList, "chatList");
-
+    const [recentMessage, setRecentMessage] = useRecoilState(recentlyMsgState);
     useEffect(() => {
         // socket handler
-        navigate(`/room/`);
-        const roomListHandler = (rooms: string[]) => {};
-
-        const createRoomHandler = (response: any) => {
-            setChatList(response.result);
-            console.log(chatList, "create chatList");
+        const roomListHandler = (rooms: string[]) => {
+            // getMessegetext(rooms[0], userid);
         };
-        const deleteRoomHandler = (roomName: string) => {
-            setRooms((prevRooms) => prevRooms.filter((room) => room !== roomName));
+        const createRoomHandler = (response: any, usermodel: string) => {
+            response.result.map(async (item: ChatList, index: number) => {
+                const countresult = await api.getCountMessege(item.user_model_id, userid);
+                response.result[index]["count"] = countresult.data.result;
+            });
+            if (userid == usermodel) {
+                setChatList(response.result);
+            }
         };
 
+        //방 목록 불러오기
         socket.emit("room-list", String(user?.id), roomListHandler);
 
         socket.on("create-room", createRoomHandler);
-        socket.on("delete-room", deleteRoomHandler);
 
         return () => {
             socket.off("room-list", roomListHandler);
             socket.off("create-room", createRoomHandler);
-            socket.off("delete-room", deleteRoomHandler);
         };
+        // const deleteRoomHandler = (roomName: string) => {};
+        // socket.on("delete-room", deleteRoomHandler);
+        // socket.off("delete-room", deleteRoomHandler);
+    }, [recentMessage]);
+
+    useEffect(() => {
+        navigate(`/`);
+        socket.emit("join-room", "", user?.id, () => {});
     }, []);
+
+    // }, [recentMessage]);
 
     useEffect(() => {
         // socket handler
 
         const messageHandler = (chat: ChatData) => {
-            console.log("chat", chat, chatList);
-            setrecentMessage({
+            // console.log("chat", chat, chatList, 42342342343);
+            console.log("working");
+            setRecentMessage({
                 sender: chat.sender,
                 msgText: chat.msgText,
+                chatRoom: chat.chatRoom,
             });
-
+            console.log("chatlist 갱신");
             if (chatList !== null) {
-                setChatList((prev) => {
-                    return prev!.map((item) => {
-                        if (item.user_model_id == chat.roomName) {
-                            item.lastmessage = chat.msgText;
-                            item.updatedAt = "방금 전";
-                        }
-                        return item;
-                    });
+                console.log("count");
+                chatList.map(async (item: ChatList, index: number) => {
+                    const countresult = await api.getCountMessege(item.user_model_id, userid);
+                    chatList[index]["count"] = countresult.data.result;
                 });
             }
+
+            setChatList((prev) => {
+                return prev!.map((item) => {
+                    if (item.user_model_id == chat.chatRoom) {
+                        console.log("update");
+                        item.lastmessage = chat.msgText;
+                        item.updatedAt = "방금 전";
+                        item.count = item.count + 1;
+                    }
+                    return item;
+                });
+            });
+            // }
         };
         socket.on("message", messageHandler);
         return () => {
@@ -105,44 +130,37 @@ const WaitingRoom = () => {
     //()=> 지우기
     const onJoinRoom = useCallback(
         (roomName: string) => () => {
-            socket.emit("join-room", roomName, user?.id, () => {
-                console.log(roomName, "joinroom");
-            });
-            getMessegetext(roomName, userid);
+            // onLeaveRoom(roomName);
+            socket.emit("join-room", roomName, user?.id, () => {});
+            socket.emit("leave-room", roomName, () => {});
             navigate(`/room/${roomName}`);
+            setCurrentsroom(roomName);
+            return () => {};
         },
         [navigate]
     );
-
-    const getMessegetext = async (
-        roomName: string,
-        userid: string
-    ): Promise<JSX.Element[] | JSX.Element | undefined> => {
-        try {
-            const { data } = await api.getCountMessege(roomName, userid);
-            setCount(data.result);
-            console.log(count, roomName, userid);
-            return data;
-        } catch (e) {
-            console.error(e);
-        }
+    const onLeaveRoom = (roomName: string) => {
+        socket.emit("leave-room", roomName, () => {});
+        setCurrentsroom(roomName);
+        // navigate("/");
     };
 
     const ChatRoomComponents = useMemo(() => {
         if (chatList === null) {
             return null;
         }
-        console.log("chatList", chatList);
+        // console.log("chatList", chatList);
         return (
             <>
                 {chatList.map((item, idx) => (
-                    <ChatRoom onClick={onJoinRoom(item.user_model_id)} key={idx}>
+                    <ChatRoomstyle onClick={onJoinRoom(item.user_model_id)} key={idx}>
                         <button>{item.lastmessage}</button>
                         <div>
-                            <div>{count}</div>
+                            <div>{item.count}</div>
                             <span> {item.updatedAt}</span>
                         </div>
-                    </ChatRoom>
+                        {/* <button>{item.lastmessage}</button> */}
+                    </ChatRoomstyle>
                 ))}
             </>
         );
@@ -154,7 +172,7 @@ const WaitingRoom = () => {
                 <div>채팅방 목록</div>
                 <button onClick={onCreateRoom}>채팅방 생성</button>
             </Head>
-            {chatList && ChatRoomComponents}
+            {prop.chatList && ChatRoomComponents}
         </>
     );
 };

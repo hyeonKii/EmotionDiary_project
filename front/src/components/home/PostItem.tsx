@@ -1,6 +1,10 @@
-import { useState, forwardRef, useMemo, ForwardedRef } from "react";
+import { useState, forwardRef, useMemo, ForwardedRef, useCallback, useRef } from "react";
 import { dateTime } from "@/util/time";
 import { CardSection, Post, PostDetail, MessageBlock } from "@/styles/home/postList-style";
+import { socket } from "@/components/chat/Chat";
+import { currentidUser } from "@/temp/userAtom";
+import { useRecoilValue } from "recoil";
+import { useNavigate } from "react-router-dom";
 
 interface Items {
     id: number;
@@ -8,16 +12,44 @@ interface Items {
     description: string;
     emotion: string;
     createdAt: Date;
+    user_model_id: number;
 }
 
 interface Props {
     post: Items;
 }
 
+interface CreateRoomResponse {
+    success: boolean;
+    payload: string;
+}
+
 function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
     const [isOpen, setIsOpen] = useState(false);
     const [like, setLike] = useState(false);
-    const { emotion, title, description, createdAt } = post;
+    const { emotion, title, description, createdAt, user_model_id } = post;
+    const messegeRef = useRef<HTMLInputElement>(null);
+    const navigate = useNavigate();
+    const user = useRecoilValue(currentidUser);
+
+    const onCreateRoom = useCallback(() => {
+        const messege = messegeRef.current?.value;
+        let inviter = String(user?.id);
+        let invitee = String(user_model_id);
+
+        if (user_model_id === Number(user?.id)) {
+            return;
+        }
+
+        socket.emit("create-room", inviter, invitee, messege, (response: CreateRoomResponse) => {
+            console.log(response, 4334);
+            if (response.success) {
+                return alert(response.payload);
+            }
+        });
+
+        navigate(`/diary`);
+    }, [navigate]);
 
     const onClick = () => {
         setIsOpen((prev) => !prev);
@@ -47,8 +79,11 @@ function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
                                     type="text"
                                     placeholder="메시지는 익명으로 전송됩니다. 속마음을 나눠보세요!"
                                     autoFocus
+                                    ref={messegeRef}
                                 />
-                                <button className="submitButton">전송</button>
+                                <button onClick={onCreateRoom} className="submitButton">
+                                    전송
+                                </button>
                             </MessageBlock>
                             <button
                                 className={like ? "material-icons" : "material-symbols-outlined"}

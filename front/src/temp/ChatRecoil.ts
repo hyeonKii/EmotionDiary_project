@@ -8,6 +8,7 @@ export interface MessageModel {
     receiver: string | null;
     msgText: string | null;
 }
+
 export const chatMessgeList = atom<MessageModel | null>({
     key: "ChallengeBoardWriter",
     default: null,
@@ -19,9 +20,28 @@ export interface recentlyMessageModel {
 export interface ChatData {
     sender: string;
     msgText: string;
+    chatRoom: string;
 }
 
 export const recentlyMsgState = atom<ChatData>({
     key: "recentlyMsgState",
-    default: { sender: "", msgText: "" },
+    default: { sender: "", msgText: "", chatRoom: "" },
+});
+
+export const currentroom = atom<string>({
+    key: "currentroom",
+    default: "",
+});
+export interface ChatForm {
+    updatedAt: string | null;
+    user_model_id: string | null;
+    lastmessage: string | null;
+    count: string | null;
+}
+export interface ChatListForm {
+    [key: number]: ChatForm[];
+}
+export const chatListState = atom<ChatListForm[]>({
+    key: "recentlyMsgState",
+    default: [],
 });
