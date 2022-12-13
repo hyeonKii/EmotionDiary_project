@@ -55,6 +55,7 @@ export function DiaryCalendar() {
 
     const setCurrentDay = (event: Date) => {
         const postDate = new Date(event);
+        postDate.setHours(12);
 
         setClickedDate(postDate);
     };
@@ -127,10 +128,6 @@ export function DiaryCalendar() {
     useEffect(() => {
         setCurrentDiaryID(monthDiaries, clickedDate);
     }, [clickedDate]);
-
-    useEffect(() => {
-        console.log(id);
-    }, [id]);
 
     return (
         <TodaySection>

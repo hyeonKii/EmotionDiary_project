@@ -1,6 +1,7 @@
 import { useRequestWriteDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
 import { DiaryDetail, EditBlock } from "@/styles/diary/todayDiary-style";
+import { aMonthAgo, aYearAgo, dayAgo } from "@/util/date";
 import { ChangeEvent, useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -35,7 +36,6 @@ export default function DiaryCreatePost({ clickedDate }: Props) {
         {
             onSuccess: () => {
                 queryClient.invalidateQueries(["calendar-diaries"]);
-                queryClient.invalidateQueries(["diary"]);
 
                 console.log("일기 작성 요청 성공");
             },
