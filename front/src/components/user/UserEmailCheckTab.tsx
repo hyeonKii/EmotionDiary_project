@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useForm from "@/hooks/useForm";
 import { useRequestCheckCode, useRequestSendCode } from "@/api/certificate";
-import Icon from "../UI/Icon";
+import Icon from "@/components/UI/Icon";
 import {
     InputSection,
     InputBlock,

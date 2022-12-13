@@ -1,7 +1,7 @@
 import useForm from "@/hooks/useForm";
 import { useRequestSendCode } from "@/api/certificate";
 import { FIND_ID, LOGIN, REGISTER } from "./constants/tabList";
-import Icon from "../UI/Icon";
+import Icon from "@/components/UI/Icon";
 import {
     Form,
     FormTitle,
