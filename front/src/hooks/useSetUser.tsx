@@ -21,7 +21,6 @@ export default function useSetUser() {
         retry: false,
 
         onSuccess: (res: Response) => {
-            console.log(res);
             const {
                 User: { nickname, id },
                 certified_account,
