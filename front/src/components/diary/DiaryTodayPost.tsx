@@ -29,7 +29,7 @@ export default function DiaryTodayPost({ post }: Props) {
     const [isEdit, setIsEdit] = useState(false);
     const [privateMode, setPrivateMode] = useState(privateDiary);
 
-    const { form, changeHandler, resetForm } = useForm({
+    const { form, changeHandler } = useForm({
         title,
         description,
     });
@@ -48,7 +48,6 @@ export default function DiaryTodayPost({ post }: Props) {
     const { mutate: editDiary } = useRequestEditDiary({ ...form, privateDiary: privateMode }, id, {
         onSuccess: () => {
             queryClient.invalidateQueries(["diary", id]);
-            resetForm();
 
             console.log("일기 편집 요청 성공");
         },

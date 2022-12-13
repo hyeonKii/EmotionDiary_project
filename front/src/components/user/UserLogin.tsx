@@ -15,7 +15,7 @@ import {
     FormButton,
     Error,
     BottomSection,
-} from "@/styles/common/modal/form-style";
+} from "@/styles/common/modal/Form-style";
 
 interface Response {
     data: {

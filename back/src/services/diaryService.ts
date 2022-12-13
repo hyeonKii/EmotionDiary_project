@@ -144,13 +144,12 @@ class DiaryService {
         privatediary: boolean,
         emotion: string
     ) {
-        console.log(typeof privatediary, privatediary);
         const postDatas = await this.prisma.diary.findMany({
             take: Number(count),
             skip: (Number(page) - 1) * Number(count),
             where: {
                 emotion: emotion != "전체" ? emotion : undefined,
-                private: privatediary === true ? true : false,
+                private: privatediary === "true" ? true : false,
             },
             select: {
                 id: true,

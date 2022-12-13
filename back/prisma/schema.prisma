@@ -7,8 +7,8 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = "mysql://pku1jbmbyq7767am:yqa023krqg5qi5en@ohunm00fjsjs1uzy.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/gifk59kufewouggp"
+   provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model Certification {
@@ -67,7 +67,7 @@ model Chat{
   messege         Messege[]
   user            User[]    
 
-  @@fulltext([user_model_id])
+  // @@fulltext([user_model_id])
 }
 
 model Messege {

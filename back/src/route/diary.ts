@@ -58,7 +58,6 @@ diaryRouter.get(
             Boolean(privatediary),
             String(emotion)
         );
-        console.log(result);
         return { statusCode: 200, content: result };
     })
 );

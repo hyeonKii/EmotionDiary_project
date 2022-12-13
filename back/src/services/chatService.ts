@@ -1,6 +1,6 @@
 import { PrismaClient, Prisma } from "@prisma/client";
 import AppError from "../lib/AppError";
-
+import accountService from "./accountService";
 class ChatService {
     private prisma = new PrismaClient();
 
@@ -19,12 +19,12 @@ class ChatService {
     async saveChat(inviter: string, invitee: string) {
         const result = await this.prisma.chat.findUnique({
             where: {
-                user_model_id: inviter + invitee,
+                user_model_id: inviter + "," + invitee,
             },
         });
         if (result !== null) {
             //이미 방이 있으므로 아무 것도 하지 않음
-            console.log("이미 존재함", inviter, invitee);
+            console.log("이미 존재합니다");
             return;
         } else {
             try {
@@ -48,8 +48,6 @@ class ChatService {
     }
 
     async roomList(usermodel: number) {
-        console.log(usermodel, "usermodel");
-
         const result1 = await this.prisma.chat.findMany({
             where: {
                 OR: [
@@ -65,6 +63,7 @@ class ChatService {
                 user_model_id: true,
                 lastmessage: true,
                 updatedAt: true,
+                //count: 안읽은 메세지 추가 해야함
             },
         });
 
@@ -102,15 +101,15 @@ class ChatService {
     //     return { result };
     // }
 
-    async saveMessege(roomName: string, message: string, userid: string) {
-        const members = roomName.split(",");
+    async saveMessege(chatRoom: string, message: string, userid: string) {
+        const members = chatRoom.split(",");
         let receiveris = members.filter((x) => {
             return x != userid;
         });
 
         const result = await this.prisma.chat.update({
             where: {
-                user_model_id: roomName,
+                user_model_id: chatRoom,
             },
             data: {
                 lastmessage: message,
@@ -120,7 +119,7 @@ class ChatService {
         try {
             await this.prisma.messege.create({
                 data: {
-                    chatRoom: roomName,
+                    chatRoom: chatRoom,
                     sender: userid,
                     receiver: receiveris.join(),
                     msgText: message,
@@ -144,6 +143,7 @@ class ChatService {
             select: {
                 msgText: true,
                 sender: true,
+                chatRoom: true,
             },
         });
         await this.prisma.$disconnect();
@@ -170,10 +170,9 @@ class ChatService {
             where: {
                 chatRoom: roomName,
                 read: false,
-                sender: userid,
             },
         });
-
+        console.log("방:", roomName, "  ", userid, "번이 안읽은 메세지 갯수는", result, "입니다");
         await this.prisma.$disconnect();
         return { result };
     }
@@ -189,6 +188,7 @@ class ChatService {
                 read: true,
             },
         });
+
         await this.prisma.$disconnect();
         return { result };
     }

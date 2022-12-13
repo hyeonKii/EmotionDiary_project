@@ -198,6 +198,31 @@ class AccountService {
             throw new AppError("UnknownError");
         }
     }
+
+    // async getUserChatRoomsByUserModel(usermodel: string) {
+    //     const result1 = await this.prisma.chat.findMany({
+    //         where: {
+    //             OR: [
+    //                 {
+    //                     inviter: String(usermodel),
+    //                 },
+    //                 {
+    //                     invitee: String(usermodel),
+    //                 },
+    //             ],
+    //         },
+    //         select: {
+    //             user_model_id: true,
+    //             //count: 안읽은 메세지 추가 해야함
+    //         },
+    //     });
+    //     if (result1 === null) {
+    //         return null;
+    //     }
+    //     await this.prisma.$disconnect();
+
+    //     return result1[0].user_model_id;
+    // }
 }
 
 export default new AccountService();

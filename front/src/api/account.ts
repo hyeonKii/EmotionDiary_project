@@ -63,18 +63,19 @@ async function logoutUser() {
     });
 }
 
-export const useFetchUser = (key: string | string[], options?) => useQuery(key, getUser, options);
+export const useFetchUser = (key: string | string[], options?: any) =>
+    useQuery(key, getUser, options);
 
-export const useRequestLogin = (userData: Login, options?) =>
+export const useRequestLogin = (userData: Login, options?: any) =>
     useMutation(() => loginUser(userData), options);
 
-export const useRequestRegisterUser = (userData: Register, options?) =>
+export const useRequestRegisterUser = (userData: Register, options?: any) =>
     useMutation(() => registerUser(userData), options);
 
-export const useRequestFindID = (userData: FindID, options?) =>
+export const useRequestFindID = (userData: FindID, options?: any) =>
     useMutation(() => findID(userData), options);
 
-export const useRequestChangePwd = (userData: ChangePwd, options?) =>
+export const useRequestChangePwd = (userData: ChangePwd, options?: any) =>
     useMutation(() => changePwd(userData), options);
 
-export const useRequestLogout = (options?) => useMutation(() => logoutUser(), options);
+export const useRequestLogout = (options?: any) => useMutation(() => logoutUser(), options);

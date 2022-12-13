@@ -6,6 +6,8 @@ import { currentUser } from "@/temp/userAtom";
 import * as api from "@/api/chat";
 import { recentlyMsgState } from "@/temp/ChatRecoil";
 import { useRecoilValue, useRecoilState } from "recoil";
+import { useLocation } from "react-router-dom";
+import { currentroom } from "@/temp/ChatRecoil";
 import {
     ChatContainer,
     LeaveButton,
@@ -17,23 +19,25 @@ import {
 interface ChatData {
     sender: string;
     msgText: string;
-    roomName: string;
+    chatRoom: string;
 }
 
-export const ChatRoom = () => {
+export const ChatRoom = (joinedRoom: any | undefined, setJoinedRoom: any) => {
     const [chats, setChats] = useState<ChatData[]>([]);
     const [msgText, setMsgText] = useState<string>("");
-
+    // const [currentsroom, setCurrentsroom] = useRecoilState(currentroom);
     const chatContainerEl = useRef<HTMLDivElement>(null);
-    const { roomName } = useParams<"roomName">();
-
+    // const chatRoom = currentsroom;
+    let { room } = useParams();
+    const chatRoom = joinedRoom?.joinedRoom;
     const [recentlyMessage, setRecentlyMessage] = useRecoilState(recentlyMsgState);
     const user = useRecoilValue(currentUser);
+    // const chatRoom = currentsroom;
     const userid = String(user?.id);
-
     const navigate = useNavigate();
-
+    console.log(chatRoom, joinedRoom?.joinedRoom);
     //todo : usecallback 사용하기
+
     // 채팅이 길어지면(chats.length) 스크롤이 생성되므로, 스크롤의 위치를 최근 메시지에 위치시키기 위함
     useEffect(() => {
         if (!chatContainerEl.current) return;
@@ -44,34 +48,48 @@ export const ChatRoom = () => {
         if (scrollHeight > clientHeight) {
             chatContainer.scrollTop = scrollHeight - clientHeight;
         }
+        console.log(chats, chatRoom);
     }, [chats.length]);
 
     // message event listener
     useEffect(() => {
         const messageHandler = (chat: ChatData) => {
-            setChats((prevChats) => [...prevChats, chat]);
             if (chat === null) {
                 return null;
             }
-            console.log("setRecentlyMessage");
-            setRecentlyMessage(chat);
+            console.log("실행", chat, chatRoom);
+            if (chat.chatRoom == chatRoom && chatRoom != null) {
+                setChats((prevChats) => [...prevChats, chat]);
+                setRecentlyMessage(chat);
+            }
+        };
+        const leaveRoomHandler = (chatRoom: string) => {
+            // setCurrentsroom(chatRoom);
         };
 
         socket.on("message", messageHandler);
-
+        socket.on("leave-room", leaveRoomHandler);
         return () => {
             socket.off("message", messageHandler);
+            socket.off("leave-room", leaveRoomHandler);
         };
     }, []);
 
     useEffect(() => {
-        getMessegetext(roomName);
-    }, [roomName]);
+        console.log(chatRoom, 5443454);
+        getMessegetext(chatRoom);
+        // console.log("the rooms change", chatRoom);
+        if (chatRoom !== undefined) {
+            // setCurrentsroom(chatRoom);
+            console.log(chatRoom, 54434);
+        }
+        setMsgText("");
+    }, [joinedRoom?.joinedRoom]);
 
     //전체 메세지 받아오기
-    const getMessegetext = async (roomName: string | undefined) => {
+    const getMessegetext = async (chatRoom: string | undefined) => {
         try {
-            const { data } = await api.getMessege(roomName);
+            const { data } = await api.getMessege(chatRoom);
             setChats(data.result);
             return data;
         } catch (e) {
@@ -79,15 +97,15 @@ export const ChatRoom = () => {
         }
     };
 
-    const getRecentlyMessege = async (roomName: string | undefined) => {
-        try {
-            const { data } = await api.getMessege(roomName);
-            setChats(data.result);
-            return data;
-        } catch (e) {
-            console.error(e);
-        }
-    };
+    // const getRecentlyMessege = async (chatRoom: string | undefined) => {
+    //     try {
+    //         const { data } = await api.getMessege(chatRoom);
+    //         setChats(data.result);
+    //         return data;
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    // };
 
     const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setMsgText(e.target.value);
@@ -97,42 +115,44 @@ export const ChatRoom = () => {
         (e: FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             if (!msgText) return alert("메시지를 입력해 주세요.");
-
-            socket.emit("message", { roomName, msgText, userid }, (chat: ChatData) => {
-                setChats((prevChats) => [...prevChats, chat]);
-            });
-            setMsgText("");
-            console.log(chats);
+            if (chatRoom != null) {
+                console.log(chatRoom, "is not null");
+                socket.emit("message", { chatRoom, msgText, userid }, (chat: ChatData) => {
+                    setChats((prevChats) => [...prevChats, chat]);
+                });
+                setMsgText("");
+            }
         },
-        [msgText, roomName]
+        [msgText, chatRoom]
     );
 
     const onLeaveRoom = useCallback(() => {
-        socket.emit("leave-room", roomName, () => {
-            navigate("/");
-        });
-    }, [navigate, roomName]);
+        socket.emit("leave-room", chatRoom, () => {});
+        navigate("/");
+    }, [navigate, chatRoom]);
 
     return (
         <>
             <LeaveButton onClick={onLeaveRoom}>
-                <button>방 나가기</button>
+                <button>방 나가기{chatRoom}</button>
             </LeaveButton>
             <ChatContainer ref={chatContainerEl}>
-                {chats.map((chat, index) => (
-                    <MessageBox
-                        key={index}
-                        className={classNames({
-                            my_message: userid === chat.sender,
-                            alarm: !chat.sender,
-                        })}
-                    >
-                        <span>
-                            {/* {chat.sender ? (socket.id === chat.sender ? "" : chat.sender) : ""} */}
-                        </span>
-                        <Message className="message">{chat.msgText}</Message>
-                    </MessageBox>
-                ))}
+                {chats.map((chat, index) =>
+                    chat.chatRoom == chatRoom ? (
+                        <MessageBox
+                            key={index}
+                            className={classNames({
+                                my_message: userid === chat.sender,
+                                alarm: !chat.sender,
+                            })}
+                        >
+                            <span></span>
+                            <Message className="message">{chat.msgText}</Message>
+                        </MessageBox>
+                    ) : (
+                        ""
+                    )
+                )}
             </ChatContainer>
             <MessageForm onSubmit={onSendMessage}>
                 <div>
