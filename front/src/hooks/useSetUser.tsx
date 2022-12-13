@@ -1,10 +1,10 @@
 import { useFetchUser } from "@/api/account";
-import { currentUser } from "@/temp/userAtom";
+import { currentidUser } from "@/temp/userAtom";
 import { useSetRecoilState } from "recoil";
 
 interface Response {
     data: {
-        User: { nickname: string };
+        User: { nickname: string; id: number };
         certified_account: boolean;
     };
 }
@@ -14,7 +14,7 @@ interface Error {
 }
 
 export default function useSetUser() {
-    const setUserState = useSetRecoilState(currentUser);
+    const setUserState = useSetRecoilState(currentidUser);
 
     const { isLoading, refetch: setUser } = useFetchUser(["user"], {
         enabled: false,
@@ -22,13 +22,13 @@ export default function useSetUser() {
 
         onSuccess: (res: Response) => {
             const {
-                User: { nickname },
+                User: { nickname, id },
                 certified_account,
             } = res.data;
 
             console.log("로그인 성공");
 
-            setUserState({ nickname });
+            setUserState({ nickname, id });
         },
 
         onError: (error: Error) => {

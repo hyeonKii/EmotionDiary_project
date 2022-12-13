@@ -1,31 +1,28 @@
-import { useState } from "react";
+import { currentForm } from "@/temp/formAtom";
+import { useRecoilValue } from "recoil";
 import { FIND_ID, FIND_PW, LOGIN, REGISTER } from "./constants/tabList";
 import UserIDtoFind from "./UserIDtoFind";
 import UserLogin from "./UserLogin";
 import UserPWtoFind from "./UserPWtoFind";
 import UserRegister from "./UserRegister";
 
-interface Props {
-    setShowLoginForm(value: boolean): void;
-}
-
-export default function UserFormController({ setShowLoginForm }: Props) {
-    const [tabNumber, setTabNumber] = useState(LOGIN);
+export default function UserFormController() {
+    const tabNumber = useRecoilValue(currentForm);
 
     if (tabNumber === LOGIN) {
-        return <UserLogin setTabNumber={setTabNumber} setShowLoginForm={setShowLoginForm} />;
+        return <UserLogin />;
     }
 
     if (tabNumber === REGISTER) {
-        return <UserRegister setTabNumber={setTabNumber} />;
+        return <UserRegister />;
     }
 
     if (tabNumber === FIND_ID) {
-        return <UserIDtoFind setTabNumber={setTabNumber} />;
+        return <UserIDtoFind />;
     }
 
     if (tabNumber === FIND_PW) {
-        return <UserPWtoFind setTabNumber={setTabNumber} />;
+        return <UserPWtoFind />;
     }
 
     return null;
