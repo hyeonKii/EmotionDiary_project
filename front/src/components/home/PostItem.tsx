@@ -12,10 +12,16 @@ interface Items {
     description: string;
     emotion: string;
     createdAt: Date;
+    user_model_id: number;
 }
 
 interface Props {
     post: Items;
+}
+
+interface CreateRoomResponse {
+    success: boolean;
+    payload: string;
 }
 
 function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
@@ -73,8 +79,11 @@ function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
                                     type="text"
                                     placeholder="메시지는 익명으로 전송됩니다. 속마음을 나눠보세요!"
                                     autoFocus
+                                    ref={messegeRef}
                                 />
-                                <button className="submitButton">전송</button>
+                                <button onClick={onCreateRoom} className="submitButton">
+                                    전송
+                                </button>
                             </MessageBlock>
                             <button
                                 className={like ? "material-icons" : "material-symbols-outlined"}

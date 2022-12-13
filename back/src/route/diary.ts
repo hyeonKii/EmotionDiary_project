@@ -55,7 +55,7 @@ diaryRouter.get(
             req.userID!,
             Number(count),
             Number(page),
-            Boolean(privatediary),
+            String(privatediary),
             String(emotion)
         );
         return { statusCode: 200, content: result };

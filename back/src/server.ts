@@ -14,7 +14,6 @@ import { Socket } from "socket.io";
 import socket from "socket.io";
 import chatService from "./services/chatService";
 
-import cors from "cors";
 config();
 
 const app = express();

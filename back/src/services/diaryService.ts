@@ -141,7 +141,7 @@ class DiaryService {
         userID: string,
         count: number,
         page: number,
-        privatediary: boolean,
+        privatediary: string,
         emotion: string
     ) {
         const postDatas = await this.prisma.diary.findMany({
