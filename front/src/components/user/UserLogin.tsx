@@ -1,5 +1,4 @@
 import { useState, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { useRequestLogin } from "@/api/account";
 import useForm from "@/hooks/useForm";
@@ -30,12 +29,7 @@ interface Error {
     message: string;
 }
 
-interface Props {
-    setShowLoginForm(value: boolean): void;
-}
-
 export default function UserLogin() {
-    const navigate = useNavigate();
     const [error, setError] = useState(false);
     const { setUser } = useSetUser();
 
@@ -56,8 +50,6 @@ export default function UserLogin() {
 
             setUser();
             setLoginForm(false);
-
-            navigate("/home");
         },
 
         onError: (error: Error) => {
