@@ -8,6 +8,8 @@ import {
     Error,
     BottomSection,
 } from "@/styles/common/modal/Form-style";
+import { useSetRecoilState } from "recoil";
+import { currentForm } from "@/temp/formAtom";
 
 interface Props {
     form: {
@@ -17,17 +19,12 @@ interface Props {
     changeHandler(event: React.ChangeEvent<HTMLInputElement>): void;
     error: string;
     isSuccess: boolean;
-    setTabNumber(value: number): void;
 }
 
-export default function UserRegisterTab({
-    form,
-    changeHandler,
-    error,
-    isSuccess,
-    setTabNumber,
-}: Props) {
+export default function UserRegisterTab({ form, changeHandler, error, isSuccess }: Props) {
     const checkPassword = form.password !== form.confirmPwd ? true : false;
+
+    const setCurrentForm = useSetRecoilState(currentForm);
 
     return (
         <>
@@ -88,7 +85,7 @@ export default function UserRegisterTab({
             ) : (
                 <>
                     <div>회원가입에 성공하셨습니다!</div>
-                    <FormButton type="button" onClick={() => setTabNumber(LOGIN)}>
+                    <FormButton type="button" onClick={() => setCurrentForm(LOGIN)}>
                         로그인 하기
                     </FormButton>
                 </>
