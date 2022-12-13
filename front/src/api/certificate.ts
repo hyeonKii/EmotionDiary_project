@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { URL } from "./url";
 import * as endpoint from "./constants/certificationEndpoints";
-import { useMutation } from "react-query";
+import { useMutation, UseMutationOptions } from "react-query";
 
 interface SendCode {
     email: string;
@@ -21,8 +21,12 @@ async function checkCode(userData: CheckCode) {
     return await axios.post(URL + endpoint.CERTIFICATION_EMAIL_CHECK_CODE, userData);
 }
 
-export const useRequestSendCode = (userData: SendCode, options?: any) =>
-    useMutation(() => sendCode(userData), options);
+export const useRequestSendCode = (
+    userData: SendCode,
+    options?: UseMutationOptions<AxiosResponse, AxiosError>
+) => useMutation(() => sendCode(userData), options);
 
-export const useRequestCheckCode = (userData: CheckCode, options?: any) =>
-    useMutation(() => checkCode(userData), options);
+export const useRequestCheckCode = (
+    userData: CheckCode,
+    options?: UseMutationOptions<AxiosResponse, AxiosError>
+) => useMutation(() => checkCode(userData), options);
