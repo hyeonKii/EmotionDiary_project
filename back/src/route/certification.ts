@@ -31,7 +31,6 @@ certificationRouter.post(
     // auth,
     wrapRouter(async (req, res) => {
         const { email, code } = req.body;
-        console.log(email, code, email || code);
         if (email === undefined || code === undefined) {
             throw new AppError("BodyDataError");
         }

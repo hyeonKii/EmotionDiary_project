@@ -22,7 +22,7 @@ interface ChatData {
     chatRoom: string;
 }
 
-export const ChatRoom = (joinedRoom: any | undefined, setJoinedRoom: any) => {
+export const ChatRoom = (joinedRoom: any | undefined) => {
     const [chats, setChats] = useState<ChatData[]>([]);
     const [msgText, setMsgText] = useState<string>("");
     // const [currentsroom, setCurrentsroom] = useRecoilState(currentroom);
@@ -35,7 +35,6 @@ export const ChatRoom = (joinedRoom: any | undefined, setJoinedRoom: any) => {
     // const chatRoom = currentsroom;
     const userid = String(user?.id);
     const navigate = useNavigate();
-    console.log(chatRoom, joinedRoom?.joinedRoom);
     //todo : usecallback 사용하기
 
     // 채팅이 길어지면(chats.length) 스크롤이 생성되므로, 스크롤의 위치를 최근 메시지에 위치시키기 위함
@@ -48,7 +47,6 @@ export const ChatRoom = (joinedRoom: any | undefined, setJoinedRoom: any) => {
         if (scrollHeight > clientHeight) {
             chatContainer.scrollTop = scrollHeight - clientHeight;
         }
-        console.log(chats, chatRoom);
     }, [chats.length]);
 
     // message event listener
@@ -57,7 +55,6 @@ export const ChatRoom = (joinedRoom: any | undefined, setJoinedRoom: any) => {
             if (chat === null) {
                 return null;
             }
-            console.log("실행", chat, chatRoom);
             if (chat.chatRoom == chatRoom && chatRoom != null) {
                 setChats((prevChats) => [...prevChats, chat]);
                 setRecentlyMessage(chat);
@@ -76,13 +73,7 @@ export const ChatRoom = (joinedRoom: any | undefined, setJoinedRoom: any) => {
     }, []);
 
     useEffect(() => {
-        console.log(chatRoom, 5443454);
         getMessegetext(chatRoom);
-        // console.log("the rooms change", chatRoom);
-        if (chatRoom !== undefined) {
-            // setCurrentsroom(chatRoom);
-            console.log(chatRoom, 54434);
-        }
         setMsgText("");
     }, [joinedRoom?.joinedRoom]);
 
@@ -116,7 +107,6 @@ export const ChatRoom = (joinedRoom: any | undefined, setJoinedRoom: any) => {
             e.preventDefault();
             if (!msgText) return alert("메시지를 입력해 주세요.");
             if (chatRoom != null) {
-                console.log(chatRoom, "is not null");
                 socket.emit("message", { chatRoom, msgText, userid }, (chat: ChatData) => {
                     setChats((prevChats) => [...prevChats, chat]);
                 });
@@ -128,11 +118,12 @@ export const ChatRoom = (joinedRoom: any | undefined, setJoinedRoom: any) => {
 
     const onLeaveRoom = useCallback(() => {
         socket.emit("leave-room", chatRoom, () => {});
-        navigate("/");
+        navigate("/diary");
+        joinedRoom.setJoinedRoom();
     }, [navigate, chatRoom]);
 
     return (
-        <>
+        <div onFocus={() => joinedRoom.focusEvent()}>
             <LeaveButton onClick={onLeaveRoom}>
                 <button>방 나가기{chatRoom}</button>
             </LeaveButton>
@@ -160,7 +151,7 @@ export const ChatRoom = (joinedRoom: any | undefined, setJoinedRoom: any) => {
                     <button className="submitButton">전송</button>
                 </div>
             </MessageForm>
-        </>
+        </div>
     );
 };
 export default ChatRoom;
