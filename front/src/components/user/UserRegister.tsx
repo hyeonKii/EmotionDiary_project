@@ -4,7 +4,7 @@ import { useRequestRegisterUser } from "@/api/account";
 import UserEmailCheckTab from "./UserEmailCheckTab";
 import UserRegisterTab from "./UserRegisterTab";
 import { LOGIN } from "./constants/tabList";
-import { Form, FormTitle, Error, BottomSection } from "@/styles/common/modal/Form-style";
+import { Form, FormTitle, Error, BottomSection } from "@/styles/common/Modal/Form-style";
 
 interface Props {
     setTabNumber(value: number): void;

@@ -1,4 +1,4 @@
-import { ModalBackgroundStyle } from "@/styles/common/modal/background-style";
+import { ModalBackgroundStyle } from "@/styles/common/Modal/background-style";
 
 interface Props {
     setShowLoginForm?(value: boolean): void;

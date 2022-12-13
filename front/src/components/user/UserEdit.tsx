@@ -13,7 +13,7 @@ import {
     EditSection,
     InputBlock,
     Error,
-} from "@/styles/common/modal/Form-style";
+} from "@/styles/common/Modal/Form-style";
 
 interface Props {
     setShowInfo(value: boolean): void;
