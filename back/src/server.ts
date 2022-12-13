@@ -50,22 +50,17 @@ export const sc = new socket.Server(server, {
 
 let createdRooms: string[] = [];
 let strArr: string[] = [];
-let sendArr: string[] = [];
-let LastMessageStr: string;
 
 if (sc !== undefined) {
     sc.on("connection", (socket: Socket) => {
         socket.on("message", async ({ chatRoom, msgText, userid }: MessagePayload) => {
             sc.emit("message", { sender: userid, msgText, chatRoom });
-            // sc.to(chatRoom).emit("message", { sender: userid, msgText, chatRoom });
-            console.log(chatRoom, msgText, userid);
-            const result = await chatService.saveMessege(chatRoom, msgText, String(userid));
+            await chatService.saveMessege(chatRoom, msgText, String(userid));
         });
         //foreach 사용하기 => for 대신에
 
         socket.on("room-list", async (usermodel: string) => {
             //socket emit 으로 받아온 userid로 방을 검색
-            // console.log(usermodel, "번 유저 방목록 불러옴");
             const result = await chatService.roomList(Number(usermodel));
             for (let value in Object.values(result.result)) {
                 strArr.push(...Object.values(result.result[value]));
@@ -80,7 +75,6 @@ if (sc !== undefined) {
             }
 
             sc.emit("create-room", result, usermodel); // 대기실 방 생성
-            console.log("서버측 방목록 송신 완료", result, usermodel);
             return createdRooms;
         });
 
@@ -88,7 +82,10 @@ if (sc !== undefined) {
             const exists = createdRooms.find(
                 (createdRoom) => createdRoom === inviter + "," + invitee
             );
-            // sc.to(inviter + "," + invitee).emit("message", { username: socket.id, message });
+            const user_model_id = inviter + "," + invitee;
+            sc.emit("message", { sender: inviter, msgText: message, chatRoom: user_model_id });
+            await chatService.saveMessege(user_model_id, message, String(inviter));
+            console.log(444);
             if (exists) {
                 console.log("exist");
                 return {
@@ -99,15 +96,13 @@ if (sc !== undefined) {
             socket.join(inviter + "," + invitee); // 기존에 없던 room으로 join하면 room이 생성됨
             createdRooms.push(inviter + "," + invitee); // 유저가 생성한 room 목록에 추가
             sc.emit("create-room", inviter + "," + invitee); // 대기실 방 생성
-            const result = await chatService.saveChat(inviter, invitee);
-            console.log(inviter + "," + invitee);
+            await chatService.saveChat(inviter, invitee);
             socket.join("");
-            return { success: true, payload: inviter + invitee };
+            return { success: true, payload: inviter + "," + invitee };
         });
 
         socket.on("join-room", async (roomName: string, userid: string) => {
             const result2 = await chatService.readMessage(String(roomName), String(userid));
-            console.log(userid, "user joined");
             sc.emit("join-room", result2);
             socket.join(roomName); // join room
             return { success: true };

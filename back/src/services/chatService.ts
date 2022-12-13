@@ -19,12 +19,12 @@ class ChatService {
     async saveChat(inviter: string, invitee: string) {
         const result = await this.prisma.chat.findUnique({
             where: {
-                user_model_id: inviter + invitee,
+                user_model_id: inviter + "," + invitee,
             },
         });
         if (result !== null) {
             //이미 방이 있으므로 아무 것도 하지 않음
-            console.log("이미 존재함", inviter, invitee);
+            console.log("이미 존재합니다");
             return;
         } else {
             try {
@@ -48,8 +48,6 @@ class ChatService {
     }
 
     async roomList(usermodel: number) {
-        console.log(usermodel, "usermodel");
-
         const result1 = await this.prisma.chat.findMany({
             where: {
                 OR: [
@@ -172,10 +170,9 @@ class ChatService {
             where: {
                 chatRoom: roomName,
                 read: false,
-                sender: userid,
             },
         });
-        // console.log("방:", roomName, "  ", userid, "번이 안읽은 메세지 갯수는", result, "입니다");
+        console.log("방:", roomName, "  ", userid, "번이 안읽은 메세지 갯수는", result, "입니다");
         await this.prisma.$disconnect();
         return { result };
     }
@@ -191,6 +188,7 @@ class ChatService {
                 read: true,
             },
         });
+
         await this.prisma.$disconnect();
         return { result };
     }

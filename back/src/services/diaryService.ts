@@ -144,7 +144,6 @@ class DiaryService {
         privatediary: string,
         emotion: string
     ) {
-        console.log(typeof privatediary, privatediary);
         const postDatas = await this.prisma.diary.findMany({
             take: Number(count),
             skip: (Number(page) - 1) * Number(count),

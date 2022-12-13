@@ -32,6 +32,7 @@ interface ChatList {
 export function Chat() {
     const [chats, setChats] = useState<ChatData[]>([]);
     const [joinedRoom, setJoinedRoom] = useState<string>();
+    const [count, setCount] = useState<string>();
     const [currentsroom, setCurrentsroom] = useRecoilState(currentroom);
     const chatContainerEl = useRef<HTMLDivElement>(null);
     let { roomName } = useParams<"roomName">();
@@ -69,9 +70,14 @@ export function Chat() {
             response.result.map(async (item: any, index: number) => {
                 const countresult = await api.getCountMessege(item.user_model_id, userid);
                 response.result[index]["count"] = countresult.data.result;
+                // setCount(countresult.data.result);
             });
             console.log("createRoom response:", response.result);
             if (userid == usermodel) {
+                response.result.map(async (item: ChatList, index: number) => {
+                    const countresult = await api.getCountMessege(item.user_model_id, userid);
+                    response.result[index]["count"] = countresult.data.result;
+                });
                 setChatList(response.result);
             }
         };
@@ -86,7 +92,6 @@ export function Chat() {
             });
             console.log("chatlist 갱신");
             if (chatList !== null) {
-                console.log("count");
                 chatList.map(async (item: ChatList, index: number) => {
                     const countresult = await api.getCountMessege(item.user_model_id, userid);
                     chatList[index]["count"] = countresult.data.result;
@@ -94,13 +99,16 @@ export function Chat() {
             }
 
             setChatList((prev) => {
-                console.log(prev, "ㄷㄱㅎㄱ");
+                console.log(prev, "ㄷㄱㅎㄱ", count);
                 return prev!.map((item) => {
                     if (item.user_model_id == chat.chatRoom) {
                         console.log("update");
                         item.lastmessage = chat.msgText;
                         item.updatedAt = "방금 전";
-                        item.count = item.count + 1;
+                        if (chat.sender == userid) {
+                            item.count = "0";
+                        }
+                        item.count = item.count;
                     }
                     return item;
                 });
@@ -146,7 +154,11 @@ export function Chat() {
                         console.log("update");
                         item.lastmessage = chat.msgText;
                         item.updatedAt = "방금 전";
-                        // item.count = item.count + 1;
+                        if (chat.sender == userid) {
+                            item.count = "0";
+                        } else {
+                            item.count = String(Number(item.count) + 0.5);
+                        }
                     }
                     console.log(prev, "변경 후");
                     return item;
@@ -161,11 +173,13 @@ export function Chat() {
     }, [chatList]);
 
     const onJoinRoom = useCallback(
-        (roomName: string) => () => {
+        (roomName: string) => async () => {
             // onLeaveRoom(roomName);
             socket.emit("join-room", roomName, user?.id, () => {});
             socket.emit("leave-room", roomName, () => {});
             // navigate(`/diary/room/${roomName}`);
+            await api.readMessege(roomName, userid);
+
             console.log(roomName, 24242);
             setCurrentsroom(roomName);
             setJoinedRoom(roomName);
@@ -186,7 +200,7 @@ export function Chat() {
                     <ChatRoomstyle onClick={onJoinRoom(item.user_model_id)} key={idx}>
                         <button>{item.lastmessage}</button>
                         <div>
-                            {/* <div>{item.count}</div> */}
+                            <div>{item.count}</div>
                             <span> {item.updatedAt}</span>
                         </div>
                         {/* <button>{item.lastmessage}</button> */}
