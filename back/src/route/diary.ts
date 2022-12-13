@@ -1,5 +1,5 @@
 import { Router, Request as Req, Response as Res } from "express";
-import requsest from "request";
+import axios from "axios";
 import wrapRouter from "../lib/wrapRouter";
 import diaryService from "../services/diaryService";
 import auth from "../middleware/auth";
@@ -16,22 +16,11 @@ diaryRouter.post(
         if (title && description && privateDiary === undefined) {
             throw new AppError("ArgumentError");
         }
-        const result = await diaryService.writeDiary(
-            req.userID!,
-            title,
-            description,
-            privateDiary,
-            createdAt
-        );
+        await diaryService.writeDiary(req.userID!, title, description, privateDiary, createdAt);
 
-        requsest("http://localhost:8000", (error, response, body) => {
-            if (!error && response.statusCode == 200) {
-                console.log(body);
-            } else {
-                console.log(error);
-                console.log(response);
-            }
-        });
+        const result = await axios.post("http://localhost:8000", description);
+
+        console.log(result);
 
         return { statusCode: 200, content: true };
     })
