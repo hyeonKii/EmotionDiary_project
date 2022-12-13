@@ -34,8 +34,9 @@ export default function DiaryCreatePost({ clickedDate }: Props) {
     const { mutate: writeHandler } = useRequestWriteDiary(
         { ...form, privateDiary: privateMode, createdAt: clickedDate },
         {
-            onSuccess: () => {
-                queryClient.invalidateQueries(["calendar-diaries"]);
+            onSuccess: async () => {
+                await queryClient.invalidateQueries(["calendar-diaries"]);
+                await queryClient.invalidateQueries(["past-diaries"]);
 
                 console.log("일기 작성 요청 성공");
             },

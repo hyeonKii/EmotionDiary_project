@@ -35,8 +35,9 @@ export default function DiaryTodayPost({ post }: Props) {
     });
 
     const { mutate: deleteDiary } = useRequestDeleteDiary(id, {
-        onSuccess: () => {
-            queryClient.invalidateQueries(["calendar-diaries"]);
+        onSuccess: async () => {
+            await queryClient.invalidateQueries(["calendar-diaries"]);
+            await queryClient.invalidateQueries(["past-diaries"]);
 
             console.log("일기 삭제 요청 성공");
         },
