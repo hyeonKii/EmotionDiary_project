@@ -76,12 +76,15 @@ export const ChatRoom = (joinedRoom: any | undefined, setJoinedRoom: any) => {
     }, []);
 
     useEffect(() => {
+        console.log(chatRoom, 5443454);
         getMessegetext(chatRoom);
         // console.log("the rooms change", chatRoom);
         if (chatRoom !== undefined) {
             // setCurrentsroom(chatRoom);
+            console.log(chatRoom, 54434);
         }
-    }, [chatRoom]);
+        setMsgText("");
+    }, [joinedRoom?.joinedRoom]);
 
     //전체 메세지 받아오기
     const getMessegetext = async (chatRoom: string | undefined) => {
@@ -143,9 +146,7 @@ export const ChatRoom = (joinedRoom: any | undefined, setJoinedRoom: any) => {
                                 alarm: !chat.sender,
                             })}
                         >
-                            <span>
-                                {/* {chat.sender ? (socket.id === chat.sender ? "" : chat.sender) : ""} */}
-                            </span>
+                            <span></span>
                             <Message className="message">{chat.msgText}</Message>
                         </MessageBox>
                     ) : (

@@ -98,7 +98,6 @@ const WaitingRoom = (prop: { chatList: ChatListForm | null }) => {
             }
 
             setChatList((prev) => {
-                console.log(prev, "ㄷㄱㅎㄱ");
                 return prev!.map((item) => {
                     if (item.user_model_id == chat.chatRoom) {
                         console.log("update");
