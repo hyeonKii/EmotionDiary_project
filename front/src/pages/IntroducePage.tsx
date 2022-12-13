@@ -65,6 +65,7 @@ const introduce = () => {
                         return (prev = resizeHeight);
                     });
                     section.current.style.top = `-${resizeHeight * i}px`;
+                    console.log(resizeHeight, 4);
                 }
             }
         };

@@ -14,13 +14,13 @@ import {
     Success,
     DescriptionLabel,
 } from "@/styles/common/modal/Form-style";
-import { useSetRecoilState } from "recoil";
-import { currentForm } from "@/temp/formAtom";
 
-export default function UserIDtoFind() {
+interface Props {
+    setTabNumber(value: number): void;
+}
+
+export default function UserIDtoFind({ setTabNumber }: Props) {
     const { form, changeHandler } = useForm({ email: "", target: "password", code: "" });
-
-    const setCurrentForm = useSetRecoilState(currentForm);
 
     const {
         isError: emailError,
@@ -56,14 +56,14 @@ export default function UserIDtoFind() {
             </InputSection>
             {emailSuccess && <Success>이메일로 임시 비밀번호가 발급되었습니다.</Success>}
             <BottomSection>
-                <FormButton onClick={() => setCurrentForm(LOGIN)}>로그인 하기</FormButton>
+                <FormButton onClick={() => setTabNumber(LOGIN)}>로그인 하기</FormButton>
                 <div className="register">
                     <span>계정이 없으신가요? </span>
-                    <button type="button" onClick={() => setCurrentForm(REGISTER)}>
+                    <button type="button" onClick={() => setTabNumber(REGISTER)}>
                         회원가입
                     </button>
                 </div>
-                <button type="button" onClick={() => setCurrentForm(FIND_ID)}>
+                <button type="button" onClick={() => setTabNumber(FIND_ID)}>
                     아이디 찾기
                 </button>
             </BottomSection>

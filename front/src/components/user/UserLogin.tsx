@@ -16,8 +16,6 @@ import {
     Error,
     BottomSection,
 } from "@/styles/common/modal/Form-style";
-import { useSetRecoilState } from "recoil";
-import { currentForm, showLoginForm } from "@/temp/formAtom";
 
 interface Response {
     data: {
@@ -31,16 +29,14 @@ interface Error {
 }
 
 interface Props {
+    setTabNumber(value: number): void;
     setShowLoginForm(value: boolean): void;
 }
 
-export default function UserLogin() {
+export default function UserLogin({ setTabNumber, setShowLoginForm }: Props) {
     const navigate = useNavigate();
     const [error, setError] = useState(false);
     const { setUser } = useSetUser();
-
-    const setCurrentForm = useSetRecoilState(currentForm);
-    const setLoginForm = useSetRecoilState(showLoginForm);
 
     const { form, changeHandler } = useForm({
         userID: "",
@@ -55,8 +51,8 @@ export default function UserLogin() {
             setSession("refreshToken", refreshToken);
 
             setUser();
-            setLoginForm(false);
 
+            setShowLoginForm(false);
             navigate("/home");
         },
 
@@ -100,14 +96,14 @@ export default function UserLogin() {
                 </FormButton>
                 <div className="register">
                     <span>계정이 없으신가요? </span>
-                    <button type="button" onClick={() => setCurrentForm(REGISTER)}>
+                    <button type="button" onClick={() => setTabNumber(REGISTER)}>
                         회원가입
                     </button>
                 </div>
-                <button type="button" onClick={() => setCurrentForm(FIND_ID)}>
+                <button type="button" onClick={() => setTabNumber(FIND_ID)}>
                     아이디/
                 </button>
-                <button type="button" onClick={() => setCurrentForm(FIND_PW)}>
+                <button type="button" onClick={() => setTabNumber(FIND_PW)}>
                     비밀번호 찾기
                 </button>
             </BottomSection>

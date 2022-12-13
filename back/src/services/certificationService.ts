@@ -6,7 +6,7 @@ import AppError from "../lib/AppError";
 
 import mailSender from "../lib/mail";
 
-//TODO: change error type
+// Todo: change error type
 
 const isCertifiedEmail = (email: string) => {
     const reg = /^[\w-\.]+@([\w-]+\.)+com$/;

@@ -4,7 +4,7 @@ import { useSetRecoilState } from "recoil";
 
 interface Response {
     data: {
-        User: { nickname: string; id: number };
+        User: { nickname: string };
         certified_account: boolean;
     };
 }
@@ -22,13 +22,13 @@ export default function useSetUser() {
 
         onSuccess: (res: Response) => {
             const {
-                User: { nickname, id },
+                User: { nickname },
                 certified_account,
             } = res.data;
 
             console.log("로그인 성공");
 
-            setUserState({ nickname, id });
+            setUserState({ nickname });
         },
 
         onError: (error: Error) => {

@@ -51,23 +51,37 @@ const chart = [
 
 export function Emotion() {
     const user = useRecoilValue(currentUser);
-
     const topEmotion = chart.reduce((a, b) => {
         return a.A > b.A ? a : b;
     });
+    const [newArr, setNewArr] = useState({
+        day: {
+            title: "",
+            description: "",
+            emotion: "",
+        },
+        month: {
+            title: "",
+            description: "",
+            emotion: "",
+        },
+        year: {
+            title: "",
+            description: "",
+            emotion: "",
+        },
+    });
 
     const { data: pastDiaries } = useRequestPastDiaries({
-        onSuccess: () => {},
+        onSuccess: (res) => {
+            console.log(res);
+        },
         onError: () => {},
     });
 
-    const day = pastDiaries?.data[0];
-    const month = pastDiaries?.data[1];
-    const year = pastDiaries?.data[2];
-
     return (
         <EmotionSection>
-            <EmotionChartSection>
+            {/* <EmotionChartSection>
                 <h1>
                     <span className="nickName">{user?.nickname}</span>님의 지난달 감정들
                 </h1>
@@ -91,38 +105,44 @@ export function Emotion() {
             <EmotionDataSection>
                 <article>
                     <h3>일주일 전 오늘</h3>
-                    <span className="emotionIcon">{emotionImg(day?.emotion)}</span>
+                    <span className="emotionIcon">{emotionImg(newArr.day?.emotion)}</span>
                     <span className="date">{dayString}</span>
                     <div className="diary">
-                        <span>{day?.title}</span>
+                        <span>{newArr.day?.title}</span>
                         <span className="body">
-                            {day?.description ? day.description : "작성된 글이 없습니다."}
+                            {newArr.day?.description
+                                ? newArr.day.description
+                                : "작성된 글이 없습니다."}
                         </span>
                     </div>
                 </article>
                 <article>
                     <h3>한 달 전 오늘</h3>
-                    <span className="emotionIcon">{emotionImg(month?.emotion)}</span>
+                    <span className="emotionIcon">{emotionImg(newArr.month?.emotion)}</span>
                     <span className="date">{monthString}</span>
                     <div className="diary">
-                        <span>{month?.title}</span>
+                        <span>{newArr.month?.title}</span>
                         <span className="body">
-                            {month?.description ? month?.description : "작성된 글이 없습니다."}
+                            {newArr.month?.description
+                                ? newArr.month?.description
+                                : "작성된 글이 없습니다."}
                         </span>
                     </div>
                 </article>
                 <article>
                     <h3>일 년 전 오늘</h3>
-                    <span className="emotionIcon">{emotionImg(year?.emotion)}</span>
+                    <span className="emotionIcon">{emotionImg(newArr.year?.emotion)}</span>
                     <span className="date">{yearString}</span>
                     <div className="diary">
-                        <span>{year?.title}</span>
+                        <span>{newArr.year?.title}</span>
                         <span className="body">
-                            {year?.description ? year?.description : "작성된 글이 없습니다."}
+                            {newArr.year?.description
+                                ? newArr.year?.description
+                                : "작성된 글이 없습니다."}
                         </span>
                     </div>
                 </article>
-            </EmotionDataSection>
+            </EmotionDataSection> */}
         </EmotionSection>
     );
 }
