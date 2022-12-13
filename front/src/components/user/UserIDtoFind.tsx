@@ -46,10 +46,10 @@ export default function UserIDtoFind({ setTabNumber }: Props) {
             console.log("이메일 코드 전송 완료.");
             setEmailError("");
         },
-        onError: (error: Error) => {
+        onError: (error) => {
             console.log("이메일 전송 실패");
 
-            if (error.response.data === "User does not exists") {
+            if (error.response?.data === "User does not exists") {
                 setEmailError("아이디가 존재하지 않습니다.");
                 return;
             }
