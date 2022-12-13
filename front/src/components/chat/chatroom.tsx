@@ -25,14 +25,10 @@ interface ChatData {
 export const ChatRoom = (joinedRoom: any | undefined) => {
     const [chats, setChats] = useState<ChatData[]>([]);
     const [msgText, setMsgText] = useState<string>("");
-    // const [currentsroom, setCurrentsroom] = useRecoilState(currentroom);
     const chatContainerEl = useRef<HTMLDivElement>(null);
-    // const chatRoom = currentsroom;
-    let { room } = useParams();
     const chatRoom = joinedRoom?.joinedRoom;
     const [recentlyMessage, setRecentlyMessage] = useRecoilState(recentlyMsgState);
     const user = useRecoilValue(currentidUser);
-    // const chatRoom = currentsroom;
     const userid = String(user?.id);
     const navigate = useNavigate();
     //todo : usecallback 사용하기
@@ -60,18 +56,13 @@ export const ChatRoom = (joinedRoom: any | undefined) => {
                 setRecentlyMessage(chat);
             }
         };
-        const leaveRoomHandler = (chatRoom: string) => {
-            // setCurrentsroom(chatRoom);
-        };
 
         socket.on("message", messageHandler);
-        socket.on("leave-room", leaveRoomHandler);
         return () => {
             socket.off("message", messageHandler);
-            socket.off("leave-room", leaveRoomHandler);
         };
     }, []);
-
+    //유저가 입장하는 방에 따라 메세지 값을 불러오고 채팅 Input 값 비우기
     useEffect(() => {
         getMessegetext(chatRoom);
         setMsgText("");
@@ -87,16 +78,6 @@ export const ChatRoom = (joinedRoom: any | undefined) => {
             console.error(e);
         }
     };
-
-    // const getRecentlyMessege = async (chatRoom: string | undefined) => {
-    //     try {
-    //         const { data } = await api.getMessege(chatRoom);
-    //         setChats(data.result);
-    //         return data;
-    //     } catch (e) {
-    //         console.error(e);
-    //     }
-    // };
 
     const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setMsgText(e.target.value);
@@ -125,7 +106,8 @@ export const ChatRoom = (joinedRoom: any | undefined) => {
     return (
         <div onFocus={() => joinedRoom.focusEvent()}>
             <LeaveButton onClick={onLeaveRoom}>
-                <button>방 나가기{chatRoom}</button>
+                <button>방 나가기</button>
+                {/* {chatRoom} */}
             </LeaveButton>
             <ChatContainer ref={chatContainerEl}>
                 {chats.map((chat, index) =>
