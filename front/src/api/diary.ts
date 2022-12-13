@@ -82,6 +82,15 @@ const deleteMyDiary = (id: number) => {
     });
 };
 
+const getPastDiaries = () => {
+    return axios.get(URL + endpoint.DIARY_PAST, {
+        headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+            Refreshtoken: sessionStorage.getItem("refreshToken"),
+        },
+    });
+};
+
 export const useRequestWriteDiary = (
     diaryData: WriteDiary,
     options?: UseMutationOptions<AxiosResponse, AxiosError>
@@ -121,3 +130,7 @@ export const useRequestDeleteDiary = (
     id: number,
     options?: UseMutationOptions<AxiosResponse, AxiosError>
 ) => useMutation(() => deleteMyDiary(id), options);
+
+export const useRequestPastDiaries = (
+    options?: UseQueryOptions<AxiosResponse, AxiosError, AxiosResponse, string[]>
+) => useQuery(["past-diaries"], () => getPastDiaries(), options);
