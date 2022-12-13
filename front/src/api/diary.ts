@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { URL } from "./url";
 import * as endpoint from "./constants/diaryEndpoints";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from "react-query";
 
 interface WriteDiary {
     title: string;
@@ -83,27 +83,55 @@ const deleteMyDiary = (id: number) => {
     });
 };
 
-export const useRequestWriteDiary = (diaryData: WriteDiary, options?: any) =>
-    useMutation(() => writeDiary(diaryData), options);
+const getPastDiaries = () => {
+    return axios.get(URL + endpoint.DIARY_PAST, {
+        headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+            Refreshtoken: sessionStorage.getItem("refreshToken"),
+        },
+    });
+};
 
-export const useRequestGetDiary = (id: number | null, options?: any) =>
-    useQuery(["diary", id], () => getMyDiary(id), options);
+export const useRequestWriteDiary = (
+    diaryData: WriteDiary,
+    options?: UseMutationOptions<AxiosResponse, AxiosError>
+) => useMutation(() => writeDiary(diaryData), options);
 
-export const useRequestGetAllDiaries = (count: number, page: number, options?: any) =>
-    useQuery(["diaries", page, count], () => getDiary(count, page), options);
+export const useRequestGetDiary = (
+    id: number | null,
+    options?: UseQueryOptions<AxiosResponse, AxiosError, AxiosResponse, (string | number | null)[]>
+) => useQuery(["diary", id], () => getMyDiary(id), options);
 
-export const useRequestGetMyAllDiaries = (count: number, page: number, options?: any) =>
-    useQuery(["my-diaries", page, count], () => getMyAllDiaries(count, page), options);
+export const useRequestGetAllDiaries = (
+    count: number,
+    page: number,
+    options?: UseQueryOptions<AxiosResponse, AxiosError, AxiosResponse, (string | number)[]>
+) => useQuery(["diaries", page, count], () => getDiary(count, page), options);
+
+export const useRequestGetMyAllDiaries = (
+    count: number,
+    page: number,
+    options?: UseQueryOptions<AxiosResponse, AxiosError, AxiosResponse, (string | number)[]>
+) => useQuery(["my-diaries", page, count], () => getMyAllDiaries(count, page), options);
 
 export const useRequestGetMonthDiaries = (
     year: number,
     month: number | string,
     key: string,
-    options?: any
+    options?: UseQueryOptions<AxiosResponse, AxiosError, AxiosResponse, (string | number)[]>
 ) => useQuery([`${key}`, year, month], () => getMyMonthDiaries(year, month), options);
 
-export const useRequestEditDiary = (diaryData: EditDiary, id: number, options?: any) =>
-    useMutation(() => editMyDiary(diaryData, id), options);
+export const useRequestEditDiary = (
+    diaryData: EditDiary,
+    id: number,
+    options?: UseMutationOptions<AxiosResponse, AxiosError>
+) => useMutation(() => editMyDiary(diaryData, id), options);
 
-export const useRequestDeleteDiary = (id: number, options?: any) =>
-    useMutation(() => deleteMyDiary(id), options);
+export const useRequestDeleteDiary = (
+    id: number,
+    options?: UseMutationOptions<AxiosResponse, AxiosError>
+) => useMutation(() => deleteMyDiary(id), options);
+
+export const useRequestPastDiaries = (
+    options?: UseQueryOptions<AxiosResponse, AxiosError, AxiosResponse, string[]>
+) => useQuery(["past-diaries"], () => getPastDiaries(), options);

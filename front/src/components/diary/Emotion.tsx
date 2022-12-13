@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis } from "recharts";
 import { useRecoilValue } from "recoil";
 
-import { useRequestGetMonthDiaries } from "@/api/diary";
+import { useRequestGetMonthDiaries, useRequestPastDiaries } from "@/api/diary";
 import { currentUser } from "@/temp/userAtom";
 import { dayAgo, aMonthAgo, aYearAgo, dayString, monthString, yearString } from "@/util/date";
 import { emotionImg } from "@/hooks/useEmotion";
@@ -72,45 +72,12 @@ export function Emotion() {
         },
     });
 
-    // useRequestGetMonthDiaries(dayAgo.getFullYear(), dayAgo.getMonth() + 1, "week", {
-    //     onSuccess: (res) => {
-    //         const day = res.data.find(
-    //             (posts: PostInterface) => new Date(posts.createdAt).getDate() === dayAgo.getDate()
-    //         );
-    //         day !== undefined ? setNewArr((arr) => ({ ...arr, day })) : undefined;
-    //     },
-
-    //     onError: ({ message }: Error) => {
-    //         console.error(message);
-    //     },
-    // });
-
-    // useRequestGetMonthDiaries(aMonthAgo.getFullYear(), aMonthAgo.getMonth() + 1, "month", {
-    //     onSuccess: (res) => {
-    //         const month = res.data.find(
-    //             (posts: PostInterface) =>
-    //                 new Date(posts.createdAt).getDate() === aMonthAgo.getDate()
-    //         );
-    //         month !== undefined ? setNewArr((arr) => ({ ...arr, month })) : undefined;
-    //     },
-
-    //     onError: ({ message }: Error) => {
-    //         console.error(message);
-    //     },
-    // });
-
-    // useRequestGetMonthDiaries(aYearAgo.getFullYear(), aYearAgo.getMonth() + 1, "year", {
-    //     onSuccess: (res) => {
-    //         const year = res.data.find(
-    //             (posts: PostInterface) => new Date(posts.createdAt).getDate() === aYearAgo.getDate()
-    //         );
-    //         year !== undefined ? setNewArr((arr) => ({ ...arr, year })) : undefined;
-    //     },
-
-    //     onError: ({ message }: Error) => {
-    //         console.error(message);
-    //     },
-    // });
+    const { data: pastDiaries } = useRequestPastDiaries({
+        onSuccess: (res) => {
+            console.log(res);
+        },
+        onError: () => {},
+    });
 
     return (
         <EmotionSection>

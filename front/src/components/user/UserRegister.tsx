@@ -38,10 +38,10 @@ export default function UserRegister({ setTabNumber }: Props) {
                 setError("");
             },
 
-            onError: (error: Error) => {
+            onError: (error) => {
                 console.log("회원가입 실패 :" + error.message);
 
-                if (error.response.data === "User already exists") {
+                if (error.response?.data === "User already exists") {
                     setError("이미 아이디가 존재합니다.");
                     return;
                 }

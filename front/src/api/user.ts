@@ -1,6 +1,6 @@
 import * as endpoint from "@/api/constants/userEndpoints";
-import axios from "axios";
-import { useMutation } from "react-query";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { useMutation, UseMutationOptions } from "react-query";
 import { URL } from "./url";
 
 interface Delete {
@@ -29,7 +29,10 @@ async function editNickname(userData: EditNickname) {
     });
 }
 
-export const useRequestDeleteUser = (options?: any) => useMutation(() => deleteUser(), options);
+export const useRequestDeleteUser = (options?: UseMutationOptions<AxiosResponse, AxiosError>) =>
+    useMutation(() => deleteUser(), options);
 
-export const useRequestEditNickname = (userData: EditNickname, options?: any) =>
-    useMutation(() => editNickname(userData), options);
+export const useRequestEditNickname = (
+    userData: EditNickname,
+    options?: UseMutationOptions<AxiosResponse, AxiosError>
+) => useMutation(() => editNickname(userData), options);

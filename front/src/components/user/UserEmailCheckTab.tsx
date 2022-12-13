@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useForm from "@/hooks/useForm";
 import { useRequestCheckCode, useRequestSendCode } from "@/api/certificate";
-import Icon from "../UI/Icon";
+import Icon from "@/components/UI/Icon";
 import {
     InputSection,
     InputBlock,
@@ -44,10 +44,10 @@ export default function UserEmailCheckTab({ setTab, setRequiredEmail }: Props) {
             console.log("이메일 코드 전송 완료.");
             setCodeError("");
         },
-        onError: (error: Error) => {
+        onError: (error) => {
             console.log("이메일 코드 전송 실패 :" + error.message);
 
-            if (error.response.data === "User already exists") {
+            if (error.response?.data === "User already exists") {
                 setCodeError("이미 해당 이메일로 가입되었습니다.");
                 return;
             }
