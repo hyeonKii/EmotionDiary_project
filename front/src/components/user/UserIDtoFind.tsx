@@ -18,7 +18,7 @@ import {
     FindError,
     Success,
     DescriptionLabel,
-} from "@/styles/common/modal/Form-style";
+} from "@/styles/common/Modal/Form-style";
 
 interface Props {
     setTabNumber(value: number): void;
