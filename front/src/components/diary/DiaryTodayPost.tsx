@@ -1,5 +1,6 @@
 import { useRequestDeleteDiary, useRequestEditDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
+import { SelectStyle } from "@/styles/diary/diary-style";
 import { DiaryDetail, EditBlock, ReadBlock } from "@/styles/diary/todayDiary-style";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
@@ -91,15 +92,15 @@ export default function DiaryTodayPost({ post }: Props) {
                     </button>
                 </div>
                 {privateDiary ? (
-                    <select onChange={selectHandler}>
-                        <option value="나만보기">나만보기</option>
-                        <option value="전체공개">전체공개</option>
-                    </select>
+                    <SelectStyle onChange={selectHandler}>
+                        <option value="나만보기">&#128274; 나만보기</option>
+                        <option value="전체공개">&#128275; 전체공개</option>
+                    </SelectStyle>
                 ) : (
-                    <select onChange={selectHandler}>
-                        <option value="전체공개">전체공개</option>
-                        <option value="나만보기">나만보기</option>
-                    </select>
+                    <SelectStyle onChange={selectHandler}>
+                        <option value="전체공개">&#128275; 전체공개</option>
+                        <option value="나만보기">&#128274; 나만보기</option>
+                    </SelectStyle>
                 )}
             </article>
             {isEdit ? (

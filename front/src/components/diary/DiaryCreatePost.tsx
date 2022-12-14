@@ -63,9 +63,8 @@ export default function DiaryCreatePost({ clickedDate }: Props) {
             <article className="top">
                 {clickedDate && <span className="date">{currentDateText}</span>}
                 <SelectStyle onChange={selectHandler}>
-                    <span className="material-symbols-outlined">lock</span>
-                    <option value="나만보기">나만보기</option>
-                    <option value="전체공개">전체공개</option>
+                    <option value="나만보기">&#128274; 나만보기</option>
+                    <option value="전체공개">&#128275; 전체공개</option>
                 </SelectStyle>
             </article>
             <EditBlock>
