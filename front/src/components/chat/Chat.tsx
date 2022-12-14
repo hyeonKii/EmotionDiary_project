@@ -9,10 +9,7 @@ import { recentlyMsgState } from "@/temp/ChatRecoil";
 import { useRecoilValue, useRecoilState } from "recoil";
 import ChatRoom from "@/components/chat/chatroom";
 // export const socket = io("http://localhost:3002");
-// export const socket = io("http://kdt-ai5-team02.elicecoding.com");
-export const socket = io({
-    path: "/sc/",
-});
+export const socket = io("http://kdt-ai5-team02.elicecoding.com");
 import { currentroom } from "@/temp/ChatRecoil";
 //채팅 상자
 interface ChatData {
