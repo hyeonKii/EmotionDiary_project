@@ -50,12 +50,12 @@ export const sc = new socket.Server(server, {
 });
 
 let createdRooms: string[] = [];
-let strArr: string[] = [];
 
 if (sc !== undefined) {
     sc.on("connection", (socket: Socket) => {
         socket.on("message", async ({ chatRoom, msgText, userid }: MessagePayload) => {
             sc.emit("message", { sender: userid, msgText, chatRoom });
+            console.log("몇번이나 호출될까");
             await chatService.saveMessege(chatRoom, msgText, String(userid));
         });
         //foreach 사용하기 => for 대신에
@@ -63,18 +63,6 @@ if (sc !== undefined) {
         socket.on("room-list", async (usermodel: string) => {
             //socket emit 으로 받아온 userid로 방을 검색
             const result = await chatService.roomList(Number(usermodel));
-            for (let value in Object.values(result.result)) {
-                strArr.push(...Object.values(result.result[value]));
-            }
-
-            const uniqueArr = strArr.filter((element, index) => {
-                return strArr.indexOf(element) === index;
-            });
-
-            for (let room in uniqueArr) {
-                sc.emit("delete-room", uniqueArr[room]);
-            }
-
             sc.emit("create-room", result, usermodel); // 대기실 방 생성
             return createdRooms;
         });
@@ -115,10 +103,6 @@ if (sc !== undefined) {
     });
 }
 
-server.listen(4000, () => {
-    console.log("chat server is loaded on " + 4000);
-});
-
-app.listen(process.env.PORT, () => {
-    console.log("server is loaded on " + process.env.PORT);
+server.listen(3002, () => {
+    console.log("chat server is loaded on " + 3002);
 });

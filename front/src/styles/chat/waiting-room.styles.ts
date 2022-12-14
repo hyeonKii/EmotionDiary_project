@@ -32,13 +32,11 @@ const ChatRoomstyle = styled.div`
         flex-direction: column;
         div {
             text-align: center;
-            width: 40px;
-            height: 40px;
-            background: red;
+            width: 30px;
+            height: 30px;
+            background: #f87474;
             border-radius: 20px;
-            /* display: flex;
-            align-items: center;
-            justify-content: center; */
+            margin-bottom: 10px;
         }
         span {
             width: 100%;

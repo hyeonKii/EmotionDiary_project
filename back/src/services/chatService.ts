@@ -169,6 +169,7 @@ class ChatService {
             where: {
                 chatRoom: roomName,
                 read: false,
+                receiver: userid,
             },
         });
         await this.prisma.$disconnect();
@@ -179,7 +180,7 @@ class ChatService {
         const result = await this.prisma.messege.updateMany({
             where: {
                 chatRoom: roomName,
-                sender: userid,
+                receiver: userid,
                 read: false,
             },
             data: {
