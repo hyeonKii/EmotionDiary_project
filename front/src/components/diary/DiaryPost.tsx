@@ -4,7 +4,13 @@ import { useRequestDeleteDiary, useRequestEditDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
 import { PostInterface } from "./interface/post";
 import { useQueryClient } from "react-query";
-import { MiscButtonsStyle, SelectStyle } from "@/styles/diary/diary-style";
+import {
+    EditPostButtonsStyle,
+    MiscButtonsStyle,
+    SelectStyle,
+    SubmitButtonStyle,
+    TodayDiaryDetail,
+} from "@/styles/diary/diary-style";
 interface Props {
     post: PostInterface;
 }
@@ -101,27 +107,35 @@ export default function DiaryPost({ post }: Props) {
                     </div>
                 </Post>
                 {isOpen && (
-                    <PostDetail>
+                    <TodayDiaryDetail>
                         {editMode ? (
                             <>
-                                <input
-                                    type="texarea"
+                                <textarea
                                     defaultValue={description}
                                     onChange={changeHandler}
                                     id="description"
+                                    className="description"
+                                    autoFocus
                                 />
-                                {privateDiary ? (
-                                    <SelectStyle onChange={selectHandler}>
-                                        <option value="나만보기">&#128274; 나만보기</option>
-                                        <option value="전체공개">&#128275; 전체공개</option>
-                                    </SelectStyle>
-                                ) : (
-                                    <SelectStyle onChange={selectHandler}>
-                                        <option value="전체공개">&#128275; 전체공개</option>
-                                        <option value="나만보기">&#128274; 나만보기</option>
-                                    </SelectStyle>
-                                )}
-                                <button onClick={editHandler}>저장</button>
+                                <div>
+                                    <div className="blank"></div>
+                                    <EditPostButtonsStyle>
+                                        {privateDiary ? (
+                                            <SelectStyle onChange={selectHandler}>
+                                                <option value="나만보기">&#128274; 나만보기</option>
+                                                <option value="전체공개">&#128275; 전체공개</option>
+                                            </SelectStyle>
+                                        ) : (
+                                            <SelectStyle onChange={selectHandler}>
+                                                <option value="전체공개">&#128275; 전체공개</option>
+                                                <option value="나만보기">&#128274; 나만보기</option>
+                                            </SelectStyle>
+                                        )}
+                                        <SubmitButtonStyle onClick={editHandler}>
+                                            저장
+                                        </SubmitButtonStyle>
+                                    </EditPostButtonsStyle>
+                                </div>
                             </>
                         ) : (
                             <>
@@ -152,7 +166,7 @@ export default function DiaryPost({ post }: Props) {
                                 </div>
                             </>
                         )}
-                    </PostDetail>
+                    </TodayDiaryDetail>
                 )}
             </CardSection>
         </>
