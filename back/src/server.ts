@@ -1,17 +1,17 @@
 import express from "express";
 import { config } from "dotenv";
 import cors from "cors";
+import http from "http";
+import { Socket } from "socket.io";
+import socket from "socket.io";
 
 import userRouter from "./route/user";
 import accountRouter from "./route/account";
 import diaryRouter from "./route/diary";
 import chatRouter from "./route/chat";
 import certificationRouter from "./route/certification";
-import tokenRouter from "route/token";
-import error from "middleware/error";
-import http from "http";
-import { Socket } from "socket.io";
-import socket from "socket.io";
+import tokenRouter from "./route/token";
+import error from "./middleware/error";
 import chatService from "./services/chatService";
 
 config();
