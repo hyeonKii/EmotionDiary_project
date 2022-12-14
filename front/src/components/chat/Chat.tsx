@@ -8,7 +8,7 @@ import { Head, ChatRoomstyle } from "@/styles/chat/waiting-room.styles";
 import { recentlyMsgState } from "@/temp/ChatRecoil";
 import { useRecoilValue, useRecoilState } from "recoil";
 import ChatRoom from "@/components/chat/chatroom";
-export const socket = io("http://kdt-ai5-team02.elicecoding.com/socket");
+export const socket = io("http://kdt-ai5-team02.elicecoding.com");
 import { currentroom } from "@/temp/ChatRecoil";
 //채팅 상자
 interface ChatData {
