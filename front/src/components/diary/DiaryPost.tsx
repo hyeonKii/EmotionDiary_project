@@ -4,8 +4,7 @@ import { useRequestDeleteDiary, useRequestEditDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
 import { PostInterface } from "./interface/post";
 import { useQueryClient } from "react-query";
-import { SelectStyle } from "@/styles/diary/diary-style";
-
+import { MiscButtonsStyle, SelectStyle } from "@/styles/diary/diary-style";
 interface Props {
     post: PostInterface;
 }
@@ -49,6 +48,7 @@ export default function DiaryPost({ post }: Props) {
 
     const onClick = () => {
         setIsOpen((prev) => !prev);
+        setEditMode(false);
     };
 
     const { mutate: editDiary } = useRequestEditDiary({ ...form, privateDiary: privateMode }, id, {
@@ -126,23 +126,30 @@ export default function DiaryPost({ post }: Props) {
                         ) : (
                             <>
                                 <p className="description">{description}</p>
-                                {privateDiary ? (
-                                    <span className="material-symbols-outlined">lock</span>
-                                ) : (
-                                    <span className="material-symbols-outlined">lock_open</span>
-                                )}
-                                <button
-                                    className="material-symbols-outlined"
-                                    onClick={() => setEditMode(true)}
-                                >
-                                    edit
-                                </button>
-                                <button
-                                    className="material-symbols-outlined"
-                                    onClick={deleteHandler}
-                                >
-                                    delete
-                                </button>
+                                <div>
+                                    <div className="blank"></div>
+                                    <MiscButtonsStyle>
+                                        {privateDiary ? (
+                                            <span className="material-symbols-outlined">lock</span>
+                                        ) : (
+                                            <span className="material-symbols-outlined">
+                                                lock_open
+                                            </span>
+                                        )}
+                                        <button
+                                            className="material-symbols-outlined"
+                                            onClick={() => setEditMode(true)}
+                                        >
+                                            edit
+                                        </button>
+                                        <button
+                                            className="material-symbols-outlined"
+                                            onClick={deleteHandler}
+                                        >
+                                            delete
+                                        </button>
+                                    </MiscButtonsStyle>
+                                </div>
                             </>
                         )}
                     </PostDetail>

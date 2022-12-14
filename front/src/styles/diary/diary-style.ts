@@ -31,3 +31,9 @@ export const SelectStyle = styled.select`
     background-color: white;
     border: 1px solid black;
 `;
+
+export const MiscButtonsStyle = styled.div`
+    * {
+        margin-left: 0.5rem;
+    }
+`;
