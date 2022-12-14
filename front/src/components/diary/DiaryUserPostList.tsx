@@ -1,4 +1,6 @@
 import { useRequestGetMyAllDiaries } from "@/api/diary";
+import { none } from "@/assets/images";
+import { Empty } from "@/styles/common/empty/empty-style";
 import React, { useState } from "react";
 import styled from "styled-components";
 import DiaryPageButton from "./DiaryPageButton";
@@ -40,29 +42,36 @@ export default function DiaryUserPostList() {
         <>
             {!isLoading && (
                 <>
-                    {diaryData && (
+                    {diaryData?.data.postDatas.length > 0 ? (
                         <section>
-                            {diaryData.data.postDatas.map((post: PostInterface) => (
+                            {diaryData?.data.postDatas.map((post: PostInterface) => (
                                 <DiaryPost key={post.id + "포스트"} post={post} />
                             ))}
                         </section>
+                    ) : (
+                        <Empty>
+                            <img src={none} alt="none" />
+                            <span>등록된 게시물이 없습니다.</span>
+                        </Empty>
                     )}
-                    <PageButtonStyle>
-                        <div>
-                            <DiaryPageButton
-                                page={page}
-                                setPage={setPage}
-                                diaryCount={diaryCount}
-                                count={count}
-                            />
-                        </div>
-                        <select onChange={selectChangeHandler} defaultValue={count}>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                        </select>
-                    </PageButtonStyle>
+                    {diaryCount ? (
+                        <PageButtonStyle>
+                            <div>
+                                <DiaryPageButton
+                                    page={page}
+                                    setPage={setPage}
+                                    diaryCount={diaryCount}
+                                    count={count}
+                                />
+                            </div>
+                            <select onChange={selectChangeHandler} defaultValue={count}>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
+                        </PageButtonStyle>
+                    ) : null}
                 </>
             )}
         </>
