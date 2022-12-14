@@ -42,6 +42,6 @@ export interface ChatListForm {
     [key: number]: ChatForm[];
 }
 export const chatListState = atom<ChatListForm[]>({
-    key: "recentlyMsgState",
+    key: "chatListState",
     default: [],
 });

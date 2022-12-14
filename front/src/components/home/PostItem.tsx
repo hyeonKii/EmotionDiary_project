@@ -42,7 +42,6 @@ function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
         }
 
         socket.emit("create-room", inviter, invitee, messege, (response: CreateRoomResponse) => {
-            console.log(response, 4334);
             if (response.success) {
                 return alert(response.payload);
             }

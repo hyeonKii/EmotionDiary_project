@@ -1,16 +1,15 @@
 import { Container, FlexBox } from "@/styles/chat/chat-style";
 import { io } from "socket.io-client";
-import { Route, Routes, useNavigate, useParams } from "react-router-dom";
-import { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState, useMemo } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { currentidUser } from "@/temp/userAtom";
 import * as api from "@/api/chat";
 import { Head, ChatRoomstyle } from "@/styles/chat/waiting-room.styles";
 import { recentlyMsgState } from "@/temp/ChatRecoil";
 import { useRecoilValue, useRecoilState } from "recoil";
 import ChatRoom from "@/components/chat/chatroom";
-import WaitingRoom from "@/components/chat/waiting-room";
-export const socket = io("http://localhost:3002");
-import { currentroom, chatListState } from "@/temp/ChatRecoil";
+export const socket = io("http://kdt-ai5-team02.elicecoding.com:3002");
+import { currentroom } from "@/temp/ChatRecoil";
 //채팅 상자
 interface ChatData {
     sender: string;
@@ -51,7 +50,6 @@ export function Chat() {
     >(null);
     useEffect(() => {
         //메세지 헨들러가 2개?
-        console.log("use");
 
         const leaveRoomHandler = (roomName: string) => {
             setCurrentsroom(roomName);
@@ -117,7 +115,6 @@ export function Chat() {
 
             setChatList((prev) => {
                 return prev!.map((item) => {
-                    console.log(item.user_model_id, chat.chatRoom, 66);
                     if (item.user_model_id == chat.chatRoom) {
                         item.lastmessage = chat.msgText;
                         item.updatedAt = "방금 전";

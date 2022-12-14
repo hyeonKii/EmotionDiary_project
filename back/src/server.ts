@@ -55,7 +55,6 @@ if (sc !== undefined) {
     sc.on("connection", (socket: Socket) => {
         socket.on("message", async ({ chatRoom, msgText, userid }: MessagePayload) => {
             sc.emit("message", { sender: userid, msgText, chatRoom });
-            console.log("몇번이나 호출될까");
             await chatService.saveMessege(chatRoom, msgText, String(userid));
         });
         //foreach 사용하기 => for 대신에
