@@ -1,7 +1,8 @@
 import { useState, forwardRef, useMemo, ForwardedRef, useCallback, useRef } from "react";
 import { dateTime } from "@/util/time";
 import { CardSection, Post, PostDetail, MessageBlock } from "@/styles/home/postList-style";
-import { socket } from "@/components/chat/Chat";
+import { io } from "socket.io-client";
+export const socket = io("http://kdt-ai5-team02.elicecoding.com");
 import { currentidUser } from "@/temp/userAtom";
 import { useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
