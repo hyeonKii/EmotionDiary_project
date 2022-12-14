@@ -1,5 +1,6 @@
 import { useRequestWriteDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
+import { SelectStyle } from "@/styles/diary/diary-style";
 import { DiaryDetail, EditBlock } from "@/styles/diary/todayDiary-style";
 import { aMonthAgo, aYearAgo, dayAgo } from "@/util/date";
 import { ChangeEvent, useState } from "react";
@@ -61,10 +62,11 @@ export default function DiaryCreatePost({ clickedDate }: Props) {
         <DiaryDetail isEdit={true}>
             <article className="top">
                 {clickedDate && <span className="date">{currentDateText}</span>}
-                <select onChange={selectHandler}>
+                <SelectStyle onChange={selectHandler}>
+                    <span className="material-symbols-outlined">lock</span>
                     <option value="나만보기">나만보기</option>
                     <option value="전체공개">전체공개</option>
-                </select>
+                </SelectStyle>
             </article>
             <EditBlock>
                 <input

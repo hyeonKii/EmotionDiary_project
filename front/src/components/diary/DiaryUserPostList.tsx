@@ -1,6 +1,7 @@
 import { useRequestGetMyAllDiaries } from "@/api/diary";
 import { none } from "@/assets/images";
 import { Empty } from "@/styles/common/empty/empty-style";
+import { ButtonStyle, SelectStyle } from "@/styles/diary/diary-style";
 import React, { useState } from "react";
 import styled from "styled-components";
 import DiaryPageButton from "./DiaryPageButton";
@@ -55,7 +56,7 @@ export default function DiaryUserPostList() {
                         </Empty>
                     )}
                     {diaryCount ? (
-                        <PageButtonStyle>
+                        <ButtonStyle>
                             <div>
                                 <DiaryPageButton
                                     page={page}
@@ -64,35 +65,16 @@ export default function DiaryUserPostList() {
                                     count={count}
                                 />
                             </div>
-                            <select onChange={selectChangeHandler} defaultValue={count}>
+                            <SelectStyle onChange={selectChangeHandler} defaultValue={count}>
                                 <option value="5">5</option>
                                 <option value="10">10</option>
                                 <option value="15">15</option>
                                 <option value="20">20</option>
-                            </select>
-                        </PageButtonStyle>
+                            </SelectStyle>
+                        </ButtonStyle>
                     ) : null}
                 </>
             )}
         </>
     );
 }
-
-const PageButtonStyle = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-
-    margin-top: 5rem;
-
-    div {
-        display: flex;
-        flex-direction: row;
-
-        button {
-            font-size: 1rem;
-            margin-right: 1rem;
-        }
-    }
-`;
