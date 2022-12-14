@@ -46,7 +46,7 @@ export const sc = new socket.Server(server, {
         methods: ["GET", "POST"],
         credentials: true,
     },
-    path: "/sc",
+    path: "/sc/",
 });
 
 let createdRooms: string[] = [];
