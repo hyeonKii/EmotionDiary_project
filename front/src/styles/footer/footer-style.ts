@@ -8,6 +8,7 @@ export const FooterStyle = styled.footer<{ formState: boolean }>`
 
     width: 100%;
     padding: 1rem 0;
+    overflow: hidden;
 
     background-color: lightgray;
 `;
