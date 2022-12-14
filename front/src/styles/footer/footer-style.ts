@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
-export const FooterStyle = styled.footer`
-    width: 100%;
-    padding: 1rem 0;
-
-    display: flex;
+export const FooterStyle = styled.footer<{ formState: boolean }>`
+    display: ${({ formState }) => (formState ? "none" : "flex")};
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    width: 100%;
+    padding: 1rem 0;
 
     background-color: lightgray;
 `;

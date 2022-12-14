@@ -1,9 +1,14 @@
+import { useRecoilValue } from "recoil";
+
+import { showLoginForm } from "@/temp/formAtom";
 import { Copyright, FooterStyle, Icons, Left, Right } from "@/styles/footer/footer-style";
 import FooterIcon from "@/styles/footer/FooterIcon";
 
 export default function Footer() {
+    const formState = useRecoilValue(showLoginForm);
+
     return (
-        <FooterStyle>
+        <FooterStyle formState={formState}>
             <Icons>
                 <Left>
                     <FooterIcon icon="gitIcon" />
