@@ -9,6 +9,7 @@ import { PostInterface } from "@/components/diary/interface/post";
 
 import { happy } from "@/assets/images/index";
 import { HomeSection, TitleBlock, Input } from "@/styles/home/home-style";
+import { SelectStyle } from "@/styles/diary/diary-style";
 import { Form, FormTitle, FormButton, PostBlock } from "@/styles/common/modal/Form-style";
 import { ModalBackgroundStyle } from "@/styles/common/modal/background-style";
 
@@ -130,10 +131,10 @@ export default function Main() {
                             </button>
                             <FormTitle>일기쓰기</FormTitle>
                             <PostBlock>
-                                <select onChange={onPrivateSelect} defaultValue="true">
-                                    <option value="true">나만보기</option>
-                                    <option value="false">전체공개</option>
-                                </select>
+                                <SelectStyle onChange={onPrivateSelect} defaultValue="true">
+                                    <option value="true">&#128274; 나만보기</option>
+                                    <option value="false">&#128275; 전체공개</option>
+                                </SelectStyle>
                                 <input
                                     id="title"
                                     value={title}
