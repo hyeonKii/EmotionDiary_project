@@ -172,6 +172,7 @@ export function Chat() {
         if (chatList === null) {
             return null;
         }
+        console.log(chatList);
         return (
             <>
                 {chatList.map((item, idx) => (
