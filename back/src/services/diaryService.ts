@@ -204,6 +204,7 @@ class DiaryService {
                 updatedAt: true,
                 private: true,
             },
+            orderBy: [{ createdAt: "desc" }],
         });
 
         if (postDatas === null) {
