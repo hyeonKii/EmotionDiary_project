@@ -2,7 +2,7 @@ import * as nodeMailer from "nodemailer";
 import error from "../middleware/error";
 
 import ejs from "ejs";
-import senderInfo from "./senderinfo.json";
+import senderInfo from "./senderInfo.json";
 
 let emailTemplate: string;
 

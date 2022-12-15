@@ -5,6 +5,7 @@ import generator from "generate-password";
 import AppError from "../lib/AppError";
 
 import mailSender from "../lib/mail";
+import accountService from "./accountService";
 
 // Todo: change error type
 
@@ -26,6 +27,9 @@ class CertificationService {
             where: {
                 email: email,
             },
+            select: {
+                userID: true
+            }
         });
 
         if (result === null && (codeType === "password" || codeType === "id")) {
@@ -34,25 +38,29 @@ class CertificationService {
 
         if (result !== null && codeType === "email") {
             throw new AppError("UserExistError");
-        } else {
-            try {
-                let length = 8;
+        }
 
-                if (codeType === "password") length = 12;
-                const code = generator.generate({ length: 8, numbers: true });
+        try {
+            let length = 8;
 
-                await this.prisma.certification.create({
-                    data: {
-                        email: email,
-                        code: code,
-                    },
-                });
-                mailSender(email, code, "", "isSubject?");
-            } catch (e: any) {
-                if (e instanceof Prisma.PrismaClientKnownRequestError) {
-                    console.log(e.message);
-                    throw new AppError("ArgumentError");
-                }
+            if (codeType === "password") length = 12;
+            const code = generator.generate({ length, numbers: true });
+
+            await this.prisma.certification.create({
+                data: {
+                    email: email,
+                    code: code,
+                },
+            });
+
+            // TODO: result null check
+            // await accountService.changePassword(result.userID, code)
+
+            mailSender(email, code, "", "isSubject?");
+        } catch (e: any) {
+            if (e instanceof Prisma.PrismaClientKnownRequestError) {
+                console.log(e.message);
+                throw new AppError("ArgumentError");
             }
         }
 
