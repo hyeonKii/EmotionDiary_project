@@ -16,11 +16,11 @@ diaryRouter.post(
         if (title && description && privateDiary === undefined) {
             throw new AppError("ArgumentError");
         }
-        await diaryService.writeDiary(req.userID!, title, description, privateDiary, createdAt);
 
-        const result = await axios.post("http://localhost:8000/api/emotion-check", {text: description});
+        const response = await axios.post("http://localhost:8000/api/emotion-check", {text: description});
 
-        console.log("result", result);
+        await diaryService.writeDiary(req.userID!, title, description, response.data.result[0], privateDiary, createdAt);
+
         return { statusCode: 200, content: true };
     })
 );
