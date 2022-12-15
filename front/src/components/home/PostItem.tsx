@@ -39,9 +39,10 @@ function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
         let invitee = String(user_model_id);
         const roomName = inviter + "," + invitee;
         if (user_model_id === Number(user?.id)) {
-            navigate("/diary", {
-                state: { room: roomName },
-            });
+            alert("자신이 작성한 일기입니다.");
+            // navigate("/diary", {
+            //     state: { room: roomName },
+            // });
             return;
         }
 

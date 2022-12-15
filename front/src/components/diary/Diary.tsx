@@ -16,7 +16,7 @@ export function Diary() {
         if (roomName != null) {
             setTab("대화목록");
         }
-    });
+    }, []);
     return (
         <DiarySection>
             <TabList>

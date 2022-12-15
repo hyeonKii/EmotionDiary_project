@@ -124,7 +124,7 @@ export function Chat() {
                         if (chat.sender == userid) {
                             item.count = "0";
                         } else {
-                            item.count = String(Number(item.count) + 0.5);
+                            item.count = String(Number(item.count) + 1);
                         }
                     }
                     return item;
