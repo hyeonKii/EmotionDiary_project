@@ -11,6 +11,7 @@ import diaryRouter from "./route/diary";
 import chatRouter from "./route/chat";
 import certificationRouter from "./route/certification";
 import tokenRouter from "./route/token";
+import chatRouter from "./route/chat";
 import error from "./middleware/error";
 import chatService from "./services/chatService";
 

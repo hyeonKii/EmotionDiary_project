@@ -4,7 +4,6 @@ import wrapRouter from "../lib/wrapRouter";
 import diaryService from "../services/diaryService";
 import auth from "../middleware/auth";
 import AppError from "../lib/AppError";
-
 const diaryRouter = Router();
 
 //일기 create API
@@ -17,9 +16,18 @@ diaryRouter.post(
             throw new AppError("ArgumentError");
         }
 
-        const response = await axios.post("http://localhost:8000/api/emotion-check", {text: description});
+        const response = await axios.post("http://localhost:8000/api/emotion-check", {
+            text: description,
+        });
 
-        await diaryService.writeDiary(req.userID!, title, description, response.data.result[0], privateDiary, createdAt);
+        await diaryService.writeDiary(
+            req.userID!,
+            title,
+            description,
+            response.data.result[0],
+            privateDiary,
+            createdAt
+        );
 
         return { statusCode: 200, content: true };
     })
