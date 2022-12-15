@@ -8,7 +8,6 @@ import socket from "socket.io";
 import userRouter from "./route/user";
 import accountRouter from "./route/account";
 import diaryRouter from "./route/diary";
-import chatRouter from "./route/chat";
 import certificationRouter from "./route/certification";
 import tokenRouter from "./route/token";
 import error from "./middleware/error";
@@ -17,7 +16,6 @@ import chatService from "./services/chatService";
 config();
 
 const app = express();
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
@@ -29,7 +27,6 @@ app.use("/api/chats", chatRouter);
 app.use("/api/certification", certificationRouter);
 app.use("/api/token", tokenRouter);
 
-app.use(chatRouter);
 app.use(error);
 
 interface MessagePayload {

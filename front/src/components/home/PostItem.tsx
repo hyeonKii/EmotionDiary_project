@@ -27,43 +27,10 @@ interface CreateRoomResponse {
 
 function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
     const [isOpen, setIsOpen] = useState(false);
-    const [like, setLike] = useState(false);
-    const { emotion, title, description, createdAt, user_model_id } = post;
-    const messegeRef = useRef<HTMLInputElement>(null);
-    const navigate = useNavigate();
-    const user = useRecoilValue(currentUser);
-
-    const onCreateRoom = useCallback(() => {
-        const messege = messegeRef.current?.value;
-        let inviter = String(user?.id);
-        let invitee = String(user_model_id);
-        const roomName = inviter + "," + invitee;
-        if (user_model_id === Number(user?.id)) {
-            alert("자신이 작성한 일기입니다.");
-            // navigate("/diary", {
-            //     state: { room: roomName },
-            // });
-            return;
-        }
-
-        socket.emit("create-room", inviter, invitee, messege, (response: CreateRoomResponse) => {
-            console.log(response, 4334);
-            if (response.success) {
-                return alert(response.payload);
-            }
-        });
-
-        navigate("/diary", {
-            state: { room: roomName },
-        });
-    }, [navigate]);
+    const { emotion, title, description, createdAt } = post;
 
     const onClick = () => {
         setIsOpen((prev) => !prev);
-    };
-
-    const onToggle = () => {
-        setLike((prev) => !prev);
     };
 
     const itemBody = useMemo(() => {
@@ -92,18 +59,12 @@ function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
                                     전송
                                 </button>
                             </MessageBlock>
-                            <button
-                                className={like ? "material-icons" : "material-symbols-outlined"}
-                                onClick={onToggle}
-                            >
-                                thumb_up
-                            </button>
                         </div>
                     </PostDetail>
                 )}
             </>
         );
-    }, [isOpen, like, post]);
+    }, [isOpen, post]);
 
     return ref ? (
         <CardSection ref={ref}>{itemBody}</CardSection>
