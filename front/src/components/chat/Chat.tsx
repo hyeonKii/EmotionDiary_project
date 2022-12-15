@@ -8,6 +8,7 @@ import { Head, ChatRoomstyle } from "@/styles/chat/waiting-room.styles";
 import { recentlyMsgState } from "@/temp/ChatRecoil";
 import { useRecoilValue, useRecoilState } from "recoil";
 import ChatRoom from "@/components/chat/chatroom";
+// export const socket = io("http://localhost:3002");
 import { currentroom } from "@/temp/ChatRecoil";
 
 export const socket = io("http://kdt-ai5-team02.elicecoding.com");
@@ -59,6 +60,7 @@ export function Chat() {
 
         const createRoomHandler = async (response: any, usermodel: string) => {
             //로그인한 사용자의 읽지 않은 메세지를 구해 채팅방 목록에 count 추가
+            console.log(userid, usermodel);
             if (userid == usermodel) {
                 const a = await Promise.all(
                     response.result.map(async (item: ChatList, index: number) => {
@@ -78,18 +80,21 @@ export function Chat() {
             });
 
             //메세지를 보냈을때 채팅방 목록에 있는 count 값 0으로
-            setChatList((prev) => {
-                return prev!.map((item) => {
-                    if (item.user_model_id == chat.chatRoom) {
-                        item.lastmessage = chat.msgText;
-                        item.updatedAt = "방금 전";
-                        if (chat.sender == userid) {
-                            item.count = "0";
+
+            setChatList((prev: any) => {
+                if (prev != null) {
+                    return prev!.map((item: any) => {
+                        if (item.user_model_id == chat.chatRoom) {
+                            item.lastmessage = chat.msgText;
+                            item.updatedAt = "방금 전";
+                            if (chat.sender == userid) {
+                                item.count = "0";
+                            }
+                            item.count = item.count;
                         }
-                        item.count = item.count;
-                    }
-                    return item;
-                });
+                        return item;
+                    });
+                }
             });
         };
         // 클라이언트단에서 소켓으로 때리는 함수
@@ -109,25 +114,28 @@ export function Chat() {
     //채팅방값 감시
     useEffect(() => {
         const messageHandler = (chat: ChatData) => {
+            console.log("message", chat);
             setRecentMessage({
                 sender: chat.sender,
                 msgText: chat.msgText,
                 chatRoom: chat.chatRoom,
             });
 
-            setChatList((prev) => {
-                return prev!.map((item) => {
-                    if (item.user_model_id == chat.chatRoom) {
-                        item.lastmessage = chat.msgText;
-                        item.updatedAt = "방금 전";
-                        if (chat.sender == userid) {
-                            item.count = "0";
-                        } else {
-                            item.count = String(Number(item.count) + 1);
+            setChatList((prev: any) => {
+                if (prev != null) {
+                    return prev!.map((item: any) => {
+                        if (item.user_model_id == chat.chatRoom) {
+                            item.lastmessage = chat.msgText;
+                            item.updatedAt = "방금 전";
+                            if (chat.sender == userid) {
+                                item.count = "0";
+                            } else {
+                                item.count = String(Number(item.count) + 1);
+                            }
                         }
-                    }
-                    return item;
-                });
+                        return item;
+                    });
+                }
             });
         };
         socket.on("message", messageHandler);
@@ -145,18 +153,21 @@ export function Chat() {
             });
         });
     };
+
     const onJoinRoom = useCallback(
         (roomName: string) => async () => {
             socket.emit("join-room", roomName, user?.id, () => {});
             socket.emit("leave-room", roomName, () => {});
             setCountZero(roomName);
             await api.readMessege(roomName, userid);
+            console.log(roomName);
             setCurrentsroom(roomName);
             setJoinedRoom(roomName);
             return () => {};
         },
-        [navigate]
+        [navigate, roomName]
     );
+
     const ChatRoomComponents = useMemo(() => {
         if (chatList === null) {
             return null;

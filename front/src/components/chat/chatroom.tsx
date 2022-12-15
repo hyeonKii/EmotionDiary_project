@@ -22,17 +22,16 @@ interface ChatData {
     chatRoom: string;
 }
 
-export const ChatRoom = (joinedRoom: any | undefined) => {
+export const ChatRoom = (props: any | undefined) => {
     const [chats, setChats] = useState<ChatData[]>([]);
     const [msgText, setMsgText] = useState<string>("");
     const chatContainerEl = useRef<HTMLDivElement>(null);
-    const chatRoom = joinedRoom?.joinedRoom;
+    const chatRoom = props?.joinedRoom;
     const [recentlyMessage, setRecentlyMessage] = useRecoilState(recentlyMsgState);
     const user = useRecoilValue(currentUser);
     const userid = String(user?.id);
     const navigate = useNavigate();
     //todo : usecallback 사용하기
-
     // 채팅이 길어지면(chats.length) 스크롤이 생성되므로, 스크롤의 위치를 최근 메시지에 위치시키기 위함
     useEffect(() => {
         if (!chatContainerEl.current) return;
@@ -51,6 +50,7 @@ export const ChatRoom = (joinedRoom: any | undefined) => {
             if (chat === null) {
                 return null;
             }
+            console.log(chat.chatRoom, chatRoom);
             if (chat.chatRoom == chatRoom && chatRoom != null) {
                 setChats((prevChats) => [...prevChats, chat]);
                 setRecentlyMessage(chat);
@@ -61,12 +61,12 @@ export const ChatRoom = (joinedRoom: any | undefined) => {
         return () => {
             socket.off("message", messageHandler);
         };
-    }, []);
+    }, [chatRoom]);
     //유저가 입장하는 방에 따라 메세지 값을 불러오고 채팅 Input 값 비우기
     useEffect(() => {
         getMessegetext(chatRoom);
         setMsgText("");
-    }, [joinedRoom?.joinedRoom]);
+    }, [props?.joinedRoom]);
 
     //전체 메세지 받아오기
     const getMessegetext = async (chatRoom: string | undefined) => {
@@ -100,14 +100,13 @@ export const ChatRoom = (joinedRoom: any | undefined) => {
     const onLeaveRoom = useCallback(() => {
         socket.emit("leave-room", chatRoom, () => {});
         navigate("/diary");
-        joinedRoom.setJoinedRoom();
+        props.setJoinedRoom();
     }, [navigate, chatRoom]);
 
     return (
-        <div onFocus={() => joinedRoom.focusEvent()}>
+        <div onFocus={() => props.focusEvent()}>
             <LeaveButton onClick={onLeaveRoom}>
                 <button>방 나가기</button>
-                {/* {chatRoom} */}
             </LeaveButton>
             <ChatContainer ref={chatContainerEl}>
                 {chats.map((chat, index) =>
