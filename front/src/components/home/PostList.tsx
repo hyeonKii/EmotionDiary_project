@@ -28,6 +28,7 @@ interface Items {
     description: string;
     emotion: string;
     createdAt: Date;
+    user_model_id: number;
 }
 
 export default function PostList() {

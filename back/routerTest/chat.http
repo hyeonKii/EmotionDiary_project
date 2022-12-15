@@ -6,13 +6,13 @@ POST {{url}}/account/login
 Content-Type: application/json
 
 {
-    "userID": "ttest",
-    "password": "ttest"
+    "userID": "test",
+    "password": "0000"
 }
 ###logout
 delete {{url}}/account
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoicnV5cmlhIiwiaWF0IjoxNjcwODI1NTEzLCJleHAiOjE2NzA4MjczMTN9.bF7IQhHtU1kx8-LawnSHIXitx71sJxNYqbsQ3a-HXLg
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwODI1NTE1LCJleHAiOjE2NzA4MzYzMTV9.CPLRfDOPsDt3r9dGmlCjlRBWEFrunR_n-YDIh2D5ATM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdCIsImlhdCI6MTY2OTY5ODcwMywiZXhwIjoxNjY5NzAwNTAzfQ.jf1SjQfCkuJl_hQE1UrnURAtIlBhr-98cPKD3bjeV-c
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5Njk4NzAzLCJleHAiOjE2Njk3MDk1MDN9.dEvLKMxTrCc5C_dZTmFXdc7KTZGoukO7tzDozPBk6Jg
 Content-Type: application/json
 
 
@@ -43,21 +43,21 @@ Content-Type: application/json
 
 
 ### 모든 일기 조회
-get {{url}}/diaries/all?count=10&page=1&emotion=전체&privatediary
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdDExMSIsImlhdCI6MTY3MDQ3MDc1MywiZXhwIjoxNjcwNDcyNTUzfQ.zict85tshEbI7eefZIMmAPQU0ntw6p2e6Q_S8dtkTeQ
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwNDcwNzUzLCJleHAiOjE2NzA0ODE1NTN9.vwSCDDjajagqUEK3mrtxLgUJVtpPCjI-iTpG7_iCNNI
+get {{url}}/chats/count?roomname=3,1&userid=1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdCIsImlhdCI6MTY2OTc5NjE0NSwiZXhwIjoxNjY5Nzk3OTQ1fQ.f_mppqnY8HI70fFfp27QrIO0RzJ0e7buSC-uvSxV5CY
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5Nzk2MTQ1LCJleHAiOjE2Njk4MDY5NDV9.5n7insxWELDB1bF16E9z2TZr_wmSY4cXYWQEcj4BdIw
 Content-Type: application/json
 
 ### 일기 작성 api
 post {{url}}/diaries/write
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoicnV5cmlhIiwiaWF0IjoxNjcwODMxNDYxLCJleHAiOjE2NzA4MzMyNjF9.tmcNLpMGtGV6WbYTw-VqAFShFqQC3DPlEoOV_ud9Sh8
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwODMxNDY0LCJleHAiOjE2NzA4NDIyNjR9.8zHxq-lhQAmXpuBWys20zOBKEUv5Q47mNK1BB9MpAMA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2NjkzNDE5MDksImV4cCI6MTY2OTM0MzcwOX0.R47c-1dGe_eU49gwhR5K8Iiul6XZ6iQ-TcQUnE61UKw
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MzQxOTA5LCJleHAiOjE2NjkzNTI3MDl9._24NRpkNkajw5BsWC9hN9kGkU5M-rKF57KQeVdwWamM
 Content-Type: application/json
 
 {
-  "title": "되나?",
-  "description":"ttteeee",
-  "privateDiary": true
+  "title": "test1",
+  "description":"test",
+  "privateDiary": "true"
 }
 
 ### 조회수 추가
@@ -71,15 +71,10 @@ Content-Type: application/json
 }
 
 ### 특정 일기 조회
-get {{url}}/diaries/?datetime=2021-12-12
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoicnV5cmlhIiwiaWF0IjoxNjcwODMzNjI2LCJleHAiOjE2NzA4MzU0MjZ9.4ZKDNnn5tBbJ5dBUAsvDLPR3S9VaRMGD82JjDffGETg
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwODMzNjI4LCJleHAiOjE2NzA4NDQ0Mjh9.4GNv13G65DlrK31DHV78PnxIT7ZLoEFGkY2pIJge9ls
-
-### 일주일 / 한달 / 일년 전 일기 조회
-get {{url}}/diaries/period/all
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidHRlc3QiLCJpYXQiOjE2NzA5MTg5ODAsImV4cCI6MTY3MDkyMDc4MH0.WjSgGcQj2rmogMkqaiB432uNez0kkPxuPCM-0PLsz1I
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwOTE4OTgyLCJleHAiOjE2NzA5Mjk3ODJ9.1Y7Oq2z6bhk80elqekoXNEnbnpLojcbxCmAiaCOX8vk
-
+get {{url}}/diaries/2534
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2NjkxMDIzNTAsImV4cCI6MTY2OTEwNDE1MH0.ZQdV02n26JE3HV1K6SD5WAsye_EqCxEqwVAAou8n2rA
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MTAyMzUwLCJleHAiOjE2NzAzMTE5NTB9._Tjm0OlQf7KLYH9r8CyKGOzSSwQXQWZdAulWTYVg-ps
+Content-Type: application/json
 
 ### 일기 수정
 put {{url}}/diaries/2

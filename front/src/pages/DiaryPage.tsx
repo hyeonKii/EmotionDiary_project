@@ -12,7 +12,7 @@ export default function DiaryPage() {
 
     useEffect(() => {
         if (!user) {
-            navigate("/");
+            navigate("/home");
         }
     }, []);
 

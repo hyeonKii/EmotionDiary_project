@@ -1,10 +1,18 @@
 import styled from "styled-components";
 import { color } from "@/styles/common/colorPalette";
 
+export const HomeBlock = styled.section`
+    width: 100vw;
+    height: 100vh;
+
+    background-size: cover;
+`;
+
 export const IntroSection1 = styled.section`
     display: flex;
+    flex-wrap: wrap;
+
     width: 100%;
-    min-width: 1200px;
     height: 100vh;
 
     background: ${(isdark) => isdark.theme.bgColor};
@@ -93,4 +101,58 @@ export const CenterSection = styled.section`
         font-size: 1.1rem;
         line-height: 30px;
     }
+`;
+
+export const Input = styled.input`
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+
+    width: 70%;
+    max-width: 800;
+    height: 60px;
+    padding-left: 2rem;
+
+    border: none;
+    border-radius: 32px;
+    outline: none;
+    box-shadow: 0 4px 4px 0 ${color.gray};
+
+    line-height: 60px;
+`;
+
+export const TitleBlock = styled.article`
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -35%);
+
+    text-align: center;
+
+    h1 {
+        margin-bottom: 1rem;
+
+        font-family: "diary";
+        font-size: 4rem;
+    }
+`;
+
+export const InputBlock = styled.input`
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+
+    width: 70%;
+    max-width: 800;
+    height: 60px;
+    padding-left: 2rem;
+
+    border: none;
+    border-radius: 32px;
+    outline: none;
+    box-shadow: 0 4px 4px 0 ${color.gray};
+
+    line-height: 60px;
 `;

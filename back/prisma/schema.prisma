@@ -2,12 +2,12 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
   previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
-  provider = "sqlite"
+   provider = "sqlite"
   url      = "file:./dev.db"
 }
 
@@ -38,46 +38,46 @@ model Account {
 }
 
 model Diary {
-  id            Int      @id @unique @default(autoincrement())
-  emotion       String   @default("normal")
-  title         String
-  description   String
-  private       Boolean  @default(false)
-  view          Int      @default(0)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  user_model_id Int
-  user          User     @relation(fields: [user_model_id], references: [id])
+  id              Int       @id @unique @default(autoincrement())
+  emotion         String    @default("normal")
+  title           String
+  description     String
+  private         Boolean   @default(false)
+  view            Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  user_model_id   Int
+  user            User      @relation(fields: [user_model_id], references: [id])
 }
 
 model Token {
-  id     Int    @id @unique @default(autoincrement())
-  token  String @unique
-  userID String @unique
+  id              Int       @id @unique @default(autoincrement())
+  token           String    @unique
+  userID          String    @unique
 }
 
-model Chat {
-  id            Int       @id @default(autoincrement())
-  user_model_id String    @unique
-  inviter       String
-  invitee       String
-  lastmessage   String
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  messege       Messege[]
-  user          User[]
+model Chat{
+  id              Int       @id @default(autoincrement())
+  user_model_id   String    @unique
+  inviter         String
+  invitee         String
+  lastmessage     String
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  messege         Messege[]
+  user            User[]    
 
   // @@fulltext([user_model_id])
 }
 
 model Messege {
-  id        Int      @id @default(autoincrement())
-  chatRoom  String
-  sender    String
-  receiver  String
-  msgText   String
-  read      Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  chat      Chat     @relation(fields: [chatRoom], references: [user_model_id])
+  id              Int       @id @default(autoincrement())
+  chatRoom        String 
+  sender          String
+  receiver        String
+  msgText         String
+  read            Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  chat            Chat      @relation(fields: [chatRoom], references: [user_model_id])
 }

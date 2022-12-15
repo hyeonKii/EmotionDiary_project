@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-
 import { useRequestLogout } from "@/api/account";
 import { showLoginForm } from "@/temp/formAtom";
 import { currentUser } from "@/temp/userAtom";
@@ -15,7 +13,6 @@ interface Error {
 }
 
 export default function useLogout() {
-    const navigate = useNavigate();
     const setUser = useSetRecoilState(currentUser);
     const setLoginForm = useSetRecoilState(showLoginForm);
 
@@ -30,7 +27,6 @@ export default function useLogout() {
                 removeSession("accessToken");
                 removeSession("refreshToken");
             }
-            navigate("/");
         },
 
         onError: (error: Error) => {

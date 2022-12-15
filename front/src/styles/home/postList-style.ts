@@ -87,9 +87,26 @@ export const PostDetail = styled.article`
         margin: 1.5rem 0;
         word-break: break-all;
     }
+
+    div {
+        display: flex;
+        justify-content: space-between;
+
+        .material-symbols-outlined {
+            font-size: 2rem;
+        }
+        .material-icons {
+            color: ${color.lightBlue};
+            font-size: 2rem;
+        }
+    }
 `;
 
 export const MessageBlock = styled.div`
+    position: relative;
+
+    width: 95%;
+
     input {
         width: 100%;
         height: 35px;
@@ -111,6 +128,6 @@ export const MessageBlock = styled.div`
         border-radius: 0 8px 8px 0;
         background: ${color.lightBlue};
 
-        color: ${color.white};
+        color: white;
     }
 `;

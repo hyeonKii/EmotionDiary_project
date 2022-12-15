@@ -2,7 +2,7 @@ import { useState, forwardRef, useMemo, ForwardedRef, useCallback, useRef } from
 import { dateTime } from "@/util/time";
 import { CardSection, Post, PostDetail, MessageBlock } from "@/styles/home/postList-style";
 import { socket } from "@/components/chat/Chat";
-import { currentidUser } from "@/temp/userAtom";
+import { currentUser } from "@/temp/userAtom";
 
 import { useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
@@ -31,7 +31,7 @@ function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
     const { emotion, title, description, createdAt, user_model_id } = post;
     const messegeRef = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
-    const user = useRecoilValue(currentidUser);
+    const user = useRecoilValue(currentUser);
 
     const onCreateRoom = useCallback(() => {
         const messege = messegeRef.current?.value;
@@ -62,6 +62,10 @@ function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
         setIsOpen((prev) => !prev);
     };
 
+    const onToggle = () => {
+        setLike((prev) => !prev);
+    };
+
     const itemBody = useMemo(() => {
         return (
             <>
@@ -88,12 +92,18 @@ function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
                                     전송
                                 </button>
                             </MessageBlock>
+                            <button
+                                className={like ? "material-icons" : "material-symbols-outlined"}
+                                onClick={onToggle}
+                            >
+                                thumb_up
+                            </button>
                         </div>
                     </PostDetail>
                 )}
             </>
         );
-    }, [isOpen, post]);
+    }, [isOpen, like, post]);
 
     return ref ? (
         <CardSection ref={ref}>{itemBody}</CardSection>
