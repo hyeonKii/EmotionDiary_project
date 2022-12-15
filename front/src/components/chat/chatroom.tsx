@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { socket } from "@/components/chat/Chat";
-import { currentidUser } from "@/temp/userAtom";
+import { currentUser } from "@/temp/userAtom";
 import * as api from "@/api/chat";
 import { recentlyMsgState } from "@/temp/ChatRecoil";
 import { useRecoilValue, useRecoilState } from "recoil";
@@ -28,7 +28,7 @@ export const ChatRoom = (joinedRoom: any | undefined) => {
     const chatContainerEl = useRef<HTMLDivElement>(null);
     const chatRoom = joinedRoom?.joinedRoom;
     const [recentlyMessage, setRecentlyMessage] = useRecoilState(recentlyMsgState);
-    const user = useRecoilValue(currentidUser);
+    const user = useRecoilValue(currentUser);
     const userid = String(user?.id);
     const navigate = useNavigate();
     //todo : usecallback 사용하기
