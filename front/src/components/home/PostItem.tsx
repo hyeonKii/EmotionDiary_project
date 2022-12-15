@@ -1,9 +1,9 @@
 import { useState, forwardRef, useMemo, ForwardedRef, useCallback, useRef } from "react";
 import { dateTime } from "@/util/time";
 import { CardSection, Post, PostDetail, MessageBlock } from "@/styles/home/postList-style";
-import { io } from "socket.io-client";
-export const socket = io("http://kdt-ai5-team02.elicecoding.com");
+import { socket } from "@/components/chat/Chat";
 import { currentidUser } from "@/temp/userAtom";
+
 import { useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
 
@@ -37,18 +37,24 @@ function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
         const messege = messegeRef.current?.value;
         let inviter = String(user?.id);
         let invitee = String(user_model_id);
-
+        const roomName = inviter + "," + invitee;
         if (user_model_id === Number(user?.id)) {
+            navigate("/diary", {
+                state: { room: roomName },
+            });
             return;
         }
 
         socket.emit("create-room", inviter, invitee, messege, (response: CreateRoomResponse) => {
+            console.log(response, 4334);
             if (response.success) {
                 return alert(response.payload);
             }
         });
 
-        navigate(`/diary`);
+        navigate("/diary", {
+            state: { room: roomName },
+        });
     }, [navigate]);
 
     const onClick = () => {
