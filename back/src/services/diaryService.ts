@@ -10,7 +10,7 @@ class DiaryService {
         userID: string,
         title: string,
         description: string,
-        // emotion: string,
+        emotion: string,
         privateDiary: boolean,
         createdAt?: Date
     ) {
@@ -21,10 +21,11 @@ class DiaryService {
                 throw new AppError("NotFindError");
             }
 
-            await this.prisma.diary.create({
+            const t = await this.prisma.diary.create({
                 data: {
                     title,
                     description,
+                    emotion,
                     user: {
                         connect: {
                             id: result?.User.id,
@@ -34,6 +35,8 @@ class DiaryService {
                     createdAt: createdAt,
                 },
             });
+
+            console.log("t", t)
         } catch (error) {
             throw new AppError("NotFindError");
         }
@@ -225,6 +228,7 @@ class DiaryService {
                 updatedAt: true,
                 private: true,
             },
+            orderBy: [{ createdAt: "desc" }],
         });
 
         if (postDatas === null) {
