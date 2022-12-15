@@ -1,11 +1,13 @@
 import { useRequestWriteDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
+import { SelectStyle } from "@/styles/diary/diary-style";
 import { DiaryDetail, EditBlock } from "@/styles/diary/todayDiary-style";
+import { aMonthAgo, aYearAgo, dayAgo } from "@/util/date";
 import { ChangeEvent, useState } from "react";
 import { useQueryClient } from "react-query";
 
 interface Props {
-    refetch(): void;
+    clickedDate: Date;
 }
 
 const getCurrentDateText = (dayToDate: Date) => {
@@ -18,10 +20,10 @@ const getCurrentDateText = (dayToDate: Date) => {
     return `${currentYear}년 ${currentMonth}월 ${currentDay}일`;
 };
 
-export default function DiaryCreatePost({ fullDate }: Props) {
+export default function DiaryCreatePost({ clickedDate }: Props) {
     const queryClient = useQueryClient();
 
-    const currentDateText = getCurrentDateText(fullDate);
+    const currentDateText = getCurrentDateText(clickedDate);
 
     const [privateMode, setPrivateMode] = useState(true);
 
@@ -31,10 +33,11 @@ export default function DiaryCreatePost({ fullDate }: Props) {
     });
 
     const { mutate: writeHandler } = useRequestWriteDiary(
-        { ...form, privateDiary: privateMode, createdAt: fullDate },
+        { ...form, privateDiary: privateMode, createdAt: clickedDate },
         {
-            onSuccess: () => {
-                queryClient.invalidateQueries(["calendar-diaries"]);
+            onSuccess: async () => {
+                await queryClient.invalidateQueries(["calendar-diaries"]);
+                await queryClient.invalidateQueries(["past-diaries"]);
 
                 console.log("일기 작성 요청 성공");
             },
@@ -58,11 +61,11 @@ export default function DiaryCreatePost({ fullDate }: Props) {
     return (
         <DiaryDetail isEdit={true}>
             <article className="top">
-                {fullDate && <span className="date">{currentDateText}</span>}
-                <select onChange={selectHandler}>
-                    <option value="나만보기">나만보기</option>
-                    <option value="전체공개">전체공개</option>
-                </select>
+                {clickedDate && <span className="date">{currentDateText}</span>}
+                <SelectStyle onChange={selectHandler}>
+                    <option value="나만보기">&#128274; 나만보기</option>
+                    <option value="전체공개">&#128275; 전체공개</option>
+                </SelectStyle>
             </article>
             <EditBlock>
                 <input

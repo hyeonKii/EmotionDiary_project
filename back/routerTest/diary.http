@@ -6,8 +6,8 @@ POST {{url}}/account/login
 Content-Type: application/json
 
 {
-    "userID": "test",
-    "password": "0000"
+    "userID": "ttest",
+    "password": "ttest"
 }
 ###logout
 delete {{url}}/account
@@ -71,10 +71,14 @@ Content-Type: application/json
 }
 
 ### 특정 일기 조회
-get {{url}}/diaries/?datetime=2022-12-02
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXVpaG8iLCJpYXQiOjE2NjkxMDIzNTAsImV4cCI6MTY2OTEwNDE1MH0.ZQdV02n26JE3HV1K6SD5WAsye_EqCxEqwVAAou8n2rA
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5MTAyMzUwLCJleHAiOjE2NzAzMTE5NTB9._Tjm0OlQf7KLYH9r8CyKGOzSSwQXQWZdAulWTYVg-ps
-Content-Type: application/json
+get {{url}}/diaries/?datetime=2021-12-12
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoicnV5cmlhIiwiaWF0IjoxNjcwODMzNjI2LCJleHAiOjE2NzA4MzU0MjZ9.4ZKDNnn5tBbJ5dBUAsvDLPR3S9VaRMGD82JjDffGETg
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwODMzNjI4LCJleHAiOjE2NzA4NDQ0Mjh9.4GNv13G65DlrK31DHV78PnxIT7ZLoEFGkY2pIJge9ls
+
+### 일주일 / 한달 / 일년 전 일기 조회
+get {{url}}/diaries/period/all
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidHRlc3QiLCJpYXQiOjE2NzA5MTg5ODAsImV4cCI6MTY3MDkyMDc4MH0.WjSgGcQj2rmogMkqaiB432uNez0kkPxuPCM-0PLsz1I
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwOTE4OTgyLCJleHAiOjE2NzA5Mjk3ODJ9.1Y7Oq2z6bhk80elqekoXNEnbnpLojcbxCmAiaCOX8vk
 
 
 ### 일기 수정

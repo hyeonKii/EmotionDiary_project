@@ -1,8 +1,8 @@
 import { useState } from "react";
 import useForm from "@/hooks/useForm";
 import { useRequestCheckCode, useRequestSendCode } from "@/api/certificate";
-import Icon from "../UI/Icon";
-import {  
+import Icon from "@/components/UI/Icon";
+import {
     InputSection,
     InputBlock,
     FormButton,
@@ -12,7 +12,7 @@ import {
     CorrectButton,
     Success,
     DescriptionLabel,
-} from "@/styles/common/Modal/Form-style";
+} from "@/styles/common/modal/Form-style";
 
 interface Response {
     data: {
@@ -44,10 +44,10 @@ export default function UserEmailCheckTab({ setTab, setRequiredEmail }: Props) {
             console.log("이메일 코드 전송 완료.");
             setCodeError("");
         },
-        onError: (error: Error) => {
+        onError: (error) => {
             console.log("이메일 코드 전송 실패 :" + error.message);
 
-            if (error.response.data === "User already exists") {
+            if (error.response?.data === "User already exists") {
                 setCodeError("이미 해당 이메일로 가입되었습니다.");
                 return;
             }
@@ -87,7 +87,7 @@ export default function UserEmailCheckTab({ setTab, setRequiredEmail }: Props) {
                 <InputBlock>
                     <DescriptionLabel htmlFor="email">
                         가입하실 이메일을 입력해 주세요.
-                    </DescriptionLabel>   
+                    </DescriptionLabel>
                     <Icon icon="email" />
                     <input id="email" type="email" placeholder="이메일" onChange={changeHandler} />
                     <AuthButton type="button" onClick={sendCodeHandler}>
@@ -110,7 +110,7 @@ export default function UserEmailCheckTab({ setTab, setRequiredEmail }: Props) {
                         onChange={changeHandler}
                     />
                     <CorrectButton type="button" onClick={checkCodeHandler}>
-                            확인
+                        확인
                     </CorrectButton>
                 </InputBlock>
 
@@ -125,4 +125,4 @@ export default function UserEmailCheckTab({ setTab, setRequiredEmail }: Props) {
             </BottomSection>
         </>
     );
-};
+}

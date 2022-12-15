@@ -10,6 +10,7 @@ class DiaryService {
         userID: string,
         title: string,
         description: string,
+        emotion: string,
         privateDiary: boolean,
         createdAt?: Date
     ) {
@@ -20,10 +21,11 @@ class DiaryService {
                 throw new AppError("NotFindError");
             }
 
-            await this.prisma.diary.create({
+            const t = await this.prisma.diary.create({
                 data: {
                     title,
                     description,
+                    emotion,
                     user: {
                         connect: {
                             id: result?.User.id,
@@ -33,6 +35,8 @@ class DiaryService {
                     createdAt: createdAt,
                 },
             });
+
+            console.log("t", t)
         } catch (error) {
             throw new AppError("NotFindError");
         }
@@ -111,6 +115,27 @@ class DiaryService {
         return postData;
     }
 
+    async getAllDiaryByDate(userID: string, datetime: Date, datetime2: Date) {
+        const postData = await this.prisma.diary.findMany({
+            where: {
+                user: {
+                    Account: {
+                        userID: userID,
+                    },
+                },
+                createdAt: {
+                    gte: datetime,
+                    lte: datetime2,
+                },
+            },
+        });
+        if (postData === null) {
+            throw new AppError("NotFindError");
+        }
+        await this.prisma.$disconnect();
+        return postData;
+    }
+
     async getDiaryByDate(userID: string, datetime: Date, datetime2: Date) {
         const postData = await this.prisma.diary.findMany({
             where: {
@@ -141,16 +166,15 @@ class DiaryService {
         userID: string,
         count: number,
         page: number,
-        privatediary: boolean,
+        privatediary: string,
         emotion: string
     ) {
-        console.log(typeof privatediary, privatediary);
         const postDatas = await this.prisma.diary.findMany({
             take: Number(count),
             skip: (Number(page) - 1) * Number(count),
             where: {
                 emotion: emotion != "전체" ? emotion : undefined,
-                private: privatediary === true ? true : false,
+                private: privatediary === "true" ? true : false,
             },
             select: {
                 id: true,
@@ -204,6 +228,7 @@ class DiaryService {
                 updatedAt: true,
                 private: true,
             },
+            orderBy: [{ createdAt: "desc" }],
         });
 
         if (postDatas === null) {

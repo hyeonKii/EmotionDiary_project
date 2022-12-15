@@ -3,9 +3,11 @@ import { useInfiniteQuery } from "react-query";
 import * as api from "@/api/diary";
 
 import PostItem from "./PostItem";
-import Loading from "../UI/Loading";
+import Loading from "@/components/UI/Loading";
 import usePost from "@/hooks/usePost";
+import { none, postLoading } from "@/assets/images";
 import { TabList } from "@/styles/common/tab-style";
+import { Empty, LoadingStyle } from "@/styles/common/empty/empty-style";
 
 const tabList = [
     "전체",
@@ -30,7 +32,6 @@ interface Items {
 
 export default function PostList() {
     const [tab, setTab] = useState<TabList>("전체");
-
     const { fetchNextPage, hasNextPage, isFetchingNextPage, data, error, status, refetch } =
         useInfiniteQuery("posts", ({ pageParam = 1 }) => getPostPage(pageParam), {
             getNextPageParam: (lastPage, allPages) => {
@@ -43,6 +44,7 @@ export default function PostList() {
     const getPostPage = async (page = 1) => {
         try {
             const { data } = await api.getDiary(10, page, tab);
+            console.log(tab);
             return data;
         } catch (e) {
             console.error(e);
@@ -54,6 +56,16 @@ export default function PostList() {
     }, [tab]);
 
     const content = data?.pages?.map((page) => {
+        console.log(page, data);
+
+        if (data?.pages[0].length === 0) {
+            return (
+                <Empty>
+                    <img src={none} alt="none" />
+                    <span>등록된 게시물이 없습니다.</span>
+                </Empty>
+            );
+        }
         return page?.map((post: Items, index: number) => {
             if (page?.length === index + 1) {
                 return <PostItem ref={lastPostRef} key={post.id} post={post} />;
@@ -80,7 +92,12 @@ export default function PostList() {
             </TabList>
             <section>
                 {content}
-                {isFetchingNextPage && <p>Loading...</p>}
+                {isFetchingNextPage && (
+                    <LoadingStyle>
+                        <span>Loading...</span>
+                        <img src={postLoading} alt="loading" />
+                    </LoadingStyle>
+                )}
             </section>
         </>
     );

@@ -4,28 +4,16 @@ import { useRequestRegisterUser } from "@/api/account";
 import UserEmailCheckTab from "./UserEmailCheckTab";
 import UserRegisterTab from "./UserRegisterTab";
 import { LOGIN } from "./constants/tabList";
-import {
-    Form,
-    FormTitle,
-    Error,
-    BottomSection,
-} from "@/styles/common/Modal/Form-style";
+import { Form, FormTitle, BottomSection } from "@/styles/common/modal/Form-style";
+import { useSetRecoilState } from "recoil";
+import { currentForm } from "@/temp/formAtom";
 
-interface Props {
-    setTabNumber(value: number): void;
-}
-
-interface Error {
-    message: string;
-    response: {
-        data: string;
-    };
-}
-
-export default function UserRegister({ setTabNumber }: Props) {
+export default function UserRegister() {
     const [tab, setTab] = useState(false);
     const [requiredEmail, setRequiredEmail] = useState("");
     const [error, setError] = useState("");
+
+    const setCurrentForm = useSetRecoilState(currentForm);
 
     const { form, changeHandler } = useForm({
         email: "",
@@ -43,10 +31,10 @@ export default function UserRegister({ setTabNumber }: Props) {
                 setError("");
             },
 
-            onError: (error: Error) => {
+            onError: (error) => {
                 console.log("회원가입 실패 :" + error.message);
 
-                if (error.response.data === "User already exists") {
+                if (error.response?.data === "User already exists") {
                     setError("이미 아이디가 존재합니다.");
                     return;
                 }
@@ -66,23 +54,22 @@ export default function UserRegister({ setTabNumber }: Props) {
             <div>{tab}</div>
             {!tab ? (
                 <UserEmailCheckTab setTab={setTab} setRequiredEmail={setRequiredEmail} />
-                ) : (
+            ) : (
                 <UserRegisterTab
                     form={form}
                     changeHandler={changeHandler}
                     error={error}
                     isSuccess={isSuccess}
-                    setTabNumber={setTabNumber}
                 />
-                )}
+            )}
             {!isSuccess && (
                 <BottomSection>
                     <span>이미 계정이 있으신가요? </span>
-                    <button type="button" onClick={() => setTabNumber(LOGIN)}>
+                    <button type="button" onClick={() => setCurrentForm(LOGIN)}>
                         로그인
                     </button>
                 </BottomSection>
-            )} 
+            )}
         </Form>
     );
-};
+}

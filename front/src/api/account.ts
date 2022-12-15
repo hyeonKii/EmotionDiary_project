@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { URL } from "./url";
 import * as endpoint from "./constants/accountEndpoints";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from "react-query";
 
 interface Login {
     userID: string;
@@ -63,18 +63,30 @@ async function logoutUser() {
     });
 }
 
-export const useFetchUser = (key: string | string[], options?) => useQuery(key, getUser, options);
+export const useFetchUser = (
+    key: string | string[],
+    options?: UseQueryOptions<AxiosResponse, AxiosError, AxiosResponse, string | string[]>
+) => useQuery(key, getUser, options);
 
-export const useRequestLogin = (userData: Login, options?) =>
-    useMutation(() => loginUser(userData), options);
+export const useRequestLogin = (
+    userData: Login,
+    options?: UseMutationOptions<AxiosResponse, AxiosError>
+) => useMutation(() => loginUser(userData), options);
 
-export const useRequestRegisterUser = (userData: Register, options?) =>
-    useMutation(() => registerUser(userData), options);
+export const useRequestRegisterUser = (
+    userData: Register,
+    options?: UseMutationOptions<AxiosResponse, AxiosError>
+) => useMutation(() => registerUser(userData), options);
 
-export const useRequestFindID = (userData: FindID, options?) =>
-    useMutation(() => findID(userData), options);
+export const useRequestFindID = (
+    userData: FindID,
+    options?: UseMutationOptions<AxiosResponse, AxiosError>
+) => useMutation(() => findID(userData), options);
 
-export const useRequestChangePwd = (userData: ChangePwd, options?) =>
-    useMutation(() => changePwd(userData), options);
+export const useRequestChangePwd = (
+    userData: ChangePwd,
+    options?: UseMutationOptions<AxiosResponse, AxiosError>
+) => useMutation(() => changePwd(userData), options);
 
-export const useRequestLogout = (options?) => useMutation(() => logoutUser(), options);
+export const useRequestLogout = (options?: UseMutationOptions<AxiosResponse, AxiosError>) =>
+    useMutation(() => logoutUser(), options);

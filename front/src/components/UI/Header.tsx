@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 import { currentUser } from "@/temp/userAtom";
 
@@ -8,28 +8,30 @@ import ModalBackground from "./ModalBackground";
 import UserFormController from "@/components/user/UserFormController";
 import { NavStyle, LinkStyle } from "@/styles/common/nav/nav-style";
 import DarkModeToggle from "@/styles/common/DarkModeToggle";
+import { showLoginForm } from "@/temp/formAtom";
 
 export default function Header() {
     const user = useRecoilValue(currentUser);
 
-    const [showLoginForm, setShowLoginForm] = useState(!user);
+    const [loginForm, setLoginForm] = useRecoilState(showLoginForm);
+
     const [showDropDown, setShowDropDown] = useState(false);
 
     return (
         <header>
-            {(showLoginForm || !user) && (
+            {(loginForm || !user) && (
                 <>
-                    <UserFormController setShowLoginForm={setShowLoginForm} />
+                    <UserFormController />
                     <ModalBackground />
                 </>
             )}
 
             <NavStyle>
-                <LinkStyle to="/home" className="logo">
+                <LinkStyle to="/" className="logo">
                     마음일기
                 </LinkStyle>
                 {!user ? (
-                    <button className="loginButton" onClick={() => setShowLoginForm(true)}>
+                    <button className="loginButton" onClick={() => setLoginForm(true)}>
                         로그인
                     </button>
                 ) : (

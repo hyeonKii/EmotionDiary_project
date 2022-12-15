@@ -1,13 +1,15 @@
 import React from "react";
 import { LOGIN } from "./constants/tabList";
-import Icon from "../UI/Icon";
+import Icon from "@/components/UI/Icon";
 import {
     RegisterInputSection,
     InputBlock,
     FormButton,
     Error,
     BottomSection,
-} from "@/styles/common/Modal/Form-style";
+} from "@/styles/common/modal/Form-style";
+import { useSetRecoilState } from "recoil";
+import { currentForm } from "@/temp/formAtom";
 
 interface Props {
     form: {
@@ -17,17 +19,12 @@ interface Props {
     changeHandler(event: React.ChangeEvent<HTMLInputElement>): void;
     error: string;
     isSuccess: boolean;
-    setTabNumber(value: number): void;
 }
 
-export default function UserRegisterTab({
-    form,
-    changeHandler,
-    error,
-    isSuccess,
-    setTabNumber,
-}: Props) {
+export default function UserRegisterTab({ form, changeHandler, error, isSuccess }: Props) {
     const checkPassword = form.password !== form.confirmPwd ? true : false;
+
+    const setCurrentForm = useSetRecoilState(currentForm);
 
     return (
         <>
@@ -82,19 +79,17 @@ export default function UserRegisterTab({
                         {checkPassword && <Error>비밀번호가 일치하지 않습니다.</Error>}
                     </RegisterInputSection>
                     <BottomSection>
-                        <FormButton>
-                            회원가입
-                        </FormButton>
+                        <FormButton>회원가입</FormButton>
                     </BottomSection>
                 </>
             ) : (
                 <>
                     <div>회원가입에 성공하셨습니다!</div>
-                    <FormButton type="button" onClick={() => setTabNumber(LOGIN)}>
+                    <FormButton type="button" onClick={() => setCurrentForm(LOGIN)}>
                         로그인 하기
                     </FormButton>
                 </>
             )}
         </>
     );
-};
+}

@@ -1,12 +1,10 @@
-import { useState } from "react";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis } from "recharts";
 import { useRecoilValue } from "recoil";
 
-import { useRequestGetMonthDiaries } from "@/api/diary";
+import { useRequestPastDiaries } from "@/api/diary";
 import { currentUser } from "@/temp/userAtom";
-import { dayAgo, aMonthAgo, aYearAgo, dayString, monthString, yearString } from "@/util/date";
+import { dayString, monthString, yearString } from "@/util/date";
 import { emotionImg } from "@/hooks/useEmotion";
-import { PostInterface } from "./interface/post";
 import {
     EmotionSection,
     EmotionChartSection,
@@ -51,66 +49,23 @@ const chart = [
 
 export function Emotion() {
     const user = useRecoilValue(currentUser);
+
     const topEmotion = chart.reduce((a, b) => {
         return a.A > b.A ? a : b;
     });
-    const [newArr, setNewArr] = useState({
-        day: {
-            title: "",
-            description: "",
-            emotion: "",
+
+    const { data: pastDiaries } = useRequestPastDiaries({
+        onSuccess: () => {
+            console.log("지난달 감정들 요청 성공");
         },
-        month: {
-            title: "",
-            description: "",
-            emotion: "",
-        },
-        year: {
-            title: "",
-            description: "",
-            emotion: "",
+        onError: () => {
+            console.log("지난달 감정들 요청 실패");
         },
     });
 
-    useRequestGetMonthDiaries(dayAgo.getFullYear(), dayAgo.getMonth() + 1, "week", {
-        onSuccess: (res) => {
-            const day = res.data.find(
-                (posts: PostInterface) => new Date(posts.createdAt).getDate() === dayAgo.getDate()
-            );
-            day !== undefined ? setNewArr((arr) => ({ ...arr, day })) : undefined;
-        },
-
-        onError: ({ message }: Error) => {
-            console.error(message);
-        },
-    });
-
-    useRequestGetMonthDiaries(aMonthAgo.getFullYear(), aMonthAgo.getMonth() + 1, "month", {
-        onSuccess: (res) => {
-            const month = res.data.find(
-                (posts: PostInterface) =>
-                    new Date(posts.createdAt).getDate() === aMonthAgo.getDate()
-            );
-            month !== undefined ? setNewArr((arr) => ({ ...arr, month })) : undefined;
-        },
-
-        onError: ({ message }: Error) => {
-            console.error(message);
-        },
-    });
-
-    useRequestGetMonthDiaries(aYearAgo.getFullYear(), aYearAgo.getMonth() + 1, "year", {
-        onSuccess: (res) => {
-            const year = res.data.find(
-                (posts: PostInterface) => new Date(posts.createdAt).getDate() === aYearAgo.getDate()
-            );
-            year !== undefined ? setNewArr((arr) => ({ ...arr, year })) : undefined;
-        },
-
-        onError: ({ message }: Error) => {
-            console.error(message);
-        },
-    });
+    const day = pastDiaries?.data[0][0];
+    const month = pastDiaries?.data[1][0];
+    const year = pastDiaries?.data[2][0];
 
     return (
         <EmotionSection>
@@ -138,40 +93,34 @@ export function Emotion() {
             <EmotionDataSection>
                 <article>
                     <h3>일주일 전 오늘</h3>
-                    <span className="emotionIcon">{emotionImg(newArr.day?.emotion)}</span>
+                    <span className="emotionIcon">{emotionImg(day?.emotion)}</span>
                     <span className="date">{dayString}</span>
                     <div className="diary">
-                        <span>{newArr.day?.title}</span>
+                        <span>{day?.title}</span>
                         <span className="body">
-                            {newArr.day?.description
-                                ? newArr.day.description
-                                : "작성된 글이 없습니다."}
+                            {day?.description ? day.description : "작성된 글이 없습니다."}
                         </span>
                     </div>
                 </article>
                 <article>
                     <h3>한 달 전 오늘</h3>
-                    <span className="emotionIcon">{emotionImg(newArr.month?.emotion)}</span>
+                    <span className="emotionIcon">{emotionImg(month?.emotion)}</span>
                     <span className="date">{monthString}</span>
                     <div className="diary">
-                        <span>{newArr.month?.title}</span>
+                        <span>{month?.title}</span>
                         <span className="body">
-                            {newArr.month?.description
-                                ? newArr.month?.description
-                                : "작성된 글이 없습니다."}
+                            {month?.description ? month?.description : "작성된 글이 없습니다."}
                         </span>
                     </div>
                 </article>
                 <article>
                     <h3>일 년 전 오늘</h3>
-                    <span className="emotionIcon">{emotionImg(newArr.year?.emotion)}</span>
+                    <span className="emotionIcon">{emotionImg(year?.emotion)}</span>
                     <span className="date">{yearString}</span>
                     <div className="diary">
-                        <span>{newArr.year?.title}</span>
+                        <span>{year?.title}</span>
                         <span className="body">
-                            {newArr.year?.description
-                                ? newArr.year?.description
-                                : "작성된 글이 없습니다."}
+                            {year?.description ? year?.description : "작성된 글이 없습니다."}
                         </span>
                     </div>
                 </article>

@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+   provider = "sqlite"
   url      = "file:./dev.db"
 }
 
@@ -52,8 +52,33 @@ model Diary {
 }
 
 model Token {
-  id    Int     @id @unique @default(autoincrement())
-  token String  @unique
+  id              Int       @id @unique @default(autoincrement())
+  token           String    @unique
+  userID          String    @unique
+}
 
-  userID String @unique
+model Chat{
+  id              Int       @id @default(autoincrement())
+  user_model_id   String    @unique
+  inviter         String
+  invitee         String
+  lastmessage     String
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  messege         Messege[]
+  user            User[]    
+
+  // @@fulltext([user_model_id])
+}
+
+model Messege {
+  id              Int       @id @default(autoincrement())
+  chatRoom        String 
+  sender          String
+  receiver        String
+  msgText         String
+  read            Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  chat            Chat      @relation(fields: [chatRoom], references: [user_model_id])
 }

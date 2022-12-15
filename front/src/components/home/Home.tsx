@@ -9,7 +9,8 @@ import { PostInterface } from "@/components/diary/interface/post";
 
 import { happy } from "@/assets/images/index";
 import { HomeSection, TitleBlock, Input } from "@/styles/home/home-style";
-import { Form, FormTitle, FormButton, PostBlock } from "@/styles/common/modal/form-style";
+import { SelectStyle } from "@/styles/diary/diary-style";
+import { Form, FormTitle, FormButton, PostBlock } from "@/styles/common/modal/Form-style";
 import { ModalBackgroundStyle } from "@/styles/common/modal/background-style";
 
 export default function Main() {
@@ -40,20 +41,19 @@ export default function Main() {
         };
     }, [ref, setIsOpen]);
 
-    const { isSuccess, data: monthDiaries } = useRequestGetMonthDiaries(
-        today.getFullYear(),
-        today.getMonth() + 1,
-        "home-diaries",
-        {
-            onSuccess: () => {
-                return;
-            },
+    const {
+        isSuccess,
+        data: monthDiaries,
+        refetch,
+    } = useRequestGetMonthDiaries(today.getFullYear(), today.getMonth() + 1, "home-diaries", {
+        onSuccess: () => {
+            return;
+        },
 
-            onError: ({ message }: Error) => {
-                console.error(message);
-            },
-        }
-    );
+        onError: ({ message }: Error) => {
+            console.error(message);
+        },
+    });
 
     useEffect(() => {
         const day = monthDiaries?.data?.map((posts: PostInterface) =>
@@ -68,7 +68,9 @@ export default function Main() {
     const { mutate: writeDiary } = useRequestWriteDiary(form, {
         onSuccess: () => {
             setIsOpen(false);
+            setTodayPost(true);
             setForm((form) => ({ ...form, title: "", description: "", privateDiary: true }));
+            refetch();
         },
         onError: ({ message }: Error) => {
             console.error(message);
@@ -130,10 +132,10 @@ export default function Main() {
                             </button>
                             <FormTitle>일기쓰기</FormTitle>
                             <PostBlock>
-                                <select onChange={onPrivateSelect} defaultValue="true">
-                                    <option value="true">나만보기</option>
-                                    <option value="false">전체공개</option>
-                                </select>
+                                <SelectStyle onChange={onPrivateSelect} defaultValue="true">
+                                    <option value="true">&#128274; 나만보기</option>
+                                    <option value="false">&#128275; 전체공개</option>
+                                </SelectStyle>
                                 <input
                                     id="title"
                                     value={title}

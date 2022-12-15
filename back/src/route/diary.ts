@@ -1,5 +1,6 @@
 import { Router, Request as Req, Response as Res } from "express";
-import wrapRouter from "lib/wrapRouter";
+import axios from "axios";
+import wrapRouter from "../lib/wrapRouter";
 import diaryService from "../services/diaryService";
 import auth from "middleware/auth";
 import AppError from "lib/AppError";
@@ -14,13 +15,20 @@ diaryRouter.post(
         if (title && description && privateDiary === undefined) {
             throw new AppError("ArgumentError");
         }
-        const result = await diaryService.writeDiary(
+
+        const response = await axios.post("http://localhost:8000/api/emotion-check", {
+            text: description,
+        });
+
+        await diaryService.writeDiary(
             req.userID!,
             title,
             description,
+            response.data.result[0],
             privateDiary,
             createdAt
         );
+
         return { statusCode: 200, content: true };
     })
 );
@@ -54,7 +62,7 @@ diaryRouter.get(
             req.userID!,
             Number(count),
             Number(page),
-            Boolean(privatediary),
+            String(privatediary),
             String(emotion)
         );
         return { statusCode: 200, content: result };
@@ -92,9 +100,52 @@ diaryRouter.get(
         const { datetime } = req.query;
         const date = new Date(String(datetime));
         const nextDate = new Date(String(datetime));
-        nextDate.setMonth(date.getMonth() + 1);
-        console.log(date, nextDate);
+        nextDate.setDate(date.getDate() + 1);
         const result = await diaryService.getDiaryByDate(req.userID!, date, nextDate);
+        return { statusCode: 200, content: result };
+    })
+);
+
+diaryRouter.get(
+    "/period/all",
+    auth,
+    wrapRouter(async (req: Req, res: Res) => {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1;
+        const date = now.getDate();
+
+        const day = `${year}-${month >= 10 ? month : "0" + month}-${
+            date >= 10 ? date : "0" + date
+        }`;
+
+        // week 기간 설정
+        const weekStart = new Date(day);
+        weekStart.setDate(new Date().getDate() - 7);
+
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekStart.getDate() + 1);
+
+        // month 기간 설정
+        const monthStart = new Date(day);
+        monthStart.setMonth(new Date().getMonth() - 1);
+
+        const monthEnd = new Date(monthStart);
+        monthEnd.setDate(monthStart.getDate() + 1);
+
+        // year 기간 설정
+        const yearStart = new Date(day);
+        yearStart.setFullYear(new Date().getFullYear() - 1);
+
+        const yearEnd = new Date(yearStart);
+        yearEnd.setDate(yearStart.getDate() + 1);
+
+        const result = await Promise.all([
+            diaryService.getAllDiaryByDate(req.userID!, weekStart, weekEnd),
+            diaryService.getAllDiaryByDate(req.userID!, monthStart, monthEnd),
+            diaryService.getAllDiaryByDate(req.userID!, yearStart, yearEnd),
+        ]);
+
         return { statusCode: 200, content: result };
     })
 );
@@ -104,7 +155,6 @@ diaryRouter.put(
     // auth,
     wrapRouter(async (req: Req, res: Res) => {
         const { id } = req.params;
-        console.log(id);
         const { title, description, privateDiary } = req.body;
         const result = await diaryService.updateDiary(id, title, description, privateDiary);
         return Promise.resolve({ statusCode: 200, content: result });
@@ -119,6 +169,50 @@ diaryRouter.put(
         const { emotion } = req.body;
         const result = await diaryService.changeEmotion(id, emotion);
         return Promise.resolve({ statusCode: 200, content: result });
+    })
+);
+
+diaryRouter.get(
+    "/period/all",
+    auth,
+    wrapRouter(async (req: Req, res: Res) => {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1;
+        const date = now.getDate();
+
+        const day = `${year}-${month >= 10 ? month : "0" + month}-${
+            date >= 10 ? date : "0" + date
+        }`;
+
+        // week 기간 설정
+        const weekStart = new Date(day);
+        weekStart.setDate(new Date().getDate() - 7);
+
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekStart.getDate() + 1);
+
+        // month 기간 설정
+        const monthStart = new Date(day);
+        monthStart.setMonth(new Date().getMonth() - 1);
+
+        const monthEnd = new Date(monthStart);
+        monthEnd.setDate(monthStart.getDate() + 1);
+
+        // year 기간 설정
+        const yearStart = new Date(day);
+        yearStart.setFullYear(new Date().getFullYear() - 1);
+
+        const yearEnd = new Date(yearStart);
+        yearEnd.setDate(yearStart.getDate() + 1);
+
+        const result = await Promise.all([
+            diaryService.getDiaryByDate(req.userID!, weekStart, weekEnd),
+            diaryService.getDiaryByDate(req.userID!, monthStart, monthEnd),
+            diaryService.getDiaryByDate(req.userID!, yearStart, yearEnd),
+        ]);
+
+        return { statusCode: 200, content: result };
     })
 );
 
