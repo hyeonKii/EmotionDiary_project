@@ -2,7 +2,7 @@ import { useState, forwardRef, useMemo, ForwardedRef, useCallback, useRef } from
 import { dateTime } from "@/util/time";
 import { CardSection, Post, PostDetail, MessageBlock } from "@/styles/home/postList-style";
 import { socket } from "@/components/chat/Chat";
-import { currentUser } from "@/temp/userAtom";
+import { currentidUser } from "@/temp/userAtom";
 
 import { useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +27,36 @@ interface CreateRoomResponse {
 
 function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
     const [isOpen, setIsOpen] = useState(false);
-    const { emotion, title, description, createdAt } = post;
+    const [like, setLike] = useState(false);
+    const { emotion, title, description, createdAt, user_model_id } = post;
+    const messegeRef = useRef<HTMLInputElement>(null);
+    const navigate = useNavigate();
+    const user = useRecoilValue(currentidUser);
+
+    const onCreateRoom = useCallback(() => {
+        const messege = messegeRef.current?.value;
+        let inviter = String(user?.id);
+        let invitee = String(user_model_id);
+        const roomName = inviter + "," + invitee;
+        if (user_model_id === Number(user?.id)) {
+            alert("자신이 작성한 일기입니다.");
+            // navigate("/diary", {
+            //     state: { room: roomName },
+            // });
+            return;
+        }
+
+        socket.emit("create-room", inviter, invitee, messege, (response: CreateRoomResponse) => {
+            console.log(response, 4334);
+            if (response.success) {
+                return alert(response.payload);
+            }
+        });
+
+        navigate("/diary", {
+            state: { room: roomName },
+        });
+    }, [navigate]);
 
     const onClick = () => {
         setIsOpen((prev) => !prev);

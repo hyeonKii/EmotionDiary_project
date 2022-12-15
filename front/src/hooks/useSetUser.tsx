@@ -1,5 +1,5 @@
 import { useFetchUser } from "@/api/account";
-import { currentUser } from "@/temp/userAtom";
+import { currentidUser } from "@/temp/userAtom";
 import { useSetRecoilState } from "recoil";
 
 interface Response {
@@ -14,7 +14,7 @@ interface Error {
 }
 
 export default function useSetUser() {
-    const setUserState = useSetRecoilState(currentUser);
+    const setUserState = useSetRecoilState(currentidUser);
 
     const { isLoading, refetch: setUser } = useFetchUser(["user"], {
         enabled: false,

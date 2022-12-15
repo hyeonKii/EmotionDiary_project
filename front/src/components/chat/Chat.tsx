@@ -1,7 +1,16 @@
 import { ChatContainer, Message, MessageBox, MessageForm } from "@/styles/chat/chat-style";
 import { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
-import classNames from "classnames";
+import { useNavigate, useParams } from "react-router-dom";
+import { useCallback, useEffect, useState, useMemo } from "react";
+import { currentidUser } from "@/temp/userAtom";
+import * as api from "@/api/chat";
+import { Head, ChatRoomstyle } from "@/styles/chat/waiting-room.styles";
+import { recentlyMsgState } from "@/temp/ChatRecoil";
+import { useRecoilValue, useRecoilState } from "recoil";
+import ChatRoom from "@/components/chat/chatroom";
+// export const socket = io("http://localhost:3002");
+import { currentroom } from "@/temp/ChatRecoil";
 
 const socket = io("http://127.0.0.1:4001/chat");
 
@@ -11,9 +20,14 @@ interface IChat {
 }
 
 export function Chat() {
-    const [chats, setChats] = useState<IChat[]>([]);
-    const [message, setMessage] = useState<string>("");
-    const chatContainerEl = useRef<HTMLDivElement>(null);
+    const [joinedRoom, setJoinedRoom] = useState<string>();
+    const [currentsroom, setCurrentsroom] = useRecoilState(currentroom);
+    let { roomName } = useParams<"roomName">();
+    // const [currentsroom, setCurrentsroom] = useRecoilState(currentroom);
+    const user = useRecoilValue(currentidUser);
+    const userid = String(user?.id);
+    const [recentMessage, setRecentMessage] = useRecoilState(recentlyMsgState);
+    // const [chatList, setChatList] = useRecoilState(chatListState);
 
     useEffect(() => {
         const messageHandler = (chat: IChat) => setChats((prevChats) => [...prevChats, chat]);
