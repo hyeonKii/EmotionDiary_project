@@ -45,6 +45,8 @@ export default function Main() {
         today.getMonth() + 1,
         "home-diaries",
         {
+            enabled: !!user,
+
             onSuccess: () => {
                 return;
             },
