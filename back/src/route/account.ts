@@ -1,9 +1,9 @@
 import { Router, Request as Req, Response as Res } from "express";
-import wrapRouter from "lib/wrapRouter";
-import tokenService from "services/tokenService";
-import auth from "middleware/auth";
-import AppError from "lib/AppError";
-import accountService from "services/accountService";
+import wrapRouter from "../lib/wrapRouter";
+import tokenService from "../services/tokenService";
+import auth from "../middleware/auth";
+import AppError from "../lib/AppError";
+import accountService from "../services/accountService";
 
 const accountRouter = Router();
 

@@ -2,8 +2,8 @@ import { Router, Request as Req, Response as Res } from "express";
 import axios from "axios";
 import wrapRouter from "../lib/wrapRouter";
 import diaryService from "../services/diaryService";
-import auth from "middleware/auth";
-import AppError from "lib/AppError";
+import auth from "../middleware/auth";
+import AppError from "../lib/AppError";
 const diaryRouter = Router();
 
 //일기 create API

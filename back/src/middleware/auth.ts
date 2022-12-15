@@ -1,7 +1,7 @@
 import type { Request as Req, Response as Res, NextFunction } from "express";
-import AppError from "lib/AppError";
-import { verifyToken } from "lib/token";
-import tokenService from "services/tokenService";
+import AppError from "../lib/AppError";
+import { verifyToken } from "../lib/token";
+import tokenService from "../services/tokenService";
 
 const auth = async (req: Req, res: Res, next: NextFunction) => {
     let accessToken = req.headers.authorization;

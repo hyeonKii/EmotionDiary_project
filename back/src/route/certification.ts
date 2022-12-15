@@ -1,8 +1,8 @@
 import { Router } from "express";
-import auth from "middleware/auth";
-import wrapRouter from "lib/wrapRouter";
-import certificationService from "services/certificationService";
-import AppError from "lib/AppError";
+import auth from "../middleware/auth";
+import wrapRouter from "../lib/wrapRouter";
+import certificationService from "../services/certificationService";
+import AppError from "../lib/AppError";
 
 const certificationRouter = Router();
 
