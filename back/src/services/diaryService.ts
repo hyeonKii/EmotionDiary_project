@@ -1,6 +1,6 @@
 import { PrismaClient, User } from "@prisma/client";
-
-import AppError from "../lib/AppError";
+import { empty } from "@prisma/client/runtime";
+import AppError from "lib/AppError";
 import accountService from "./accountService";
 
 class DiaryService {
@@ -204,6 +204,7 @@ class DiaryService {
                 updatedAt: true,
                 private: true,
             },
+            orderBy: [{ createdAt: "desc" }],
         });
 
         if (postDatas === null) {
