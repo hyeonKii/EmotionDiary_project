@@ -18,7 +18,7 @@ diaryRouter.post(
         }
         await diaryService.writeDiary(req.userID!, title, description, privateDiary, createdAt);
 
-        const result = await axios.post("http://localhost:8000/api/emotion-check", description);
+        const result = await axios.post("http://localhost:8000/api/emotion-check", {text: description});
 
         console.log("result", result);
         return { statusCode: 200, content: true };

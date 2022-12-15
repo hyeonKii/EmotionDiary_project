@@ -10,6 +10,7 @@ class DiaryService {
         userID: string,
         title: string,
         description: string,
+        // emotion: string,
         privateDiary: boolean,
         createdAt?: Date
     ) {
