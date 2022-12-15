@@ -1,5 +1,4 @@
-import { ChatContainer, Message, MessageBox, MessageForm } from "@/styles/chat/chat-style";
-import { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { Container, FlexBox } from "@/styles/chat/chat-style";
 import { io } from "socket.io-client";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCallback, useEffect, useState, useMemo } from "react";
@@ -9,7 +8,6 @@ import { Head, ChatRoomstyle } from "@/styles/chat/waiting-room.styles";
 import { recentlyMsgState } from "@/temp/ChatRecoil";
 import { useRecoilValue, useRecoilState } from "recoil";
 import ChatRoom from "@/components/chat/chatroom";
-// export const socket = io("http://localhost:3002");
 import { currentroom } from "@/temp/ChatRecoil";
 
 export const socket = io("http://kdt-ai5-team02.elicecoding.com");
