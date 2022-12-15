@@ -17,9 +17,16 @@ class ChatService {
     };
 
     async saveChat(inviter: string, invitee: string) {
+        let roomName;
+        if (Number(inviter) > Number(invitee)) {
+            roomName = inviter + "," + invitee;
+        } else {
+            roomName = invitee + "," + inviter;
+        }
+
         const result = await this.prisma.chat.findUnique({
             where: {
-                user_model_id: inviter + "," + invitee,
+                user_model_id: roomName,
             },
         });
         if (result !== null) {
@@ -29,7 +36,7 @@ class ChatService {
             try {
                 await this.prisma.chat.create({
                     data: {
-                        user_model_id: inviter + "," + invitee,
+                        user_model_id: roomName,
                         inviter: inviter,
                         invitee: invitee,
                         lastmessage: "",
@@ -45,7 +52,6 @@ class ChatService {
         await this.prisma.$disconnect();
         return { result: true };
     }
-
     async roomList(usermodel: number) {
         const result1 = await this.prisma.chat.findMany({
             where: {

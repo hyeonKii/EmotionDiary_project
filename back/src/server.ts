@@ -61,31 +61,36 @@ if (sc !== undefined) {
         socket.on("room-list", async (usermodel: string) => {
             //socket emit 으로 받아온 userid로 방을 검색
             const result = await chatService.roomList(Number(usermodel));
+
             sc.emit("create-room", result, usermodel); // 대기실 방 생성
             return createdRooms;
         });
 
         socket.on("create-room", async (inviter: string, invitee: string, message: string) => {
             await chatService.saveChat(inviter, invitee);
-            const user_model_id = inviter + "," + invitee;
-            const exists = createdRooms.find(
-                (createdRoom) => createdRoom === inviter + "," + invitee
-            );
+            let user_model_id: string;
+
+            if (Number(inviter) > Number(invitee)) {
+                user_model_id = inviter + "," + invitee;
+            } else {
+                user_model_id = invitee + "," + inviter;
+            }
+
+            const exists = createdRooms.find((createdRoom) => createdRoom === user_model_id);
             await chatService.saveMessege(user_model_id, message, String(inviter));
-            sc.emit("message", { sender: inviter, msgText: message, chatRoom: user_model_id });
-            console.log(444);
             if (exists) {
                 console.log("exist");
                 return {
                     success: false,
-                    payload: `${inviter + "," + invitee} 방이 이미 존재합니다.`,
+                    payload: `${user_model_id} 방이 이미 존재합니다.`,
                 };
             }
-            socket.join(inviter + "," + invitee); // 기존에 없던 room으로 join하면 room이 생성됨
-            createdRooms.push(inviter + "," + invitee); // 유저가 생성한 room 목록에 추가
-            sc.emit("create-room", inviter + "," + invitee); // 대기실 방 생성
+            socket.join(user_model_id); // 기존에 없던 room으로 join하면 room이 생성됨
+            createdRooms.push(user_model_id); // 유저가 생성한 room 목록에 추가
+            sc.emit("create-room", user_model_id); // 대기실 방 생성
+            sc.emit("message", { sender: inviter, msgText: message, chatRoom: user_model_id }); // 방을 만들고 메세지 보내기
             socket.join("");
-            return { success: true, payload: inviter + "," + invitee };
+            return { success: true, payload: user_model_id };
         });
 
         socket.on("join-room", async (roomName: string, userid: string) => {
