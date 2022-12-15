@@ -41,20 +41,19 @@ export default function Main() {
         };
     }, [ref, setIsOpen]);
 
-    const { isSuccess, data: monthDiaries } = useRequestGetMonthDiaries(
-        today.getFullYear(),
-        today.getMonth() + 1,
-        "home-diaries",
-        {
-            onSuccess: () => {
-                return;
-            },
+    const {
+        isSuccess,
+        data: monthDiaries,
+        refetch,
+    } = useRequestGetMonthDiaries(today.getFullYear(), today.getMonth() + 1, "home-diaries", {
+        onSuccess: () => {
+            return;
+        },
 
-            onError: ({ message }: Error) => {
-                console.error(message);
-            },
-        }
-    );
+        onError: ({ message }: Error) => {
+            console.error(message);
+        },
+    });
 
     useEffect(() => {
         const day = monthDiaries?.data?.map((posts: PostInterface) =>
@@ -69,7 +68,9 @@ export default function Main() {
     const { mutate: writeDiary } = useRequestWriteDiary(form, {
         onSuccess: () => {
             setIsOpen(false);
+            setTodayPost(true);
             setForm((form) => ({ ...form, title: "", description: "", privateDiary: true }));
+            refetch();
         },
         onError: ({ message }: Error) => {
             console.error(message);
