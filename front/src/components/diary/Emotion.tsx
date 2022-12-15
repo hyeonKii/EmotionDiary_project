@@ -1,10 +1,12 @@
+import { useState } from "react";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis } from "recharts";
 import { useRecoilValue } from "recoil";
 
-import { useRequestPastDiaries } from "@/api/diary";
+import { useRequestGetMonthDiaries, useRequestPastDiaries } from "@/api/diary";
 import { currentUser } from "@/temp/userAtom";
-import { dayString, monthString, yearString } from "@/util/date";
+import { dayAgo, aMonthAgo, aYearAgo, dayString, monthString, yearString } from "@/util/date";
 import { emotionImg } from "@/hooks/useEmotion";
+import { PostInterface } from "./interface/post";
 import {
     EmotionSection,
     EmotionChartSection,
@@ -55,17 +57,13 @@ export function Emotion() {
     });
 
     const { data: pastDiaries } = useRequestPastDiaries({
-        onSuccess: () => {
-            console.log("지난달 감정들 요청 성공");
-        },
-        onError: () => {
-            console.log("지난달 감정들 요청 실패");
-        },
+        onSuccess: () => {},
+        onError: () => {},
     });
 
-    const day = pastDiaries?.data[0][0];
-    const month = pastDiaries?.data[1][0];
-    const year = pastDiaries?.data[2][0];
+    const day = pastDiaries?.data[0];
+    const month = pastDiaries?.data[1];
+    const year = pastDiaries?.data[2];
 
     return (
         <EmotionSection>

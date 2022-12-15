@@ -3,15 +3,16 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { ThemeProvider } from "styled-components";
 
+import Header from "./components/UI/Header";
 import Home from "@/pages/HomePage";
 import Diary from "@/pages/DiaryPage";
 import IntroducePage from "@/pages/IntroducePage";
-import Header from "@/components/UI/Header";
-import Footer from "@/components/UI/Footer";
-import Loading from "@/components/UI/Loading";
-import useSetUser from "@/hooks/useSetUser";
-import { ThemeEnums, themeMode } from "@/temp/themeAtom";
+import Footer from "./components/UI/Footer";
+import Loading from "./components/UI/Loading";
+import useSetUser from "./hooks/useSetUser";
+
 import { darkTheme, lightTheme } from "@/styles/common/theme";
+import { ThemeEnums, themeMode } from "@/temp/themeAtom";
 
 function App() {
     const theme: ThemeEnums = useRecoilValue(themeMode);
@@ -47,8 +48,8 @@ function App() {
             <Router>
                 <Header />
                 <Routes>
-                    <Route path="/" element={<Home />} />
                     <Route path="/intro" element={<IntroducePage />} />
+                    <Route path="/home" element={<Home />} />
                     <Route path="/diary" element={<Diary />} />
                 </Routes>
                 <Footer />

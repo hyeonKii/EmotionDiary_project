@@ -1,8 +1,6 @@
 import { useRequestWriteDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
-import { SelectStyle } from "@/styles/diary/diary-style";
 import { DiaryDetail, EditBlock } from "@/styles/diary/todayDiary-style";
-import { aMonthAgo, aYearAgo, dayAgo } from "@/util/date";
 import { ChangeEvent, useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -35,9 +33,8 @@ export default function DiaryCreatePost({ clickedDate }: Props) {
     const { mutate: writeHandler } = useRequestWriteDiary(
         { ...form, privateDiary: privateMode, createdAt: clickedDate },
         {
-            onSuccess: async () => {
-                await queryClient.invalidateQueries(["calendar-diaries"]);
-                await queryClient.invalidateQueries(["past-diaries"]);
+            onSuccess: () => {
+                queryClient.invalidateQueries(["calendar-diaries"]);
 
                 console.log("일기 작성 요청 성공");
             },
@@ -62,10 +59,10 @@ export default function DiaryCreatePost({ clickedDate }: Props) {
         <DiaryDetail isEdit={true}>
             <article className="top">
                 {clickedDate && <span className="date">{currentDateText}</span>}
-                <SelectStyle onChange={selectHandler}>
-                    <option value="나만보기">&#128274; 나만보기</option>
-                    <option value="전체공개">&#128275; 전체공개</option>
-                </SelectStyle>
+                <select onChange={selectHandler}>
+                    <option value="나만보기">나만보기</option>
+                    <option value="전체공개">전체공개</option>
+                </select>
             </article>
             <EditBlock>
                 <input

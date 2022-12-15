@@ -55,7 +55,6 @@ export function DiaryCalendar() {
 
     const setCurrentDay = (event: Date) => {
         const postDate = new Date(event);
-        postDate.setHours(12);
 
         setClickedDate(postDate);
     };
@@ -110,7 +109,7 @@ export function DiaryCalendar() {
         "calendar-diaries",
         {
             onSuccess: (res: FetchedData) => {
-                setCurrentDiaryID(res, clickedDate);
+                setCurrentDiaryID(res, currentDate);
 
                 console.log("월별 일기 요청 성공");
             },

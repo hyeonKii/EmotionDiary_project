@@ -4,13 +4,7 @@ import { useRequestDeleteDiary, useRequestEditDiary } from "@/api/diary";
 import useForm from "@/hooks/useForm";
 import { PostInterface } from "./interface/post";
 import { useQueryClient } from "react-query";
-import {
-    EditPostButtonsStyle,
-    MiscButtonsStyle,
-    SelectStyle,
-    SubmitButtonStyle,
-    TodayDiaryDetail,
-} from "@/styles/diary/diary-style";
+
 interface Props {
     post: PostInterface;
 }
@@ -54,7 +48,6 @@ export default function DiaryPost({ post }: Props) {
 
     const onClick = () => {
         setIsOpen((prev) => !prev);
-        setEditMode(false);
     };
 
     const { mutate: editDiary } = useRequestEditDiary({ ...form, privateDiary: privateMode }, id, {
@@ -107,66 +100,51 @@ export default function DiaryPost({ post }: Props) {
                     </div>
                 </Post>
                 {isOpen && (
-                    <TodayDiaryDetail>
+                    <PostDetail>
                         {editMode ? (
                             <>
-                                <textarea
+                                <input
+                                    type="texarea"
                                     defaultValue={description}
                                     onChange={changeHandler}
                                     id="description"
-                                    className="description"
-                                    autoFocus
                                 />
-                                <div>
-                                    <div className="blank"></div>
-                                    <EditPostButtonsStyle>
-                                        {privateDiary ? (
-                                            <SelectStyle onChange={selectHandler}>
-                                                <option value="나만보기">&#128274; 나만보기</option>
-                                                <option value="전체공개">&#128275; 전체공개</option>
-                                            </SelectStyle>
-                                        ) : (
-                                            <SelectStyle onChange={selectHandler}>
-                                                <option value="전체공개">&#128275; 전체공개</option>
-                                                <option value="나만보기">&#128274; 나만보기</option>
-                                            </SelectStyle>
-                                        )}
-                                        <SubmitButtonStyle onClick={editHandler}>
-                                            저장
-                                        </SubmitButtonStyle>
-                                    </EditPostButtonsStyle>
-                                </div>
+                                {privateDiary ? (
+                                    <select onChange={selectHandler}>
+                                        <option value="나만보기">나만보기</option>
+                                        <option value="전체공개">전체공개</option>
+                                    </select>
+                                ) : (
+                                    <select onChange={selectHandler}>
+                                        <option value="전체공개">전체공개</option>
+                                        <option value="나만보기">나만보기</option>
+                                    </select>
+                                )}
+                                <button onClick={editHandler}>저장</button>
                             </>
                         ) : (
                             <>
                                 <p className="description">{description}</p>
-                                <div>
-                                    <div className="blank"></div>
-                                    <MiscButtonsStyle>
-                                        {privateDiary ? (
-                                            <span className="material-symbols-outlined">lock</span>
-                                        ) : (
-                                            <span className="material-symbols-outlined">
-                                                lock_open
-                                            </span>
-                                        )}
-                                        <button
-                                            className="material-symbols-outlined"
-                                            onClick={() => setEditMode(true)}
-                                        >
-                                            edit
-                                        </button>
-                                        <button
-                                            className="material-symbols-outlined"
-                                            onClick={deleteHandler}
-                                        >
-                                            delete
-                                        </button>
-                                    </MiscButtonsStyle>
-                                </div>
+                                {privateDiary ? (
+                                    <span className="material-symbols-outlined">lock</span>
+                                ) : (
+                                    <span className="material-symbols-outlined">lock_open</span>
+                                )}
+                                <button
+                                    className="material-symbols-outlined"
+                                    onClick={() => setEditMode(true)}
+                                >
+                                    edit
+                                </button>
+                                <button
+                                    className="material-symbols-outlined"
+                                    onClick={deleteHandler}
+                                >
+                                    delete
+                                </button>
                             </>
                         )}
-                    </TodayDiaryDetail>
+                    </PostDetail>
                 )}
             </CardSection>
         </>

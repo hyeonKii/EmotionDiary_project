@@ -12,7 +12,6 @@ export const NavStyle = styled.nav`
     z-index: 5;
 
     width: 100%;
-    min-width: 520px;
     height: 65px;
 
     background-color: ${(isdark) => isdark.theme.navColor};
