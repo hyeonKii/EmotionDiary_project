@@ -3,7 +3,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -23,9 +22,9 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  diary     Diary[]
-  chat      Chat[]
-  Account   Account?
+
+  diary   Diary[]
+  Account Account?
 }
 
 model Account {
@@ -33,21 +32,23 @@ model Account {
   userID            String  @unique
   password          String
   certified_account Boolean @default(false)
-  User              User    @relation(fields: [id], references: [id])
-  id                Int     @unique
+
+  User User @relation(fields: [id], references: [id])
+  id   Int  @unique
 }
 
 model Diary {
-  id              Int       @id @unique @default(autoincrement())
-  emotion         String    @default("normal")
-  title           String
-  description     String
-  private         Boolean   @default(false)
-  view            Int       @default(0)
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  user_model_id   Int
-  user            User      @relation(fields: [user_model_id], references: [id])
+  id          Int      @id @unique @default(autoincrement())
+  emotion     String   @default("normal")
+  title       String
+  description String
+  private     Boolean  @default(false)
+  view        Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user_model_id Int
+  user          User @relation(fields: [user_model_id], references: [id])
 }
 
 model Token {

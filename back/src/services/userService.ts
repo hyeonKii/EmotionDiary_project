@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import AppError from "../lib/AppError";
 class UserService {
     private prisma = new PrismaClient();
@@ -45,7 +45,7 @@ class UserService {
 
             return { ok: true };
         } catch (e: any) {
-            throw new AppError("UpdateError");
+            throw new AppError("UnknownError");
         }
     }
 
@@ -68,7 +68,7 @@ class UserService {
 
             return { ok: true };
         } catch (e: any) {
-            throw new AppError("UpdateError");
+            throw new AppError("UnknownError");
         }
     }
 }

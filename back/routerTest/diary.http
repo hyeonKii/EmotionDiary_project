@@ -11,8 +11,8 @@ Content-Type: application/json
 }
 ###logout
 delete {{url}}/account
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoicnV5cmlhIiwiaWF0IjoxNjcwODI1NTEzLCJleHAiOjE2NzA4MjczMTN9.bF7IQhHtU1kx8-LawnSHIXitx71sJxNYqbsQ3a-HXLg
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwODI1NTE1LCJleHAiOjE2NzA4MzYzMTV9.CPLRfDOPsDt3r9dGmlCjlRBWEFrunR_n-YDIh2D5ATM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdCIsImlhdCI6MTY2OTY5ODcwMywiZXhwIjoxNjY5NzAwNTAzfQ.jf1SjQfCkuJl_hQE1UrnURAtIlBhr-98cPKD3bjeV-c
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjY5Njk4NzAzLCJleHAiOjE2Njk3MDk1MDN9.dEvLKMxTrCc5C_dZTmFXdc7KTZGoukO7tzDozPBk6Jg
 Content-Type: application/json
 
 
@@ -50,12 +50,12 @@ Content-Type: application/json
 
 ### 일기 작성 api
 post {{url}}/diaries/write
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoicnV5cmlhIiwiaWF0IjoxNjcwODMxNDYxLCJleHAiOjE2NzA4MzMyNjF9.tmcNLpMGtGV6WbYTw-VqAFShFqQC3DPlEoOV_ud9Sh8
-RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwODMxNDY0LCJleHAiOjE2NzA4NDIyNjR9.8zHxq-lhQAmXpuBWys20zOBKEUv5Q47mNK1BB9MpAMA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVzdDExMSIsImlhdCI6MTY3MDQ3MDc1MywiZXhwIjoxNjcwNDcyNTUzfQ.zict85tshEbI7eefZIMmAPQU0ntw6p2e6Q_S8dtkTeQ
+RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiIiwiaWF0IjoxNjcwNDcwNzUzLCJleHAiOjE2NzA0ODE1NTN9.vwSCDDjajagqUEK3mrtxLgUJVtpPCjI-iTpG7_iCNNI
 Content-Type: application/json
 
 {
-  "title": "되나?",
+  "title": "ttteeee",
   "description":"ttteeee",
   "privateDiary": true
 }

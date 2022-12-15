@@ -27,7 +27,7 @@ export default function Header() {
             )}
 
             <NavStyle>
-                <LinkStyle to="/home" className="logo">
+                <LinkStyle to="/" className="logo">
                     마음일기
                 </LinkStyle>
                 {!user ? (

@@ -62,10 +62,6 @@ function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
         setIsOpen((prev) => !prev);
     };
 
-    const onToggle = () => {
-        setLike((prev) => !prev);
-    };
-
     const itemBody = useMemo(() => {
         return (
             <>
@@ -92,18 +88,12 @@ function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
                                     전송
                                 </button>
                             </MessageBlock>
-                            <button
-                                className={like ? "material-icons" : "material-symbols-outlined"}
-                                onClick={onToggle}
-                            >
-                                thumb_up
-                            </button>
                         </div>
                     </PostDetail>
                 )}
             </>
         );
-    }, [isOpen, like, post]);
+    }, [isOpen, post]);
 
     return ref ? (
         <CardSection ref={ref}>{itemBody}</CardSection>
