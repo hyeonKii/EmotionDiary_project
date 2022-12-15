@@ -108,19 +108,26 @@ class ChatService {
 
     async saveMessege(chatRoom: string, message: string, userid: string) {
         const members = chatRoom.split(",");
+        let result;
         let receiveris = members.filter((x) => {
             return x != userid;
         });
-
-        const result = await this.prisma.chat.update({
+        console.log("where to update", chatRoom);
+        const find = await this.prisma.chat.findUnique({
             where: {
                 user_model_id: chatRoom,
             },
-            data: {
-                lastmessage: message,
-            },
         });
-
+        if (find != null) {
+            result = await this.prisma.chat.update({
+                where: {
+                    user_model_id: chatRoom,
+                },
+                data: {
+                    lastmessage: message,
+                },
+            });
+        }
         try {
             await this.prisma.messege.create({
                 data: {

@@ -50,7 +50,6 @@ export const ChatRoom = (props: any | undefined) => {
             if (chat === null) {
                 return null;
             }
-            console.log(chat.chatRoom, chatRoom);
             if (chat.chatRoom == chatRoom && chatRoom != null) {
                 setChats((prevChats) => [...prevChats, chat]);
                 setRecentlyMessage(chat);

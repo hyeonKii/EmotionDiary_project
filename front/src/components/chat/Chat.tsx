@@ -8,10 +8,10 @@ import { Head, ChatRoomstyle } from "@/styles/chat/waiting-room.styles";
 import { recentlyMsgState } from "@/temp/ChatRecoil";
 import { useRecoilValue, useRecoilState } from "recoil";
 import ChatRoom from "@/components/chat/chatroom";
-// export const socket = io("http://localhost:3002");
+export const socket = io("http://localhost:3002");
 import { currentroom } from "@/temp/ChatRecoil";
 
-export const socket = io("http://kdt-ai5-team02.elicecoding.com");
+// export const socket = io("http://kdt-ai5-team02.elicecoding.com");
 
 //채팅 상자
 interface ChatData {
@@ -60,7 +60,6 @@ export function Chat() {
 
         const createRoomHandler = async (response: any, usermodel: string) => {
             //로그인한 사용자의 읽지 않은 메세지를 구해 채팅방 목록에 count 추가
-            console.log(userid, usermodel);
             if (userid == usermodel) {
                 const a = await Promise.all(
                     response.result.map(async (item: ChatList, index: number) => {
@@ -114,7 +113,6 @@ export function Chat() {
     //채팅방값 감시
     useEffect(() => {
         const messageHandler = (chat: ChatData) => {
-            console.log("message", chat);
             setRecentMessage({
                 sender: chat.sender,
                 msgText: chat.msgText,
@@ -160,7 +158,6 @@ export function Chat() {
             socket.emit("leave-room", roomName, () => {});
             setCountZero(roomName);
             await api.readMessege(roomName, userid);
-            console.log(roomName);
             setCurrentsroom(roomName);
             setJoinedRoom(roomName);
             return () => {};
@@ -172,10 +169,9 @@ export function Chat() {
         if (chatList === null) {
             return null;
         }
-        console.log(chatList);
         return (
             <>
-                {chatList.map((item, idx) => (
+                {chatList?.map((item, idx) => (
                     <ChatRoomstyle onClick={onJoinRoom(item.user_model_id)} key={idx}>
                         <button>{item.lastmessage}</button>
                         <div>

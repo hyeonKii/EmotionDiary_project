@@ -67,7 +67,8 @@ if (sc !== undefined) {
         });
 
         socket.on("create-room", async (inviter: string, invitee: string, message: string) => {
-            await chatService.saveChat(inviter, invitee);
+            const save = chatService.saveChat(inviter, invitee);
+            console.log(save, "saveRoom");
             let user_model_id: string;
 
             if (Number(inviter) > Number(invitee)) {
@@ -75,9 +76,11 @@ if (sc !== undefined) {
             } else {
                 user_model_id = invitee + "," + inviter;
             }
+            const f = sc.emit("create-room", user_model_id); // 대기실 방 생성
 
             const exists = createdRooms.find((createdRoom) => createdRoom === user_model_id);
-            await chatService.saveMessege(user_model_id, message, String(inviter));
+            const saveMessege = chatService.saveMessege(user_model_id, message, String(inviter));
+            console.log(saveMessege, "saveMessege");
             if (exists) {
                 console.log("exist");
                 return {
@@ -87,8 +90,11 @@ if (sc !== undefined) {
             }
             socket.join(user_model_id); // 기존에 없던 room으로 join하면 room이 생성됨
             createdRooms.push(user_model_id); // 유저가 생성한 room 목록에 추가
-            sc.emit("create-room", user_model_id); // 대기실 방 생성
-            sc.emit("message", { sender: inviter, msgText: message, chatRoom: user_model_id }); // 방을 만들고 메세지 보내기
+            const r = sc.emit("message", {
+                sender: inviter,
+                msgText: message,
+                chatRoom: user_model_id,
+            }); // 방을 만들고 메세지 보내기
             socket.join("");
             return { success: true, payload: user_model_id };
         });
