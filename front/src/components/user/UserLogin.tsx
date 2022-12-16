@@ -17,7 +17,6 @@ import {
 } from "@/styles/common/modal/Form-style";
 import { useSetRecoilState } from "recoil";
 import { currentForm, showLoginForm } from "@/temp/formAtom";
-import axios from "axios";
 
 interface Response {
     data: {
@@ -48,9 +47,6 @@ export default function UserLogin() {
 
             setSession("accessToken", accessToken);
             setSession("refreshToken", refreshToken);
-
-            axios.defaults.headers.common["Authorization"] = sessionStorage.getItem("accessToken");
-            axios.defaults.headers.common["Refreshtoken"] = sessionStorage.getItem("refreshToken");
 
             setUser();
             setLoginForm(false);
