@@ -41,9 +41,9 @@ interface MessagePayload {
 const server = http.createServer(app);
 export const sc = new socket.Server(server, {
     cors: {
-        origin: "http://kdt-ai5-team02.elicecoding.com/",
+        origin: "*",
         methods: ["GET", "POST"],
-        credentials: false,
+        credentials: true,
     },
 });
 
