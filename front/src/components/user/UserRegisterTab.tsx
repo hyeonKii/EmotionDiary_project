@@ -7,6 +7,8 @@ import {
     FormButton,
     Error,
     BottomSection,
+    SuccessImg,
+    SuccessRegister
 } from "@/styles/common/modal/Form-style";
 import { useSetRecoilState } from "recoil";
 import { currentForm } from "@/temp/formAtom";
@@ -84,7 +86,9 @@ export default function UserRegisterTab({ form, changeHandler, error, isSuccess 
                 </>
             ) : (
                 <>
-                    <div>회원가입에 성공하셨습니다!</div>
+                    <SuccessImg src="src/assets/images/happy.png"></SuccessImg>
+                    <SuccessRegister>회원가입에 성공하셨습니다!</SuccessRegister>
+                    
                     <FormButton type="button" onClick={() => setCurrentForm(LOGIN)}>
                         로그인 하기
                     </FormButton>

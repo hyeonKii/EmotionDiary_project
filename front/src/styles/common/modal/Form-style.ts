@@ -57,8 +57,8 @@ export const Form = styled.form`
     .deleteButton {
         margin-top: 1rem;
 
-        color: ${color.gray};
-        font-size: 0.7rem;
+        color: ${(isdark) => isdark.theme.textColor};
+        font-size: 0.75rem;
     }
 `;
 
@@ -361,3 +361,18 @@ export const Success = styled.div`
 export const DescriptionLabel = styled.label`
     text-align: start;
 `;
+
+
+export const SuccessImg = styled.img`
+    margin-top: -20px;
+    margin-bottom: 20px;
+`
+
+export const SuccessRegister = styled.div`
+
+    color: ${(isdark) => isdark.theme.textColor};
+`
+
+export const RemoveRegister = styled.button`
+    color: ${(isdark) => isdark.theme.textColor};
+`
