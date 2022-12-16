@@ -3,7 +3,6 @@ import { none } from "@/assets/images";
 import { Empty } from "@/styles/common/empty/empty-style";
 import { ButtonStyle, SelectStyle } from "@/styles/diary/diary-style";
 import React, { useState } from "react";
-import styled from "styled-components";
 import DiaryPageButton from "./DiaryPageButton";
 import DiaryPost from "./DiaryPost";
 import { PostInterface } from "./interface/post";

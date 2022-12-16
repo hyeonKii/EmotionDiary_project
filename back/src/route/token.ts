@@ -1,7 +1,6 @@
 import { Router } from "express";
 import auth from "../middleware/auth";
 import wrapRouter from "../lib/wrapRouter";
-import AppError from "../lib/AppError";
 import tokenService from "../services/tokenService";
 
 const tokenRouter = Router();

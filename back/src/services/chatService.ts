@@ -81,7 +81,6 @@ class ChatService {
     }
 
     async saveMessege(chatRoom: string, message: string, userid: string) {
-        console.log(chatRoom, message, userid);
         if (chatRoom === null) {
             return;
         }
