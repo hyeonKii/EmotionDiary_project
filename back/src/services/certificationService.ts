@@ -5,19 +5,8 @@ import generator from "generate-password";
 import AppError from "../lib/AppError";
 
 import mailSender from "../lib/mail";
-import accountService from "./accountService";
 
 //TODO: change error type
-
-const isCertifiedEmail = (email: string) => {
-    const reg = /^[\w-\.]+@([\w-]+\.)+com$/;
-
-    if (!reg.test(email)) {
-        return true;
-    }
-
-    return false;
-};
 
 class CertificationService {
     private prisma = new PrismaClient();
@@ -28,8 +17,8 @@ class CertificationService {
                 email: email,
             },
             select: {
-                userID: true
-            }
+                userID: true,
+            },
         });
 
         if (result === null && (codeType === "password" || codeType === "id")) {
@@ -56,7 +45,7 @@ class CertificationService {
             // TODO: result null check
             // await accountService.changePassword(result.userID, code)
 
-            mailSender(email, code, "", "isSubject?");
+            mailSender(email, code, "", "이메일 인증 번호");
         } catch (e: any) {
             if (e instanceof Prisma.PrismaClientKnownRequestError) {
                 console.log(e.message);
