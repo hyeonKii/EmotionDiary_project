@@ -16,6 +16,12 @@ interface Items {
     user_model_id: number;
 }
 
+// interface ChatData {
+//     sender: string;
+//     msgText: string;
+//     chatRoom: string;
+// }
+
 interface Props {
     post: Items;
 }
@@ -48,11 +54,13 @@ function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
         }
 
         socket.emit("create-room", inviter, invitee, messege, (response: CreateRoomResponse) => {
-            console.log(response, 4334);
             if (response.success) {
                 return alert(response.payload);
             }
         });
+        //  socket.emit("message", { roomName, messege, inviter }, (chat: ChatData) => {
+        //      setChats((prevChats) => [...prevChats, chat]);
+        //  });
 
         navigate("/diary", {
             state: { room: roomName },

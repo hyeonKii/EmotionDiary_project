@@ -45,7 +45,6 @@ export default function PostList() {
     const getPostPage = async (page = 1) => {
         try {
             const { data } = await api.getDiary(10, page, tab);
-            console.log(tab);
             return data;
         } catch (e) {
             console.error(e);

@@ -33,6 +33,7 @@ export const ChatRoom = (props: any | undefined) => {
     const navigate = useNavigate();
     //todo : usecallback 사용하기
     // 채팅이 길어지면(chats.length) 스크롤이 생성되므로, 스크롤의 위치를 최근 메시지에 위치시키기 위함
+
     useEffect(() => {
         if (!chatContainerEl.current) return;
 

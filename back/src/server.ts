@@ -54,6 +54,7 @@ if (sc !== undefined) {
     sc.on("connection", (socket: Socket) => {
         socket.on("message", async ({ chatRoom, msgText, userid }: MessagePayload) => {
             sc.emit("message", { sender: userid, msgText, chatRoom });
+
             await chatService.saveMessege(chatRoom, msgText, String(userid));
         });
         //foreach 사용하기 => for 대신에
@@ -68,7 +69,6 @@ if (sc !== undefined) {
 
         socket.on("create-room", async (inviter: string, invitee: string, message: string) => {
             const save = chatService.saveChat(inviter, invitee);
-            console.log(save, "saveRoom");
             let user_model_id: string;
 
             if (Number(inviter) > Number(invitee)) {
@@ -80,14 +80,7 @@ if (sc !== undefined) {
 
             const exists = createdRooms.find((createdRoom) => createdRoom === user_model_id);
             const saveMessege = chatService.saveMessege(user_model_id, message, String(inviter));
-            console.log(saveMessege, "saveMessege");
-            if (exists) {
-                console.log("exist");
-                return {
-                    success: false,
-                    payload: `${user_model_id} 방이 이미 존재합니다.`,
-                };
-            }
+
             socket.join(user_model_id); // 기존에 없던 room으로 join하면 room이 생성됨
             createdRooms.push(user_model_id); // 유저가 생성한 room 목록에 추가
             const r = sc.emit("message", {
@@ -95,7 +88,6 @@ if (sc !== undefined) {
                 msgText: message,
                 chatRoom: user_model_id,
             }); // 방을 만들고 메세지 보내기
-            socket.join("");
             return { success: true, payload: user_model_id };
         });
 

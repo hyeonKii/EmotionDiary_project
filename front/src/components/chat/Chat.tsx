@@ -8,10 +8,10 @@ import { Head, ChatRoomstyle } from "@/styles/chat/waiting-room.styles";
 import { recentlyMsgState } from "@/temp/ChatRecoil";
 import { useRecoilValue, useRecoilState } from "recoil";
 import ChatRoom from "@/components/chat/chatroom";
-// export const socket = io("http://localhost:3002");
+export const socket = io("http://localhost:3002");
 import { currentroom } from "@/temp/ChatRecoil";
-
-export const socket = io("http://kdt-ai5-team02.elicecoding.com");
+import { useLocation } from "react-router-dom";
+// export const socket = io("http://kdt-ai5-team02.elicecoding.com");
 
 //채팅 상자
 interface ChatData {
@@ -199,13 +199,7 @@ export function Chat() {
         <>
             <FlexBox>
                 <span>
-                    <Container>
-                        <Head>
-                            <div>채팅방 목록</div>
-                            <button onClick={onCreateRoom}>채팅방 생성</button>
-                        </Head>
-                        {chatList && ChatRoomComponents}
-                    </Container>
+                    <Container>{chatList && ChatRoomComponents}</Container>
                 </span>
                 <Container>
                     {joinedRoom && (

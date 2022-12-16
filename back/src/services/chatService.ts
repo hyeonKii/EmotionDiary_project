@@ -78,41 +78,18 @@ class ChatService {
             ...item,
             updatedAt: this.dateTime(item.updatedAt),
         }));
-        // const result = result1.map((item) => ({ ...item, updatedAt: item.updatedAt.toString() }));
         return { result };
     }
 
-    // async LastMessage(usermodel: number) {
-    //     console.log(usermodel, "usermodel");
-    //     const result = await this.prisma.chat.findMany({
-    //         where: {
-    //             OR: [
-    //                 {
-    //                     inviter: String(usermodel),
-    //                 },
-    //                 {
-    //                     invitee: String(usermodel),
-    //                 },
-    //             ],
-    //         },
-
-    //         select: {
-    //             // user_model_id: true,
-    //             lastmessage: true,
-    //         },
-    //     });
-    //     console.log(result, "roomlist");
-    //     await this.prisma.$disconnect();
-    //     return { result };
-    // }
-
     async saveMessege(chatRoom: string, message: string, userid: string) {
+        if (chatRoom === null) {
+            return;
+        }
         const members = chatRoom.split(",");
         let result;
         let receiveris = members.filter((x) => {
             return x != userid;
         });
-        console.log("where to update", chatRoom);
         const find = await this.prisma.chat.findUnique({
             where: {
                 user_model_id: chatRoom,

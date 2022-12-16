@@ -35,8 +35,6 @@ class DiaryService {
                     createdAt: createdAt,
                 },
             });
-
-            console.log("t", t);
         } catch (error) {
             throw new AppError("NotFindError");
         }
