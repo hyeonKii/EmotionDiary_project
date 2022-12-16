@@ -56,7 +56,6 @@ export function DiaryCalendar() {
 
     const setCurrentDay = (event: Date) => {
         const postDate = new Date(event);
-        postDate.setHours(12);
 
         setClickedDate(postDate);
     };
