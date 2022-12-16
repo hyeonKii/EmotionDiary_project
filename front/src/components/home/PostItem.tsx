@@ -84,6 +84,7 @@ function PostItem({ post }: Props, ref: ForwardedRef<HTMLElement>) {
                                     type="text"
                                     placeholder="메시지는 익명으로 전송됩니다. 속마음을 나눠보세요!"
                                     autoFocus
+                                    ref={messegeRef}
                                 />
                                 <button onClick={onCreateRoom} className="submitButton">
                                     전송
