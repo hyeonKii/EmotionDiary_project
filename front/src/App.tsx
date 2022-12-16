@@ -34,7 +34,6 @@ function App() {
 
             axios.defaults.headers.common["Authorization"] = accessToken;
             axios.defaults.headers.common["Refreshtoken"] = refreshToken;
-            axios.defaults.withCredentials = true;
 
             await setUser();
             setLoadingCheck(true);
