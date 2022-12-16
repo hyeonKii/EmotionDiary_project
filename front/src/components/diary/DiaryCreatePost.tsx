@@ -28,7 +28,7 @@ export default function DiaryCreatePost({ clickedDate }: Props) {
     const queryClient = useQueryClient();
 
     const currentDate = new Date(clickedDate as Date);
-    currentDate.setDate(currentDate.getDate() + 1);
+    currentDate.setHours(12);
 
     const currentDateText = getCurrentDateText(clickedDate);
 
