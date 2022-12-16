@@ -100,8 +100,9 @@ diaryRouter.get(
         const { datetime } = req.query;
         const date = new Date(String(datetime));
         const nextDate = new Date(String(datetime));
-        nextDate.setDate(date.getDate() + 1);
-        const result = await diaryService.getDiaryByDate(req.userID!, date, nextDate);
+        nextDate.setMonth(date.getMonth() + 1);
+        const result = await diaryService.getDiaryByMonth(req.userID!, date, nextDate);
+        console.log("result", result);
         return { statusCode: 200, content: result };
     })
 );
@@ -207,9 +208,9 @@ diaryRouter.get(
         yearEnd.setDate(yearStart.getDate() + 1);
 
         const result = await Promise.all([
-            diaryService.getDiaryByDate(req.userID!, weekStart, weekEnd),
-            diaryService.getDiaryByDate(req.userID!, monthStart, monthEnd),
-            diaryService.getDiaryByDate(req.userID!, yearStart, yearEnd),
+            diaryService.getDiaryByMonth(req.userID!, weekStart, weekEnd),
+            diaryService.getDiaryByMonth(req.userID!, monthStart, monthEnd),
+            diaryService.getDiaryByMonth(req.userID!, yearStart, yearEnd),
         ]);
 
         return { statusCode: 200, content: result };

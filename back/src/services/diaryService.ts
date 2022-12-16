@@ -133,7 +133,7 @@ class DiaryService {
         return postData;
     }
 
-    async getDiaryByDate(userID: string, datetime: Date, datetime2: Date) {
+    async getDiaryByMonth(userID: string, datetime: Date, datetime2: Date) {
         const postData = await this.prisma.diary.findMany({
             where: {
                 user: {
