@@ -10,19 +10,22 @@ class CertificationService {
     private prisma = new PrismaClient();
 
     async generateCode(email: string) {
-        const result = await this.prisma.account.findUnique({
-            where: {
-                email: email,
-            },
-            select: {
-                userID: true,
-            },
-        });
-
-        if (result !== null) {
-            throw new AppError("UserExistError");
-        }
         try {
+            const result = await this.prisma.account.findUnique({
+                where: {
+                    email: email,
+                },
+                select: {
+                    userID: true,
+                },
+            });
+
+            if (result !== null) {
+                console.log("error");
+                // throw new AppError("UserExistError");
+                return { result: false };
+            }
+
             const code = generator.generate({ length: 8, numbers: true });
 
             await this.prisma.certification.create({
@@ -33,14 +36,14 @@ class CertificationService {
             });
 
             mailSender(email, code, "", "이메일 인증 코드");
+            await this.prisma.$disconnect();
+            return { result: true };
         } catch (e: any) {
             if (e instanceof Prisma.PrismaClientKnownRequestError) {
                 throw new AppError("ArgumentError");
             }
+            return { result: false };
         }
-
-        await this.prisma.$disconnect();
-        return { result: true };
     }
 
     async generateTempPassword(email: string) {
@@ -55,7 +58,8 @@ class CertificationService {
             });
 
             if (result === null) {
-                throw new AppError("UserNotExistError");
+                // throw new AppError("UserNotExistError");
+                return { result: false };
             }
 
             const code = generator.generate({ length: 12, numbers: true });
@@ -70,14 +74,15 @@ class CertificationService {
             await accountService.changePassword(result.userID, code);
 
             mailSender(email, code, "", "임시 비밀번호");
+
+            await this.prisma.$disconnect();
+            return { result: true };
         } catch (e: any) {
             if (e instanceof Prisma.PrismaClientKnownRequestError) {
                 throw new AppError("ArgumentError");
             }
+            return { result: false };
         }
-
-        await this.prisma.$disconnect();
-        return { result: true };
     }
 
     async deleteCode(code: string) {

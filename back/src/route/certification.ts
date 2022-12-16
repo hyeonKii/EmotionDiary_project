@@ -20,9 +20,15 @@ certificationRouter.post(
         switch (target) {
             case "email":
                 result = await certificationService.generateCode(email);
+                if (result.result == false) {
+                    throw new AppError("UserExistError");
+                }
                 break;
             case "password":
                 result = await certificationService.generateTempPassword(email);
+                if (result.result == false) {
+                    throw new AppError("UserNotExistError");
+                }
                 break;
             default:
                 throw new AppError("ArgumentError");
