@@ -31,7 +31,7 @@ export function DiaryCalendar() {
         month: currentMonth,
     });
 
-    const [clickedDate, setClickedDate] = useState(currentDate);
+    const [clickedDate, setClickedDate] = useState<Date | null>(currentDate);
     const [id, setID] = useState<number | null>(null);
 
     const setCurrentDiaryID = (fetchedData: FetchedData | undefined, dateArg: Date) => {
@@ -71,6 +71,9 @@ export function DiaryCalendar() {
             year: currentCalendarYear,
             month: currentCalendarMonth,
         });
+
+        setID(null);
+        setClickedDate(null);
     };
 
     const setEmotionClassName = (dateArg: Date) => {
