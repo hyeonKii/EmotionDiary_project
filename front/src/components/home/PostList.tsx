@@ -28,11 +28,11 @@ interface Items {
     description: string;
     emotion: string;
     createdAt: Date;
-    user_model_id: number;
 }
 
 export default function PostList() {
     const [tab, setTab] = useState<TabList>("전체");
+
     const { fetchNextPage, hasNextPage, isFetchingNextPage, data, error, status, refetch } =
         useInfiniteQuery("posts", ({ pageParam = 1 }) => getPostPage(pageParam), {
             getNextPageParam: (lastPage, allPages) => {
@@ -56,8 +56,6 @@ export default function PostList() {
     }, [tab]);
 
     const content = data?.pages?.map((page) => {
-        console.log(page, data);
-
         if (data?.pages[0].length === 0) {
             return (
                 <Empty>

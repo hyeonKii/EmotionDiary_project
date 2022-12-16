@@ -28,7 +28,6 @@ const writeDiary = (diaryData: WriteDiary) => {
 export const getDiary = (count: number, page: number, emotion?: string) => {
     return axios.get(
         URL + endpoint.DIARY_GET + `?count=${count}&page=${page}&emotion=${emotion}&privatediary`,
-        // URL + endpoint.DIARY_GET + `?count=${count}&page=${page}&emotion=${emotion}&privatediary`,
         {
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
