@@ -27,6 +27,9 @@ const getCurrentDateText = (dayToDate: Date | null) => {
 export default function DiaryCreatePost({ clickedDate }: Props) {
     const queryClient = useQueryClient();
 
+    const currentDate = new Date(clickedDate as Date);
+    currentDate.setDate(currentDate.getDate() + 1);
+
     const currentDateText = getCurrentDateText(clickedDate);
 
     const [privateMode, setPrivateMode] = useState(true);
@@ -37,7 +40,7 @@ export default function DiaryCreatePost({ clickedDate }: Props) {
     });
 
     const { mutate: writeHandler } = useRequestWriteDiary(
-        { ...form, privateDiary: privateMode, createdAt: clickedDate as Date },
+        { ...form, privateDiary: privateMode, createdAt: currentDate as Date },
         {
             onSuccess: async () => {
                 await queryClient.invalidateQueries(["calendar-diaries"]);
