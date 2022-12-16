@@ -1,39 +1,30 @@
 import { PrismaClient, Prisma } from "@prisma/client";
-
+import accountService from "./accountService";
 import generator from "generate-password";
 
 import AppError from "../lib/AppError";
 
 import mailSender from "../lib/mail";
 
-//TODO: change error type
-
 class CertificationService {
     private prisma = new PrismaClient();
 
-    async generateCode(codeType: "email" | "password" | "id", email: string) {
-        const result = await this.prisma.account.findUnique({
-            where: {
-                email: email,
-            },
-            select: {
-                userID: true,
-            },
-        });
-
-        if (result === null && (codeType === "password" || codeType === "id")) {
-            throw new AppError("UserNotExistError");
-        }
-
-        if (result !== null && codeType === "email") {
-            throw new AppError("UserExistError");
-        }
-
+    async generateCode(email: string) {
         try {
-            let length = 8;
+            const result = await this.prisma.account.findUnique({
+                where: {
+                    email: email,
+                },
+                select: {
+                    userID: true,
+                },
+            });
 
-            if (codeType === "password") length = 12;
-            const code = generator.generate({ length, numbers: true });
+            if (result !== null) {
+                throw new AppError("UserExistError");
+            }
+
+            const code = generator.generate({ length: 8, numbers: true });
 
             await this.prisma.certification.create({
                 data: {
@@ -42,13 +33,46 @@ class CertificationService {
                 },
             });
 
-            // TODO: result null check
-            // await accountService.changePassword(result.userID, code)
-
-            mailSender(email, code, "", "이메일 인증 번호");
+            mailSender(email, code, "", "이메인 인증 코드");
         } catch (e: any) {
             if (e instanceof Prisma.PrismaClientKnownRequestError) {
-                console.log(e.message);
+                throw new AppError("ArgumentError");
+            }
+        }
+
+        await this.prisma.$disconnect();
+        return { result: true };
+    }
+
+    async generateTempPassword(email: string) {
+        try {
+            const result = await this.prisma.account.findUnique({
+                where: {
+                    email: email,
+                },
+                select: {
+                    userID: true,
+                },
+            });
+
+            if (result === null) {
+                throw new AppError("UserNotExistError");
+            }
+
+            const code = generator.generate({ length: 12, numbers: true });
+
+            await this.prisma.certification.create({
+                data: {
+                    email: email,
+                    code: code,
+                },
+            });
+
+            await accountService.changePassword(result.userID, code);
+
+            mailSender(email, code, "", "임시 비밀번호");
+        } catch (e: any) {
+            if (e instanceof Prisma.PrismaClientKnownRequestError) {
                 throw new AppError("ArgumentError");
             }
         }

@@ -42,6 +42,46 @@ export const TodaySection = styled.section`
             border-radius: 50%;
         }
 
+        .react-calendar__tile.슬픔 {
+            background: ${color.deepBlue};
+            border-radius: 50%;
+        }
+
+        .react-calendar__tile.분노 {
+            background: ${color.red};
+            border-radius: 50%;
+        }
+
+        .react-calendar__tile.신남 {
+            background: ${color.yellow};
+            border-radius: 50%;
+        }
+
+        .react-calendar__tile.자신감 {
+            background: ${color.pink};
+            border-radius: 50%;
+        }
+
+        .react-calendar__tile.만족감 {
+            background: ${color.orange};
+            border-radius: 50%;
+        }
+
+        .react-calendar__tile.편안함 {
+            background: ${color.lightBlue};
+            border-radius: 50%;
+        }
+
+        .react-calendar__tile.불안 {
+            background: ${color.green};
+            border-radius: 50%;
+        }
+
+        .react-calendar__tile.상처 {
+            background: ${color.darkBlue};
+            border-radius: 50%;
+        }
+
         .react-calendar__tile--now {
             border-radius: 50%;
             background: none;
