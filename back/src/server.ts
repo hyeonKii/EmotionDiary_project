@@ -20,12 +20,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(
-    cors({
-        origin: true, // 출처 허용 옵션
-        credentials: true, // 사용자 인증이 필요한 리소스(쿠키 ..등) 접근
-    })
-);
+app.use(cors());
 app.use("/api/users", userRouter);
 app.use("/api/account", accountRouter);
 app.use("/api/diaries", diaryRouter);
@@ -45,7 +40,7 @@ interface MessagePayload {
 const server = http.createServer(app);
 export const sc = new socket.Server(server, {
     cors: {
-        origin: "http://kdt-ai5-team02.elicecoding.com/",
+        origin: "*",
         methods: ["GET", "POST"],
         credentials: true,
     },
