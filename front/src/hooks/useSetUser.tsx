@@ -26,14 +26,10 @@ export default function useSetUser() {
                 certified_account,
             } = res.data;
 
-            console.log("로그인 성공");
-
             setUserState({ nickname, id });
         },
 
-        onError: (error: Error) => {
-            console.log("로그인 실패 :" + error.message);
-        },
+        onError: (error: Error) => {},
     });
 
     return { isLoading, setUser };
