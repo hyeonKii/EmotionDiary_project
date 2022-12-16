@@ -102,7 +102,7 @@ diaryRouter.get(
         const nextDate = new Date(String(datetime));
         nextDate.setMonth(date.getMonth() + 1);
         const result = await diaryService.getDiaryByMonth(req.userID!, date, nextDate);
-        console.log("result", result);
+
         return { statusCode: 200, content: result };
     })
 );
@@ -115,6 +115,7 @@ diaryRouter.get(
         const year = now.getFullYear();
         const month = now.getMonth() + 1;
         const date = now.getDate();
+        console.log(year, month, date);
 
         const day = `${year}-${month >= 10 ? month : "0" + month}-${
             date >= 10 ? date : "0" + date
@@ -146,7 +147,7 @@ diaryRouter.get(
             diaryService.getAllDiaryByDate(req.userID!, monthStart, monthEnd),
             diaryService.getAllDiaryByDate(req.userID!, yearStart, yearEnd),
         ]);
-
+        console.log("result", result);
         return { statusCode: 200, content: result };
     })
 );
@@ -212,7 +213,7 @@ diaryRouter.get(
             diaryService.getDiaryByMonth(req.userID!, monthStart, monthEnd),
             diaryService.getDiaryByMonth(req.userID!, yearStart, yearEnd),
         ]);
-
+        console.log(result);
         return { statusCode: 200, content: result };
     })
 );
