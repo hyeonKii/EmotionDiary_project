@@ -17,78 +17,37 @@ interface EditDiary {
 }
 
 const writeDiary = (diaryData: WriteDiary) => {
-    return axios.post(URL + endpoint.DIARY_WRITE, diaryData, {
-        headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-            Refreshtoken: sessionStorage.getItem("refreshToken"),
-        },
-    });
+    return axios.post(URL + endpoint.DIARY_WRITE, diaryData);
 };
 
 export const getDiary = (count: number, page: number, emotion?: string) => {
     return axios.get(
-        URL + endpoint.DIARY_GET + `?count=${count}&page=${page}&emotion=${emotion}&privatediary`,
-        {
-            headers: {
-                Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-                Refreshtoken: sessionStorage.getItem("refreshToken"),
-            },
-        }
+        URL + endpoint.DIARY_GET + `?count=${count}&page=${page}&emotion=${emotion}&privatediary`
     );
 };
 
 const getMyDiary = (id: number | null) => {
-    return axios.get(URL + endpoint.MYDIARY + "/" + id, {
-        headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-            Refreshtoken: sessionStorage.getItem("refreshToken"),
-        },
-    });
+    return axios.get(URL + endpoint.MYDIARY + "/" + id);
 };
 
 const getMyAllDiaries = (count: number, page: number) => {
-    return axios.get(URL + endpoint.DIARY_GET_MY_ALL + `?count=${count}&page=${page}`, {
-        headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-            Refreshtoken: sessionStorage.getItem("refreshToken"),
-        },
-    });
+    return axios.get(URL + endpoint.DIARY_GET_MY_ALL + `?count=${count}&page=${page}`);
 };
 
 const getMyMonthDiaries = (year: number, month: number | string) => {
-    return axios.get(URL + endpoint.DIARY_MONTH + `?datetime=${year}-${month}-01`, {
-        headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-            Refreshtoken: sessionStorage.getItem("refreshToken"),
-        },
-    });
+    return axios.get(URL + endpoint.DIARY_MONTH + `?datetime=${year}-${month}-01`);
 };
 
 const editMyDiary = (myDiaryData: EditDiary, id: number) => {
-    return axios.put(URL + endpoint.MYDIARY + "/" + id, myDiaryData, {
-        headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-            Refreshtoken: sessionStorage.getItem("refreshToken"),
-        },
-    });
+    return axios.put(URL + endpoint.MYDIARY + "/" + id, myDiaryData);
 };
 
 const deleteMyDiary = (id: number) => {
-    return axios.delete(URL + endpoint.MYDIARY + "/" + id, {
-        headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-            Refreshtoken: sessionStorage.getItem("refreshToken"),
-        },
-    });
+    return axios.delete(URL + endpoint.MYDIARY + "/" + id);
 };
 
 const getPastDiaries = () => {
-    return axios.get(URL + endpoint.DIARY_PAST, {
-        headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-            Refreshtoken: sessionStorage.getItem("refreshToken"),
-        },
-    });
+    return axios.get(URL + endpoint.DIARY_PAST);
 };
 
 export const useRequestWriteDiary = (

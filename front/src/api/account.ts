@@ -29,12 +29,7 @@ async function loginUser(userData: Login) {
 }
 
 async function getUser() {
-    return await axios.get(URL + endpoint.ACCOUNT_GET, {
-        headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-            Refreshtoken: sessionStorage.getItem("refreshToken"),
-        },
-    });
+    return await axios.get(URL + endpoint.ACCOUNT_GET);
 }
 
 async function registerUser(userData: Register) {
@@ -46,21 +41,11 @@ async function findID(userData: FindID) {
 }
 
 async function changePwd(userData: ChangePwd) {
-    return await axios.put(URL + endpoint.ACCOUNT_CHANGE_PASSWORD, userData, {
-        headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-            Refreshtoken: sessionStorage.getItem("refreshToken"),
-        },
-    });
+    return await axios.put(URL + endpoint.ACCOUNT_CHANGE_PASSWORD, userData);
 }
 
 async function logoutUser() {
-    return await axios.delete(URL + endpoint.ACCOUNT_LOGOUT, {
-        headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-            Refreshtoken: sessionStorage.getItem("refreshToken"),
-        },
-    });
+    return await axios.delete(URL + endpoint.ACCOUNT_LOGOUT);
 }
 
 export const useFetchUser = (

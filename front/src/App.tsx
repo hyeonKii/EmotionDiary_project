@@ -12,6 +12,7 @@ import Loading from "@/components/UI/Loading";
 import useSetUser from "@/hooks/useSetUser";
 import { ThemeEnums, themeMode } from "@/temp/themeAtom";
 import { darkTheme, lightTheme } from "@/styles/common/theme";
+import axios from "axios";
 
 function App() {
     const theme: ThemeEnums = useRecoilValue(themeMode);
@@ -30,6 +31,10 @@ function App() {
                 setLoadingCheck(true);
                 return;
             }
+
+            axios.defaults.headers.common["Authorization"] = accessToken;
+            axios.defaults.headers.common["Refreshtoken"] = refreshToken;
+            axios.defaults.withCredentials = true;
 
             await setUser();
             setLoadingCheck(true);
