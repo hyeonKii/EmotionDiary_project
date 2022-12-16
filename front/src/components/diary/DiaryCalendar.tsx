@@ -139,14 +139,16 @@ export function DiaryCalendar() {
                     <img src={postLoading} alt="loading" />
                 </div>
             ) : (
-                <CalendarDetail>
-                    {emotionState()}
-                    {diary ? (
-                        <DiaryTodayPost post={diary} />
-                    ) : (
-                        <DiaryCreatePost clickedDate={clickedDate} />
-                    )}
-                </CalendarDetail>
+                clickedDate && (
+                    <CalendarDetail>
+                        {emotionState()}
+                        {diary ? (
+                            <DiaryTodayPost post={diary} />
+                        ) : (
+                            <DiaryCreatePost clickedDate={clickedDate} />
+                        )}
+                    </CalendarDetail>
+                )
             )}
         </TodaySection>
     );
