@@ -51,8 +51,6 @@ export function Chat() {
         | null
     >(null);
     useEffect(() => {
-        //메세지 헨들러가 2개?
-
         const leaveRoomHandler = (roomName: string) => {
             setCurrentsroom(roomName);
         };
