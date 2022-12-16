@@ -362,11 +362,6 @@ export const DescriptionLabel = styled.label`
     text-align: start;
 `;
 
-export const SuccessImg = styled.img`
-    marin-top: -30px;
-    margin-bottom: 20px;
-`
-
 export const SuccessRegister = styled.div`
 
     color: ${(isdark) => isdark.theme.textColor};
