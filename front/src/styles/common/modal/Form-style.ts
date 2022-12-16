@@ -362,9 +362,8 @@ export const DescriptionLabel = styled.label`
     text-align: start;
 `;
 
-
 export const SuccessImg = styled.img`
-    margin-top: -20px;
+    marin-top: -30px;
     margin-bottom: 20px;
 `
 
