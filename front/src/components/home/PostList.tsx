@@ -12,7 +12,7 @@ import { Empty, LoadingStyle } from "@/styles/common/empty/empty-style";
 const tabList = [
     "전체",
     "자신감",
-    "만족감",
+    "감사",
     "신남",
     "편안함",
     "불안",
