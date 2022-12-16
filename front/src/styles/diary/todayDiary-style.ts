@@ -43,7 +43,7 @@ export const TodaySection = styled.section`
         }
 
         .react-calendar__tile.슬픔 {
-            background: ${color.green};
+            background: ${color.lightBlue};
             border-radius: 50%;
         }
 
@@ -58,27 +58,27 @@ export const TodaySection = styled.section`
         }
 
         .react-calendar__tile.자신감 {
-            background: ${color.pink};
-            border-radius: 50%;
-        }
-
-        .react-calendar__tile.만족감 {
             background: ${color.orange};
             border-radius: 50%;
         }
 
+        .react-calendar__tile.만족감 {
+            background: ${color.pink};
+            border-radius: 50%;
+        }
+
         .react-calendar__tile.편안함 {
-            background: ${color.lightBlue};
+            background: ${color.skyBlue};
             border-radius: 50%;
         }
 
         .react-calendar__tile.불안 {
-            background: ${color.deepBlue};
+            background: ${color.green};
             border-radius: 50%;
         }
 
         .react-calendar__tile.상처 {
-            background: ${color.darkBlue};
+            background: ${color.deepBlue};
             border-radius: 50%;
         }
 
@@ -89,6 +89,23 @@ export const TodaySection = styled.section`
                 color: ${color.lightBlue};
             }
         }
+
+        ? color.orange
+        : emotion === "만족감"
+        ? color.pink
+        : emotion === "편안함"
+        ? color.skyBlue
+        : emotion === "신남"
+        ? color.yellow
+        : emotion === "불안"
+        ? color.green
+        : emotion === "슬픔"
+        ? color.lightBlue
+        : emotion === "상처"
+        ? color.deepBlue
+        : emotion === "분노"
+        ? color.red
+        : color.lightGray};
 
         .react-calendar__tile--active {
             border-radius: 50%;
