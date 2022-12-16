@@ -51,7 +51,6 @@ export default function UserLogin() {
 
             axios.defaults.headers.common["Authorization"] = sessionStorage.getItem("accessToken");
             axios.defaults.headers.common["Refreshtoken"] = sessionStorage.getItem("refreshToken");
-            axios.defaults.withCredentials = true;
 
             setUser();
             setLoginForm(false);
