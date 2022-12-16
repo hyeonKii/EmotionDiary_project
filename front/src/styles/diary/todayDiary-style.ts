@@ -82,7 +82,7 @@ export const TodaySection = styled.section`
             }
         }
 
-        .react-calendar__tile.만족감 {
+        .react-calendar__tile.감사 {
             background: ${color.pink};
             border-radius: 50%;
 

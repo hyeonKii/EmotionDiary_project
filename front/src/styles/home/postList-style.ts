@@ -28,7 +28,7 @@ export const Post = styled.article<{ isOpen: boolean; emotion: string }>`
         background: ${({ emotion }) =>
             emotion === "자신감"
                 ? color.orange
-                : emotion === "만족감"
+                : emotion === "감사"
                 ? color.pink
                 : emotion === "편안함"
                 ? color.skyBlue

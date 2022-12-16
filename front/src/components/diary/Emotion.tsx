@@ -18,7 +18,7 @@ const chart = [
         A: 80,
     },
     {
-        emotion: "만족감",
+        emotion: "감사",
         A: 98,
     },
     {

@@ -15,7 +15,7 @@ import {
 const EmotionToImg = {
     신남: <img src={happy} alt="happy" className="emotionIcon" />,
     자신감: <img src={confidence} alt="confidence" className="emotionIcon" />,
-    만족감: <img src={satisfaction} alt="satisfaction" className="emotionIcon" />,
+    감사: <img src={satisfaction} alt="satisfaction" className="emotionIcon" />,
     편안함: <img src={comfort} alt="comfort" className="emotionIcon" />,
     슬픔: <img src={sad} alt="sad" className="emotionIcon" />,
     상처: <img src={wound} alt="wound" className="emotionIcon" />,
@@ -28,7 +28,7 @@ export const emotionImg = (emotion: string) => {
     if (
         emotion === "신남" ||
         emotion === "자신감" ||
-        emotion === "만족감" ||
+        emotion === "감사" ||
         emotion === "편안함" ||
         emotion === "슬픔" ||
         emotion === "불안" ||
@@ -46,7 +46,7 @@ export default function useEmotion(emotion: string, nickname?: string) {
         if (
             emotion === "신남" ||
             emotion === "자신감" ||
-            emotion === "만족감" ||
+            emotion === "감사" ||
             emotion === "편안함"
         ) {
             return (
