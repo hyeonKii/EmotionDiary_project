@@ -61,7 +61,7 @@ if (sc !== undefined) {
         socket.on("room-list", async (usermodel: string) => {
             //socket emit 으로 받아온 userid로 방을 검색
             const result = await chatService.roomList(Number(usermodel));
-
+            console.log(result, usermodel);
             sc.emit("create-room", result, usermodel); // 대기실 방 생성
             return createdRooms;
         });
