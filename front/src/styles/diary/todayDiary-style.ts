@@ -90,23 +90,6 @@ export const TodaySection = styled.section`
             }
         }
 
-        ? color.orange
-        : emotion === "만족감"
-        ? color.pink
-        : emotion === "편안함"
-        ? color.skyBlue
-        : emotion === "신남"
-        ? color.yellow
-        : emotion === "불안"
-        ? color.green
-        : emotion === "슬픔"
-        ? color.lightBlue
-        : emotion === "상처"
-        ? color.deepBlue
-        : emotion === "분노"
-        ? color.red
-        : color.lightGray};
-
         .react-calendar__tile--active {
             border-radius: 50%;
             background: ${color.lightGray};

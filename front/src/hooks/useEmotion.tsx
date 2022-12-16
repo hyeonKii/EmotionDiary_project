@@ -18,8 +18,8 @@ const EmotionToImg = {
     만족감: <img src={satisfaction} alt="satisfaction" className="emotionIcon" />,
     편안함: <img src={comfort} alt="comfort" className="emotionIcon" />,
     슬픔: <img src={sad} alt="sad" className="emotionIcon" />,
-    불안: <img src={wound} alt="wound" className="emotionIcon" />,
-    상처: <img src={anxiety} alt="anxiety" className="emotionIcon" />,
+    상처: <img src={wound} alt="wound" className="emotionIcon" />,
+    불안: <img src={anxiety} alt="anxiety" className="emotionIcon" />,
     분노: <img src={angry} alt="angry" className="emotionIcon" />,
     normal: <img src={none} alt="normal" className="emotionIcon" />,
 };
