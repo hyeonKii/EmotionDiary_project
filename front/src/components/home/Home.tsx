@@ -46,6 +46,8 @@ export default function Main() {
         data: monthDiaries,
         refetch,
     } = useRequestGetMonthDiaries(today.getFullYear(), today.getMonth() + 1, "home-diaries", {
+        enabled: !!user,
+
         onSuccess: () => {
             return;
         },
