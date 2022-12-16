@@ -42,7 +42,7 @@ export const sc = new socket.Server(server, {
     cors: {
         origin: "*",
         methods: ["GET", "POST"],
-        credentials: true,
+        credentials: false,
     },
 });
 
