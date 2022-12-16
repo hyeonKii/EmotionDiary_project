@@ -7,10 +7,14 @@ import { ChangeEvent, useState } from "react";
 import { useQueryClient } from "react-query";
 
 interface Props {
-    clickedDate: Date;
+    clickedDate: Date | null;
 }
 
-const getCurrentDateText = (dayToDate: Date) => {
+const getCurrentDateText = (dayToDate: Date | null) => {
+    if (!dayToDate) {
+        return;
+    }
+
     const currentDate = new Date(dayToDate);
 
     const currentYear = currentDate.getFullYear();
@@ -33,7 +37,7 @@ export default function DiaryCreatePost({ clickedDate }: Props) {
     });
 
     const { mutate: writeHandler } = useRequestWriteDiary(
-        { ...form, privateDiary: privateMode, createdAt: clickedDate },
+        { ...form, privateDiary: privateMode, createdAt: clickedDate as Date },
         {
             onSuccess: async () => {
                 await queryClient.invalidateQueries(["calendar-diaries"]);

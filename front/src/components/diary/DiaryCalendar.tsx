@@ -34,8 +34,8 @@ export function DiaryCalendar() {
     const [clickedDate, setClickedDate] = useState<Date | null>(currentDate);
     const [id, setID] = useState<number | null>(null);
 
-    const setCurrentDiaryID = (fetchedData: FetchedData | undefined, dateArg: Date) => {
-        if (!fetchedData) {
+    const setCurrentDiaryID = (fetchedData: FetchedData | undefined, dateArg: Date | null) => {
+        if (!fetchedData || !dateArg) {
             return;
         }
 
@@ -99,13 +99,9 @@ export function DiaryCalendar() {
     const { isLoading: diaryLoading, data: userDiary } = useRequestGetDiary(id, {
         enabled: !!id,
 
-        onSuccess: () => {
-            console.log("일기 요청 성공");
-        },
+        onSuccess: () => {},
 
-        onError: () => {
-            console.log("일기 요청 실패");
-        },
+        onError: () => {},
     });
 
     const { data: monthDiaries } = useRequestGetMonthDiaries(
