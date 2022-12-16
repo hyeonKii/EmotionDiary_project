@@ -10,20 +10,19 @@ class CertificationService {
     private prisma = new PrismaClient();
 
     async generateCode(email: string) {
+        const result = await this.prisma.account.findUnique({
+            where: {
+                email: email,
+            },
+            select: {
+                userID: true,
+            },
+        });
+
+        if (result !== null) {
+            throw new AppError("UserExistError");
+        }
         try {
-            const result = await this.prisma.account.findUnique({
-                where: {
-                    email: email,
-                },
-                select: {
-                    userID: true,
-                },
-            });
-
-            if (result !== null) {
-                throw new AppError("UserExistError");
-            }
-
             const code = generator.generate({ length: 8, numbers: true });
 
             await this.prisma.certification.create({
