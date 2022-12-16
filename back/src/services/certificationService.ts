@@ -33,7 +33,7 @@ class CertificationService {
                 },
             });
 
-            mailSender(email, code, "", "이메인 인증 코드");
+            mailSender(email, code, "", "이메일 인증 코드");
         } catch (e: any) {
             if (e instanceof Prisma.PrismaClientKnownRequestError) {
                 throw new AppError("ArgumentError");
