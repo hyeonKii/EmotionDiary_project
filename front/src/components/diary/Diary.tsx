@@ -13,7 +13,7 @@ export function Diary() {
     const [tab, setTab] = useState<TabList>("하루일기");
     let roomName = useLocation();
     const setChatRoom = useEffect(() => {
-        if (roomName != null) {
+        if (roomName.state != null) {
             setTab("대화목록");
         }
     }, []);
