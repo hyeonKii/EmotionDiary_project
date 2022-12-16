@@ -55,12 +55,8 @@ export function Emotion() {
     });
 
     const { data: pastDiaries } = useRequestPastDiaries({
-        onSuccess: () => {
-            console.log("지난달 감정들 요청 성공");
-        },
-        onError: () => {
-            console.log("지난달 감정들 요청 실패");
-        },
+        onSuccess: () => {},
+        onError: () => {},
     });
 
     const day = pastDiaries?.data[0][0];

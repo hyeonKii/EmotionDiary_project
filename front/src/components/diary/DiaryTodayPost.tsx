@@ -39,23 +39,15 @@ export default function DiaryTodayPost({ post }: Props) {
         onSuccess: async () => {
             await queryClient.invalidateQueries(["calendar-diaries"]);
             await queryClient.invalidateQueries(["past-diaries"]);
-
-            console.log("일기 삭제 요청 성공");
         },
-        onError: () => {
-            console.log("일기 삭제 요청 실패");
-        },
+        onError: () => {},
     });
 
     const { mutate: editDiary } = useRequestEditDiary({ ...form, privateDiary: privateMode }, id, {
         onSuccess: () => {
             queryClient.invalidateQueries(["diary", id]);
-
-            console.log("일기 편집 요청 성공");
         },
-        onError: () => {
-            console.log("일기 편집 요청 실패");
-        },
+        onError: () => {},
     });
 
     const editHandler = () => {

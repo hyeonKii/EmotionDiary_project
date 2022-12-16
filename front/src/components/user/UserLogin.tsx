@@ -54,7 +54,6 @@ export default function UserLogin() {
 
         onError: (error: Error) => {
             setError(true);
-            console.log(error.message);
         },
     });
 

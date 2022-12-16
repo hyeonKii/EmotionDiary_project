@@ -41,12 +41,9 @@ export default function UserEmailCheckTab({ setTab, setRequiredEmail }: Props) {
 
     const { isSuccess: emailSuccess, mutate: sendCode } = useRequestSendCode(form, {
         onSuccess: () => {
-            console.log("이메일 코드 전송 완료.");
             setCodeError("");
         },
         onError: (error) => {
-            console.log("이메일 코드 전송 실패 :" + error.message);
-
             if (error.response?.data === "User already exists") {
                 setCodeError("이미 해당 이메일로 가입되었습니다.");
                 return;
@@ -68,9 +65,7 @@ export default function UserEmailCheckTab({ setTab, setRequiredEmail }: Props) {
             setCheckError(true);
             setCheckedEmail(false);
         },
-        onError: () => {
-            console.log("코드 인증 요청 실패");
-        },
+        onError: () => {},
     });
 
     const sendCodeHandler = () => {

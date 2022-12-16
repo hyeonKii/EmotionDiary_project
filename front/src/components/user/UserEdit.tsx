@@ -41,37 +41,26 @@ export default function UserEdit({ setShowInfo, setShowDropDown }: Props) {
         },
         {
             onSuccess: () => {
-                console.log("닉네임 변경 성공");
                 setUser({ nickname: form.nickname });
             },
 
-            onError: (error: Error) => {
-                console.log("닉네임 변경 실패: " + error.message);
-            },
+            onError: (error: Error) => {},
         }
     );
 
     const { isError: changePwdError, mutate: requestChangePwd } = useRequestChangePwd(
         { password: form.password },
         {
-            onSuccess: () => {
-                console.log("비밀번호 변경 성공");
-            },
+            onSuccess: () => {},
 
-            onError: (error: Error) => {
-                console.log("비밀번호 변경 실패: " + error.message);
-            },
+            onError: (error: Error) => {},
         }
     );
 
     const { isError: deleteUserError, mutate: requestDeleteUser } = useRequestDeleteUser({
-        onSuccess: () => {
-            console.log("탈퇴 성공");
-        },
+        onSuccess: () => {},
 
-        onError: (error: Error) => {
-            console.log("탈퇴 실패: " + error.message);
-        },
+        onError: (error: Error) => {},
     });
 
     const submitHandler = () => {

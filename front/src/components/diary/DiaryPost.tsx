@@ -61,18 +61,14 @@ export default function DiaryPost({ post }: Props) {
         onSuccess: () => {
             queryClient.invalidateQueries(["my-diaries"]);
         },
-        onError: (error: Error) => {
-            console.log(error.message);
-        },
+        onError: (error: Error) => {},
     });
 
     const { mutate: deleteDiary } = useRequestDeleteDiary(id, {
         onSuccess: () => {
             queryClient.invalidateQueries(["my-diaries"]);
         },
-        onError: (error: Error) => {
-            console.log(error.message);
-        },
+        onError: (error: Error) => {},
     });
 
     const deleteHandler = () => {

@@ -27,13 +27,10 @@ export default function UserRegister() {
         { ...form, email: requiredEmail },
         {
             onSuccess: () => {
-                console.log("회원가입 성공");
                 setError("");
             },
 
             onError: (error) => {
-                console.log("회원가입 실패 :" + error.message);
-
                 if (error.response?.data === "User already exists") {
                     setError("이미 아이디가 존재합니다.");
                     return;

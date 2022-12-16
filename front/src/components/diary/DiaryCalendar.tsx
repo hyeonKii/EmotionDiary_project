@@ -7,6 +7,7 @@ import DiaryTodayPost from "./DiaryTodayPost";
 import { currentUser } from "@/temp/userAtom";
 import { useRecoilValue } from "recoil";
 import DiaryCreatePost from "./DiaryCreatePost";
+import { postLoading } from "@/assets/images";
 
 interface MonthData {
     createdAt: Date;
@@ -92,7 +93,7 @@ export function DiaryCalendar() {
         return null;
     };
 
-    const { data: userDiary } = useRequestGetDiary(id, {
+    const { isLoading: diaryLoading, data: userDiary } = useRequestGetDiary(id, {
         enabled: !!id,
 
         onSuccess: () => {
@@ -111,13 +112,9 @@ export function DiaryCalendar() {
         {
             onSuccess: (res: FetchedData) => {
                 setCurrentDiaryID(res, clickedDate);
-
-                console.log("월별 일기 요청 성공");
             },
 
-            onError: () => {
-                console.log("월별 일기 요청 실패");
-            },
+            onError: () => {},
         }
     );
 
@@ -138,14 +135,20 @@ export function DiaryCalendar() {
                 tileClassName={({ date }) => setEmotionClassName(date)}
                 defaultValue={currentDate}
             />
-            <CalendarDetail>
-                {emotionState()}
-                {diary ? (
-                    <DiaryTodayPost post={diary} />
-                ) : (
-                    <DiaryCreatePost clickedDate={clickedDate} />
-                )}
-            </CalendarDetail>
+            {diaryLoading ? (
+                <div className="img">
+                    <img src={postLoading} alt="loading" />
+                </div>
+            ) : (
+                <CalendarDetail>
+                    {emotionState()}
+                    {diary ? (
+                        <DiaryTodayPost post={diary} />
+                    ) : (
+                        <DiaryCreatePost clickedDate={clickedDate} />
+                    )}
+                </CalendarDetail>
+            )}
         </TodaySection>
     );
 }

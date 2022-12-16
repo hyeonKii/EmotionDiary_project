@@ -43,7 +43,7 @@ export const TodaySection = styled.section`
         }
 
         .react-calendar__tile.슬픔 {
-            background: ${color.deepBlue};
+            background: ${color.green};
             border-radius: 50%;
         }
 
@@ -73,7 +73,7 @@ export const TodaySection = styled.section`
         }
 
         .react-calendar__tile.불안 {
-            background: ${color.green};
+            background: ${color.deepBlue};
             border-radius: 50%;
         }
 
@@ -102,6 +102,18 @@ export const TodaySection = styled.section`
             abbr {
                 color: white;
             }
+        }
+    }
+
+    .img {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            width: 10rem;
+            height: 10rem;
         }
     }
 `;

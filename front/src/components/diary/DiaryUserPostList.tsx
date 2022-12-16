@@ -25,12 +25,9 @@ export default function DiaryUserPostList() {
 
     const { isLoading, data: diaryData } = useRequestGetMyAllDiaries(count, page, {
         onSuccess: (res: Response) => {
-            console.log("일기 전부 GET 요청 성공");
             setDiaryCount(res.data.diarycount);
         },
-        onError: (error: Error) => {
-            console.log(error.message);
-        },
+        onError: (error: Error) => {},
     });
 
     const selectChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {

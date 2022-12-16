@@ -36,12 +36,9 @@ export default function UserIDtoFind() {
 
     const { isSuccess: emailSuccess, mutate: sendCode } = useRequestSendCode(form, {
         onSuccess: () => {
-            console.log("이메일 코드 전송 완료.");
             setEmailError("");
         },
         onError: (error) => {
-            console.log("이메일 전송 실패");
-
             if (error.response?.data === "User does not exists") {
                 setEmailError("아이디가 존재하지 않습니다.");
                 return;
@@ -68,7 +65,6 @@ export default function UserIDtoFind() {
                 setCodeError("확인된 아이디가 없습니다. 다시 한번 확인해주세요.");
             },
             onError: () => {
-                console.log("아이디 찾기 실패");
                 setCodeError("확인 요청이 실패했습니다.");
             },
         }

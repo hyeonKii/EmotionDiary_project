@@ -27,12 +27,8 @@ export default function UserIDtoFind() {
         isSuccess: emailSuccess,
         mutate: sendCode,
     } = useRequestSendCode(form, {
-        onSuccess: () => {
-            console.log("비밀번호 전송 완료.");
-        },
-        onError: () => {
-            console.log("비밀번호 전송 실패");
-        },
+        onSuccess: () => {},
+        onError: () => {},
     });
 
     const sendCodeHandler = () => {

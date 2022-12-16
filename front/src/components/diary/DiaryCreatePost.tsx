@@ -38,12 +38,8 @@ export default function DiaryCreatePost({ clickedDate }: Props) {
             onSuccess: async () => {
                 await queryClient.invalidateQueries(["calendar-diaries"]);
                 await queryClient.invalidateQueries(["past-diaries"]);
-
-                console.log("일기 작성 요청 성공");
             },
-            onError: () => {
-                console.log("일기 작성 요청 실패");
-            },
+            onError: () => {},
         }
     );
 
