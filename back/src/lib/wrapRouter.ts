@@ -21,7 +21,6 @@ const wrapRouter =
                 }
             }
             if (e instanceof Prisma.PrismaClientValidationError) {
-                console.log(e);
                 next(new AppError("ArgumentError"));
             }
             if (e instanceof AppError === false) {

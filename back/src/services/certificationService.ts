@@ -21,7 +21,6 @@ class CertificationService {
             });
 
             if (result !== null) {
-                console.log("error");
                 // throw new AppError("UserExistError");
                 return { result: false };
             }

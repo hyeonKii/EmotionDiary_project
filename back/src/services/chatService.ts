@@ -43,7 +43,6 @@ class ChatService {
                 });
             } catch (e: any) {
                 if (e instanceof Prisma.PrismaClientKnownRequestError) {
-                    console.log(e.message);
                     throw new AppError("ArgumentError");
                 }
             }
@@ -115,7 +114,6 @@ class ChatService {
             });
         } catch (e: any) {
             if (e instanceof Prisma.PrismaClientKnownRequestError) {
-                console.log(e.message);
                 throw new AppError("ArgumentError");
             }
         }

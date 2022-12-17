@@ -52,8 +52,6 @@ export default function UserIDtoFind() {
         { email: form.email, code: form.code },
         {
             onSuccess: (res: IDResponse) => {
-                console.log(res);
-
                 const { data } = res;
 
                 if (data) {
