@@ -1,52 +1,48 @@
-# Introduce
+# 서비스 명: 마음일기
+## 프로젝트 주제
+- 감정으로 연결되는 SNS
 
-> 프로젝트를 시작할 때 공통적인 작업을 하지않기 위해서 만든 code-base 입니다.
+## 유저에게 보이는 웹 서비스 타이틀 및 소개: 
+사회가 고도로 발전함에 따라 서로 과시하려고만 하고 정작 본인에 감정을 돌아보는 일은 거의 없습니다. 그래서 저희 익명으로 일기라는 매체로 감정을 터놓을 수 있고, 공유할 수 있는 익명 SNS 서비스 마음일기를 기획하게 되었습니다.
 
-# Skill
+# 서비스 설명
+##### 1. 사용된 인공지능 알고리즘 및 모델
+- kakaobrain의 Pororo 라이브러리를 사용해서 자연어 데이터 감정을 분류
 
--   eslint
--   typescript
--   vite
--   React
--   Express
--   dotenv
+##### 2. 웹 서비스의 최종적인 기능
+- 회원가입 / 로그인
+- 이메일 인증 기능
+- 임시 비밀번호 발급
+- JWT 기반 인증 / 인가
+- 일기를 작성 / 읽기 / 수정 / 삭제
+- 일기를 익명 또는 공개로 작성 가능
+- 작성한 일기의 감정을 바로 분류
+- 지난 달의 감정을 그래프로 표현
+- 일주일 전 오늘 / 한 달 전 오늘 / 일년 전 오늘의 감정을 표현
+- 익명 채팅
+- 다크모드
 
-# Setup
+##### 3. 프로젝트 구성
+-   [피그마](https://www.figma.com/file/E6OBneQx7wPXu6aisIU3ED/%5BTeam02%5D-%EB%A7%88%EC%9D%8C%EC%9D%BC%EA%B8%B0?node-id=0%3A1&t=SgnBLX57KZKiNIaf-0)
 
--   Front
+# 팀 구성원의 전체 이름과 역할
+| 이름   | 주역할     | 부역할 |
+| ------ | ---------- | ------ |
+| 김영준 | 프론트엔드 | 백엔드, AI |
+| 이의호 | 프론트엔드 | 백엔드 |
+| 오윤아 | 프론트엔드 | 디자인 |
+| 김현기 | 프론트엔드 |        |
+| 이하늘 | 프론트엔드 |        |
 
-```bash
-cd code_base/front
-touch .env
-echo "VITE_PORT=3001" > .env
-```
+# 기술 스택
+## 프론트엔드
+- Typescript
+- React
+- Recoil
+- React-query
+- Styled-components
 
--   Back
-
-```bash
-cd code_base/back
-touch .env
-echo "PORT=3002" > .env
-```
-
-# Command
-
--   Eslint
-
-```bash
-$code_base/. yarn eslint .
-```
-
--   Front
-
-```bash
-$code_base/front yarn dev
-$code_base/front yarn build
-```
-
--   Back
-
-```bash
-$code_base/back yarn dev
-$code_base/back yarn build
-```
+## 백엔드
+- Express
+- Prisma
+- Socket.io
