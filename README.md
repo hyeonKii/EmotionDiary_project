@@ -48,4 +48,5 @@
 ## 백엔드
 - Express
 - Prisma
+- SQL Lite
 - Socket.io
